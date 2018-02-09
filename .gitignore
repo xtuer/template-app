@@ -1,0 +1,36 @@
+out/
+build/
+.gradle/
+.tags
+.gitkeep
+.DS_Store
+dump.rdb
+!template-vue-app/build/
+
+template-web-gradle/src/main/webapp/WEB-INF/page
+template-web-gradle/src/main/webapp/WEB-INF/static
+
+### LOG ###
+*.log
+log.txt
+logs/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+nbproject/private/
+nbbuild/
+dist/
+nbdist/

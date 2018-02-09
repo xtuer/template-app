@@ -1,0 +1,150 @@
+plugins {
+    id 'war'
+    id 'java'
+    id 'org.hidetake.ssh'   version '2.9.0'
+    id 'org.akhikhl.gretty' version '2.0.0'
+}
+
+gretty {
+    httpPort = 8080
+    contextPath = ''
+    servletContainer = 'tomcat8'
+
+    inplaceMode  = 'hard'
+    debugSuspend = false
+    managedClassReload      = true
+    recompileOnSourceChange = true
+
+    // 升级 gretty 自带的 springloaded
+    jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify']
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   Maven 依赖                               //
+////////////////////////////////////////////////////////////////////////////////
+repositories {
+    mavenCentral()
+}
+
+ext.versions = [
+        spring        : '5.0.2.RELEASE',
+        springSecurity: '5.0.0.RELEASE',
+        springSession : '2.0.0.RELEASE',
+        redisClient   : '2.9.0',
+        servlet       : '4.0.0',
+        lombok        : '1.16.18',
+        fastjson      : '1.2.41',
+        thymeleaf     : '3.0.9.RELEASE',
+        mysql         : '5.1.21',
+        mybatis       : '3.4.5',
+        mybatisSpring : '1.3.1',
+        druid         : '1.1.5',
+        validator     : '6.0.5.Final',
+        commonsLang   : '3.7',
+        commonsFileupload: '1.3.3',
+        snakeyaml     : '1.19',
+        easyOkHttp    : '1.1.3',
+        easyPoi       : '3.0.3',
+        logback       : '1.2.3',
+        junit         : '4.12',
+        jclOverSlf4j  : '1.7.25'
+]
+
+dependencies {
+    compile(
+            "org.springframework:spring-webmvc:${versions.spring}",
+            "org.springframework:spring-context-support:${versions.spring}",
+            "org.springframework.security:spring-security-web:${versions.springSecurity}",
+            "org.springframework.security:spring-security-config:${versions.springSecurity}",
+            "org.springframework.session:spring-session-data-redis:${versions.springSession}",
+            "redis.clients:jedis:${versions.redisClient}",
+            "com.alibaba:fastjson:${versions.fastjson}",
+            "org.thymeleaf:thymeleaf-spring5:${versions.thymeleaf}",
+            "mysql:mysql-connector-java:${versions.mysql}",
+            "org.springframework:spring-jdbc:${versions.spring}",
+            "org.mybatis:mybatis-spring:${versions.mybatisSpring}",
+            "org.mybatis:mybatis:${versions.mybatis}",
+            "com.alibaba:druid:${versions.druid}",
+            "org.hibernate.validator:hibernate-validator:${versions.validator}",
+            "org.apache.commons:commons-lang3:${versions.commonsLang}",
+            "commons-fileupload:commons-fileupload:${versions.commonsFileupload}",
+            "org.yaml:snakeyaml:${versions.snakeyaml}",
+            "com.mzlion:easy-okhttp:${versions.easyOkHttp}",
+            "cn.afterturn:easypoi-base:${versions.easyPoi}",
+            "ch.qos.logback:logback-classic:${versions.logback}",
+            "org.slf4j:jcl-over-slf4j:${versions.jclOverSlf4j}"
+    )
+
+    compileOnly("org.projectlombok:lombok:${versions.lombok}")
+    compileOnly("javax.servlet:javax.servlet-api:${versions.servlet}")
+    testCompile("org.springframework:spring-test:${versions.spring}")
+    testCompile("junit:junit:${versions.junit}")
+}
+
+ext {
+    war.archiveName = 'Fox.zip' // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
+
+    // 运行、打包以及部署的环境选择, 默认是开发环境(即命令没有 -Denv 参数)
+    // 运行: gradle clean appStart, gradle clean appStartDebug
+    // 构建: gradle clean build,    gradle clean build  -Denv=production
+    // 部署: gradle clean deploy,   gradle clean deploy -Denv=production
+    environment = System.getProperty("env", "development") // 获取 gradle 参数中 env 的值，选择环境
+    config = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
+    println "加载配置用于环境: ${environment}"
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                  资源动态替换                                //
+////////////////////////////////////////////////////////////////////////////////
+processResources {
+    // src/main/resources 下的文件中 @key@ 的内容使用 config.groovy 里对应的进行替换
+    from(sourceSets.main.resources.srcDirs) {
+        filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: config)
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   项目部署                                  //
+////////////////////////////////////////////////////////////////////////////////
+remotes {
+    server {
+        host     = config.getProperty('deploy.hostname')
+        user     = config.getProperty('deploy.username')
+        password = config.getProperty('deploy.password')
+    }
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+
+task deploy(dependsOn: war) {
+    def targetDir = '/data/xtuer.com'
+    doLast {
+        ssh.run {
+            session(remotes.server) {
+                put from: "${buildDir}/libs/${war.archiveName}", into: "${targetDir}"
+                execute """
+                    source /root/.bash_profile;
+                    /usr/local/tomcat/bin/shutdown.sh;
+                    rm -rf   ${targetDir}/ROOT;
+                    unzip -u ${targetDir}/${war.archiveName} -d ${targetDir}/ROOT > /dev/null;
+                    rm -rf   ${targetDir}/${war.archiveName};
+                    kill `ps aux | grep -i tomcat | grep -v grep | awk '{print \$2}'`;
+                    /usr/local/tomcat/bin/startup.sh;
+                """
+            }
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                    JVM                                     //
+////////////////////////////////////////////////////////////////////////////////
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+}

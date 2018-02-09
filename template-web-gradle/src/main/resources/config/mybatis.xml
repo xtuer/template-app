@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 1. Data Source: using Druid -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url"      value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+
+        <property name="maxActive"   value="600"/>
+        <property name="initialSize" value="1"/>
+        <property name="maxWait"     value="60000"/>
+        <property name="minIdle"     value="1"/>
+
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <property name="minEvictableIdleTimeMillis"    value="300000"/>
+
+        <property name="validationQuery" value="select 1 from dual"/>
+        <property name="testWhileIdle"   value="true"/>
+        <property name="testOnBorrow"    value="false"/>
+        <property name="testOnReturn"    value="false"/>
+
+        <property name="poolPreparedStatements"    value="true"/>
+        <property name="maxOpenPreparedStatements" value="20"/>
+    </bean>
+
+    <!-- 2. SQL session factory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:mapper/**/*.xml"/> <!-- Mapper xml -->
+        <property name="typeAliasesPackage" value="com.xtuer.bean"/> <!-- Mapper 文件中类型可以不使用包名了 -->
+    </bean>
+
+    <!-- 3. Instantiate Mapper -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.xtuer.mapper"/>
+    </bean>
+</beans>

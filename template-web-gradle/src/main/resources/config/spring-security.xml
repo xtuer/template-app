@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans
+        xmlns="http://www.springframework.org/schema/security"
+        xmlns:beans="http://www.springframework.org/schema/beans"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">
+    <!-- 使用自动装配 -->
+    <context:annotation-config/>
+
+    <!-- 匹配的 URL 不进行身份验证 -->
+    <http security="none" pattern="/page/login"/>
+    <http security="none" pattern="/static/**"/>
+    <http security="none" pattern="/static-x/**"/>
+
+    <http auto-config="true" use-expressions="false"
+            access-decision-manager-ref="accessDecisionManager"
+            security-context-repository-ref="sessionSecurityContextRepository">
+        <intercept-url pattern="/page/admin"   access="ROLE_ADMIN"/>
+        <intercept-url pattern="/demo/filters" access="ROLE_USER"/>
+
+        <form-login login-page="/page/login"
+                    login-processing-url="/login"
+                    default-target-url="/"
+                    authentication-failure-url="/page/login?error=1"
+                    username-parameter="username"
+                    password-parameter="password"/>
+        <logout logout-url="/logout" logout-success-url="/page/login?logout=1"/>
+        <access-denied-handler error-page="/page/deny"/>
+
+        <csrf disabled="true"/>
+        <remember-me key="uniqueAndSecret" token-validity-seconds="2592000"/>
+
+        <custom-filter ref="authenticationFilters" before="FORM_LOGIN_FILTER"/>
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="userDetailsService"/>
+    </authentication-manager>
+
+    <!-- Filter 组合 -->
+    <beans:bean id="authenticationFilters" class="org.springframework.web.filter.CompositeFilter">
+        <beans:property name="filters">
+            <beans:list>
+                <beans:ref bean="oauthAuthenticationFilter"/>
+                <beans:ref bean="tokenAuthenticationFilter"/>
+            </beans:list>
+        </beans:property>
+    </beans:bean>
+
+    <!-- 第三方登陆 filter 和 Token 登陆验证 filter -->
+    <beans:bean id="oauthAuthenticationFilter" class="com.xtuer.security.OAuthAuthenticationFilter"/>
+    <beans:bean id="tokenAuthenticationFilter" class="com.xtuer.security.TokenAuthenticationFilter"/>
+
+    <beans:bean id="tokenService" class="com.xtuer.security.TokenService"/>
+    <beans:bean id="userService"  class="com.xtuer.service.UserService"/>
+    <beans:bean id="userDetailsService" class="com.xtuer.security.UserDetailsService"/>
+    <beans:bean id="sessionSecurityContextRepository" class="org.springframework.security.web.context.XHttpSessionSecurityContextRepository"/>
+
+    <!-- 自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
+    <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+        <beans:constructor-arg>
+            <beans:list>
+                <beans:ref bean="roleVoter"/>
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
+    <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+    	<beans:constructor-arg ref="roleHierarchy"/>
+    </beans:bean>
+    <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+    	<beans:property name="hierarchy">
+    		<beans:value>
+                ROLE_ADMIN > ROLE_USER
+                ROLE_STAFF > ROLE_USER
+                ROLE_USER  > ROLE_GUEST
+    		</beans:value>
+    	</beans:property>
+    </beans:bean>
+</beans:beans>

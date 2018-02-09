@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd
+           http://www.springframework.org/schema/mvc
+           http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 加载配置 -->
+    <context:property-placeholder location="classpath:config/application.properties" file-encoding="UTF-8"/>
+
+    <!-- 静态文件的 URL 映射 -->
+    <import resource="classpath:config/spring-view-controller.xml"/>
+
+    <!-- 控制器 -->
+    <context:component-scan base-package="com.xtuer.controller"/>
+
+    <!-- 注解映射支持 -->
+    <mvc:annotation-driven conversion-service="customConversionService">
+        <!--enableMatrixVariables="true">-->
+        <mvc:message-converters register-defaults="true">
+            <!-- StringHttpMessageConverter 编码为 UTF-8，防止乱码 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/plain;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+            <!-- FastJson -->
+            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="fastJsonConfig">
+                    <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
+                        <property name="features">
+                            <list>
+                                <value>AllowArbitraryCommas</value>
+                                <value>AllowUnQuotedFieldNames</value>
+                                <value>DisableCircularReferenceDetect</value>
+                            </list>
+                        </property>
+                        <property name="serializerFeatures">
+                            <list>
+                                <value>BrowserCompatible</value> <!-- 解决 JS 不支持 Long 类型: Long 输出为字符串 -->
+                            </list>
+                        </property>
+                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- 类型转换 -->
+    <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.xtuer.converter.DateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <!-- 使用 thymeleaf 模版 -->
+    <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix"       value="/WEB-INF/page-x/"/>
+        <property name="templateMode" value="HTML"/>
+        <property name="cacheable"    value="${thymeleafCacheable}"/>
+    </bean>
+    <bean id="templateEngine" class="org.thymeleaf.spring5.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver"/>
+    </bean>
+    <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+        <property name="templateEngine"    ref="templateEngine"/>
+        <property name="characterEncoding" value="UTF-8"/>  <!--解决中文乱码-->
+    </bean>
+
+    <!-- 上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="${maxUploadSize}"/> <!-- 单位为 Byte -->
+    </bean>
+
+    <!-- 自定义异常处理器 -->
+    <bean id="compositeExceptionResolver" class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
+        <property name="exceptionResolvers">
+            <list>
+                <bean class="com.xtuer.exception.HandlerExceptionResolver"/>
+            </list>
+        </property>
+        <property name="order" value="0"/>
+    </bean>
+
+    <!-- 启用跨域请求 -->
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-methods="*"/>
+    </mvc:cors>
+
+    <!-- 静态资源的访问，如 js, css, jpg, png -->
+    <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/static/js/jquery.js -->
+    <mvc:resources mapping="/static/js/**"     location="/WEB-INF/static/js/"     cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/css/**"    location="/WEB-INF/static/css/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/img/**"    location="/WEB-INF/static/img/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/lib/**"    location="/WEB-INF/static/lib/"    cache-period="${cachePeriod}"/>
+
+    <mvc:resources mapping="/static-x/js/**"   location="/WEB-INF/static-x/js/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/css/**"  location="/WEB-INF/static-x/css/"  cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/img/**"  location="/WEB-INF/static-x/img/"  cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/lib/**"  location="/WEB-INF/static-x/lib/"  cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/html/**" location="/WEB-INF/static-x/html/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/favicon.ico"      location="/WEB-INF/static/img/favicon.ico" cache-period="${cachePeriod}"/>
+</beans>

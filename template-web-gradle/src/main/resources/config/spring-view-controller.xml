@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!-- 不需要写 Controller，快速映射 url 和 view (所有请求都处理，不分 GET, POST 等) -->
+    <mvc:view-controller path="/404" view-name="../static-x/html/404.html"/>
+    <mvc:view-controller path="/page/admin" view-name="admin.html"/>
+    <mvc:view-controller path="/page/demo/useRequire" view-name="demo/useRequire.html"/>
+    <mvc:view-controller path="/page/demo/upload" view-name="demo/upload.html"/>
+</beans>

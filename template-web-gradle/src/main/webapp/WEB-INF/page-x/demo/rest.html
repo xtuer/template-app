@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>SpringMVC REST</title>
+    <script src="/static-x/lib/jquery.min.js"></script>
+    <script src="/static-x/lib/jquery.rest.js"></script>
+</head>
+
+<body>
+    <div id="foo"></div>
+    Welcome to [[${action}]]
+    <pre id="error">...</pre>
+
+    <script>
+        $(document).ready(function() {
+            // [0] 参数转对象
+            $.rest.create({url: '/api/demo/object', data: {id: 123, info: 'Hello Demo'}, jsonRequestBody: false, success: function(result) {
+                console.log(result);
+            }, fail: function(e) {
+                console.log(e);
+            }});
+
+            // [1] 服务器端的 GET 需要启用 UTF-8 才不会乱吗
+            $.rest.get({url: '/demo/rest', data: {name: 'Alice'}, success: function(result) {
+                console.log(result);
+            }});
+
+            $.rest.get({url: '/demo/rest/{id}', urlParams: {id: 121}, data: {name: '黄彪'}, success: function(result) {
+                console.log(result);
+            }, fail: function(e) {
+                console.log(e);
+            }});
+
+            // [2] 普通 form 表单提交 rest Ajax 请求
+            $.rest.create({url: '/demo/rest', success: function(result) {
+                console.log(result);
+            }});
+
+            $.rest.update({url: '/demo/rest', data: {name: '黄飞鸿', age: 22}, success: function(result) {
+                console.log(result);
+            }});
+
+            $.rest.remove({url: '/demo/rest', success: function(result) {
+                console.log(result);
+            }});
+
+            // [3] 使用 request body 传递复杂 Json 对象，设置 jsonRequestBody 为 true
+            $.rest.create({url: '/demo/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, success: function(result) {
+                console.log(result);
+            }});
+
+            $.rest.update({url: '/demo/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, success: function(result) {
+                console.log(result);
+            }});
+
+            $.rest.remove({url: '/demo/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, success: function(result) {
+                console.log(result);
+            }});
+
+            // [4] AJAX 请求时后端发生异常时也会调用 success 回调，result.success 为 false，result.data 为异常信息
+            $.rest.get({url: '/demo/exception-ajax?id=123', success: function(result) {
+                if (!result.success) {
+                    $('#error').html(result.message + '<br>' + result.data);
+                }
+            }, fail: function(e) {
+                console.log(e);
+            }});
+
+            // [5] JSONP
+            $.jsonp('http://127.0.0.1:8080/demo/jsonp-test', function(data) {
+                console.log('jsonp-1: ' + JSON.stringify(data));
+            });
+
+            $.ajax({
+                url     : 'http://127.0.0.1:8080/demo/jsonp-test',
+                type    : 'GET',
+                dataType: 'jsonp', // 表示要用 JSONP 进行跨域访问
+                success : function(a) { // 随机生成回调函数名
+                    console.log('jsonp-2: ' + JSON.stringify(a));
+                }
+            });
+
+            // [6] 测试给后端发送 undefined 和 null 参数
+            var x;
+            $.rest.get({
+                url: '/demo/undefined-null',
+                data: {
+                    un: x,
+                    nu: null
+                },
+                success: function(result) {
+                    console.log(result);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 非常重要：必须是 Mapper 类的全路径-->
+<mapper namespace="com.xtuer.mapper.DemoMapper">
+    <select id="allDemos" resultType="Demo">
+        SELECT id, info, is_marked AS marked FROM demo
+    </select>
+
+    <select id="findDemoById" parameterType="int" resultType="Demo">
+        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{id}
+    </select>
+</mapper>

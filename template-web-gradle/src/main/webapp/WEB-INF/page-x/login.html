@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static-x/css/login.css" rel="stylesheet">
+
+    <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+	<div class="login-container">
+        <!-- status: login-error, login-success, logout-success -->
+        <div id="status" th:text="${status}"></div>
+        <div id="output"></div>
+        <div class="avatar"></div>
+
+        <div class="form-box">
+            <form action="/login" method="POST">
+                <input name="username" type="text"     placeholder="名字">
+                <input name="password" type="password" placeholder="密码">
+                <label style="padding: 5px; margin: 10px; margin-bottom: 0;">
+                    <input type="checkbox" name="remember-me" style="width: auto; height: auto;"/> Remember Me
+                </label>
+                <button id="login" class="btn btn-info btn-block login" type="submit">登录</button>
+
+                <a class="btn btn-info btn-block login" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101292272&redirect_uri=http://open.qtdebug.com:8080/oauth/qq/callback&scope=get_user_info">QQ Login</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $('.avatar').css({ "background-image": "url('/static-x/img/admin-offline.png')" });
+    var status = $('#status').text();
+
+    if ('login-success' == status) {
+        // 已经登录状态， 显示注销按钮，隐藏名字和密码输入框
+        $('input').hide();
+        $('form').attr('action', '/logout');
+        $('#login').html("注销").removeClass("btn-info").addClass("btn-default");
+        $('.avatar').css({ "background-image": "url('/static-x/img/admin-online.png')" });
+    } else if ('login-error' == status) {
+        // 登录失败
+        $("#output").removeClass('alert alert-success');
+        $("#output").addClass("alert alert-danger animated fadeInUp").html("名字或者密码错误");
+    }
+
+    // 点击登录按钮
+    $('#login').click(function(e) {
+        if ('login-success' != status) {
+            // 不是登录状态
+            var username = $('input[name=username]').val();
+            var password = $('input[name=password]').val();
+
+            // 如果名字或者密码为空，则不提交登录操作
+            if (username == '' || password == '') {
+                e.preventDefault();
+                // remove success message replaced with error message
+                $("#output").removeClass('alert alert-success');
+                $("#output").addClass("alert alert-danger animated fadeInUp").html("请输入名字和密码");
+                return ; // 停止提交登陆表单
+            }
+        }
+    });
+});
+
+</script>
+</body>
+</html>
