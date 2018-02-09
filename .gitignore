@@ -1,19 +1,26 @@
-out/
-build/
-.gradle/
 .tags
 .gitkeep
-.DS_Store
 dump.rdb
-!template-vue-app/build/
 
+### iView ###
+!template-vue-app/build/
 template-web-gradle/src/main/webapp/WEB-INF/page
 template-web-gradle/src/main/webapp/WEB-INF/static
+
+### Gradle ###
+build/
+.gradle/
 
 ### LOG ###
 *.log
 log.txt
 logs/
+
+### Mac OS ###
+.DS_Store
+
+### Maven ###
+target/
 
 ### STS ###
 .apt_generated
@@ -24,10 +31,16 @@ logs/
 .springBeans
 
 ### IntelliJ IDEA ###
-.idea
 *.iws
 *.iml
 *.ipr
+.idea/
+out/
+
+### Eclipse ###
+.settings/
+.classpath
+.project
 
 ### NetBeans ###
 nbproject/private/
