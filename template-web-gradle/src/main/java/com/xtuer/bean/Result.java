@@ -31,6 +31,13 @@ public final class Result<T> {
         this.data = data;
     }
 
+    public Result(boolean success, String message, Object data, int statusCode) {
+        this.success = success;
+        this.message = message;
+        this.data = data;
+        this.statusCode = statusCode;
+    }
+
     public static <T> Result<T> ok() {
         return new Result<>(true, "success");
     }
