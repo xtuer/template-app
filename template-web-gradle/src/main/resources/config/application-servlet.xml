@@ -109,6 +109,7 @@
     <mvc:resources mapping="/static/js/**"     location="/WEB-INF/static/js/"     cache-period="${cachePeriod}"/>
     <mvc:resources mapping="/static/css/**"    location="/WEB-INF/static/css/"    cache-period="${cachePeriod}"/>
     <mvc:resources mapping="/static/img/**"    location="/WEB-INF/static/img/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/fonts/**"  location="/WEB-INF/static/fonts/"  cache-period="${cachePeriod}"/>
     <mvc:resources mapping="/static/lib/**"    location="/WEB-INF/static/lib/"    cache-period="${cachePeriod}"/>
 
     <mvc:resources mapping="/static-x/js/**"   location="/WEB-INF/static-x/js/"   cache-period="${cachePeriod}"/>

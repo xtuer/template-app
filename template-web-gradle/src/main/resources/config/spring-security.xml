@@ -24,6 +24,8 @@
             security-context-repository-ref="sessionSecurityContextRepository">
         <intercept-url pattern="/page/admin"   access="ROLE_ADMIN"/>
         <intercept-url pattern="/demo/filters" access="ROLE_USER"/>
+        <intercept-url pattern="/page/teacher" access="ROLE_ADMIN"/>
+        <intercept-url pattern="/page/student" access="ROLE_USER"/>
 
         <form-login login-page="/page/login"
                     login-processing-url="/login"
