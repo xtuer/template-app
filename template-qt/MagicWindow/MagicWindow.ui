@@ -38,7 +38,7 @@
 	border-image: url(:/image/MagicWindow/titlebar-min.png) 0 0 0 0 repeat stretch;
 }
 #minButton:hover {
-	border-image: url(:/image/MagicWindow/titlebar.png) 0 0 0 0 repeat stretch;
+	border-image: url(:/image/MagicWindow/titlebar-min-hover.png) 0 0 0 0 repeat stretch;
 }
 #minButton:pressed {
 	border-image: url(:/image/MagicWindow/titlebar-min-pressed.png) 0 0 0 0 repeat stretch;
