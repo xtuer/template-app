@@ -163,7 +163,7 @@ void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) 
     } else if (button == ui->itemButton4) {
         QWidget *w = new SettingWidget();
         d->buttonWidgetHash.insert(ui->itemButton4, w);
-        UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget, true, true, false, false);
+        UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget, false, false, false, false);
     }
 }
 
