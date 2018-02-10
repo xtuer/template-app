@@ -105,7 +105,7 @@
       <item>
        <widget class="QPushButton" name="itemButton4">
         <property name="text">
-         <string>切换按钮</string>
+         <string>安全设置</string>
         </property>
         <property name="flat">
          <bool>true</bool>

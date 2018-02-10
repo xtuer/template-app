@@ -71,3 +71,6 @@
 #itemButton8 {
     qproperty-icon: url(image/sidebar/version.png);
 }
+#myButton {
+    qproperty-icon: url(image/sidebar/help.png);
+}

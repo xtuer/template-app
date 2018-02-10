@@ -26,8 +26,11 @@
 	min-width: 30px;
 	max-width: 30px;
 	min-height: 27px;
-	max-height: 27px;
-	border-width: 0;
+	max-height: 27px;	
+     padding-left: 0;
+     padding-right: 0;
+     border-width: 0;
+    border-radius: 0;
 }
 
 #closeButton {

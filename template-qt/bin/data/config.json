@@ -18,6 +18,7 @@
     },
 
     "qss_files": [
+        "resources/qss/common.qss",
         "resources/qss/button.qss",
         "resources/qss/sidebar.qss"
     ]

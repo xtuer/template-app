@@ -2,6 +2,7 @@
 #include "ui_CentralWidget.h"
 #include "util/UiUtil.h"
 #include "MagicWindow/MagicWindow.h"
+#include "SettingWidget.h"
 
 #include <QDebug>
 #include <QHash>
@@ -45,6 +46,7 @@ CentralWidget::~CentralWidget() {
  */
 void CentralWidget::initializeUi() {
     ui->setupUi(this);
+    setAttribute(Qt::WA_StyledBackground);
 
     // 去掉窗口和侧边栏的 padding 和 margin
     UiUtil::setWidgetPaddingAndSpacing(this, 0, 0);
@@ -129,7 +131,7 @@ void CentralWidget::handleEvents() {
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
     ui->groupButton1->click();
-    ui->itemButton2->click();
+    ui->itemButton4->click();
 }
 
 /**
@@ -158,5 +160,16 @@ void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) 
         d->buttonWidgetHash.insert(ui->itemButton3, w);
 
         UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget);
+    } else if (button == ui->itemButton4) {
+        QWidget *w = new SettingWidget();
+        d->buttonWidgetHash.insert(ui->itemButton4, w);
+        UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget, true, true, false, false);
     }
 }
+
+
+
+
+
+
+

@@ -1,3 +1,62 @@
 .QPushButton {
-    color: red;
+    color: #495060;
+    background-color: white;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    min-width: 70px;
+    min-height: 24px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.QPushButton:hover {
+    color: #57a3f3;
+    border-color: #57a3f3;
+    background-color: transparent;
+}
+
+.QPushButton:pressed {
+    color: #2b85e4;
+    border-color: #2b85e4;
+}
+
+.QPushButton:default {
+    color: #fff;
+    background-color: #2d8cf0;
+    border-color: #2d8cf0;
+}
+
+.QPushButton:default:hover {
+    background-color: #57a3f3;
+    border-color: #57a3f3;
+}
+
+.QPushButton:default:pressed {
+    background-color: #2b85e4;
+    border-color: #2b85e4;
+}
+
+.QCheckBox::indicator, .QRadioButton::indicator {
+    subcontrol-origin: border;
+    subcontrol-position: left center;
+
+	width: 24px;
+	height: 24px;
+	border-width: 0 0 0 0;
+}
+
+.QCheckBox::indicator {
+    border-image: url(image/common/checkbox.png) 0 0 0 0 stretch stretch;
+}
+
+.QCheckBox::indicator:checked {
+	border-image: url(image/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
+}
+
+.QRadioButton::indicator {
+    border-image: url(image/common/radiobutton.png) 0 0 0 0 stretch stretch;
+}
+
+.QRadioButton::indicator:checked {
+	border-image: url(image/common/radiobutton-checked.png) 0 0 0 0 stretch stretch;
 }
