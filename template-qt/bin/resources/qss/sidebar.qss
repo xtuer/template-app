@@ -6,6 +6,13 @@
     background: rgb(73, 80, 95);
 }
 
+.GroupButton, .GroupItemButton {
+    color: #BBB;
+}
+
+.GroupButton:hover, .GroupItemButton:hover {
+    color: #EEE;
+}
 .GroupButton {
     border: 0;
     height: 50px;
@@ -13,7 +20,6 @@
     text-align: left;
     padding-left: 6px;
 
-    color: #BBB;
     background: rgb(73, 80, 95);
     icon-size: 25px 25px;
 }
@@ -25,7 +31,6 @@
     text-align: left;
     padding-left: 35px;
 
-    color: #BBB;
     background: rgb(54, 62, 78);
     icon-size: 20px 20px;
     qproperty-icon: url(image/sidebar/report.png);
@@ -33,9 +38,6 @@
 .GroupItemButton:checked {
     color: #EEE;
     background: rgb(52, 142, 237);
-}
-.GroupItemButton:hover {
-    color: #EEE;
 }
 
 /* 根据按钮的 objectName 设置每一个按钮的图标 */

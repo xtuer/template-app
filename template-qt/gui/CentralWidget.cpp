@@ -15,12 +15,15 @@
 class CentralWidgetPrivate {
 public:
     CentralWidgetPrivate(CentralWidget *owner): owner(owner) {
+        groupButtons = new QButtonGroup(owner);
         swithButtons = new QButtonGroup(owner);
         swithButtons->setExclusive(true);
     }
 
     CentralWidget *owner;
+    QButtonGroup  *groupButtons; // 侧边栏的分组按钮
     QButtonGroup  *swithButtons; // 侧边栏切换界面的按钮
+    QList<QAbstractButton *> itemButtons; // 侧边栏的所有 class 为 GroupItemButton 的按钮
     QHash<QAbstractButton *, QWidget *> buttonWidgetHash; // key 是侧边栏切换界面的按钮的指针，value 是右侧 widget 的指针
 };
 
@@ -47,13 +50,29 @@ void CentralWidget::initializeUi() {
     UiUtil::setWidgetPaddingAndSpacing(this, 0, 0);
     UiUtil::setWidgetPaddingAndSpacing(ui->sideBarWidget, 0, 0);
 
-    // 侧边栏中 class 为 GroupItemButton，但 action 属性不为 popup 的按钮加到一个 QButtonGroup 里，这样同时只有一个能够被选中
+    // 搜集处理侧边栏的按钮
+    // 属性 class 为 GroupItemButton 的按钮都放入 d->itemButtons，
+    //    如果它的 action 属性不为 popup 则把它添加到一个 QButtonGroup d->swithButtons 中，它们的作用是用来切换界面的
+    // 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
     QObjectList children = ui->sideBarWidget->children();
     foreach (QObject *child, children) {
-        if ("GroupItemButton" == child->property("class").toString() && "popup" != child->property("action").toString()) {
-            QAbstractButton *button = qobject_cast<QAbstractButton*>(child);
-            button->setCheckable(true);
-            d->swithButtons->addButton(button);
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(child);
+        QString className = child->property("class").toString();
+        QString action = child->property("action").toString();
+
+        if (NULL == button) {
+            continue;
+        } else if ("GroupButton" == className) {
+            d->groupButtons->addButton(button);
+        } else if ("GroupItemButton" == className) {
+            button->hide();
+            d->itemButtons.append(button);
+
+            // 切换界面的按钮
+            if ("popup" != action) {
+                button->setCheckable(true);
+                d->swithButtons->addButton(button);
+            }
         }
     }
 }
@@ -62,6 +81,20 @@ void CentralWidget::initializeUi() {
  * 信号槽事件处理
  */
 void CentralWidget::handleEvents() {
+    // 点击侧边栏的分组按钮，隐藏其他分组的按钮，显示当前分组的按钮
+    connect(d->groupButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [this] (QAbstractButton *button) {
+        foreach (QAbstractButton *itemButton, d->itemButtons) {
+            QString groupName = button->property("groupName").toString();
+            QString itemGroupName = itemButton->property("groupName").toString();
+
+            if (itemGroupName == groupName) {
+                itemButton->show();
+            } else {
+                itemButton->hide();
+            }
+        }
+    });
+
     // 点击侧边栏切换界面的按钮，切换 widget
     // 1. 如果按钮对应的 widget 不存在则创建它
     // 2. 如果存在则显示出来
@@ -76,25 +109,26 @@ void CentralWidget::handleEvents() {
         UiUtil::setCurrentWidgetOfStackedWidget(targetWidget, ui->contentStackedWidget);
     });
 
-    // TODO: 普通按钮的事件处理
+    // TODO: 普通按钮的事件处理，这里只是为了演示
     connect(ui->itemButton8, &QPushButton::clicked, [this] {
         QMessageBox::aboutQt(this);
     });
 
-    // TODO: 使用自定义无边框窗口显示弹出对话框
+    // TODO: 使用自定义无边框窗口显示弹出对话框，这里只是为了演示
     connect(ui->itemButton7, &QPushButton::clicked, [this] {
-        QWidget *centralWidget2 = new QWidget();
-        centralWidget2->setStyleSheet("background: #AAA;");
+        QWidget *dialogWidget = new QWidget();
+        dialogWidget->setStyleSheet("background: #80848f");
 
         // showModal() 显示为模态对话框，并且使用了自定义边框
-        MagicWindow *dialog = new MagicWindow(centralWidget2, QMargins(4,4,4,4), QMargins(8,8,8,8), ":/image/MagicWindow/colorful-border.png", true);
+        MagicWindow *dialog = new MagicWindow(dialogWidget, QMargins(4,4,4,4), QMargins(8,8,8,8), ":/image/MagicWindow/colorful-border.png", true);
         dialog->setTitle("模态对话框");
         dialog->setResizable(false);
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         dialog->showModal();
     });
 
-    // TODO: 显示第二个按钮对应的 widget
+    // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
+    ui->groupButton1->click();
     ui->itemButton2->click();
 }
 
@@ -103,7 +137,7 @@ void CentralWidget::handleEvents() {
  * @param button 侧边栏切换界面的按钮
  */
 void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) {
-    // TODO: 创建 widget
+    // TODO: 创建 widget，需要根据实际的 widget 类来创建
     if (button == ui->itemButton1) {
         // [1] 创建 widget
         QWidget *w = new QWidget();
