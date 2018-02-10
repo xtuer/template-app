@@ -1,0 +1,71 @@
+.SideBarWidget {
+	background: gray;
+    min-width: 200px;
+    max-width: 200px;
+    padding: 0px;
+    background: rgb(73, 80, 95);
+}
+
+.GroupButton {
+    border: 0;
+    height: 50px;
+    font-size: 16px;
+    text-align: left;
+    padding-left: 6px;
+
+    color: #BBB;
+    background: rgb(73, 80, 95);
+    icon-size: 25px 25px;
+}
+
+.GroupItemButton {
+    border: 0;
+    height: 50px;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 35px;
+
+    color: #BBB;
+    background: rgb(54, 62, 78);
+    icon-size: 20px 20px;
+    qproperty-icon: url(image/sidebar/report.png);
+}
+.GroupItemButton:checked {
+    color: #EEE;
+    background: rgb(52, 142, 237);
+}
+.GroupItemButton:hover {
+    color: #EEE;
+}
+
+/* 根据按钮的 objectName 设置每一个按钮的图标 */
+#groupButton1 {
+    qproperty-icon: url(image/sidebar/home.png);
+}
+#groupButton2 {
+    qproperty-icon: url(image/sidebar/warn.png);
+}
+#itemButton1 {
+    qproperty-icon: url(image/sidebar/add.png);
+}
+#itemButton2 {
+    qproperty-icon: url(image/sidebar/user.png);
+}
+#itemButton3 {
+    qproperty-icon: url(image/sidebar/curve.png);
+}
+#itemButton4 {
+    qproperty-icon: url(image/sidebar/audit.png);
+}
+#itemButton5 {
+    qproperty-icon: url(image/sidebar/setting.png);
+}
+#itemButton6 {
+    qproperty-icon: url(image/sidebar/help.png);
+}
+#itemButton7 {
+    qproperty-icon: url(image/sidebar/security.png);
+}
+#itemButton8 {
+    qproperty-icon: url(image/sidebar/version.png);
+}
