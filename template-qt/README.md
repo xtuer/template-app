@@ -66,3 +66,10 @@ QObject::connect(button, &QPushButton::clicked, [=] {
 });
 ```
 
+## 修改 QSS 样式
+
+QSS 文件位于 `resources/qss` 文件夹下，例如修改侧边栏的按钮的图标，修改 sidebar.qss 中对应按钮的图片即可(使用 objectName 进行选择)。
+
+可以增加新的 QSS 文件，添加到 `data/config.json` 中的 `qss_files` 数组中即可。
+
+QSS 文件修改后，按下 `Ctrl + L` 即可自动加载就能看到效果，不需要重启程序。
