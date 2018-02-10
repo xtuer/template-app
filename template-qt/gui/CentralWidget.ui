@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CentralWidget</class>
+ <widget class="QWidget" name="CentralWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>799</width>
+    <height>628</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>CentralWidget</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QWidget" name="sideBarWidget" native="true">
+     <property name="class" stdset="0">
+      <string>SideBarWidget</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QPushButton" name="groupButton1">
+        <property name="text">
+         <string>分组按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>one</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton1">
+        <property name="text">
+         <string>切换按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>one</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton2">
+        <property name="text">
+         <string>切换窗口</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>one</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton3">
+        <property name="text">
+         <string>切换按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>one</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton4">
+        <property name="text">
+         <string>切换按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>one</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="groupButton2">
+        <property name="text">
+         <string>分组按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>two</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton5">
+        <property name="text">
+         <string>切换按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>two</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton6">
+        <property name="text">
+         <string>切换按钮</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>two</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton7">
+        <property name="text">
+         <string>弹出窗口</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>two</string>
+        </property>
+        <property name="action" stdset="0">
+         <string>popup</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="itemButton8">
+        <property name="text">
+         <string>弹出窗口</string>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+        <property name="class" stdset="0">
+         <string>GroupItemButton</string>
+        </property>
+        <property name="groupName" stdset="0">
+         <string>two</string>
+        </property>
+        <property name="action" stdset="0">
+         <string>popup</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QStackedWidget" name="contentStackedWidget">
+     <property name="class" stdset="0">
+      <string>ContentStackedWidget</string>
+     </property>
+     <widget class="QWidget" name="page"/>
+     <widget class="QWidget" name="page_2"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

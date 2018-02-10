@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MagicWindow</class>
+ <widget class="QWidget" name="MagicWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>491</width>
+    <height>283</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#titleBarWidget {
+	background: white;
+	border-top-left-radius: 3px;
+     border-top-right-radius: 3px;
+	min-height: 27px;
+	max-height: 27px;
+}
+
+#minButton, #maxButton, #restoreButton, #closeButton {
+	min-width: 30px;
+	max-width: 30px;
+	min-height: 27px;
+	max-height: 27px;
+	border-width: 0;
+}
+
+#closeButton {
+	border-top-right-radius: 3px;
+}
+
+#minButton {
+	border-image: url(:/image/MagicWindow/titlebar-min.png) 0 0 0 0 repeat stretch;
+}
+#minButton:hover {
+	border-image: url(:/image/MagicWindow/titlebar.png) 0 0 0 0 repeat stretch;
+}
+#minButton:pressed {
+	border-image: url(:/image/MagicWindow/titlebar-min-pressed.png) 0 0 0 0 repeat stretch;
+}
+
+#maxButton {
+	border-image: url(:/image/MagicWindow/titlebar-max.png) 0 0 0 0 repeat stretch;
+}
+#maxButton:hover {
+	border-image: url(:/image/MagicWindow/titlebar-max-hover.png) 0 0 0 0 repeat stretch;
+}
+#maxButton:pressed {
+	border-image: url(:/image/MagicWindow/titlebar-max-pressed.png) 0 0 0 0 repeat stretch;
+}
+
+#closeButton {
+	border-image: url(:/image/MagicWindow/titlebar-close.png) 0 0 0 0 repeat stretch;
+}
+#closeButton:hover {
+	border-image: url(:/image/MagicWindow/titlebar-close-hover.png) 0 0 0 0 repeat stretch;
+}
+#closeButton:pressed {
+	border-image: url(:/image/MagicWindow/titlebar-close-pressed.png) 0 0 0 0 repeat stretch;
+}
+
+#restoreButton {
+	border-image: url(:/image/MagicWindow/titlebar-restore.png) 0 0 0 0 repeat stretch;
+}
+#restoreButton:hover {
+	border-image: url(:/image/MagicWindow/titlebar-restore-hover.png) 0 0 0 0 repeat stretch;
+}
+#restoreButton:pressed {
+	border-image: url(:/image/MagicWindow/titlebar-restore-pressed.png) 0 0 0 0 repeat stretch;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="titleBarWidget" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>5</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="titleLabel">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>标题</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>382</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="minButton">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="maxButton">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="restoreButton">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="closeButton">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

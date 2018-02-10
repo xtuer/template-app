@@ -47,3 +47,7 @@ nbproject/private/
 nbbuild/
 dist/
 nbdist/
+
+### Qt ###
+*.user
+*.pro.user
