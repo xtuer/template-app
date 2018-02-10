@@ -2,6 +2,8 @@
 
 ![](effect.png)
 
+> 请注意查看代码中标记为 `// TODO` 的地方
+
 ## 侧边栏按钮
 
 有 2 种按钮(都要设置 flat 为 true):
@@ -25,7 +27,7 @@
 
 * `groupName`: 同一组的按钮的 groupName 都一样，为了同时显示和隐藏他们(只有 class 为 GroupItemButton 的按钮需要隐藏和显示)
 
-在 gui/CentralWidget.ui 中编辑侧边栏按钮
+在 Ui Designer 中打开 `gui/CentralWidget.ui` 编辑侧边栏按钮，增加按钮的时候务必按照上面的规则给按钮增加相遇的属性。
 
 ## 主要内容区: ContentStackedWidget
 
