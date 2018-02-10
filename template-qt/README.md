@@ -2,7 +2,7 @@
 
 ![](effect.png)
 
-> 请注意查看代码中标记为 `// TODO` 的地方
+> 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
 ## 侧边栏按钮
 
