@@ -22,6 +22,7 @@ QAbstractItemView::indicator {
     width: 20px;
 	height: 20px;
 	border-width: 0 0 0 0;
+    margin-right: -4px;
 }
 
 QAbstractItemView::indicator {
