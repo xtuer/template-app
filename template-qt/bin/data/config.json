@@ -20,6 +20,8 @@
     "qss_files": [
         "resources/qss/common.qss",
         "resources/qss/button.qss",
-        "resources/qss/sidebar.qss"
+        "resources/qss/sidebar.qss",
+        "resources/qss/scrollbar.qss",
+        "resources/qss/itemview.qss"
     ]
 }

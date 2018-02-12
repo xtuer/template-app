@@ -1,0 +1,78 @@
+QAbstractItemView {
+    border: 1px solid #dddee1;
+}
+
+QAbstractItemView::item {
+    border: 0px;
+    color: #495060;
+    border-bottom: 1px solid #e9eaec;
+    height: 24px;
+}
+
+QAbstractItemView::item:hover {
+    background: rgb(235, 247, 255);
+}
+
+QAbstractItemView::item:selected {
+    background: rgb(248, 248, 248);
+}
+
+/* 可选单元格前的 checkbox */
+QAbstractItemView::indicator {
+    width: 20px;
+	height: 20px;
+	border-width: 0 0 0 0;
+}
+
+QAbstractItemView::indicator {
+    border-image: url(image/common/checkbox.png) 0 0 0 0 stretch stretch;
+}
+
+QAbstractItemView::indicator:checked {
+    border-image: url(image/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
+}
+
+QListView::icon {
+    left: 4px;
+}
+
+QListView::text {
+    left: 4px;
+}
+
+/* 表头 */
+QHeaderView {
+    border: 0;
+    background: white;
+}
+
+QHeaderView::section, QTableCornerButton::section {
+    background: rgb(248, 248, 248);
+}
+
+QHeaderView::section:horizontal {
+    border: 0;
+    border-left: 1px solid #dddee1;
+    border-bottom: 1px solid #dddee1;
+    padding: 0px 4px;
+    font-weight: bold;
+    height: 24px;
+}
+
+QHeaderView::section:horizontal:first {
+    border-left: 0px solid #dddee1;
+}
+
+QHeaderView::section:vertical {
+    border: 0;
+    border-right: 1px solid #dddee1;
+    border-bottom: 1px solid #dddee1;
+    padding: 0px 4px;
+}
+
+/* 表头左上角的按钮 */
+QTableCornerButton::section {
+    border: 0;
+    border-right: 1px solid #dddee1;
+    border-bottom: 1px solid #dddee1;
+}

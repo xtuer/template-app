@@ -3,6 +3,7 @@
 #include "util/UiUtil.h"
 #include "MagicWindow/MagicWindow.h"
 #include "SettingWidget.h"
+#include "WidgetsShower.h"
 
 #include <QDebug>
 #include <QHash>
@@ -131,7 +132,7 @@ void CentralWidget::handleEvents() {
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
     ui->groupButton1->click();
-    ui->itemButton4->click();
+    ui->itemButton1->click();
 }
 
 /**
@@ -142,8 +143,7 @@ void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) 
     // TODO: 创建 widget，需要根据实际的 widget 类来创建
     if (button == ui->itemButton1) {
         // [1] 创建 widget
-        QWidget *w = new QWidget();
-        w->setStyleSheet("background: #bbbec4");
+        QWidget *w = new WidgetsShower();
         d->buttonWidgetHash.insert(ui->itemButton1, w);
 
         // [2] 添加 widget 到窗口中
