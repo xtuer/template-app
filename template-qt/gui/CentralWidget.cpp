@@ -54,28 +54,35 @@ void CentralWidget::initializeUi() {
     UiUtil::setWidgetPaddingAndSpacing(ui->sideBarWidget, 0, 0);
 
     // 搜集处理侧边栏的按钮
+    // 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
     // 属性 class 为 GroupItemButton 的按钮都放入 d->itemButtons，
     //    如果它的 action 属性不为 popup 则把它添加到一个 QButtonGroup d->swithButtons 中，它们的作用是用来切换界面的
-    // 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
+    // 并把 QPushButton 设置为 flat 的效果
     QObjectList children = ui->sideBarWidget->children();
     foreach (QObject *child, children) {
-        QAbstractButton *button = qobject_cast<QAbstractButton*>(child);
+        QAbstractButton *button = qobject_cast<QAbstractButton*>(child); // 可能是 QPushButton，也可能是 QToolButton
         QString className = child->property("class").toString();
-        QString action = child->property("action").toString();
+        QString action    = child->property("action").toString();
 
-        if (NULL == button) {
-            continue;
-        } else if ("GroupButton" == className) {
+        if (NULL == button) { continue; }
+
+        if ("GroupButton" == className) {
             d->groupButtons->addButton(button);
         } else if ("GroupItemButton" == className) {
-            button->hide();
             d->itemButtons.append(button);
+            button->hide();
 
             // 切换界面的按钮
             if ("popup" != action) {
                 button->setCheckable(true);
                 d->swithButtons->addButton(button);
             }
+        }
+
+        // 把 QPushButton 设置为 flat 的效果，这样 QSS 的效果更好
+        QPushButton *pushButton = qobject_cast<QPushButton *>(button);
+        if (NULL != pushButton) {
+            pushButton->setFlat(true);
         }
     }
 }

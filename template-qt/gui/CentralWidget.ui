@@ -44,7 +44,7 @@
          <string>分组按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupButton</string>
@@ -60,7 +60,7 @@
          <string>切换按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -76,7 +76,7 @@
          <string>切换窗口</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -92,7 +92,7 @@
          <string>切换按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -108,7 +108,7 @@
          <string>安全设置</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -124,7 +124,7 @@
          <string>分组按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupButton</string>
@@ -140,7 +140,7 @@
          <string>切换按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -156,7 +156,7 @@
          <string>切换按钮</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -172,7 +172,7 @@
          <string>弹出窗口</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
@@ -191,7 +191,7 @@
          <string>弹出窗口</string>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
         <property name="class" stdset="0">
          <string>GroupItemButton</string>
