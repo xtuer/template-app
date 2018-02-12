@@ -6,7 +6,7 @@
 
 ## 侧边栏按钮
 
-有 2 种按钮(都要设置 flat 为 true):
+有 2 种按钮(为了更好的 QSS 效果，代码中会把 QPushButton 的 flat 属性设置为 true):
 
 * 分组按钮: class 为 GroupButton
 * 组内按钮: class 为 GroupItemButton
