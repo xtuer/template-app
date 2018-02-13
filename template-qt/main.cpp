@@ -17,9 +17,12 @@ int main(int argc, char *argv[]) {
     // 设置样式
     UiUtil::loadQss();
     UiUtil::installNoFocusRectStyle();
-    QFont font = app.font();
-    font.setFamily("微软雅黑");
-    app.setFont(font);
+    {
+        // 设置默认字体
+        QFont font = app.font();
+        font.setFamily("微软雅黑");
+        app.setFont(font);
+    }
 
     // 主窗口
     CentralWidget *centralWidget = new CentralWidget();
