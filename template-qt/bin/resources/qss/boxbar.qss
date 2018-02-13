@@ -60,8 +60,8 @@ QProgressBar {
     border: none;
     background-color: #e9eaec;
     text-align: center;
-    max-height: 15px;
-    min-height: 15px;
+    max-height: 13px;
+    min-height: 13px;
 }
 
 QProgressBar::chunk {
