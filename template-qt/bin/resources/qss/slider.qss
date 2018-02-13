@@ -1,0 +1,67 @@
+/******************************************************************************
+ *                                   QSlider
+ *                   提示: 水平 slider 设置高，垂直 slider 设置宽
+ *****************************************************************************/
+QSlider:horizontal {
+    height: 24px;
+}
+
+QSlider::groove:horizontal {
+    subcontrol-origin: content;
+
+    /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    height: 6px;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background-color: white;
+    width: 12px;
+    border-radius: 9px;
+    border: 3px solid #57a3f3;
+
+    /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    margin: -6px 0;
+}
+
+QSlider::sub-page:horizontal {
+    background: #57a3f3;
+    border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+    background-color: #e9eaec;
+    border-radius: 3px;
+}
+
+QSlider:vertical {
+    width: 24px;
+}
+
+QSlider::groove:vertical {
+    subcontrol-origin: content;
+
+    /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+    width: 6px;
+    border-radius: 3px;
+}
+
+QSlider::handle:vertical {
+    background-color: white;
+    height: 12px;
+    border-radius: 9px;
+    border: 3px solid #57a3f3;
+
+    /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+    margin: 0 -6px;
+}
+
+QSlider::sub-page:vertical {
+    background: #e9eaec;
+    border-radius: 3px;
+}
+
+QSlider::add-page:vertical {
+    background-color: #57a3f3;
+    border-radius: 3px;
+}
