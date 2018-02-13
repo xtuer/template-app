@@ -1,6 +1,6 @@
 编译后把源码 bin 目录下的所有文件复制到编译出来的可执行文件所在目录，然后运行，界面效果为
 
-![](effect.png)
+![](image/effect-1.png)![](image/effect-2.png)
 
 > 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
@@ -32,10 +32,6 @@
 ## 主要内容区: ContentStackedWidget
 
 使用 QStackedWidget 动态的显示 widget，这样点击左边的侧边栏中的按钮后，在它里面显示对应的 widget
-
-## 日志
-
-增加了日志框架，`qDebug()` 输出的内容会自动记录到 exe 所在目录的 log 目录下。
 
 ## 自定义无边框窗口
 
@@ -73,3 +69,7 @@ QSS 文件位于 `resources/qss` 文件夹下，例如修改侧边栏的按钮�
 可以增加新的 QSS 文件，添加到 `data/config.json` 中的 `qss_files` 数组中即可。
 
 QSS 文件修改后，按下 `Ctrl + L` 即可自动加载就能看到效果，不需要重启程序。
+
+## 日志工具
+
+增加了日志框架，`qDebug()` 输出的内容会自动记录到 exe 所在目录的 log 目录下，每天生成一个日志文件。
