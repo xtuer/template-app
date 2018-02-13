@@ -33,13 +33,18 @@ QAbstractItemView::indicator:checked {
     border-image: url(image/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
 }
 
-QListView::icon {
+QAbstractItemView::icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* QListView::icon {
     left: 4px;
 }
 
 QListView::text {
     left: 4px;
-}
+} */
 
 /* 表头 */
 QHeaderView {
