@@ -38,6 +38,8 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
             }
         }
     }
+
+    connect(ui->horizontalSlider, &QSlider::valueChanged, ui->progressBar, &QProgressBar::setValue);
 }
 
 WidgetsShower::~WidgetsShower() {

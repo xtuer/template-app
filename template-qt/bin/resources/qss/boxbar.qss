@@ -108,3 +108,33 @@ QProgressBar::chunk {
     background-color: #57a3f3;
     /* width: 20px; */
 }
+
+/******************************************************************************
+ *                                   QScrollBar
+ *****************************************************************************/
+ QScrollBar:vertical {
+     width: 4px;
+     background: #DDD;
+     padding-bottom: 0px;
+ }
+
+ QScrollBar:horizontal {
+     height: 4px;
+     background: #DDD;
+ }
+
+ QScrollBar::handle:vertical,
+ QScrollBar::handle:horizontal {
+     background: #AAA;
+ }
+
+ QScrollBar::handle:vertical:hover,
+ QScrollBar::handle:horizontal:hover {
+     background: #888;
+ }
+
+ QScrollBar::sub-line:vertical, QScrollBar::add-line:vertical,
+ QScrollBar::sub-line:horizontal, QScrollBar::add-line:horizontal {
+     width: 0;
+     height: 0;
+ }
