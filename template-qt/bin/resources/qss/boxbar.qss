@@ -1,0 +1,110 @@
+/******************************************************************************
+ *                                   QComboBox
+ *****************************************************************************/
+QComboBox {
+    height: 24px;
+    min-width: 90px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    padding: 0 4px;
+}
+
+QComboBox:focus {
+    border-color: #57a3f3;
+}
+
+QComboBox::drop-down {
+    width: 16px;
+    height: 16px;
+	margin-right: 0px;
+    margin-top: -10px;
+    subcontrol-origin: border;
+    subcontrol-position: right center;
+    background-image: url(image/common/arrow-down.png);
+}
+
+QComboBox QAbstractItemView {
+    margin-top: 0px;
+    padding-bottom: 0px;
+    border: 1px solid #dddee1;
+}
+
+/******************************************************************************
+ *                                   QGroupBox
+ *****************************************************************************/
+QGroupBox {
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    margin-top: 10px; /* leave space at the top for the title */
+	font-size: 14px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
+    padding: 2px 3px;
+    margin-top: 0px;
+    /* background: #80848f; */
+    /* color: white; */
+    /* border-radius: 3px; */
+    /* spacing: 5px; */
+}
+
+/******************************************************************************
+ *                                   QSlider
+ *****************************************************************************/
+QSlider {
+    /* background: rgb(170, 170, 170); */
+    /* padding: 2px; */
+    height: 24px;
+}
+
+QSlider::groove:horizontal {
+    subcontrol-origin: content;
+    /* background: rgb(76, 76, 76); */
+
+    /* the groove expands to the size of the slider by default.
+    by giving it a height, it has a fixed size */
+    height: 6px;
+    border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+    background-color: white;
+    width: 12px;
+    border-radius: 9px;
+    border: 3px solid #57a3f3;
+
+    /* handle is placed by default on the contents rect of the groove.
+    Expand outside the groove */
+    margin: -6px 0;
+}
+
+QSlider::sub-page:horizontal {
+    background: #57a3f3;
+    border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+    background-color: #e9eaec;
+    border-radius: 3px;
+}
+
+/******************************************************************************
+ *                                 QProgressBar
+ *****************************************************************************/
+QProgressBar {
+    border: none;
+    background-color: #e9eaec;
+    text-align: center;
+    max-height: 15px;
+    min-height: 15px;
+}
+
+QProgressBar::chunk {
+    background-color: #57a3f3;
+    /* width: 20px; */
+}

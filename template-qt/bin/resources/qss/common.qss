@@ -24,55 +24,7 @@ QLineEdit {
     background-color: #fff;
     padding: 0 4px;
 }
+
 QLineEdit:focus {
     border-color: #57a3f3;
-}
-
-QComboBox {
-    height: 24px;
-    min-width: 90px;
-    font-size: 12px;
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    color: #495060;
-    background-color: #fff;
-    padding: 0 4px;
-}
-
-QComboBox:focus {
-    border-color: #57a3f3;
-}
-
-QComboBox::drop-down {
-    width: 16px;
-    height: 16px;
-	margin-right: 0px;
-    margin-top: -10px;
-    subcontrol-origin: border;
-    subcontrol-position: right center;
-    background-image: url(image/common/arrow-down.png);
-}
-
-QComboBox QAbstractItemView {
-    margin-top: 0px;
-    padding-bottom: 0px;
-    border: 1px solid #dddee1;
-}
-
-/* QGroupBox */
-.QGroupBox {
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    margin-top: 10px; /* leave space at the top for the title */
-	font-size: 14px;
-}
-.QGroupBox::title {
-    subcontrol-origin: margin;
-    subcontrol-position: top center; /* position at the top center */
-    padding: 2px 3px;
-    margin-top: 0px;
-    /* background: #80848f; */
-    /* color: white; */
-    /* border-radius: 3px; */
-    /* spacing: 5px; */
 }
