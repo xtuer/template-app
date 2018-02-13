@@ -35,6 +35,8 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
             if (col == 0) {
                 item->setCheckable(true);
                 item->setCheckState(row % 2 == 0 ? Qt::Checked : Qt::Unchecked);
+            } else if (col == 2) {
+                item->setIcon(QIcon("image/common/close.png"));
             }
         }
     }

@@ -7,7 +7,11 @@
 #include "MagicWindow/MagicWindow.h"
 
 int main(int argc, char *argv[]) {
+    // 启用 Retina 高分辨率
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QApplication app(argc, argv);
+
     LogHandlerInstance.installMessageHandler(); // 安装消息处理函数
 
     // 设置样式
