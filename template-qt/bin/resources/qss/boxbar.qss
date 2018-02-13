@@ -74,13 +74,13 @@ QProgressBar::chunk {
  *****************************************************************************/
  QScrollBar:vertical {
      width: 4px;
-     background: #DDD;
+     background: #e9eaec;
      padding-bottom: 0px;
  }
 
  QScrollBar:horizontal {
      height: 4px;
-     background: #DDD;
+     background: #e9eaec;
  }
 
  QScrollBar::handle:vertical,
