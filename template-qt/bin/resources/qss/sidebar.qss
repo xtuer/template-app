@@ -1,5 +1,5 @@
 .SideBarWidget {
-	background: gray;
+    background: gray;
     min-width: 200px;
     max-width: 200px;
     padding: 0px;
