@@ -38,7 +38,7 @@
 TopWindow 为自定义无边框窗口，可以创建普通窗口，也可以创建模态窗口，参考下面的使用
 
 ```cpp
-// 主窗口
+// 主要组件的 Widget
 CentralWidget *centralWidget = new CentralWidget();
 
 // [1] 使用自定义窗口显示主窗口: 普通窗口，显示最大最小和关闭按钮，可调整窗口大小
