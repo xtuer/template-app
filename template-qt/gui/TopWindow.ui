@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TopWindow</class>
+ <widget class="QWidget" name="TopWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>236</width>
+    <height>85</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TopWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">#titleBar {
+    background: white;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+#titleBar #titleLabel {
+    padding-left: 4px;
+}
+
+#titleBar QPushButton  {
+    border: none;
+    min-width: 25px;
+    max-width: 25px;
+    min-height: 27px;
+    max-height: 27px;
+    padding: 0;
+    margin: 0;
+    border-width: 0 0 0 0;
+}
+
+#titleBar #minButton {
+    border-image: url(:/image/top-window/min.png) 0 0 0 0 stretch stretch;
+}
+#titleBar #minButton:hover {
+    border-image: url(:/image/top-window/min-hover.png) 0 0 0 0 stretch stretch;
+}
+#titleBar #minButton:pressed {
+    border-image: url(:/image/top-window/min-pressed.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #maxButton {
+    border-image: url(:/image/top-window/max.png) 0 0 0 0 stretch stretch;
+}
+#titleBar #maxButton:hover {
+    border-image: url(:/image/top-window/max-hover.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #maxButton:pressed {
+    border-image: url(:/image/top-window/max-pressed.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #restoreButton {
+    border-image: url(:/image/top-window/restore.png) 0 0 0 0 stretch stretch;
+}
+#titleBar #restoreButton:hover {
+    border-image: url(:/image/top-window/restore-hover.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #restoreButton:pressed {
+    border-image: url(:/image/top-window/restore-pressed.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #closeButton {
+    border-image: url(:/image/top-window/close.png) 0 0 0 0 stretch stretch;
+}
+#titleBar #closeButton:hover {
+    border-image: url(:/image/top-window/close-hover.png) 0 0 0 0 stretch stretch;
+}
+
+#titleBar #closeButton:pressed {
+    border-image: url(:/image/top-window/close-pressed.png) 0 0 0 0 stretch stretch;
+}
+
+QSizeGrip {
+    width: 12px;
+    height: 12px;
+    border-width: 0 0 0 0;
+    border-image: url(:/image/top-window/size-grip.png) 0 0 0 0 stretch stretch;
+}
+</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QWidget" name="titleBar" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="titleLabel">
+        <property name="text">
+         <string>请设置您的标题</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>234</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="minButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="maxButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="restoreButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="closeButton">
+        <property name="text">
+         <string/>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QWidget" name="centralWidget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true"/>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

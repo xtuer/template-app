@@ -1,9 +1,9 @@
 #include "CentralWidget.h"
 #include "ui_CentralWidget.h"
-#include "util/UiUtil.h"
-#include "MagicWindow/MagicWindow.h"
+#include "TopWindow.h"
 #include "SettingWidget.h"
 #include "WidgetsShower.h"
+#include "util/UiUtil.h"
 
 #include <QDebug>
 #include <QHash>
@@ -126,15 +126,10 @@ void CentralWidget::handleEvents() {
 
     // TODO: 使用自定义无边框窗口显示弹出对话框，这里只是为了演示
     connect(ui->itemButton7, &QPushButton::clicked, [this] {
-        QWidget *dialogWidget = new QWidget();
-        dialogWidget->setStyleSheet("background: #80848f");
-
-        // showModal() 显示为模态对话框，并且使用了自定义边框
-        MagicWindow *dialog = new MagicWindow(dialogWidget, QMargins(4,4,4,4), QMargins(8,8,8,8), ":/image/MagicWindow/colorful-border.png", true);
-        dialog->setTitle("模态对话框");
-        dialog->setResizable(false);
-        dialog->setAttribute(Qt::WA_DeleteOnClose);
-        dialog->showModal();
+        TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司<br>"
+                           "<b>法人</b>: 齐天大圣<br>"
+                           "<b>版本</b>: Release 1.1.3<br>"
+                           "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>");
     });
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示

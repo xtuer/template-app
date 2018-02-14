@@ -30,10 +30,9 @@ UI_DIR      = $$output
 
 include(gui/gui.pri)
 include(util/util.pri)
-include(MagicWindow/MagicWindow.pri)
 
 SOURCES += \
         main.cpp
 
 RESOURCES += \
-    resources.qrc
+    top-window-resources.qrc

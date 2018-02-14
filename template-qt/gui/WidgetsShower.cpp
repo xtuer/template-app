@@ -1,5 +1,7 @@
 #include "WidgetsShower.h"
 #include "ui_WidgetsShower.h"
+#include "TopWindow.h"
+
 #include <QStringListModel>
 #include <QStandardItemModel>
 
@@ -42,6 +44,13 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
     }
 
     connect(ui->horizontalSlider, &QSlider::valueChanged, ui->progressBar, &QProgressBar::setValue);
+
+    connect(ui->messageButton, &QPushButton::clicked, [this] {
+        TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司<br>"
+                           "<b>法人</b>: 齐天大圣<br>"
+                           "<b>版本</b>: Release 1.1.3<br>"
+                           "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>", 350, 140);
+    });
 }
 
 WidgetsShower::~WidgetsShower() {

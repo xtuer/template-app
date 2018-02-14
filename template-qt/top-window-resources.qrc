@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/top-window/close-hover.png</file>
+        <file>image/top-window/close-pressed.png</file>
+        <file>image/top-window/close.png</file>
+        <file>image/top-window/colorful-border.jpg</file>
+        <file>image/top-window/colorful-border.png</file>
+        <file>image/top-window/max-hover.png</file>
+        <file>image/top-window/max-pressed.png</file>
+        <file>image/top-window/max.png</file>
+        <file>image/top-window/min-hover.png</file>
+        <file>image/top-window/min-pressed.png</file>
+        <file>image/top-window/min.png</file>
+        <file>image/top-window/restore-hover.png</file>
+        <file>image/top-window/restore-pressed.png</file>
+        <file>image/top-window/restore.png</file>
+        <file>image/top-window/shadow.png</file>
+        <file>image/top-window/size-grip.png</file>
+        <file>image/top-window/stroke.png</file>
+        <file>image/top-window/toolbar-close-hover.png</file>
+        <file>image/top-window/toolbar-close-pressed.png</file>
+        <file>image/top-window/toolbar-close.png</file>
+        <file>image/top-window/toolbar-max-hover.png</file>
+        <file>image/top-window/toolbar-max-pressed.png</file>
+        <file>image/top-window/toolbar-max.png</file>
+        <file>image/top-window/toolbar-min-hover.png</file>
+        <file>image/top-window/toolbar-min-pressed.png</file>
+        <file>image/top-window/toolbar-min.png</file>
+        <file>image/top-window/toolbar-restore-hover.png</file>
+        <file>image/top-window/toolbar-restore-pressed.png</file>
+        <file>image/top-window/toolbar-restore.png</file>
+        <file>image/top-window/logo.png</file>
+    </qresource>
+</RCC>

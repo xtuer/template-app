@@ -1,6 +1,6 @@
 编译后把源码 bin 目录下的所有文件复制到编译出来的可执行文件所在目录，然后运行，界面效果为
 
-![](image/effect-1.png)![](image/effect-2.png)
+![](image/effect.png)
 
 > 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
@@ -35,31 +35,34 @@
 
 ## 自定义无边框窗口
 
-MagicWindow 为自定义无边框窗口，可以创建普通窗口，也可以创建模态窗口，参考下面的使用
+TopWindow 为自定义无边框窗口，可以创建普通窗口，也可以创建模态窗口，参考下面的使用
 
 ```cpp
 // 主窗口
 CentralWidget *centralWidget = new CentralWidget();
 
-// [1] 使用自定义窗口显示上面的主窗口: 普通窗口，显示最大最小和关闭按钮，可调整窗口大小
-MagicWindow window(centralWidget);
+// [1] 使用自定义窗口显示主窗口: 普通窗口，显示最大最小和关闭按钮，可调整窗口大小
+TopWindow window(centralWidget);
 window.setTitle("普通窗口");
 window.resize(1000, 700);
-window.setResizable(false);
 window.show();
 
-// [2] 点击按钮弹出模态对话框，在任务栏不显示图标
-QObject::connect(button, &QPushButton::clicked, [=] {
-    QWidget *centralWidget2 = new QWidget();
-    centralWidget2->setStyleSheet("background: #AAA;");
+// [2] 点击按钮弹出阻塞模态对话框，在任务栏不显示图标
+connect(ui->modalDialogButton, &QPushButton::clicked, [] {
+    DemoWidget *c = new DemoWidget();
+    TopWindow window(c);
+    window.showModal();
 
-    // showModal() 显示为模态对话框，并且使用了自定义边框图片
-    MagicWindow *dialog = new MagicWindow(centralWidget2, QMargins(4,4,4,4), QMargins(8,8,8,8), ":/img/colorful-border.png", true);
-    dialog->setTitle("模态对话框");
-    dialog->setResizable(false);
-    dialog->setAttribute(Qt::WA_DeleteOnClose);
-    dialog->showModal();
+    // 直到关闭 window，程序才继续往下运行
+    qDebug() << c->getStatus();
 });
+
+// [3] 弹出消息对话框
+TopWindow::message("花果山果汁科技信息技术有限公司\n法人是齐天大圣");
+TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司<br>"
+                   "<b>法人</b>: 齐天大圣<br>"
+                   "<b>版本</b>: Release 1.1.3<br>"
+                   "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>", 350, 140);
 ```
 
 ## 修改 QSS 样式
