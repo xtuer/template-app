@@ -1,5 +1,6 @@
 #include "TopWindow.h"
 #include "ui_TopWindow.h"
+#include "util/UiUtil.h"
 #include "util/NinePatchPainter.h"
 
 #include <QDebug>
@@ -119,6 +120,7 @@ void TopWindow::showModal() {
     // 作为 Dialog 需要同时设置 Qt::Dialog | Qt::Popup 两个 flags
     setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
     setWindowModality(Qt::ApplicationModal);
+    UiUtil::centerWindow(this);
     show();
 
     // 进入局部事件循环，阻塞代码继续往下走，窗口关闭时结束此局部事件循环
@@ -213,6 +215,7 @@ void TopWindow::message(const QString  &msg, int width, int height,
     window->setWindowModality(Qt::ApplicationModal);
     window->setAttribute(Qt::WA_DeleteOnClose);
     window->resize(width, height);
+    UiUtil::centerWindow(window);
     window->show();
 
     // 点击确定按钮关闭窗口

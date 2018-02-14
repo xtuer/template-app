@@ -32,6 +32,9 @@ public:
     static QModelIndex getTableViewSelectedIndex(QTableView *view);
     static void appendTableViewRow(QTableView *view, int editColumn);
     static void removeTableViewSelectedRow(QTableView *view);
+
+    // 移动窗口到屏幕的中间
+    static void centerWindow(QWidget *window);
 };
 
 #endif // UIUTIL_H

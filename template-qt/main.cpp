@@ -29,6 +29,7 @@ int main(int argc, char *argv[]) {
     TopWindow window(centralWidget);
     window.setTitle("普通窗口");
     window.resize(1000, 700);
+    UiUtil::centerWindow(&window);
     window.show();
 
     // 启用加载样式的快捷键 Ctrl + L，方便调试，修改样式文件后按下快捷键即可加载，不需要重启程序
