@@ -1,6 +1,5 @@
 .SettingWidget {
     background: white;
-    border-top: 1px solid #80848f;
 }
 
 .WidgetsShower {

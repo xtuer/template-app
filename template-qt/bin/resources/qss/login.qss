@@ -1,0 +1,38 @@
+LoginWidget {
+    background: white;
+    min-height: 360px;
+    min-width:  250px;
+    border-radius: 4px;
+}
+
+LoginWidget #usernameLineEdit, LoginWidget #passwordLineEdit {
+    width: 220px;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 4px;
+}
+
+LoginWidget #usernameLineEdit {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+
+LoginWidget #passwordLineEdit {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+LoginWidget #avatarLabel {
+    border: 2px solid gray;
+    min-width:  128px;
+    max-width:  128px;
+    min-height: 128px;
+    max-height: 128px;
+    border-width: 0 0 0 0;
+    border-image: url(image/common/fox.png) 0 0 0 0 stretch stretch;
+}
+
+LoginWidget #cancelButton, LoginWidget #loginButton {
+    height: 30px;
+}

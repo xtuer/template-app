@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-
     // 启用加载样式的快捷键 Ctrl + L，方便调试，修改样式文件后按下快捷键即可加载，不需要重启程序
     UiUtil::installLoadQssShortcut(centralWidget);
 
