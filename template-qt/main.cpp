@@ -34,17 +34,8 @@ int main(int argc, char *argv[]) {
     window.show();
 
     // [2] 显示登陆窗口
-    {
-        LoginWidget *loginWidget = new LoginWidget();
-        TopWindow dialog(loginWidget);
-        dialog.setTitleBarVisible(false);
-        dialog.setResizable(false);
-        dialog.showModal();
-
-        // 点击取消登陆按钮，isLoginSuccess() 返回 false，退出程序
-        if (!loginWidget->isLoginSuccess()) {
-            exit(0);
-        }
+    if (!LoginWidget::login()) {
+        exit(0);
     }
 
     // 启用加载样式的快捷键 Ctrl + L，方便调试，修改样式文件后按下快捷键即可加载，不需要重启程序

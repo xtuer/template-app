@@ -43,6 +43,21 @@ void LoginWidget::handleEvents() {
             TopWindow::message("登陆失败\n请输入正确的帐号和密码\n\n默认帐号: admin\n默认密码: admin");
         }
     });
+
+    // 输入密码后按下回车进行登陆
+    connect(ui->passwordLineEdit, &QLineEdit::returnPressed, [this] {
+        ui->loginButton->click();
+    });
+}
+
+bool LoginWidget::login() {
+    LoginWidget *loginWidget = new LoginWidget();
+    TopWindow dialog(loginWidget);
+    dialog.setTitleBarVisible(false);
+    dialog.setResizable(false);
+    dialog.showModal();
+
+    return loginWidget->isLoginSuccess();
 }
 
 bool LoginWidget::login(const QString &username, const QString &password) {

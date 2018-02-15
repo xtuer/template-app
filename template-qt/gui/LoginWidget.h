@@ -21,6 +21,13 @@ public:
      */
     bool isLoginSuccess() const;
 
+    /**
+     * 显示登陆窗口
+     *
+     * @return 登陆成功返回 true，否则返回 false
+     */
+    static bool login();
+
 private:
     void initializeUi(); // 初始化 Ui
     void handleEvents(); // 信号槽事件处理
