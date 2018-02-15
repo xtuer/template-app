@@ -67,6 +67,18 @@ TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司
                    "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>", 350, 140);
 ```
 
+## 登陆对话框
+
+显示登陆对话框只需要调用下面的代码:
+
+```cpp
+// 显示登陆对话框，点击取消按钮登陆失败退出程序，登陆成功继续往下运行
+// 输入错误信息虽然登陆不成功，但是不会退出程序，而是提示输入错误，继续输入登陆
+if (!LoginWidget::login()) {
+    exit(0);
+}
+```
+
 ## 修改 QSS 样式
 
 QSS 文件位于 `resources/qss` 文件夹下，例如修改侧边栏的按钮的图标，修改 sidebar.qss 中对应按钮的图片即可(使用 objectName 进行选择)。

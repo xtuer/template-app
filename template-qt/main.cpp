@@ -33,7 +33,8 @@ int main(int argc, char *argv[]) {
     UiUtil::centerWindow(&window);
     window.show();
 
-    // [2] 显示登陆窗口
+    // [2] 显示登陆对话框，点击取消按钮登陆失败退出程序，登陆成功继续往下运行
+    // 输入错误信息虽然登陆不成功，但是不会退出程序，而是提示输入错误，继续输入登陆
     if (!LoginWidget::login()) {
         exit(0);
     }
