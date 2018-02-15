@@ -1,5 +1,6 @@
 #include "gui/CentralWidget.h"
 #include "gui/TopWindow.h"
+#include "gui/LoginWidget.h"
 #include "util/UiUtil.h"
 #include "util/LogHandler.h"
 
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
         app.setFont(font);
     }
 
-    // 创建程序真正的主窗口
+    // [1] 创建程序真正的主窗口
     CentralWidget *centralWidget = new CentralWidget();
 
     // 使用自定义窗口显示主窗口: 普通窗口，显示最大最小和关闭按钮，可调整窗口大小
@@ -31,6 +32,21 @@ int main(int argc, char *argv[]) {
     window.resize(1000, 700);
     UiUtil::centerWindow(&window);
     window.show();
+
+    // [2] 显示登陆窗口
+    {
+        LoginWidget *loginWidget = new LoginWidget();
+        TopWindow dialog(loginWidget);
+        dialog.setTitleBarVisible(false);
+        dialog.setResizable(false);
+        dialog.showModal();
+
+        // 点击取消登陆按钮，isLoginSuccess() 返回 false，退出程序
+        if (!loginWidget->isLoginSuccess()) {
+            exit(0);
+        }
+    }
+
 
     // 启用加载样式的快捷键 Ctrl + L，方便调试，修改样式文件后按下快捷键即可加载，不需要重启程序
     UiUtil::installLoadQssShortcut(centralWidget);

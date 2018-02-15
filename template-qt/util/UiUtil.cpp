@@ -171,3 +171,13 @@ void UiUtil::centerWindow(QWidget *window) {
     int y = qMax(0, size.height() / 2);
     window->move(x, y);
 }
+
+QWidget *UiUtil::topLevelWidget(QWidget *w) {
+    QWidget *p = w;
+
+    while (NULL != p->parentWidget()) {
+        p = p->parentWidget();
+    }
+
+    return p;
+}

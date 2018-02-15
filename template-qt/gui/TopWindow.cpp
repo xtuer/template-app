@@ -214,7 +214,7 @@ void TopWindow::message(const QString  &msg, int width, int height,
     window->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
     window->setWindowModality(Qt::ApplicationModal);
     window->setAttribute(Qt::WA_DeleteOnClose);
-    window->resize(width, height);
+    window->resize(width > 300 ? width : 300, height);
     UiUtil::centerWindow(window);
     window->show();
 
