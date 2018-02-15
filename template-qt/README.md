@@ -1,6 +1,8 @@
 编译后把源码 bin 目录下的所有文件复制到编译出来的可执行文件所在目录，然后运行，界面效果为
 
-![](image/effect.png)
+![](image/effect-1.png)
+
+![](image/effect-2.png)
 
 > 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
