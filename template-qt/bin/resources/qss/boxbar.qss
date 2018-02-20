@@ -20,16 +20,51 @@ QComboBox::drop-down {
     width: 16px;
     height: 16px;
 	margin-right: 0px;
-    margin-top: -10px;
+    margin-top: 0px;
     subcontrol-origin: border;
     subcontrol-position: right center;
-    background-image: url(image/common/arrow-down.png);
+    border-width: 0 0 0 0;
+    border-image: url(image/common/arrow-down.png) 0 0 0 0 stretch stretch;
 }
 
 QComboBox QAbstractItemView {
     margin-top: 0px;
     padding-bottom: 0px;
     border: 1px solid #dddee1;
+}
+
+/******************************************************************************
+ *                  QSpinBox, QDateEdit, QTimeEdit, QDateTimeEdit
+ *****************************************************************************/
+QAbstractSpinBox {
+    height: 24px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    padding: 0 2px;
+}
+
+QAbstractSpinBox:focus {
+    border-color: #57a3f3;
+}
+
+QAbstractSpinBox::down-button, QAbstractSpinBox::up-button {
+    subcontrol-origin: border;
+    width: 16px;
+    height: 16px;
+    border-width: 0 0 0 0;
+}
+QAbstractSpinBox::down-button {
+    subcontrol-position: center left;
+    margin-left: 5px;
+    border-image: url(image/common/minus.png) 0 0 0 0 stretch stretch;
+}
+QAbstractSpinBox::up-button {
+    subcontrol-position: center right;
+    margin-right: 5px;
+    border-image: url(image/common/plus.png) 0 0 0 0 stretch stretch;
 }
 
 /******************************************************************************

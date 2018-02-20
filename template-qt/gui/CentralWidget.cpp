@@ -3,6 +3,7 @@
 #include "TopWindow.h"
 #include "SettingWidget.h"
 #include "WidgetsShower.h"
+#include "MeasurementWidget.h"
 #include "util/UiUtil.h"
 
 #include <QDebug>
@@ -134,7 +135,7 @@ void CentralWidget::handleEvents() {
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
     ui->groupButton1->click();
-    ui->itemButton1->click();
+    ui->itemButton2->click();
 }
 
 /**
@@ -151,8 +152,7 @@ void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) 
         // [2] 添加 widget 到窗口中
         UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget);
     } else if (button == ui->itemButton2) {
-        QWidget *w = new QWidget();
-        w->setStyleSheet("background: #80848f");
+        QWidget *w = new MeasurementWidget();
         d->buttonWidgetHash.insert(ui->itemButton2, w);
 
         UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget);
