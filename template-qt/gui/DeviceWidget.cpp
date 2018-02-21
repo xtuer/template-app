@@ -1,21 +1,32 @@
 #include "DeviceWidget.h"
 #include "ui_DeviceWidget.h"
+#include "TopWindow.h"
 #include "util/UiUtil.h"
 #include "bean/Device.h"
 
 #include <QDebug>
+#include <QMenu>
+#include <QMouseEvent>
 
 class DeviceWidgetPrivate {
 public:
     Device device;
     bool   checked = false;
+
+    QAction *statusAction    = NULL; // 打开记录器状态界面 Action
+    QAction *calibrateAction = NULL; // 打开记录器校准界面 Action
+    QAction *versionAction   = NULL; // 打开记录器软件版本界面 Action
 };
 
 DeviceWidget::DeviceWidget(const Device &device, QWidget *parent) : QWidget(parent), ui(new Ui::DeviceWidget) {
     d = new DeviceWidgetPrivate();
     d->device = device;
+    d->statusAction    = new QAction("记录器状态", this);
+    d->calibrateAction = new QAction("记录器校准", this);
+    d->versionAction   = new QAction("记录器软件版本", this);
 
     initializeUi();
+    handleEvents();
 }
 
 DeviceWidget::~DeviceWidget() {
@@ -90,15 +101,18 @@ Device DeviceWidget::getDevice() const {
     return d->device;
 }
 
-// 点击鼠标选中和取消选中设备
-void DeviceWidget::mousePressEvent(QMouseEvent *) {
-    setChecked(!isChecked());
+// 点击鼠标左键选中和取消选中设备
+void DeviceWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        setChecked(!isChecked());
+    }
 }
 
 // 初始化界面
 void DeviceWidget::initializeUi() {
     ui->setupUi(this);
     setAttribute(Qt::WA_StyledBackground);
+    setContextMenuPolicy(Qt::CustomContextMenu);
 
     // 删除 label 上的辅助文字
     ui->statusLabel->setText("");
@@ -108,4 +122,27 @@ void DeviceWidget::initializeUi() {
 
     // 初始化设置对应 widget 的 property，使得样式生效
     setDevice(d->device);
+}
+
+void DeviceWidget::handleEvents() {
+    // 弹出右键菜单
+    connect(this, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+        QMenu* popMenu = new QMenu(this);
+        popMenu->addAction(d->statusAction);
+        popMenu->addAction(d->calibrateAction);
+        popMenu->addAction(d->versionAction);
+        popMenu->exec(mapToGlobal(pos));
+    });
+
+    connect(d->statusAction, &QAction::triggered, [this] {
+        TopWindow::message("statusAction " + d->device.id);
+    });
+
+    connect(d->calibrateAction, &QAction::triggered, [this] {
+        TopWindow::message("calibrateAction " + d->device.id);
+    });
+
+    connect(d->versionAction, &QAction::triggered, [this] {
+        TopWindow::message("versionAction " + d->device.id);
+    });
 }

@@ -32,11 +32,12 @@ public:
     Device getDevice() const;             // 获取此 widget 显示的设备
 
 protected:
-    // 点击鼠标选中和取消选中设备状态
+    // 点击鼠标左键选中和取消选中设备
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 private:
     void initializeUi(); // 初始化界面
+    void handleEvents(); // 信号槽事件处理
 
     Ui::DeviceWidget *ui;
     DeviceWidgetPrivate *d;
