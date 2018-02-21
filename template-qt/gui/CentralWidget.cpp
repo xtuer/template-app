@@ -135,7 +135,7 @@ void CentralWidget::handleEvents() {
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
     ui->groupButton1->click();
-    ui->itemButton2->click();
+    ui->itemButton1->click();
 }
 
 /**

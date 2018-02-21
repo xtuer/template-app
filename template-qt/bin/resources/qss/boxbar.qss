@@ -38,12 +38,13 @@ QComboBox QAbstractItemView {
  *****************************************************************************/
 QAbstractSpinBox {
     height: 24px;
+    min-width: 60px;
     font-size: 12px;
     border: 1px solid #dddee1;
     border-radius: 4px;
     color: #495060;
     background-color: #fff;
-    padding: 0 2px;
+    padding: 0 1px;
 }
 
 QAbstractSpinBox:focus {

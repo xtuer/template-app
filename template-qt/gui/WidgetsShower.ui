@@ -152,6 +152,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QSpinBox" name="spinBox">
+       <property name="suffix">
+        <string> 秒</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QComboBox" name="comboBox">
        <property name="minimumSize">
         <size>
