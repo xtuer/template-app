@@ -37,7 +37,7 @@
 
 ## 自定义无边框窗口
 
-TopWindow 为自定义无边框窗口，可以创建普通窗口，也可以创建模态窗口，参考下面的使用
+TopWindow 为自定义无边框窗口，可以创建普通窗口，也可以创建模态窗口，MessageBox 是使用 TopWindow 实现的消息对话框，参考下面的使用
 
 ```cpp
 // 主要组件的 Widget
@@ -60,11 +60,12 @@ connect(ui->modalDialogButton, &QPushButton::clicked, [] {
 });
 
 // [3] 弹出消息对话框
-TopWindow::message("花果山果汁科技信息技术有限公司\n法人是齐天大圣");
-TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司<br>"
+// 可显示普通字符串和 HTML
+MessageBox::message("花果山再来一瓶科技信息技术有限公司\n法人是齐天大圣");
+MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                    "<b>法人</b>: 齐天大圣<br>"
                    "<b>版本</b>: Release 1.1.3<br>"
-                   "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>", 350, 140);
+                   "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>", 350, 140);
 ```
 
 ## 登陆对话框
