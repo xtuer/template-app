@@ -38,11 +38,11 @@ void UiUtil::loadQss() {
     QString qss;
 
     foreach (QString name, qssFileNames) {
-        qDebug() << QString("=> Loading QSS file: %1").arg(name);
+        qDebug().noquote() << QString("Loading QSS file: %1").arg(name);
 
         QFile file(name);
         if (!file.open(QIODevice::ReadOnly)) {
-            qDebug() << QString("=> Error: Loading QSS file: %1 failed").arg(name);
+            qDebug().noquote() << QString("Error: Loading QSS file: %1 failed").arg(name);
             continue;
         }
 
@@ -172,7 +172,7 @@ void UiUtil::centerWindow(QWidget *window) {
     window->move(x, y);
 }
 
-QWidget *UiUtil::topLevelWidget(QWidget *w) {
+QWidget *UiUtil::findWindow(QWidget *w) {
     QWidget *p = w;
 
     while (NULL != p->parentWidget()) {

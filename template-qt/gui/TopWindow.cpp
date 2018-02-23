@@ -1,5 +1,5 @@
-#include "TopWindow.h"
 #include "ui_TopWindow.h"
+#include "TopWindow.h"
 #include "util/UiUtil.h"
 #include "util/NinePatchPainter.h"
 
@@ -7,8 +7,6 @@
 #include <QSizeGrip>
 #include <QPainter>
 #include <QMouseEvent>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
 
 class TopWindowPrivate {
 public:
@@ -59,6 +57,7 @@ TopWindow::TopWindow(QWidget *centralWidget,
     centralWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     delete l->replaceWidget(ui->centralWidget, centralWidget);
     delete ui->centralWidget;
+    setTitle(centralWidget->windowTitle()); // 默认使用 centralWidget 的标题
 
     // 添加 size grip 到窗口右下角
     l->addWidget(d->sizeGrip, 1, 0, Qt::AlignRight | Qt::AlignBottom);
@@ -70,8 +69,6 @@ TopWindow::TopWindow(QWidget *centralWidget,
 TopWindow::~TopWindow() {
     delete ui;
     delete d;
-
-    qDebug() << "~TopWindow()";
 }
 
 void TopWindow::setTitle(const QString &title) {
@@ -183,43 +180,3 @@ void TopWindow::handleEvents() {
         close(); // 关闭窗口
     });
 }
-
-void TopWindow::message(const QString  &msg, int width, int height,
-                        const QMargins &windowPaddings,
-                        const QMargins &borderImageBorders,
-                        const QString  &borderImagePath,
-                        bool  borderImageHorizontalStretch,
-                        bool  borderImageVerticalStretch) {
-    QLabel *messageLabel   = new QLabel(msg);
-    QPushButton *okButton  = new QPushButton("确定");
-    QWidget *centralWidget = new QWidget();
-    centralWidget->setStyleSheet(".QWidget {background: white;} ");
-    messageLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    messageLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
-
-    // 布局组件
-    QGridLayout *l = new QGridLayout();
-    l->addWidget(messageLabel, 0, 0, 1, 2);
-    l->addWidget(okButton, 1, 1);
-    l->setColumnStretch(0, 10);
-    centralWidget->setLayout(l);
-
-    // 使用自定义窗口
-    TopWindow *window = new TopWindow(centralWidget, windowPaddings, borderImageBorders, borderImagePath,
-                                      borderImageHorizontalStretch, borderImageVerticalStretch);
-    window->setTitleBarVisible(false);
-    window->setResizable(false);
-    window->setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
-    window->setWindowModality(Qt::ApplicationModal);
-    window->setAttribute(Qt::WA_DeleteOnClose);
-    window->resize(width > 300 ? width : 300, height);
-    UiUtil::centerWindow(window);
-    window->show();
-
-    // 点击确定按钮关闭窗口
-    connect(okButton, &QPushButton::clicked, [=] {
-        window->close();
-    });
-}
-
-

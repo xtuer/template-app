@@ -1,8 +1,8 @@
-#include "MeasurementWidget.h"
 #include "ui_MeasurementWidget.h"
+#include "MeasurementWidget.h"
 #include "DeviceWidget.h"
+#include "MessageBox.h"
 #include "bean/Device.h"
-#include "TopWindow.h"
 #include "util/UiUtil.h"
 
 #include <QDebug>
@@ -102,6 +102,6 @@ void MeasurementWidget::handleEvents() {
     });
 
     connect(ui->helpButton, &QPushButton::clicked, [this] {
-        TopWindow::message("<img src=\"image/doc/help-1.jpg\" width=300 height=400>");
+        MessageBox::message("<img src=\"image/doc/help-1.jpg\" width=300 height=400>");
     });
 }

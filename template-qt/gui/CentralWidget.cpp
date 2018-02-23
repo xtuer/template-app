@@ -1,6 +1,7 @@
 #include "CentralWidget.h"
 #include "ui_CentralWidget.h"
 #include "TopWindow.h"
+#include "MessageBox.h"
 #include "SettingWidget.h"
 #include "WidgetsShower.h"
 #include "MeasurementWidget.h"
@@ -53,6 +54,9 @@ void CentralWidget::initializeUi() {
     // 去掉窗口和侧边栏的 padding 和 margin
     UiUtil::setWidgetPaddingAndSpacing(this, 0, 0);
     UiUtil::setWidgetPaddingAndSpacing(ui->sideBarWidget, 0, 0);
+
+    // [可选] 启用加载样式的快捷键 Ctrl + L，方便调试，修改样式文件后按下快捷键即可加载，不需要重启程序
+    UiUtil::installLoadQssShortcut(this);
 
     // 搜集处理侧边栏的按钮
     // 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
@@ -127,10 +131,10 @@ void CentralWidget::handleEvents() {
 
     // TODO: 使用自定义无边框窗口显示弹出对话框，这里只是为了演示
     connect(ui->itemButton7, &QPushButton::clicked, [this] {
-        TopWindow::message("<b>公司</b>: 花果山果汁科技信息技术有限公司<br>"
-                           "<b>法人</b>: 齐天大圣<br>"
-                           "<b>版本</b>: Release 1.1.3<br>"
-                           "<center><img src=\":/image/top-window/logo.png\" width=64 height=64></center>");
+        MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
+                            "<b>法人</b>: 齐天大圣<br>"
+                            "<b>版本</b>: Release 1.1.3<br>"
+                            "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>", 350, 140);
     });
 
     // TODO: 显示第二个按钮对应的 widget，这里只是为了演示

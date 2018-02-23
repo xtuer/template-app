@@ -1,7 +1,8 @@
-#include "LoginWidget.h"
 #include "ui_LoginWidget.h"
-#include "util/UiUtil.h"
+#include "LoginWidget.h"
 #include "TopWindow.h"
+#include "MessageBox.h"
+#include "util/UiUtil.h"
 
 LoginWidget::LoginWidget(QWidget *parent) : QWidget(parent), ui(new Ui::LoginWidget) {
     initializeUi();
@@ -28,7 +29,7 @@ void LoginWidget::initializeUi() {
 void LoginWidget::handleEvents() {
     // 点击关闭按钮关闭登陆窗口
     connect(ui->cancelButton, &QPushButton::clicked, [this] {
-        UiUtil::topLevelWidget(this)->close();
+        UiUtil::findWindow(this)->close();
     });
 
     // 点击登陆按钮登陆
@@ -38,9 +39,9 @@ void LoginWidget::handleEvents() {
         loginSuccess = login(username, password);
 
         if (loginSuccess) {
-            UiUtil::topLevelWidget(this)->close();
+            UiUtil::findWindow(this)->close();
         } else {
-            TopWindow::message("登陆失败\n请输入正确的帐号和密码\n\n默认帐号: admin\n默认密码: admin");
+            MessageBox::message("登陆失败\n请输入正确的帐号和密码\n\n默认帐号: admin\n默认密码: admin");
         }
     });
 

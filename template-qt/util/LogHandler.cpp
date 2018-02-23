@@ -208,7 +208,7 @@ void LogHandler::installMessageHandler() {
     }
 }
 
-void LogHandler::release() {
+void LogHandler::uninstallMessageHandler() {
     QMutexLocker locker(&LogHandlerPrivate::logMutex);
     qInstallMessageHandler(0);
     delete d;

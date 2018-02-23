@@ -52,9 +52,9 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="confirmButton">
         <property name="text">
-         <string>默认按钮</string>
+         <string>确认对话框</string>
         </property>
         <property name="autoDefault">
          <bool>true</bool>
@@ -155,6 +155,9 @@
       <widget class="QSpinBox" name="spinBox">
        <property name="suffix">
         <string> 秒</string>
+       </property>
+       <property name="value">
+        <number>23</number>
        </property>
       </widget>
      </item>

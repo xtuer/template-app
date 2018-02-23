@@ -1,6 +1,6 @@
-#include "DeviceWidget.h"
 #include "ui_DeviceWidget.h"
-#include "TopWindow.h"
+#include "DeviceWidget.h"
+#include "MessageBox.h"
 #include "util/UiUtil.h"
 #include "bean/Device.h"
 
@@ -135,14 +135,14 @@ void DeviceWidget::handleEvents() {
     });
 
     connect(d->statusAction, &QAction::triggered, [this] {
-        TopWindow::message("statusAction " + d->device.id);
+        MessageBox::message("statusAction " + d->device.id);
     });
 
     connect(d->calibrateAction, &QAction::triggered, [this] {
-        TopWindow::message("calibrateAction " + d->device.id);
+        MessageBox::message("calibrateAction " + d->device.id);
     });
 
     connect(d->versionAction, &QAction::triggered, [this] {
-        TopWindow::message("versionAction " + d->device.id);
+        MessageBox::message("versionAction " + d->device.id);
     });
 }

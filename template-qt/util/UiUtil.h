@@ -37,7 +37,7 @@ public:
     static void centerWindow(QWidget *window);
 
     // 查找 w 所在窗口的顶层窗口
-    static QWidget* topLevelWidget(QWidget *w);
+    static QWidget* findWindow(QWidget *w);
 };
 
 #endif // UIUTIL_H
