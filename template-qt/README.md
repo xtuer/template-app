@@ -36,9 +36,9 @@
 
 在 Ui Designer 中打开 `gui/CentralWidget.ui` 编辑侧边栏按钮，增加按钮的时候务必按照上面的规则给按钮增加相遇的属性。
 
-## 同功能相关的 widget
+## 功能相关的 widget
 
-同功能相关的 widget 显示在窗口右边的主要内容区 `contentStackedWidget` 中:
+功能相关的 widget 显示在窗口右边的主要内容区 `contentStackedWidget` 中:
 
 ```cpp
 /**
