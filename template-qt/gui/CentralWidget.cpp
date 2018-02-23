@@ -1,5 +1,5 @@
-#include "CentralWidget.h"
 #include "ui_CentralWidget.h"
+#include "CentralWidget.h"
 #include "TopWindow.h"
 #include "MessageBox.h"
 #include "SettingWidget.h"
@@ -19,14 +19,14 @@
 class CentralWidgetPrivate {
 public:
     CentralWidgetPrivate(CentralWidget *owner): owner(owner) {
-        groupButtons = new QButtonGroup(owner);
-        swithButtons = new QButtonGroup(owner);
-        swithButtons->setExclusive(true);
+        groupButtons  = new QButtonGroup(owner);
+        switchButtons = new QButtonGroup(owner);
+        switchButtons->setExclusive(true);
     }
 
     CentralWidget *owner;
-    QButtonGroup  *groupButtons; // 侧边栏的分组按钮
-    QButtonGroup  *swithButtons; // 侧边栏切换界面的按钮
+    QButtonGroup  *groupButtons;  // 侧边栏的分组按钮组
+    QButtonGroup  *switchButtons; // 侧边栏切换界面的按钮组
     QList<QAbstractButton *> itemButtons; // 侧边栏的所有 class 为 GroupItemButton 的按钮
     QHash<QAbstractButton *, QWidget *> buttonWidgetHash; // key 是侧边栏切换界面的按钮的指针，value 是右侧 widget 的指针
 };
@@ -37,6 +37,10 @@ public:
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent), ui(new Ui::CentralWidget), d(new CentralWidgetPrivate(this)) {
     initializeUi();
     handleEvents();
+
+    // TODO: 显示第一个按钮对应的 widget，这里只是为了演示
+    ui->groupButton1->click();
+    ui->itemButton1->click();
 }
 
 CentralWidget::~CentralWidget() {
@@ -59,10 +63,10 @@ void CentralWidget::initializeUi() {
     UiUtil::installLoadQssShortcut(this);
 
     // 搜集处理侧边栏的按钮
-    // 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
-    // 属性 class 为 GroupItemButton 的按钮都放入 d->itemButtons，
-    //    如果它的 action 属性不为 popup 则把它添加到一个 QButtonGroup d->swithButtons 中，它们的作用是用来切换界面的
-    // 并把 QPushButton 设置为 flat 的效果
+    // 1. 属性 class 为 GroupButton 的按钮放入 d->groupButtons，用来切换隐藏和显示 GroupItemButton
+    // 2. 属性 class 为 GroupItemButton 的按钮都放入 d->itemButtons，
+    //    如果它的 action 属性不为 popup 则把它添加到一个 QButtonGroup d->switchButtons 中，它们的作用是用来切换界面的
+    // 3. 并把 QPushButton 设置为 flat 的效果
     QObjectList children = ui->sideBarWidget->children();
     foreach (QObject *child, children) {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(child); // 可能是 QPushButton，也可能是 QToolButton
@@ -72,15 +76,16 @@ void CentralWidget::initializeUi() {
         if (NULL == button) { continue; }
 
         if ("GroupButton" == className) {
+            // 分组的按钮放到一个组里
             d->groupButtons->addButton(button);
         } else if ("GroupItemButton" == className) {
             d->itemButtons.append(button);
             button->hide();
 
-            // 切换界面的按钮
+            // 切换界面的按钮放到一个组里
             if ("popup" != action) {
                 button->setCheckable(true);
-                d->swithButtons->addButton(button);
+                d->switchButtons->addButton(button);
             }
         }
 
@@ -113,7 +118,7 @@ void CentralWidget::handleEvents() {
     // 点击侧边栏切换界面的按钮，切换 widget
     // 1. 如果按钮对应的 widget 不存在则创建它
     // 2. 如果存在则显示出来
-    connect(d->swithButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [this] (QAbstractButton *button) {
+    connect(d->switchButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [this] (QAbstractButton *button) {
         // [1] 创建
         if (!d->buttonWidgetHash.contains(button)) {
             createWidgetInContentStackedWidget(button);
@@ -136,10 +141,6 @@ void CentralWidget::handleEvents() {
                             "<b>版本</b>: Release 1.1.3<br>"
                             "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>", 350, 140);
     });
-
-    // TODO: 显示第二个按钮对应的 widget，这里只是为了演示
-    ui->groupButton1->click();
-    ui->itemButton1->click();
 }
 
 /**

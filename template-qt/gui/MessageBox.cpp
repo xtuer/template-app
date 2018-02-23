@@ -3,8 +3,7 @@
 #include "TopWindow.h"
 #include "util/UiUtil.h"
 
-MessageBox::MessageBox(const QString &message, bool cancelButtonVisible, QWidget *parent)
-    : QWidget(parent), ui(new Ui::MessageBox) {
+MessageBox::MessageBox(const QString &message, bool cancelButtonVisible) : ui(new Ui::MessageBox) {
     ui->setupUi(this);
     ui->messageLabel->setAttribute(Qt::WA_TransparentForMouseEvents);
     ui->messageLabel->setText(message);
@@ -15,6 +14,13 @@ MessageBox::MessageBox(const QString &message, bool cancelButtonVisible, QWidget
 
     // 点击取消按钮关闭窗口
     connect(ui->cancelButton, &QPushButton::clicked, [this] {
+        result = false;
+        UiUtil::findWindow(this)->close();
+    });
+
+    // 点击确定按钮关闭窗口
+    connect(ui->okButton, &QPushButton::clicked, [this] {
+        result = true;
         UiUtil::findWindow(this)->close();
     });
 }
@@ -34,12 +40,6 @@ void MessageBox::message(const QString &msg, int width, int height,
     MessageBox::setWindowForMessageBox(window, width, height);
     window->setAttribute(Qt::WA_DeleteOnClose);
     window->show();
-
-    // 点击确定按钮关闭窗口
-    connect(box->ui->okButton, &QPushButton::clicked, [=] {
-        window->close();
-        window->deleteLater();
-    });
 }
 
 bool MessageBox::confirm(const QString &msg, int width, int height,
@@ -51,18 +51,9 @@ bool MessageBox::confirm(const QString &msg, int width, int height,
     TopWindow window(box, windowPaddings, borderImageBorders, borderImagePath,
                      borderImageHorizontalStretch, borderImageVerticalStretch);
     MessageBox::setWindowForMessageBox(&window, width, height);
-
-    // 确认结果
-    bool result = false;
-
-    // 点击确定按钮
-    connect(box->ui->okButton, &QPushButton::clicked, [&] {
-        result = true;
-        window.close();
-    });
-
     window.showModal();
-    return result;
+
+    return box->result;
 }
 
 void MessageBox::setWindowForMessageBox(TopWindow *window, int width, int height) {
@@ -72,5 +63,3 @@ void MessageBox::setWindowForMessageBox(TopWindow *window, int width, int height
     window->setWindowModality(Qt::ApplicationModal);
     window->resize(width, height);
 }
-
-

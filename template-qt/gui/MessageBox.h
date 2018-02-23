@@ -17,7 +17,7 @@ class MessageBox : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MessageBox(const QString &message, bool cancelButtonVisible = true, QWidget *parent = 0);
+    explicit MessageBox(const QString &message, bool cancelButtonVisible = true);
     ~MessageBox();
 
     /**
@@ -69,6 +69,7 @@ private:
     static void setWindowForMessageBox(TopWindow *window, int width, int height); // 设置 TopWindow 的属性
 
     Ui::MessageBox *ui;
+    bool result = false;
 };
 
 #endif // MESSAGEBOX_H
