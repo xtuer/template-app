@@ -36,11 +36,11 @@ public:
      * @param borderImageVerticalStretch
      */
     static void message(const QString &msg, int width = 300, int height = 150,
-                        const QMargins &windowPaddings     = QMargins(4, 4, 4, 4),
-                        const QMargins &borderImageBorders = QMargins(8, 8, 8, 8),
+                        const QMargins &windowPaddings     = QMargins(12, 12, 12, 12),
+                        const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
                         const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
-                        bool  borderImageHorizontalStretch = true,
-                        bool  borderImageVerticalStretch   = true);
+                        bool  borderImageHorizontalStretch = false,
+                        bool  borderImageVerticalStretch   = false);
 
     /**
      * @brief 显示模态确认对话框，会阻塞当前线程。
@@ -59,11 +59,11 @@ public:
      * @return 点击确认返回 true，点击取消返回 false
      */
     static bool confirm(const QString &msg, int width = 300, int height = 150,
-                        const QMargins &windowPaddings     = QMargins(4, 4, 4, 4),
-                        const QMargins &borderImageBorders = QMargins(8, 8, 8, 8),
+                        const QMargins &windowPaddings     = QMargins(12, 12, 12, 12),
+                        const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
                         const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
-                        bool  borderImageHorizontalStretch = true,
-                        bool  borderImageVerticalStretch   = true);
+                        bool  borderImageHorizontalStretch = false,
+                        bool  borderImageVerticalStretch   = false);
 
 private:
     static void setWindowForMessageBox(TopWindow *window, int width, int height); // 设置 TopWindow 的属性
