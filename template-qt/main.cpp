@@ -45,7 +45,6 @@ static void initialize() {
 
     // 设置界面样式
     UiUtil::loadQss();
-    UiUtil::installNoFocusRectStyle();
 
     // 设置默认字体
     QFont font = qApp->font();

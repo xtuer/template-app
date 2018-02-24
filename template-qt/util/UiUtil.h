@@ -15,7 +15,6 @@ public:
     static void loadQss(); // 为整个应用程序加载 QSS
     static void updateQss(QWidget* widget); // 修改过 widget 的属性后，使此属性对应的 Style Sheet 生效
     static void installLoadQssShortcut(QWidget *parent); // 安装加载 QSS 的快捷键: Ctrl + L
-    static void installNoFocusRectStyle();  // 安装去掉 Widget 得到焦点时没有虚线边框的 Style
 
     // 把 widget 加入到 stacked widget 里, 可以设置向四个方向的伸展
     static void addWidgetIntoStackedWidget(QWidget *widget, QStackedWidget *stackedWidget,

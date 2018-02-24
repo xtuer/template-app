@@ -19,20 +19,6 @@
 #include <QProxyStyle>
 #include <QDesktopWidget>
 
-class NoFocusRectStyle: public QProxyStyle {
-public:
-    NoFocusRectStyle(QStyle *baseStyle) : QProxyStyle(baseStyle) {
-    }
-
-    void drawPrimitive(PrimitiveElement element,
-                       const QStyleOption *option,
-                       QPainter *painter,
-                       const QWidget *widget = 0) const {
-        if (element == QStyle::PE_FrameFocusRect) return;
-        QProxyStyle::drawPrimitive(element, option, painter, widget);
-    }
-};
-
 void UiUtil::loadQss() {
     QStringList qssFileNames = Singleton<Config>::getInstance().getQssFiles();
     QString qss;
@@ -65,13 +51,6 @@ void UiUtil::installLoadQssShortcut(QWidget *parent) {
     QObject::connect(loadQssShortcut, &QShortcut::activated, [] {
         UiUtil::loadQss();
     });
-}
-
-void UiUtil::installNoFocusRectStyle() {
-    // 去掉获得焦点 widget 上的虚线框
-    QStyle *baseStyle = qApp->style();
-    NoFocusRectStyle *noFocusStyle = new NoFocusRectStyle(baseStyle);
-    qApp->setStyle(noFocusStyle);
 }
 
 /**
