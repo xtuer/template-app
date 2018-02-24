@@ -23,7 +23,7 @@ public:
                                                 borderImageHorizontalStretch,
                                                 borderImageVerticalStretch);
         sizeGrip = new QSizeGrip(NULL);
-        padding = windowPaddings;
+        padding  = windowPaddings;
     }
 
     NinePatchPainter *ninePatchPainter; // 九宫格绘图工具类
