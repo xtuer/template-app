@@ -14,19 +14,6 @@
         <file>image/top-window/restore.png</file>
         <file>image/top-window/shadow.png</file>
         <file>image/top-window/size-grip.png</file>
-        <file>image/top-window/stroke.png</file>
-        <file>image/top-window/toolbar-close-hover.png</file>
-        <file>image/top-window/toolbar-close-pressed.png</file>
-        <file>image/top-window/toolbar-close.png</file>
-        <file>image/top-window/toolbar-max-hover.png</file>
-        <file>image/top-window/toolbar-max-pressed.png</file>
-        <file>image/top-window/toolbar-max.png</file>
-        <file>image/top-window/toolbar-min-hover.png</file>
-        <file>image/top-window/toolbar-min-pressed.png</file>
-        <file>image/top-window/toolbar-min.png</file>
-        <file>image/top-window/toolbar-restore-hover.png</file>
-        <file>image/top-window/toolbar-restore-pressed.png</file>
-        <file>image/top-window/toolbar-restore.png</file>
         <file>image/top-window/logo.png</file>
         <file>image/top-window/colorful-border.png</file>
     </qresource>
