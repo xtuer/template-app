@@ -36,7 +36,7 @@ public:
      * @param borderImageVerticalStretch
      */
     static void message(const QString &msg, int width = 300, int height = 150,
-                        const QMargins &windowPaddings     = QMargins(12, 12, 12, 12),
+                        const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
                         const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
@@ -59,7 +59,7 @@ public:
      * @return 点击确认返回 true，点击取消返回 false
      */
     static bool confirm(const QString &msg, int width = 300, int height = 150,
-                        const QMargins &windowPaddings     = QMargins(12, 12, 12, 12),
+                        const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
                         const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
