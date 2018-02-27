@@ -10,4 +10,8 @@
     <select id="findDemoById" parameterType="int" resultType="Demo">
         SELECT id, info, is_marked AS marked FROM demo WHERE id = #{id}
     </select>
+
+    <select id="findDemoByIdAndInfo" resultType="Demo">
+        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{id} AND info=#{info}
+    </select>
 </mapper>

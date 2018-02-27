@@ -55,6 +55,16 @@ public class DemoController {
     }
 
     /**
+     * 测试 Java 8 使用 -parameters 把参数名编译到 class 中，这样 MyBatis 传递多个参数时就不必使用 @Param 了
+     * URL: http://localhost:8080/api/demo/parameters
+     */
+    @GetMapping("/api/demo/parameters")
+    @ResponseBody
+    public Demo java8ParametersForMyBatis() {
+        return demoMapper.findDemoByIdAndInfo(1, "Biao");
+    }
+
+    /**
      * 参数自动转换为对象
      * URL: http://localhost:8080/api/demo/object
      * 参数: {"id": 12, "info": "Hello Demo"}

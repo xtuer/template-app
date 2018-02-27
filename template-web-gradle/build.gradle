@@ -146,5 +146,5 @@ targetCompatibility = JavaVersion.VERSION_1_8
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
 compileJava {
-    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation' << '-parameters'
 }
