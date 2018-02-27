@@ -15,7 +15,11 @@ LoginWidget #usernameLineEdit, LoginWidget #passwordLineEdit {
 LoginWidget #usernameLineEdit {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-bottom: none;
+    border-bottom-color: transparent;
+}
+
+LoginWidget #usernameLineEdit:focus {
+	border-bottom-color: #57a3f3;
 }
 
 LoginWidget #passwordLineEdit {
