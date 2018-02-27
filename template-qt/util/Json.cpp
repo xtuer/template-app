@@ -143,7 +143,7 @@ void Json::set(const QString &path, const QJsonValue &value) {
 void Json::set(const QString &path, const QStringList &strings) {
     QJsonArray array;
 
-    foreach (const QString &str, strings) {
+    for (const QString &str : strings) {
         array.append(str);
     }
 

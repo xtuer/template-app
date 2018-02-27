@@ -68,7 +68,7 @@ void CentralWidget::initializeUi() {
     //    如果它的 action 属性不为 popup 则把它添加到一个 QButtonGroup d->switchButtons 中，它们的作用是用来切换界面的
     // 3. 并把 QPushButton 设置为 flat 的效果
     QObjectList children = ui->sideBarWidget->children();
-    foreach (QObject *child, children) {
+    for (QObject *child : children) {
         QAbstractButton *button = qobject_cast<QAbstractButton*>(child); // 可能是 QPushButton，也可能是 QToolButton
         QString className = child->property("class").toString();
         QString action    = child->property("action").toString();
@@ -103,7 +103,7 @@ void CentralWidget::initializeUi() {
 void CentralWidget::handleEvents() {
     // 点击侧边栏的分组按钮，隐藏其他分组的按钮，显示当前分组的按钮
     connect(d->groupButtons, QOverload<QAbstractButton *>::of(&QButtonGroup::buttonClicked), [this] (QAbstractButton *button) {
-        foreach (QAbstractButton *itemButton, d->itemButtons) {
+        for (QAbstractButton *itemButton : d->itemButtons) {
             QString groupName = button->property("groupName").toString();
             QString itemGroupName = itemButton->property("groupName").toString();
 

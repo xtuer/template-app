@@ -23,7 +23,7 @@ void UiUtil::loadQss() {
     QStringList qssFileNames = Singleton<Config>::getInstance().getQssFiles();
     QString qss;
 
-    foreach (QString name, qssFileNames) {
+    for (const QString &name : qssFileNames) {
         qDebug().noquote() << QString("Loading QSS file: %1").arg(name);
 
         QFile file(name);
