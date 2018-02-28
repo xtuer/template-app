@@ -1,7 +1,10 @@
 <template>
     <div class="layout">
         <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-            <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1', '2']">
+            <!-- [1] active-name 为当前高亮的 MenuItem 的 name -->
+            <!-- [2] :open-names 为要展开的 Submenu 的 name 的数组 -->
+            <!-- [3] @on-select 为点击 MenuItem 后的回调，参数为 MenuItem 的 name，一般设置为要跳转的路径 -->
+            <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1', '2']" @on-select="navigateTo">
                 <Submenu name="1">
                     <template slot="title">
                         <Icon type="ios-navigate"/>订单中心
@@ -49,6 +52,11 @@
 
 <script>
     export default {
+        methods: {
+            navigateTo: function(name) {
+                // this.$router.push('/');
+            }
+        }
     };
 </script>
 
