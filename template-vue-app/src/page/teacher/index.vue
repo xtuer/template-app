@@ -43,7 +43,7 @@
                     <BreadcrumbItem>Layout</BreadcrumbItem>
                 </Breadcrumb>
                 <Card dis-hover style="height: 600px">
-                    Content
+                    Content: {{ count }}
                 </Card>
             </Content>
         </Layout>
@@ -52,9 +52,19 @@
 
 <script>
     export default {
+        mounted: function() {
+            this.$Message.info(`count value is ${this.$store.state.count}`);
+            setInterval(() => this.$store.commit('increase'), 1000); // 每秒改变一次状态
+        },
         methods: {
             navigateTo: function(name) {
                 // this.$router.push('/');
+            }
+        },
+        computed: {
+            // 使用计算属性访问 store 的 state
+            count: function() {
+                return this.$store.state.count;
             }
         }
     };
