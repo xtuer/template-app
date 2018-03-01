@@ -13,6 +13,18 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const env = require('../config/prod.env')
 
+var glob = require('glob');
+// item 为 ./src/page/student/index.html 和 ./src/page/teacher/index.html
+var htmls = glob.sync('./src/page/**/*.html').map(function (item) {
+    console.log(item);
+    return new HtmlWebpackPlugin({
+        filename: './' + item.slice(6),
+        template: item,
+        inject: true,
+        chunks: [item.slice(6, -5)]
+    });
+});
+
 const webpackConfig = merge(baseWebpackConfig, {
     module: {
         rules: utils.styleLoaders({
@@ -59,18 +71,6 @@ const webpackConfig = merge(baseWebpackConfig, {
         // generate dist index.html with correct asset hash for caching.
         // you can customize output by editing /index.html
         // see https://github.com/ampedandwired/html-webpack-plugin
-        new HtmlWebpackPlugin({
-            filename: './page/student/index.html',
-            template: './src/page/student/index.html',
-            chunks: ['page/student/index'],
-            inject: true
-        }),
-        new HtmlWebpackPlugin({
-            filename: './page/teacher/index.html',
-            template: './src/page/teacher/index.html',
-            chunks: ['page/teacher/index'],
-            inject: true
-        }),
         // keep module.id stable when vendor modules does not change
         new webpack.HashedModuleIdsPlugin(),
         // enable scope hoisting
@@ -81,7 +81,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             to: config.build.assetsSubDirectory,
             ignore: ['.*']
         }])
-    ]
+    ].concat(htmls)
 })
 
 if (config.build.productionGzip) {

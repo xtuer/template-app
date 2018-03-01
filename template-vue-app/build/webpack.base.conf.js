@@ -4,6 +4,12 @@ const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
 
+var glob = require('glob');
+var entryJS = glob.sync('./src/page/**/*.js').reduce(function (prev, curr) {
+    prev[curr.slice(6, -3)] = curr;
+    return prev;
+}, {});
+
 function resolve(dir) {
     return path.join(__dirname, '..', dir)
 }
@@ -21,10 +27,7 @@ const createLintingRule = () => ({
 
 module.exports = {
     context: path.resolve(__dirname, '../'),
-    entry: {
-        'page/student/index': './src/page/student/index.js',
-        'page/teacher/index': './src/page/teacher/index.js',
-    },
+    entry: entryJS,
     output: {
         path: config.build.assetsRoot,
         filename: '[name].js',
