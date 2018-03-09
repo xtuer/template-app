@@ -36,7 +36,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     devtool: config.build.productionSourceMap ? config.build.devtool : false,
     output: {
         // path: config.build.assetsRoot,
-        path: path.resolve(__dirname, '../../template-web-gradle/src/main/webapp/WEB-INF'),
+        path: path.resolve(__dirname, '../../ebag-web-app/src/main/webapp/WEB-INF'),
         filename: utils.assetsPath('js/[name].[chunkhash].js'),
         chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
     },

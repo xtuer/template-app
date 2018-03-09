@@ -1,5 +1,5 @@
 {
-  "name": "shield",
+  "name": "Template",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Biao <biao.mac@icloud.com>",
@@ -11,8 +11,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "iview": "^2.9.0",
-    "vue": "^2.5.2",
+    "iview": "^2.10.0",
+    "vue": "^2.5.13",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },

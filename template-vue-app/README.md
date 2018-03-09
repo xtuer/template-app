@@ -1,4 +1,4 @@
-# shield
+# 项目模版
 
 > A Vue.js project
 
@@ -24,5 +24,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 * <http://localhost:8888/page/teacher>
 * <http://localhost:8888/page/student>
+* <http://localhost:8888/page/admin-platform>
 
 
