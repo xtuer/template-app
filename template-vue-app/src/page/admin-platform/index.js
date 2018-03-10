@@ -8,6 +8,15 @@ import store  from './store';
 Vue.use(iView);
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+    iView.LoadingBar.start();
+    next();
+});
+
+router.afterEach((to) => {
+    iView.LoadingBar.finish();
+});
+
 new Vue({
     el: '#app',
     router: router,
