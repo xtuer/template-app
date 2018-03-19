@@ -1,0 +1,11 @@
+{
+    "title": "电子书包 2.0 文档",
+    "plugins": ["expandable-chapters-interactive", "prism", "-highlight", "-sharing", "navigator"],
+    "pluginsConfig": {
+        "prism": {
+            "css": [
+                "prismjs/themes/prism-tomorrow.css"
+            ]
+        }
+    }
+}

@@ -30,6 +30,10 @@
      *      $.rest.update({url: '/rest/books/{bookId}', urlParams: {bookId: 23}, data: {name: 'C&S'}, success: function(result) {
      *          console.log(result);
      *      }}, fail: function(failResponse) {});
+     * 提示:
+     *     绝大多数时候不需要处理传入 fail 的回调函数，因为服务器端抛出异常时也是调用请求成功 success 的回调函数，只不过是返回的 JSON 中
+     *     success 的值为 false。一般只会在请求不可到达时才会调用 fail，例如 404，服务器不可访问，这个已经不是业务逻辑上的问题，所以可以
+     *     使用统一的提示方式，目前是弹出错误信息框告知用户，并在控制台打印出错误信息。
      */
     $.rest = {
         /**
@@ -87,9 +91,10 @@
             options.async = false;
             this.remove(options);
         },
-        // 默认把错误打印到控制台，可以
+        // 默认把错误打印到控制台
         defaultFail: function(error) {
             console.error(error.responseText);
+            alert('访问发生错误，详细信息请查看控制台输出，联系管理员！');
         },
 
         /**
@@ -163,6 +168,11 @@
                 headers: {'X-Requested-With': 'XMLHttpRequest'}
             })
             .done(function(data, textStatus, jqXHR) {
+                // 如果有错误发生，则在控制台打印错误，方便调试
+                if (!data.success) {
+                    console.error(data);
+                }
+
                 settings.success(data, textStatus, jqXHR);
             })
             .fail(function(jqXHR, textStatus, failThrown) {
@@ -177,7 +187,7 @@
 
     /**
      * 执行 Jsonp 请求，服务器端访问回调函数名使用 key 为 'callback'
-     * 
+     *
      * @param  {String}   url      请求的 URL
      * @param  {Function} callback 请求成功的回调函数，参数为服务器端返回的结果
      * @return 无返回值

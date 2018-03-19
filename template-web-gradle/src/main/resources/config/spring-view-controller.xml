@@ -15,4 +15,5 @@
 
     <mvc:view-controller path="/page/teacher" view-name="../page/teacher/index.html"/>
     <mvc:view-controller path="/page/student" view-name="../page/student/index.html"/>
+    <mvc:view-controller path="/page/admin-platform" view-name="../page/admin-platform/index.html"/>
 </beans>

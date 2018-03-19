@@ -43,17 +43,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!-- Filter 3: Spring Session Data Redis Filter -->
-    <filter>
-        <filter-name>springSessionRepositoryFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>springSessionRepositoryFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <!-- Filter 4: Spring Security Filter -->
+    <!-- Filter 3: Spring Security Filter -->
     <filter>
         <filter-name>springSecurityFilterChain</filter-name>
         <filter-class>org.springframework.web.filter.DelegatingFilterProxy

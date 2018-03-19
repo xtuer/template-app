@@ -7,7 +7,6 @@ Vue.use(Router);
 export default new Router({
     routes: [{
         path: '/',
-        name: 'main',
         redirect: '/school',
         component: Main,
         children: [{
@@ -16,9 +15,9 @@ export default new Router({
                 component: () => import('./subpage/school/school.vue')
             },
             {
-                path: 'school-meta',
-                name: 'school-meta',
-                component: () => import('./subpage/school/school-meta.vue')
+                path: 'dict',
+                name: 'dict',
+                component: () => import('./subpage/school/dict.vue')
             },
             {
                 path: 'school-editor/:id',

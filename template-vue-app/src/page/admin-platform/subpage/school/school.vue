@@ -15,14 +15,13 @@
             name: '贵阳六中-' + i,
             province: '贵州/贵阳',
             type: '初中',
-            url:  'http://ebag.gylzh.cn',
+            host: 'ebag.gylzh.cn',
             info: '2346/13/945/831'
         });
     }
 
     export default {
         mounted() {
-            // this.$Message.info('Loading schools');
         },
         data() {
             return {
@@ -30,7 +29,7 @@
                     { title: '学校名称', key: 'name' },
                     { title: '省份',    key: 'province' },
                     { title: '教育类型', key: 'type' },
-                    { title: '站点地址', key: 'url' },
+                    { title: '站点域名', key: 'host' },
                     { title: '用户数/教师数/学生数/家长数', key: 'info' },
                     { title: '操作', key: 'action', width: 160, align: 'center',
                         // 编辑和删除按钮
@@ -83,4 +82,8 @@
     .ivu-table-row:hover .cell-button-container {
         display: block;
     } */
+
+    .ivu-page.mini .ivu-page-item {
+        border-radius: 20px;
+    }
 </style>

@@ -1,4 +1,4 @@
-import com.xtuer.util.Utils;
+import ebag.util.Utils;
 import org.junit.Assert;
 import org.junit.Test;
 

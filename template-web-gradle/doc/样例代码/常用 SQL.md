@@ -1,9 +1,6 @@
-[TOC]
-
-
 ## 分页查询
 
-MySQL 中使用 LIMIT 进行分页，第一个参数是起始位置 offset，第二个参数是要取多少条记录
+MySQL 中使用 LIMIT 进行分页，第一个参数是起始位置 offset，从 0 开始，第二个参数是要取多少条记录
 
 ```sql
 SELECT * FROM question WHERE subject_code='XXX' LIMIT 0, 30
@@ -11,7 +8,7 @@ SELECT * FROM question WHERE subject_code='XXX' LIMIT 0, 30
 
 ## 保存更新
 
-查看 UNIQUE 索引或 PRIMARY KEY 对应的行是否存在，存在则更新(执行 ON DUPLICATE KEY UPDATE 后面的语句)，不存在则插入新行
+查看 UNIQUE 索引或 PRIMARY KEY 对应的行是否存在，存在则更新 (执行 ON DUPLICATE KEY UPDATE 后面的语句)，不存在则插入新行
 
 ```sql
 # id 是唯一主键
@@ -38,8 +35,7 @@ WHERE NOT EXISTS(
 
 ```sql
 UPDATE question_knowledge_point qkp
-JOIN   (SELECT knowledge_point_id AS id, COUNT(id) AS count FROM question GROUP BY knowledge_point_id) AS t
-ON     qkp.id=t.id
+JOIN   (SELECT knowledge_point_id AS id, COUNT(id) AS count FROM question GROUP BY knowledge_point_id) AS t ON qkp.id=t.id
 SET    qkp.count=t.count
 ```
 
@@ -57,7 +53,7 @@ LEFT JOIN question_option qo ON q.id=qo.question_id
 
 ## 内连接
 
-内连接和 where 等价，查询所有有选项的题目
+内连接 JOIN 和 WHERE 等价，查询所有有选项的题目
 
 ```sql
 SELECT q.id, q.content, qo.id, qo.content
@@ -144,39 +140,70 @@ CREATE TABLE question (
 ) ENGINE=InnoDB COMMENT '存储题目的表';
 ```
 
+> 复合主键: `PRIMARY KEY (code, type)`，因为用 id 作为主键，所以不推荐使用复合主键，可以使用多列建立唯一约束。
+
+## 唯一约束
+
+UNIQUE 约束唯一标识数据库表中的每条记录。
+
+UNIQUE 和 PRIMARY KEY 约束均为列或列集合提供了唯一性的保证。
+
+PRIMARY KEY 拥有自动定义的 UNIQUE 约束。
+
+每个表可以有多个 UNIQUE 约束，但是每个表只能有一个 PRIMARY KEY 约束。
+
+* 唯一约束
+
+  ```sql
+  ALTER TABLE table_name ADD CONSTRAINT dict_identifier UNIQUE(code, type)
+  ```
+
+* 删除约束
+
+  ```sql
+  ALTER TABLE table_name DROP CONSTRAINT dict_identifier
+  ```
+
 ## 添加索引
 
 * 唯一索引
 
   ```sql
-  ALTER TABLE `table_name` ADD UNIQUE (`column`)
+  ALTER TABLE table_name ADD UNIQUE (`column`)
   ```
 
 * 普通索引
 
   ```sql
-  ALTER TABLE `table_name` ADD INDEX index_name (`column`)
+  ALTER TABLE table_name ADD INDEX index_name (`column`)
   ```
 
 * 多列索引
 
   ```sql
-  ALTER TABLE `table_name` ADD INDEX index_name (`column1`, `column2`, `column3`)
+  ALTER TABLE table_name ADD INDEX index_name (`column1`, `column2`, `column3`)
   ```
 
-* 建表时用 `KEY` 创建
+* 建表时用 `KEY` 创建索引
 
   ```sql
-  CREATE TABLE `demo` (
-      `id` int(11) NOT NULL AUTO_INCREMENT,
-      `info` text COLLATE utf8_unicode_ci NOT NULL,
-      `is_marked` tinyint(11) DEFAULT '0',
-      `count` int(11) DEFAULT NULL,
-      `modified_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-      PRIMARY KEY (`id`),
-      KEY `idx_modified_at` (`modified_at`),
-      KEY `idx_count` (`count`)
-  ) ENGINE=InnoDB
+  #-------------------------------------------
+  # 表名：dict
+  # 作者：二狗
+  # 日期：2018-03-07
+  # 版本：1.0
+  # 描述：保存字典数据
+  #------------------------------------------
+  CREATE TABLE dict (
+      id    bigint(20) unsigned NOT NULL COMMENT '字典的 ID',
+      code  varchar(128) NOT NULL        COMMENT '字典的编码',
+      value varchar(256) NOT NULL        COMMENT '字典的值',
+      type  varchar(128) NOT NULL        COMMENT '字典的类型',
+      description text                   COMMENT '字典的描述',
+      PRIMARY KEY (id),
+      UNIQUE KEY dict_identifier (code, type) COMMENT 'code + type 唯一标记一个字典数据',
+      KEY idx_type (type) COMMENT '类型建立索引'
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
   ```
 
 ## 删除索引

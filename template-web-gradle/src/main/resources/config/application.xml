@@ -16,10 +16,10 @@
     <import resource="classpath:config/spring-security.xml"/>
 
     <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
-    <context:component-scan base-package="com.xtuer.service"/>
+    <context:component-scan base-package="ebag.service"/>
 
     <!-- 分布式唯一 ID 生成器 -->
-    <bean id="idWorker" class="com.xtuer.service.IdWorker">
+    <bean id="idWorker" class="ebag.service.IdWorker">
         <constructor-arg value="${idWorker}"/>
     </bean>
 </beans>

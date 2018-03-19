@@ -9,8 +9,8 @@
             <Menu :open-names="['1']" active-name="school" theme="dark" width="auto" @on-select="navigateTo">
                 <Submenu name="1">
                     <template slot="title"><Icon type="ios-navigate"/>学校管理</template>
-                    <MenuItem name="school">学校</MenuItem>
-                    <MenuItem name="school-meta">学校元数据</MenuItem>
+                    <MenuItem name="school">学校管理</MenuItem>
+                    <MenuItem name="dict">字典数据</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title"><Icon type="ios-keypad"/>关注中心</template>
@@ -39,7 +39,7 @@
                     <BreadcrumbItem>Layout</BreadcrumbItem>
                 </Breadcrumb> -->
                 <Card dis-hover style="min-height: 600px">
-                    <router-view></router-view>
+                    <router-view/>
                 </Card>
             </Content>
         </Layout>
@@ -53,7 +53,7 @@
                 this.$router.push({name: name});
             },
             goBack() {
-                this.$router.go(-1);
+                this.$router.back();
             }
         }
     };

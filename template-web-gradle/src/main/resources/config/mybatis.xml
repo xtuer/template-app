@@ -31,11 +31,11 @@
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mapper/**/*.xml"/> <!-- Mapper xml -->
-        <property name="typeAliasesPackage" value="com.xtuer.bean"/> <!-- Mapper 文件中类型可以不使用包名了 -->
+        <property name="typeAliasesPackage" value="ebag.bean"/> <!-- Mapper 文件中类型可以不使用包名了 -->
     </bean>
 
     <!-- 3. Instantiate Mapper -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.xtuer.mapper"/>
+        <property name="basePackage" value="ebag.mapper"/>
     </bean>
 </beans>

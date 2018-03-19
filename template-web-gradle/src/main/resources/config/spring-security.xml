@@ -19,9 +19,8 @@
     <http security="none" pattern="/static/**"/>
     <http security="none" pattern="/static-x/**"/>
 
-    <http auto-config="true" use-expressions="false"
-            access-decision-manager-ref="accessDecisionManager"
-            security-context-repository-ref="sessionSecurityContextRepository">
+    <!-- 禁止创建 session，使用 token 的方式进行认证 -->
+    <http auto-config="true" create-session="stateless" use-expressions="false" access-decision-manager-ref="accessDecisionManager">
         <intercept-url pattern="/page/admin"   access="ROLE_ADMIN"/>
         <intercept-url pattern="/demo/filters" access="ROLE_USER"/>
         <intercept-url pattern="/page/teacher" access="ROLE_ADMIN"/>
@@ -29,11 +28,11 @@
 
         <form-login login-page="/page/login"
                     login-processing-url="/login"
-                    default-target-url="/"
-                    authentication-failure-url="/page/login?error=1"
+                    authentication-success-handler-ref="authenticationSuccessHandler"
+                    authentication-failure-url="/page/login?error"
                     username-parameter="username"
                     password-parameter="password"/>
-        <logout logout-url="/logout" logout-success-url="/page/login?logout=1"/>
+        <logout logout-url="/logout" logout-success-url="/page/login?logout" delete-cookies="auth-token"/>
         <access-denied-handler error-page="/page/deny"/>
 
         <csrf disabled="true"/>
@@ -57,13 +56,13 @@
     </beans:bean>
 
     <!-- 第三方登陆 filter 和 Token 登陆验证 filter -->
-    <beans:bean id="oauthAuthenticationFilter" class="com.xtuer.security.OAuthAuthenticationFilter"/>
-    <beans:bean id="tokenAuthenticationFilter" class="com.xtuer.security.TokenAuthenticationFilter"/>
+    <beans:bean id="oauthAuthenticationFilter" class="ebag.security.OAuthAuthenticationFilter"/>
+    <beans:bean id="tokenAuthenticationFilter" class="ebag.security.TokenAuthenticationFilter"/>
 
-    <beans:bean id="tokenService" class="com.xtuer.security.TokenService"/>
-    <beans:bean id="userService"  class="com.xtuer.service.UserService"/>
-    <beans:bean id="userDetailsService" class="com.xtuer.security.UserDetailsService"/>
-    <beans:bean id="sessionSecurityContextRepository" class="org.springframework.security.web.context.XHttpSessionSecurityContextRepository"/>
+    <beans:bean id="tokenService"       class="ebag.security.TokenService"/>
+    <beans:bean id="userService"        class="ebag.service.UserService"/>
+    <beans:bean id="userDetailsService" class="ebag.security.UserDetailsService"/>
+    <beans:bean id="authenticationSuccessHandler" class="ebag.security.AuthenticationSuccessHandler"/>
 
     <!-- 自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">

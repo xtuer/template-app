@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ebag.mapper.DictMapper">
+    <!-- 查找指定类型下的字典，如果 type 为空或者 null，则查找所有分类的字典 -->
+    <select id="findByType" resultType="Dict">
+        SELECT id, code, value, type, description FROM dict
+        <if test="type!=null and type!=''">
+            WHERE type=#{type}
+        </if>
+        ORDER BY type
+        LIMIT ${offset}, ${count}
+    </select>
+
+    <!-- 查找的字典所有分类 -->
+    <select id="findTypes" resultType="String">
+        SELECT DISTINCT(type) FROM dict
+    </select>
+
+    <!-- 插入或者更新已经存在的字典，code+type 唯一标记一个字典数据 -->
+    <insert id="insertOrUpdate" parameterType="Dict">
+        INSERT INTO dict (id, code, value, type, description)
+        VALUES (#{id}, #{code}, #{value}, #{type}, #{description})
+        ON DUPLICATE KEY UPDATE value=#{value}, description=#{description}
+    </insert>
+</mapper>

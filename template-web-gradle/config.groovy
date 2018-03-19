@@ -13,7 +13,7 @@
         }
 
         database {
-            url = 'jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8'
+            url = 'jdbc:mysql://localhost:3306/ebag'
             username = 'root'
             password = 'root'
         }
@@ -26,8 +26,13 @@
             timeout  = 2000
         }
 
-        idWorker = 0
-        thymeleafCacheable = true
+        // 应用的 ID 和 key，用于生成身份认证的 token
+        appId  = 'Default_ID'
+        appKey = 'Default_Key'
+
+        idWorker = 0              // ID 生成器的 ID，范围是 [0, 1023]
+        thymeleafCacheable = true // thymeleaf 默认使用缓存提高效率
+        tempDir = '/temp'         // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
 //  }
 //}
 
@@ -37,6 +42,16 @@
 environments {
     // 开发环境配置
     development {
+        database {
+            url = 'jdbc:mysql://office.edu-edu.com:3306/ebag'
+        }
+        redis {
+            host = 'office.edu-edu.com'
+        }
+        thymeleafCacheable = false // 开发环境下 thymeleaf 不缓存页面
+    }
+
+    localhost {
         thymeleafCacheable = false // 开发环境下 thymeleaf 不缓存页面
     }
 
@@ -51,7 +66,7 @@ environments {
 
         // 线上环境的数据库信息不一样
         database {
-            url = 'jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8'
+            url = 'jdbc:mysql://localhost:3306/ebag'
             username = 'root'
             password = 'huaxia-123'
         }

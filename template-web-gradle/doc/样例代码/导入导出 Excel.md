@@ -95,9 +95,9 @@ import java.util.List;
 public class Test {
     public static void main(String[] args) throws Exception {
         ImportParams params = new ImportParams();
-        params.setTitleRows(1); // 注意这里，大多数时候用 0
-        params.setHeadRows(1);
-        List<Student> students = ExcelImportUtil.importExcel(new File("/Users/Biao/Desktop/x.xls"),Student.class, params);
+        params.setTitleRows(1); // 默认为 0，大多数时候可省略 (注意这里，此处用 1 是因为第一行是 title，不是列名)
+        params.setHeadRows(1);  // 默认为 1，大多数时候可省略
+        List<Student> students = ExcelImportUtil.importExcel(new File("/Users/Biao/Desktop/x.xls"), Student.class, params);
         System.out.println(JSON.toJSONString(students));
     }
 }
