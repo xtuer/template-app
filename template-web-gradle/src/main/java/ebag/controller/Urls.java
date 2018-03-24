@@ -48,4 +48,13 @@ public interface Urls {
     String FORM_DICTS_IMPORT = "/form/dicts/import"; // 导入字典
     String API_DICTS         = "/api/dicts";
     String API_DICT_TYPES    = "/api/dictTypes";
+
+    // 地区
+    String API_REGIONS = "/api/regions";
+
+    // 学校
+    String API_SCHOOLS_ID     = "/api/schoolId";
+    String API_SCHOOLS        = "/api/schools";
+    String API_SCHOOLS_BY_ID  = "/api/schools/{schoolId}";
+    String API_SCHOOLS_ADMINS = "/api/schools/{schoolId}/admins"; // 学校管理员
 }

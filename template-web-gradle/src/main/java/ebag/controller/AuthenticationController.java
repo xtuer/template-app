@@ -4,7 +4,7 @@ import ebag.bean.Result;
 import ebag.bean.User;
 import ebag.security.TokenService;
 import ebag.service.UserService;
-import ebag.util.NetUtils;
+import ebag.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
@@ -52,7 +52,7 @@ public class AuthenticationController {
     @ResponseBody
     public String toDenyPage(HttpServletRequest request) {
         // Ajax 访问时权限不够抛异常，我们提供的异常处理器会转换为 JSON 格式返回.
-        if (NetUtils.useAjax(request)) {
+        if (WebUtils.useAjax(request)) {
             throw new RuntimeException("权限不够");
         }
 

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 非常重要：必须是 Mapper 类的全路径-->
+<mapper namespace="ebag.mapper.UserMapper">
+    <!-- 用户查询结果的列 -->
+    <sql id="user_columns">
+        user.id AS user_id, username, password, nickname, email, mobile, phone,
+        school_id, is_enabled, user_role.role AS user_role
+    </sql>
+
+    <!-- 使用 ID 查找用户 -->
+    <select id="findUserById" parameterType="long" resultMap="userResultMap">
+        SELECT <include refid="user_columns"/>
+        FROM user
+        LEFT JOIN user_role ON user.id=user_role.user_id
+        WHERE user.id=#{userId}
+    </select>
+
+    <!-- 查找学校的用户 -->
+    <select id="findUsersBySchoolId" resultMap="userResultMap">
+        SELECT <include refid="user_columns"/>
+        FROM user
+        LEFT JOIN user_role ON user.id=user_role.user_id
+        WHERE school_id=#{schoolId}
+        LIMIT ${offset}, ${count}
+    </select>
+
+    <!-- 使用用户名和密码查找学校下的用户 -->
+    <select id="findUserByUsernameAndPasswordAndSchoolId" resultMap="userResultMap">
+        SELECT <include refid="user_columns"/>
+        FROM user
+        LEFT JOIN user_role ON user.id=user_role.user_id
+        WHERE username=#{username} AND password=#{password} AND school_id=#{schoolId}
+    </select>
+
+    <!-- 插入或更新用户: 如果 ID 存在或者 school_id + username 的组合存在则进行更新 -->
+    <insert id="insertOrUpdateUser">
+        INSERT INTO user (id, username, password, nickname, email, mobile, phone, school_id, created_time)
+        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{schoolId}, now())
+        ON DUPLICATE KEY UPDATE username=#{username}, password=#{password}, nickname=#{nickname}, email=#{email},
+                                mobile=#{mobile}, phone=#{phone}, school_id=#{schoolId}
+    </insert>
+
+    <!-- 用户对象的结果映射 -->
+    <resultMap id="userResultMap" type="User">
+        <id property="id" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email"    column="email"/>
+        <result property="mobile"   column="mobile"/>
+        <result property="phone"    column="phone"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="enabled"  column="is_enabled"/>
+
+        <collection property="roles" ofType="string">
+            <result column="user_role"/>
+        </collection>
+    </resultMap>
+</mapper>

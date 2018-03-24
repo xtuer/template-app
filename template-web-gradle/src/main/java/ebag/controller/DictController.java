@@ -43,7 +43,7 @@ public class DictController {
                                         @RequestParam(required = false, defaultValue = "1") int pageNumber,
                                         @RequestParam(required = false, defaultValue = "50") int pageSize) {
         int offset = PageUtils.offset(pageNumber, pageSize);
-        List<Dict> dicts = dictMapper.findByType(type, offset, pageSize);
+        List<Dict> dicts = dictMapper.findDictsByType(type, offset, pageSize);
         return Result.ok(dicts);
     }
 
@@ -54,7 +54,7 @@ public class DictController {
     @GetMapping(Urls.API_DICT_TYPES)
     @ResponseBody
     public Result<String> findDictTypes() {
-        return Result.ok(dictMapper.findTypes());
+        return Result.ok(dictMapper.findDictTypes());
     }
 
     /**
@@ -76,7 +76,7 @@ public class DictController {
             // 2. 导入数据库
             for (Dict dict : dicts) {
                 dict.setId(idWorker.nextId());
-                dictMapper.insertOrUpdate(dict);
+                dictMapper.insertOrUpdateDict(dict);
             }
         } catch (Exception ex) {
             return Result.fail(ExceptionUtils.getStackTrace(ex));

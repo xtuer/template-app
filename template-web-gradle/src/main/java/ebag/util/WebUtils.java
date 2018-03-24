@@ -9,9 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 
-public final class NetUtils {
-    private static Logger logger = LoggerFactory.getLogger(NetUtils.class);
+public final class WebUtils {
+    private static Logger logger = LoggerFactory.getLogger(WebUtils.class);
 
     /**
      * 判断请求是否 AJAX 请求
@@ -141,5 +143,21 @@ public final class NetUtils {
         }
 
         return ip;
+    }
+
+    /**
+     * 获取 HTTP 请求的 host
+     *
+     * @param request HttpServletRequest 对象
+     * @return 请求的 host
+     */
+    public static String getHost(HttpServletRequest request) {
+        try {
+            return new URL(request.getRequestURL().toString()).getHost();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

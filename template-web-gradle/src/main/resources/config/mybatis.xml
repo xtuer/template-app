@@ -4,18 +4,24 @@
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <!-- 1. Data Source: using Druid -->
+    <!-- 1. Data Source: using Druid: 通常来说，只需要修改 initialSize、minIdle、maxActive -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 基本属性 url、username、password -->
         <property name="url"      value="${database.url}"/>
         <property name="username" value="${database.username}"/>
         <property name="password" value="${database.password}"/>
 
-        <property name="maxActive"   value="600"/>
+        <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="1"/>
-        <property name="maxWait"     value="60000"/>
         <property name="minIdle"     value="1"/>
+        <property name="maxActive"   value="600"/>
 
+        <!-- 配置获取连接等待超时的时间: 一分钟 -->
+        <property name="maxWait" value="60000"/>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
         <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
         <property name="minEvictableIdleTimeMillis"    value="300000"/>
 
         <property name="validationQuery" value="select 1 from dual"/>
@@ -23,8 +29,9 @@
         <property name="testOnBorrow"    value="false"/>
         <property name="testOnReturn"    value="false"/>
 
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
         <property name="poolPreparedStatements"    value="true"/>
-        <property name="maxOpenPreparedStatements" value="20"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
     </bean>
 
     <!-- 2. SQL session factory -->

@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import ebag.bean.Demo;
 import ebag.bean.Result;
+import ebag.bean.User;
 import ebag.mapper.DemoMapper;
+import ebag.mapper.UserMapper;
 import ebag.service.RedisDao;
 import ebag.service.IdWorker;
 import ebag.util.Utils;
@@ -37,6 +39,9 @@ public class DemoController {
 
     @Autowired
     private DemoMapper demoMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private IdWorker idWorker;
@@ -100,7 +105,7 @@ public class DemoController {
     @RequestMapping("/api/demo/mybatis")
     @ResponseBody
     public Result<List<Demo>> demos() {
-        List<Demo> demos = redis.get("demos", new TypeReference<List<Demo>>(){}, () -> demoMapper.allDemos());
+        List<Demo> demos = redis.get("demos", new TypeReference<List<Demo>>(){}, () -> demoMapper.findDemos());
         return Result.ok(demos);
     }
 
@@ -396,5 +401,25 @@ public class DemoController {
     @ResponseBody
     public Result newId() {
         return Result.ok(idWorker.nextId());
+    }
+
+    /**
+     * 使用 ID 查找用户
+     * URL: http://localhost:8080/api/demo/users/{id}
+     */
+    @GetMapping("/api/demo/users/{id}")
+    @ResponseBody
+    public Result<User> findUserById(@PathVariable Long id) {
+        return Result.ok(userMapper.findUserById(id));
+    }
+
+    /**
+     * 查找学校的用户
+     * URL: http://localhost:8080/api/demo/schools/{id}/users
+     */
+    @GetMapping("/api/demo/schools/{id}/users")
+    @ResponseBody
+    public Result<User> findUserBySchoolId(@PathVariable Long id) {
+        return Result.ok(userMapper.findUsersBySchoolId(id, 0, 100));
     }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ebag.mapper.AddressMapper">
+    <!-- 地址查询结果的列 -->
+    <sql id="address_columns">
+        id, province_id AS provinceId, city_id AS cityId, county_id AS countyId,
+        province, city, county, district, user_id AS userId
+    </sql>
+
+    <!-- 查找指定 level 的地区 -->
+    <select id="findRegionsByLevel" resultType="Region">
+        SELECT id, name, level, parent_id as parentId FROM region WHERE level=#{level}
+    </select>
+
+    <!--查找 parentId 为传入的 parentId 的地区-->
+    <select id="findRegionsByParentId" resultType="Region">
+        SELECT id, name, level, parent_id as parentId FROM region WHERE parent_id=#{parentId}
+    </select>
+
+    <!-- 使用 ID 查找地址 -->
+    <select id="findAddressById" resultType="Address">
+        SELECT <include refid="address_columns"/>
+        FROM view_address
+        WHERE id=#{addressId}
+    </select>
+
+    <!-- 查找用户的地址，一个用户可以有多个地址 -->
+    <select id="findAddressesByUserId" parameterType="long">
+        SELECT <include refid="address_columns"/>
+        FROM view_address
+        WHERE user_id=#{userId}
+    </select>
+
+    <!-- 插入或者更新地址: 地址 ID 不存在时进行插入，存在时更新地址 -->
+    <insert id="insertOrUpdateAddress" parameterType="Address">
+        INSERT INTO address (id, province_id, city_id, county_id, district, user_id)
+        VALUES (#{id}, #{provinceId}, #{cityId}, #{countyId}, #{district}, #{userId})
+        ON DUPLICATE KEY UPDATE province_id=#{provinceId}, city_id=#{cityId},
+                                county_id=#{countyId}, district=#{district}, user_id=#{userId}
+    </insert>
+</mapper>

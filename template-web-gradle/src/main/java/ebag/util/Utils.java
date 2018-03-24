@@ -1,5 +1,7 @@
 package ebag.util;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -15,6 +17,8 @@ import java.util.UUID;
  * 常用功能的工具类，例如计算 MD5, Base64，UUID 等
  */
 public final class Utils {
+    private static PasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+
     /**
      * BindingResult 中的错误信息很多，对用户不够友好，使用 getBindingMessage()
      * 提取对用户阅读友好的定义验证规则 message.
@@ -124,6 +128,28 @@ public final class Utils {
         return UUID.randomUUID().toString().toUpperCase();
     }
 
+    /**
+     * 使用 BCrypt 算法对密码进行加密
+     *
+     * @param rawPassword 原始密码
+     * @return 返回 BCrypt 加密的密码 (带前缀 {bcrypt})
+     */
+    public static String passwordByBCrypt(String rawPassword) {
+        return "{bcrypt}" + bCryptPasswordEncoder.encode(rawPassword);
+    }
+
+    /**
+     * 使用 BCrypt 算法判断密码是否有效
+     *
+     * @param rawPassword       原始密码
+     * @param encryptedPassword 加密后的密码
+     * @return 密码匹配返回 true，否则返回 false
+     */
+    public static boolean isPasswordValidByBCrypt(String rawPassword, String encryptedPassword) {
+        encryptedPassword = encryptedPassword.replace("{bcrypt}", ""); // 去除前缀
+        return bCryptPasswordEncoder.matches(rawPassword, encryptedPassword);
+    }
+
     public static void main(String[] args) {
         String text = "如果要编码的字节数不能被3整除，最后会多出1个或2个字节.";
         String encrypt    = base64(text);
@@ -132,6 +158,11 @@ public final class Utils {
         System.out.println(encryptUrl);
         System.out.println(unbase64(encrypt));
         System.out.println(unbase64UrlSafe(encryptUrl));
+
+        // 测试密码
+        System.out.println(passwordByBCrypt("admin"));
+        System.out.println(isPasswordValidByBCrypt("password", "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
+        System.out.println(isPasswordValidByBCrypt("password", "{bcrypt}$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
     }
 }
 

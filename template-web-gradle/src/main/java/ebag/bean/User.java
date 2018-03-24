@@ -3,6 +3,7 @@ package ebag.bean;
 import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Arrays;
@@ -15,12 +16,17 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@Accessors(chain = true)
 public class User extends org.springframework.security.core.userdetails.User {
-    private Long   id;
-    private String username;
-    private String password;
-    private String mail;
-    private boolean enabled;
+    private Long    id;
+    private String  username; // 名字
+    private String  password; // 密码
+    private String  nickname; // 昵称
+    private String  email;    // 邮件地址
+    private String  mobile;   // 手机号码
+    private String  phone;    // 固定电话
+    private Long    schoolId; // 所属学校的 ID
+    private boolean enabled;  // 1 为启用，0 为禁用
     private Set<String> roles = new HashSet<>(); // 用户的角色
 
     public User() {
@@ -71,7 +77,7 @@ public class User extends org.springframework.security.core.userdetails.User {
      */
     public static User userForSpringSecurity(User user) {
         User newUser = new User(user.id, user.username, user.password, user.enabled, user.getRoles().toArray(new String[0]));
-        newUser.mail = user.mail;
+        newUser.email = user.email;
 
         return newUser;
     }

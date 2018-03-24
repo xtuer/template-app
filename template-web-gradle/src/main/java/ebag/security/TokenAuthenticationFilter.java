@@ -2,7 +2,7 @@ package ebag.security;
 
 import ebag.bean.User;
 import ebag.controller.Urls;
-import ebag.util.NetUtils;
+import ebag.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,10 +63,10 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
             Authentication auth = attemptAuthentication(request, response);
 
             if (auth == null) {
-                if (NetUtils.useAjax(request)) {
+                if (WebUtils.useAjax(request)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token 无效");
                 } else {
-                    NetUtils.deleteCookie(response, SecurityConstant.AUTH_TOKEN_KEY);
+                    WebUtils.deleteCookie(response, SecurityConstant.AUTH_TOKEN_KEY);
                     response.sendRedirect(Urls.PAGE_LOGIN);
                 }
 
@@ -90,7 +90,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         String token = request.getHeader(SecurityConstant.AUTH_TOKEN_KEY);
 
         if (token == null) {
-            token = NetUtils.getCookie(request, SecurityConstant.AUTH_TOKEN_KEY);
+            token = WebUtils.getCookie(request, SecurityConstant.AUTH_TOKEN_KEY);
         }
 
         return token;

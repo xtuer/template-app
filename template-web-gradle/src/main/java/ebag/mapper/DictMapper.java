@@ -13,19 +13,19 @@ public interface DictMapper {
      * @param count  查找数量
      * @return 返回字典的列表
      */
-    List<Dict> findByType(String type, int offset, int count);
+    List<Dict> findDictsByType(String type, int offset, int count);
 
     /**
      * 查找的字典所有分类
      *
      * @return 分类的列表
      */
-    List<String> findTypes();
+    List<String> findDictTypes();
 
     /**
      * 插入或者更新已经存在的字典，code+type 唯一标记一个字典数据
      *
      * @param dict 字典对象
      */
-    void insertOrUpdate(Dict dict);
+    void insertOrUpdateDict(Dict dict);
 }

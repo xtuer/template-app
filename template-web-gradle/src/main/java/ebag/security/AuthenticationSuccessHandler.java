@@ -2,7 +2,7 @@ package ebag.security;
 
 import ebag.bean.User;
 import ebag.service.UserService;
-import ebag.util.NetUtils;
+import ebag.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,7 +38,7 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
 
         // 生成 token 保存到 cookie
         String token = tokenService.generateToken(user);
-        NetUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, authTokenDuration);
+        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, authTokenDuration);
 
         // 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 使用
         user = User.userForSpringSecurity(user);

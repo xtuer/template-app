@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import ebag.bean.Result;
 import ebag.controller.Urls;
 import ebag.service.IdWorker;
-import ebag.util.NetUtils;
+import ebag.util.WebUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
         logger.warn(error);
         logger.warn(stack);
 
-        return NetUtils.useAjax(request) ? handleAjaxException(response, error, stack)
+        return WebUtils.useAjax(request) ? handleAjaxException(response, error, stack)
                                          : handleNonAjaxException(ex, error, stack);
     }
 
@@ -50,7 +50,7 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
      */
     private ModelAndView handleAjaxException(HttpServletResponse response, String error, String stack) {
         Result result = Result.fail(error, stack);
-        NetUtils.ajaxResponse(response, JSON.toJSONString(result), HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        WebUtils.ajaxResponse(response, JSON.toJSONString(result), HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return null;
     }
 

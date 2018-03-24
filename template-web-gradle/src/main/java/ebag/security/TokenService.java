@@ -65,7 +65,7 @@ public class TokenService {
 
         // 创建用户对象
         User user = new User(1234L, "Biao", "---", "ROLE_ADMIN", "ROLE_STAFF");
-        user.setMail("biao.mac@icloud.com");
+        user.setEmail("biao.mac@icloud.com");
 
         // 使用 user 生成 token
         String token = service.generateToken(user);

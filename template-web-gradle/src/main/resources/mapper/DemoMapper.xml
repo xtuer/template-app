@@ -3,15 +3,15 @@
 
 <!--namespace 非常重要：必须是 Mapper 类的全路径-->
 <mapper namespace="ebag.mapper.DemoMapper">
-    <select id="allDemos" resultType="Demo">
+    <select id="findDemos" resultType="Demo">
         SELECT id, info, is_marked AS marked FROM demo
     </select>
 
     <select id="findDemoById" parameterType="int" resultType="Demo">
-        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{id}
+        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{demoId}
     </select>
 
     <select id="findDemoByIdAndInfo" resultType="Demo">
-        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{id} AND info=#{info}
+        SELECT id, info, is_marked AS marked FROM demo WHERE id = #{demoId} AND info=#{info}
     </select>
 </mapper>

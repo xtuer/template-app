@@ -1,4 +1,17 @@
-Mapper 中方法的命名可参考 JPA 属性查询的命名规范，大致如下：
+Mapper 中方法的命名：`动词后面跟上返回类型名`、`参数部分参考 JPA 属性查询的命名规范`，方法名要尽量的能够望文生义，以查询用户为例大致如下：
+
+|     描述               |         方法                                                     |
+| ------------------ | ------------------------------------------------------------ |
+| 使用 id 查询用户   | 我们: `User findUserById(long userId)`<br>JPA: `User findById(long id)` |
+| 用户名密码查询用户 | 我们: `User findUserByUsernameAndPassword(String username, String password)`<br>JPA: `User findByUsernameAndPassword(String username, String password)` |
+| 查询多个用户       | 我们: `List<User> findUsersBySchoolId(long schoolId)` (User 用复数)<br>JPA: `List<User> findBySchoolId(long schoolId)` |
+| 插入用户           | `void insertUser(User user)`                                 |
+| 更新用户           | `void updateUser(User user)`                                 |
+| 删除用户           | `void deleteUser(long userId)`                               |
+| 插入或更新用户     | `void insertOrUpdateUser(User user)`                         |
+| 更新用户昵称       | `void updateUserNickname(long userId, String nickname)`      |
+
+## JPA 属性查询命名规范
 
 | Key Word    | SQL                              | Method                                                |
 | ----------- | -------------------------------- | ----------------------------------------------------- |
