@@ -49,6 +49,24 @@ hr, .markdown-section hr {
     display: none !important;
 }
 
+.book-summary {
+    width: 250px;
+}
+
+.book.with-summary .book-body {
+    left: 250px;
+}
+
+.book-summary ul.summary li a, .book-summary ul.summary li span {
+    padding: 5px 15px;
+}
+
+.book .book-summary .exc-trigger {
+    position: absolute;
+    left: 12px;
+    top: 7px;
+}
+
 #goTop {
     display: none;
 }
