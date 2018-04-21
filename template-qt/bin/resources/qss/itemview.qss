@@ -65,7 +65,8 @@ QHeaderView::section:horizontal {
     height: 24px;
 }
 
-QHeaderView::section:horizontal:first {
+QHeaderView::section:horizontal:first,
+QHeaderView::section:horizontal:only-one {
     border-left: 0px solid #dddee1;
 }
 
@@ -82,3 +83,47 @@ QTableCornerButton::section {
     border-right: 1px solid #dddee1;
     border-bottom: 1px solid #dddee1;
 }
+
+/* 树的样式 */
+QTreeView::item {
+    border: 0px;
+    color: #495060;
+    border-bottom: 1px solid transparent;
+    height: 24px;
+}
+
+QTreeView::branch {
+    background: white;
+}
+
+QTreeView::branch:hover {
+    background: rgb(235, 247, 255);
+}
+
+QTreeView::branch:selected {
+    background: rgb(248, 248, 248);
+}
+
+QTreeView::branch:has-siblings:!adjoins-item {
+     border-image: url(image/treeview/branch-vline.png) 0;
+ }
+
+ QTreeView::branch:has-siblings:adjoins-item {
+     border-image: url(image/treeview/branch-more.png) 0;
+ }
+
+ QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(image/treeview/branch-end.png) 0;
+ }
+
+ QTreeView::branch:has-children:!has-siblings:closed,
+ QTreeView::branch:closed:has-children:has-siblings {
+         border-image: none;
+         image: url(image/treeview/branch-close.png) 0;
+ }
+
+ QTreeView::branch:open:has-children:!has-siblings,
+ QTreeView::branch:open:has-children:has-siblings  {
+         border-image: none;
+         image: url(image/treeview/branch-open.png) 0;
+ }

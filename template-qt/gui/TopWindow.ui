@@ -6,85 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>236</width>
-    <height>85</height>
+    <width>393</width>
+    <height>176</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>TopWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#titleBar {
-    background: white;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
-}
-
-#titleBar #titleLabel {
-    padding-left: 4px;
-}
-
-#titleBar QPushButton  {
-    border: none;
-    min-width: 25px;
-    max-width: 25px;
-    min-height: 27px;
-    max-height: 27px;
-    padding: 0;
-    margin: 0;
-    border-width: 0 0 0 0;
-}
-
-#titleBar #minButton {
-    border-image: url(:/image/top-window/min.png) 0 0 0 0 stretch stretch;
-}
-#titleBar #minButton:hover {
-    border-image: url(:/image/top-window/min-hover.png) 0 0 0 0 stretch stretch;
-}
-#titleBar #minButton:pressed {
-    border-image: url(:/image/top-window/min-pressed.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #maxButton {
-    border-image: url(:/image/top-window/max.png) 0 0 0 0 stretch stretch;
-}
-#titleBar #maxButton:hover {
-    border-image: url(:/image/top-window/max-hover.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #maxButton:pressed {
-    border-image: url(:/image/top-window/max-pressed.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #restoreButton {
-    border-image: url(:/image/top-window/restore.png) 0 0 0 0 stretch stretch;
-}
-#titleBar #restoreButton:hover {
-    border-image: url(:/image/top-window/restore-hover.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #restoreButton:pressed {
-    border-image: url(:/image/top-window/restore-pressed.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #closeButton {
-    border-image: url(:/image/top-window/close.png) 0 0 0 0 stretch stretch;
-}
-#titleBar #closeButton:hover {
-    border-image: url(:/image/top-window/close-hover.png) 0 0 0 0 stretch stretch;
-}
-
-#titleBar #closeButton:pressed {
-    border-image: url(:/image/top-window/close-pressed.png) 0 0 0 0 stretch stretch;
-}
-
-QSizeGrip {
-    width: 12px;
-    height: 12px;
-    border-width: 0 0 0 0;
-    border-image: url(:/image/top-window/size-grip.png) 0 0 0 0 stretch stretch;
-}
-</string>
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="leftMargin">
@@ -119,23 +49,16 @@ QSizeGrip {
       </property>
       <item>
        <widget class="QLabel" name="titleLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>请设置您的标题</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>234</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
       </item>
       <item>
        <widget class="QPushButton" name="minButton">
@@ -143,7 +66,7 @@ QSizeGrip {
          <string/>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -153,7 +76,7 @@ QSizeGrip {
          <string/>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -163,7 +86,7 @@ QSizeGrip {
          <string/>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -173,7 +96,7 @@ QSizeGrip {
          <string/>
         </property>
         <property name="flat">
-         <bool>true</bool>
+         <bool>false</bool>
         </property>
        </widget>
       </item>

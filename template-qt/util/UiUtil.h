@@ -7,9 +7,17 @@ class QStackedWidget;
 class ScheduleDescription;
 class ScheduleItem;
 class QTableView;
+class QAbstractItemView;
 class QModelIndex;
+class QPoint;
+class QPushButton;
+class QLineEdit;
+
 template<typename ScheduleItem> class QList;
 
+/**
+ * Ui 相关的辅助工具类
+ */
 class UiUtil {
 public:
     static void loadQss(); // 为整个应用程序加载 QSS
@@ -37,6 +45,15 @@ public:
 
     // 查找 w 所在窗口的顶层窗口
     static QWidget* findWindow(QWidget *w);
+
+    // 返回 view 在全局坐标 globalPosition 处的 index
+    static QModelIndex indexAt(QAbstractItemView *itemView, const QPoint &globalPosition);
+
+    // 下载预览 url 的图片
+    static void previewImage(const QString &url, const QString &dir);
+
+    // 给 QLineEdit 最右边创建一个按钮
+    static QPushButton* createLineEditRightButton(QLineEdit *edit);
 };
 
 #endif // UIUTIL_H

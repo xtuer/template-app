@@ -50,7 +50,7 @@ public:
     explicit TopWindow(QWidget *centralWidget,
                        const QMargins &windowPaddings     = QMargins(16, 10, 16, 16),
                        const QMargins &borderImageBorders = QMargins(23, 13, 23, 33),
-                       const QString  &borderImagePath    = QString(":/image/top-window/shadow.png"),
+                       const QString  &borderImagePath    = QString("image/top-window/shadow.png"),
                        bool  borderImageHorizontalStretch = true,
                        bool  borderImageVerticalStretch   = true);
     ~TopWindow();

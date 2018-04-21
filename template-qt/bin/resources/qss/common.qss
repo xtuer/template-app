@@ -1,33 +1,19 @@
-.SettingWidget {
-    background: white;
-}
-
-.WidgetsShower {
-    background: white;
-}
-
 .CentralWidget {
     background: #80848f;
 }
 
-QWidget {
-    color: #495060;
+.WidgetsShower, .SettingWidget {
+    background: white;
 }
 
-QWidget:focus {
-    outline: none; /* 去掉得到焦点时的虚线框 */
+.WidgetsShower #previewButton {
+    border-image: url(image/common/preview.png) 0;
 }
 
-QLineEdit {
-    height: 24px;
-    font-size: 12px;
-    border: 1px solid #dddee1;
-    border-radius: 4px;
-    color: #495060;
-    background-color: #fff;
-    padding: 0 4px;
+.WidgetsShower #previewButton:hover {
+    border-image: url(image/common/preview-hover.png) 0;
 }
 
-QLineEdit:focus {
-    border-color: #57a3f3;
+.WidgetsShower #previewButton:pressed {
+    border-image: url(image/common/preview-pressed.png) 0;
 }

@@ -1,0 +1,41 @@
+QWidget {
+    color: #495060;
+}
+
+QWidget:focus {
+    outline: none; /* 去掉得到焦点时的虚线框 */
+}
+
+QLineEdit {
+    height: 24px;
+    font-size: 12px;
+    border: 1px solid #dddee1;
+    border-radius: 4px;
+    color: #495060;
+    background-color: #fff;
+    padding: 0 4px;
+}
+
+QLineEdit:focus {
+    border-color: #57a3f3;
+}
+
+QLineEdit:read-only {
+    color: #495060;
+    border-color: #dddee1;
+}
+
+QLineEdit:read-only:focus {
+    border-color: #dddee1;
+}
+
+/* QLineEdit 右边的按钮 */
+QLineEdit .LineEditButton {
+    min-width:  16px;
+    max-width:  16px;
+    min-height: 16px;
+    max-height: 16px;
+    padding: 0;
+    margin-right: 4px;
+    border-width: 0;
+}

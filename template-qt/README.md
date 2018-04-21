@@ -2,13 +2,11 @@
 
 * TopWindow: 自定义无边框阴影窗口
 * MessageBox: 基于 TopWindow 的消息对话框
-* CentralWidget: 用于界面功能布局，左侧边栏是菜单，右边显示不同功能相关的 widget
+* CentralWidget: 用于界面功能布局的模板，左侧边栏是菜单，右边显示不同功能相关的 widget
 
 编译后把`源码 bin 目录下的所有文件`复制到编译出来的可执行文件所在目录，然后运行，界面效果为
 
-![](image/effect-1.png)
-
-![](image/effect-2.png)
+![](effect.png)
 
 > 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
@@ -75,7 +73,7 @@ CentralWidget *centralWidget = new CentralWidget();
 
 // [1] 使用自定义窗口显示主窗口: 普通窗口，显示最大最小和关闭按钮，可调整窗口大小
 TopWindow window(centralWidget);
-window.setTitle("普通窗口");
+window.setTitle("普通窗口"); // 默认使用 centralWidget 的 windowTitle
 window.resize(1000, 700);
 window.show();
 
@@ -103,6 +101,14 @@ MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有�
                    "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>", 350, 140);
 ```
 
+## 确认对话框
+
+```cpp
+if (MessageBox::confirm("确定删除吗？")) {
+    qDebug() << "删除";
+}
+```
+
 ## 登陆对话框
 
 显示登陆对话框只需要调用下面的代码:
@@ -126,4 +132,33 @@ QSS 文件修改后，按下 `Ctrl + L` 即可自动加载就能看到效果，�
 ## 日志工具
 
 增加了日志框架，`qDebug()` 输出的内容会自动记录到 exe 所在目录的 log 目录下，每天生成一个日志文件。
+
+## 在 QLineEdit 右边创建按钮
+
+为了在 QLineEdit 右边创建按钮，调用 `UiUtil::createLineEditRightButton(lineEdit)` 函数:
+
+```cpp
+QPushButton *previewButton = UiUtil::createLineEditRightButton(ui->bookCoverEdit); // 创建封面预览按钮
+previewButton->setObjectName("previewButton");
+```
+
+然后可以使用 QSS 设置它的图标 (在 qss/widget.qss 中已经设置好它的大小等样式了):
+
+```css
+#previewButton {
+    border-image: url(image/common/preview.png) 0;
+}
+
+#previewButton:hover {
+    border-image: url(image/common/preview-hover.png) 0;
+}
+
+#previewButton:pressed {
+    border-image: url(image/common/preview-pressed.png) 0;
+}
+```
+
+## 下载预览图片
+
+Qt 没有显示网络图片的 widget，为此提供了函数 `UiUtil::previewImage(url)` 显示网络图片，图片会被缓存到指定的目录。
 

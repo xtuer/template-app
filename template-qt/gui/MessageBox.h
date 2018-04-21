@@ -3,9 +3,11 @@
 
 #include <QWidget>
 
+class QPushButton;
+
 class TopWindow;
 namespace Ui {
-class MessageBox;
+    class MessageBox;
 }
 
 /**
@@ -17,7 +19,7 @@ class MessageBox : public QWidget {
     Q_OBJECT
 
 public:
-    explicit MessageBox(const QString &message, bool cancelButtonVisible = true);
+    explicit MessageBox(const QString &message, bool confirm = true);
     ~MessageBox();
 
     /**
@@ -35,10 +37,10 @@ public:
      * @param borderImageHorizontalStretch
      * @param borderImageVerticalStretch
      */
-    static void message(const QString &msg, int width = 300, int height = 150,
+    static void message(const QString  &msg, int width = 300, int height = 150,
                         const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
-                        const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
+                        const QString  &borderImagePath    = QString("image/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
                         bool  borderImageVerticalStretch   = false);
 
@@ -58,17 +60,21 @@ public:
      * @param borderImageVerticalStretch
      * @return 点击确认返回 true，点击取消返回 false
      */
-    static bool confirm(const QString &msg, int width = 300, int height = 150,
+    static bool confirm(const QString  &msg, int width = 300, int height = 150,
                         const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
-                        const QString  &borderImagePath    = QString(":/image/top-window/colorful-border.png"),
+                        const QString  &borderImagePath    = QString("image/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
                         bool  borderImageVerticalStretch   = false);
+
+protected:
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
 private:
     static void setWindowForMessageBox(TopWindow *window, int width, int height); // 设置 TopWindow 的属性
 
     Ui::MessageBox *ui;
+    QPushButton *closeButton;
     bool result = false;
 };
 

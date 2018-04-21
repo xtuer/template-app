@@ -44,6 +44,7 @@ TopWindow::TopWindow(QWidget *centralWidget,
     ui->restoreButton->hide();
     setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
+    setWindowTitle(centralWidget->windowTitle());
 
     d = new TopWindowPrivate(windowPaddings, borderImageBorders, borderImagePath,
                              borderImageHorizontalStretch, borderImageVerticalStretch);

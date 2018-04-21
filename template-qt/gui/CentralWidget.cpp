@@ -4,7 +4,6 @@
 #include "MessageBox.h"
 #include "SettingWidget.h"
 #include "WidgetsShower.h"
-#include "MeasurementWidget.h"
 #include "util/UiUtil.h"
 
 #include <QDebug>
@@ -139,7 +138,7 @@ void CentralWidget::handleEvents() {
         MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                             "<b>法人</b>: 齐天大圣<br>"
                             "<b>版本</b>: Release 1.1.3<br>"
-                            "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>", 350, 140);
+                            "<center><img src='image/common/fairy.png' width=64 height=64></center>", 350, 140);
     });
 }
 
@@ -157,10 +156,7 @@ void CentralWidget::createWidgetInContentStackedWidget(QAbstractButton *button) 
         // [2] 添加 widget 到窗口中
         UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget);
     } else if (button == ui->itemButton2) {
-        QWidget *w = new MeasurementWidget();
-        d->buttonWidgetHash.insert(ui->itemButton2, w);
 
-        UiUtil::addWidgetIntoStackedWidget(w, ui->contentStackedWidget);
     } else if (button == ui->itemButton3) {
         QWidget *w = new QWidget();
         w->setStyleSheet("background: #2d8cf0");

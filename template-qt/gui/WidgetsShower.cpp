@@ -1,6 +1,7 @@
 #include "ui_WidgetsShower.h"
 #include "WidgetsShower.h"
 #include "MessageBox.h"
+#include "util/UiUtil.h"
 
 #include <QDebug>
 #include <QStringListModel>
@@ -9,6 +10,9 @@
 WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::WidgetsShower) {
     ui->setupUi(this);
     setAttribute(Qt::WA_StyledBackground);
+
+    QPushButton *previewButton = UiUtil::createLineEditRightButton(ui->lineEdit);
+    previewButton->setObjectName("previewButton");
 
     QStringList list;
     list << "北京" << "天津" << "河北" << "山西" << "辽宁" << "吉林" << "黑龙江" << "上海" << "江苏" << "浙江" << "湖南" << "海南";
@@ -49,13 +53,17 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
         QString info = "<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                        "<b>法人</b>: 齐天大圣<br>"
                        "<b>版本</b>: Release 1.1.3<br>"
-                       "<center><img src=':/image/top-window/logo.png' width=64 height=64></center>";
+                       "<center><img src='image/common/fairy.png' width=64 height=64></center>";
         bool result = MessageBox::confirm(info, 350, 140);
         qDebug() << "Confirm:" << result;
     });
 
     connect(ui->messageButton, &QPushButton::clicked, [this] {
         MessageBox::message("简单消息对话框");
+    });
+
+    connect(ui->previewImageButton, &QPushButton::clicked, [] {
+        UiUtil::previewImage("http://qtdebug.com/img/dog.png", "temp");
     });
 }
 

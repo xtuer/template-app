@@ -54,6 +54,7 @@ void LoginWidget::handleEvents() {
 bool LoginWidget::login() {
     LoginWidget *loginWidget = new LoginWidget();
     TopWindow dialog(loginWidget);
+    dialog.resize(250, 360);
     dialog.setTitleBarVisible(false);
     dialog.setResizable(false);
     dialog.showModal();

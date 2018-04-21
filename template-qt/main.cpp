@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
 
     // [1] 主窗口使用自定义窗口显示
     TopWindow window(new CentralWidget());
-    window.setTitle("普通窗口");
+    // window.setTitle("普通窗口"); // 默认使用 CentralWidget 的 windowTitle
     window.resize(1000, 700);
     UiUtil::centerWindow(&window);
     window.show();

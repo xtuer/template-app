@@ -4,8 +4,6 @@ FORMS += \
     $$PWD/WidgetsShower.ui \
     $$PWD/TopWindow.ui \
     $$PWD/LoginWidget.ui \
-    $$PWD/MeasurementWidget.ui \
-    $$PWD/DeviceWidget.ui \
     $$PWD/MessageBox.ui
 
 HEADERS += \
@@ -14,8 +12,6 @@ HEADERS += \
     $$PWD/WidgetsShower.h \
     $$PWD/TopWindow.h \
     $$PWD/LoginWidget.h \
-    $$PWD/MeasurementWidget.h \
-    $$PWD/DeviceWidget.h \
     $$PWD/MessageBox.h
 
 SOURCES += \
@@ -24,6 +20,4 @@ SOURCES += \
     $$PWD/WidgetsShower.cpp \
     $$PWD/TopWindow.cpp \
     $$PWD/LoginWidget.cpp \
-    $$PWD/MeasurementWidget.cpp \
-    $$PWD/DeviceWidget.cpp \
     $$PWD/MessageBox.cpp
