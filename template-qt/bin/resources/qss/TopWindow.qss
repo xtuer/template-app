@@ -1,6 +1,5 @@
 .TopWindow #titleBar {
     background: #ff9900;
-    background: white;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
@@ -73,20 +72,21 @@
 }
 
 .MessageBox #closeButton {
-    min-width:  24px;
-    max-width:  24px;
-    min-height: 24px;
-    max-height: 24px;
+    min-width:  18px;
+    max-width:  18px;
+    min-height: 18px;
+    max-height: 18px;
     padding: 0;
     background-color: transparent;
+    border-radius: 0;
     border-width: 0;
-    border-image: url(image/top-window/close-fill.png) 0 stretch stretch;
+    border-image: url(image/top-window/t-close.png) 0 stretch stretch;
 }
 
 .MessageBox #closeButton:hover {
-    border-image: url(image/top-window/close-fill-hover.png) 0 stretch stretch;
+    border-image: url(image/top-window/t-close-hover.png) 0 stretch stretch;
 }
 
 .MessageBox #closeButton:pressed {
-    border-image: url(image/top-window/close-fill-pressed.png) 0 stretch stretch;
+    border-image: url(image/top-window/t-close-pressed.png) 0 stretch stretch;
 }
