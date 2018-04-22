@@ -1,6 +1,8 @@
 #ifndef JSON_H
 #define JSON_H
 
+#include <QJsonArray>
+#include <QJsonValue>
 #include <QJsonObject>
 #include <QJsonDocument>
 

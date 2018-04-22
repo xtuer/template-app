@@ -1,10 +1,8 @@
 #include "Json.h"
+
+#include <QDebug>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
-#include <QJsonArray>
-#include <QJsonValue>
-#include <QJsonDocument>
 #include <QRegularExpression>
 #include <QJsonParseError>
 
