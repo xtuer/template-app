@@ -153,19 +153,19 @@ void LogHandlerPrivate::messageHandler(QtMsgType type, const QMessageLogContext 
 
     switch (type) {
     case QtDebugMsg:
-        level = "Debug";
+        level = "DEBUG";
         break;
     case QtInfoMsg:
-        level = "Info ";
+        level = "INFO ";
         break;
     case QtWarningMsg:
-        level = "Warn ";
+        level = "WARN ";
         break;
     case QtCriticalMsg:
-        level = "Error";
+        level = "ERROR";
         break;
     case QtFatalMsg:
-        level = "Fatal";
+        level = "FATAL";
         break;
     default:;
     }

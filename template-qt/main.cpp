@@ -2,6 +2,7 @@
 #include "gui/TopWindow.h"
 #include "gui/LoginWidget.h"
 #include "util/UiUtil.h"
+#include "util/Config.h"
 #include "util/LogHandler.h"
 
 #include <QApplication>
@@ -57,5 +58,6 @@ static void initialize() {
  * 程序结束时释放回收资源，例如释放日志资源，释放数据库连接池资源等
  */
 static void finalize() {
+    ConfigInstance.destroy();
     LogHandlerInstance.uninstallMessageHandler(); // 程序结束时释放 LogHandler 的资源，例如刷新并关闭日志文件
 }

@@ -5,9 +5,10 @@
 
 #define ConfigInstance Singleton<Config>::getInstance()
 
+class Json;
 class QString;
 class QStringList;
-class Json;
+class QSettings;
 
 /**
  * 用于读写配置文件:
@@ -40,6 +41,7 @@ public:
 
 private:
     Json *json;
+    QSettings *appSettings;
 };
 
 #endif // CONFIG_H
