@@ -6,6 +6,7 @@
 #include "util/LogHandler.h"
 
 #include <QApplication>
+#include <QTextCodec>
 
 static void initialize(); // 程序启动时进行初始化
 static void finalize();   // 程序结束时清理工作
@@ -41,6 +42,9 @@ int main(int argc, char *argv[]) {
  * 程序启动时进行初始化
  */
 static void initialize() {
+    // 使用 UTF-8 的运行时环境
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+
     // 安装日志处理工具
     LogHandlerInstance.installMessageHandler();
 
