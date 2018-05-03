@@ -47,6 +47,10 @@ QListView::text {
 } */
 
 /* 表头 */
+QTreeView {
+    show-decoration-selected: 1;
+}
+
 QHeaderView {
     border: 0;
     background: white;
