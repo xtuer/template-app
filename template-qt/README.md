@@ -162,3 +162,24 @@ previewButton->setObjectName("previewButton");
 
 Qt 没有显示网络图片的 widget，为此提供了函数 `UiUtil::previewImage(url)` 显示网络图片，图片会被缓存到指定的目录。
 
+## 自定义字体
+
+除了使用系统自带的字体，还能够从网上下载字体，然后使用:
+
+1. 网上下载字体文件，放到 font 目录
+
+2. 加载字体: 修改配置文件 `data/config.json` 的 `font_files`，程序启动时会调用 `QFontDatabase::addApplicationFont(file)` 加载字体到程序中
+
+3. 修改 QSS 设置字体: 在 `resources/qss` 目录下的 QSS 文件中设置 Widget 的字体，例如
+
+   ```css
+   QWidget {
+       font-family: "云书法手书罗西硬笔行楷";
+   }
+   
+   #myWidget {
+       font-family: Monaco;
+   }
+   ```
+
+   需要注意，OSX 系统不支持 `QFontDatabase::addApplicationFont(file)` 加载字体了 (10.9 的时候还支持)，需要先安装字体，然后在 QSS 中使用。
