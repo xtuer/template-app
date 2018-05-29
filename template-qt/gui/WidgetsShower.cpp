@@ -63,7 +63,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
     });
 
     connect(ui->previewImageButton, &QPushButton::clicked, [] {
-        UiUtil::previewImage("http://qtdebug.com/img/dog.png", "temp");
+        UiUtil::previewImage("https://qtdebug.com/img/dog.png", "temp");
     });
 }
 

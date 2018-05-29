@@ -51,3 +51,4 @@ nbdist/
 ### Qt ###
 *.user
 *.pro.user
+!*.dll

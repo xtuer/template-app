@@ -26,6 +26,7 @@
 #include <QModelIndex>
 #include <QShortcut>
 #include <QDesktopWidget>
+#include <QScreen>
 #include <QFontDatabase>
 
 // 为整个应用程序加载 QSS
@@ -168,7 +169,8 @@ void UiUtil::centerWindow(QWidget *window) {
     window->layout()->invalidate();
     window->hide();
 
-    QSize size = qApp->desktop()->availableGeometry().size() - window->size();
+    // QSize size = qApp->desktop()->availableGeometry().size() - window->size();
+    QSize size = qApp->primaryScreen()->availableSize() - window->size();
     int x = qMax(0, size.width() / 2);
     int y = qMax(0, size.height() / 2);
     window->move(x, y);
