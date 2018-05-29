@@ -182,4 +182,6 @@ Qt 没有显示网络图片的 widget，为此提供了函数 `UiUtil::previewIm
    }
    ```
 
-   需要注意，OSX 系统不支持 `QFontDatabase::addApplicationFont(file)` 加载字体了 (10.9 的时候还支持)，需要先安装字体，然后在 QSS 中使用。
+
+需要注意，OSX 系统不支持 `QFontDatabase::addApplicationFont(file)` 加载字体了 (10.9 的时候还支持)，需要先安装字体，然后在 QSS 中使用。
+
