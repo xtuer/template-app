@@ -11,6 +11,8 @@ TARGET   = template-qt
 TEMPLATE = app
 
 CONFIG  -= app_bundle
+RC_ICONS = App.ico
+
 DEFINES += QT_MESSAGELOGCONTEXT
 DEFINES += QT_DEPRECATED_WARNINGS
 
