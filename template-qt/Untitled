@@ -1,0 +1,75 @@
+.AiSignWidget {
+    background: rgb(33, 93, 201);
+}
+
+.Container {
+	border: 0px solid darkred;
+    border-radius: 10px;
+}
+
+.ContainerTitlebar {
+	min-height: 50px;
+    max-height: 50px;
+    background: rgb(48, 143, 238);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.ContainerTitlebar QLabel, .ContainerTitlebar QPushButton {
+    font-size: 16px;
+    color: rgb(36, 59, 139);
+}
+
+.ContainerTitlebar QLabel.TitleIcon {
+    min-width:  30px;
+    max-width:  30px;
+    min-height: 30px;
+    max-height: 30px;
+    border-width: 0 0 0 0;
+    border-image: url(/Users/Biao/Desktop/good.png) 0 0 0 0 stretch stretch;
+    margin-left: 10px;
+}
+
+.ContainerTitlebar QPushButton {
+    border: 0px solid red;
+    border-radius: 4px;
+    background: rgb(27, 104, 222);
+    margin-right: 10px;
+    padding: 0px 10px;
+    min-height: 30px;
+    max-height: 30px;
+}
+
+.ContainerTitlebar QPushButton:hover {
+    color: #EEE;
+}
+
+.ContainerCententWidget {
+    background: rgb(37, 133, 230);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.ContainerCententWidget QLabel {
+    font-size: 15px;
+    color: #DDD;
+}
+
+.ContainerCententWidget QLabel.Info {
+    color: #DDD;
+}
+
+.ContainerCententWidget QLabel.IdCardInfo {
+    color: #DDD;
+    border: 0px solid red;
+    border-bottom: 1px solid #DDD;
+}
+
+.ContainerCententWidget QLabel.Picture {
+    background: #CCC;
+    border-radius: 4px;
+    min-width: 102px;
+    max-width: 102px;
+    min-height: 126px;
+    max-height: 126px;
+}

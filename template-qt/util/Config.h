@@ -37,7 +37,8 @@ public:
     QStringList getDatabaseSqlFiles() const;    // SQL 语句文件, 可以是多个
 
     // 其它
-    QStringList getQssFiles() const; // QSS 样式表文件, 可以是多个
+    QStringList getQssFiles() const;  // QSS 样式表文件, 可以是多个
+    QStringList getFontFiles() const; // 字体文件, 可以是多个
 
 private:
     Json *json;

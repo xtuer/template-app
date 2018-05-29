@@ -4,6 +4,7 @@
 #include <functional>
 
 class QString;
+class QStringList;
 class QByteArray;
 class QNetworkRequest;
 class QNetworkReply;
@@ -124,7 +125,7 @@ public:
                   std::function<void (const QString &)> errorHandler = NULL);
 
     /**
-     * @brief 上传文件
+     * @brief 上传单个文件
      * @param path 要上传的文件的路径
      * @param successHandler 请求成功的回调 lambda 函数
      * @param errorHandler   请求失败的回调 lambda 函数
@@ -135,13 +136,24 @@ public:
                 const char *encoding = "UTF-8");
 
     /**
-     * @brief 上传数据
+     * @brief 上传单个数据文件
      * @param path 要上传的文件的路径
      * @param successHandler 请求成功的回调 lambda 函数
      * @param errorHandler   请求失败的回调 lambda 函数
      * @param encoding       请求响应的编码
      */
     void upload(const QByteArray &data, std::function<void (const QString &)> successHandler = NULL,
+                std::function<void (const QString &)> errorHandler = NULL,
+                const char *encoding = "UTF-8");
+
+    /**
+     * @brief 上传多个文件
+     * @param paths 要上传的文件的路径
+     * @param successHandler 请求成功的回调 lambda 函数
+     * @param errorHandler   请求失败的回调 lambda 函数
+     * @param encoding       请求响应的编码
+     */
+    void upload(const QStringList &paths, std::function<void (const QString &)> successHandler = NULL,
                 std::function<void (const QString &)> errorHandler = NULL,
                 const char *encoding = "UTF-8");
 private:

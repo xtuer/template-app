@@ -40,23 +40,3 @@ targetCompatibility = JavaVersion.VERSION_1_8
 tasks.withType(JavaCompile) {
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
 }
-
-// 创建目录结构的任务，执行后可删除
-task createStructure {
-    doLast {
-        sourceSets*.java.srcDirs*.each { it.mkdirs() }
-        sourceSets*.resources.srcDirs*.each { it.mkdirs() }
-    }
-}
-
-/*
-生成的目录结构
-├── build.gradle
-└── src
-    ├── main
-    │   ├── java
-    │   └── resources
-    └── test
-        ├── java
-        └── resources
-*/

@@ -80,3 +80,7 @@ QStringList Config::getDatabaseSqlFiles() const {
 QStringList Config::getQssFiles() const {
     return json->getStringList("qss_files");
 }
+
+QStringList Config::getFontFiles() const {
+    return json->getStringList("font_files");
+}

@@ -1,6 +1,7 @@
 #include "HttpClient.h"
 
 #include <QDebug>
+#include <QStringList>
 #include <QFile>
 #include <QHash>
 #include <QUrlQuery>
@@ -59,15 +60,15 @@ public:
 
     /**
      * @brief 上传文件或者数据
-     * @param d    HttpClientPrivate 的对象
-     * @param path 要上传的文件的路径(path 和 data 不能同时使用)
-     * @param data 要上传的文件的数据
+     * @param d     HttpClientPrivate 的对象
+     * @param paths 要上传的文件的路径(path 和 data 不能同时使用)
+     * @param data  要上传的文件的数据
      * @param successHandler 请求成功的回调 lambda 函数
      * @param errorHandler   请求失败的回调 lambda 函数
      * @param encoding       请求响应的编码
      */
     static void upload(HttpClientPrivate *d,
-                       const QString &path, const QByteArray &data,
+                       const QStringList &paths, const QByteArray &data,
                        std::function<void (const QString &)> successHandler,
                        std::function<void (const QString &)> errorHandler,
                        const char *encoding);
@@ -235,7 +236,8 @@ void HttpClient::upload(const QString &path,
                         std::function<void (const QString &)> successHandler,
                         std::function<void (const QString &)> errorHandler,
                         const char *encoding) {
-    HttpClientPrivate::upload(d, path, QByteArray(), successHandler, errorHandler, encoding);
+    QStringList paths = (QStringList() << path);
+    HttpClientPrivate::upload(d, paths, QByteArray(), successHandler, errorHandler, encoding);
 }
 
 // 上传数据
@@ -243,12 +245,19 @@ void HttpClient::upload(const QByteArray &data,
                         std::function<void (const QString &)> successHandler,
                         std::function<void (const QString &)> errorHandler,
                         const char *encoding) {
-    HttpClientPrivate::upload(d, QString(), data, successHandler, errorHandler, encoding);
+    HttpClientPrivate::upload(d, QStringList(), data, successHandler, errorHandler, encoding);
+}
+
+void HttpClient::upload(const QStringList &paths,
+                        std::function<void (const QString &)> successHandler,
+                        std::function<void (const QString &)> errorHandler,
+                        const char *encoding) {
+    HttpClientPrivate::upload(d, paths, QByteArray(), successHandler, errorHandler, encoding);
 }
 
 // 上传文件或者数据的实现
 void HttpClientPrivate::upload(HttpClientPrivate *d,
-                               const QString &path, const QByteArray &data,
+                               const QStringList &paths, const QByteArray &data,
                                std::function<void (const QString &)> successHandler,
                                std::function<void (const QString &)> errorHandler,
                                const char *encoding) {
@@ -266,35 +275,42 @@ void HttpClientPrivate::upload(HttpClientPrivate *d,
         multiPart->append(textPart);
     }
 
-    if (!path.isEmpty()) {
-        // path 不为空时，上传文件
-        QFile *file = new QFile(path);
-        file->setParent(multiPart); // we cannot delete the file now, so delete it with the multiPart
+    if (paths.size() > 0) {
+        // 上传文件
+        QString inputName = paths.size() == 1 ? "file" : "files"; // 一个文件时为 file，多个文件时为 files
 
-        // 如果文件打开失败，则释放资源返回
-        if(!file->open(QIODevice::ReadOnly)) {
-            QString errorMessage = QString("打开文件失败[%2]: %1").arg(path).arg(file->errorString());
+        for (const QString &path : paths) {
+            if (!path.isEmpty()) {
+                // path 不为空时，上传文件
+                QFile *file = new QFile(path);
+                file->setParent(multiPart); // we cannot delete the file now, so delete it with the multiPart
 
-            if (debug) {
-                qDebug().noquote() << errorMessage;
+                // 如果文件打开失败，则释放资源返回
+                if(!file->open(QIODevice::ReadOnly)) {
+                    QString errorMessage = QString("打开文件失败[%2]: %1").arg(path).arg(file->errorString());
+
+                    if (debug) {
+                        qDebug().noquote() << errorMessage;
+                    }
+
+                    if (NULL != errorHandler) {
+                        errorHandler(errorMessage);
+                    }
+
+                    multiPart->deleteLater();
+                    return;
+                }
+
+                // 文件上传的参数名为 file，值为文件名
+                // 服务器是 Java 的则用 form-data
+                // 服务器是 PHP  的则用 multipart/form-data
+                QString   disposition = QString("form-data; name=\"%1\"; filename=\"%2\"").arg(inputName).arg(file->fileName());
+                QHttpPart filePart;
+                filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(disposition));
+                filePart.setBodyDevice(file);
+                multiPart->append(filePart);
             }
-
-            if (NULL != errorHandler) {
-                errorHandler(errorMessage);
-            }
-
-            multiPart->deleteLater();
-            return;
         }
-
-        // 文件上传的参数名为 file，值为文件名
-        // 服务器是 Java 的则用 form-data
-        // 服务器是 PHP  的则用 multipart/form-data
-        QString   disposition = QString("form-data; name=\"file\"; filename=\"%1\"").arg(file->fileName());
-        QHttpPart filePart;
-        filePart.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant(disposition));
-        filePart.setBodyDevice(file);
-        multiPart->append(filePart);
     } else {
         // 上传数据
         QString   disposition = QString("form-data; name=\"file\"; filename=\"no-name\"");

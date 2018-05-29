@@ -26,10 +26,11 @@
 #include <QModelIndex>
 #include <QShortcut>
 #include <QDesktopWidget>
+#include <QFontDatabase>
 
 // 为整个应用程序加载 QSS
 void UiUtil::loadQss() {
-    QStringList qssFileNames = Singleton<Config>::getInstance().getQssFiles();
+    QStringList qssFileNames = ConfigInstance.getQssFiles();
     QString qss;
 
     for (const QString &name : qssFileNames) {
@@ -47,6 +48,16 @@ void UiUtil::loadQss() {
 
     if (!qss.isEmpty()) {
         qApp->setStyleSheet(qss);
+    }
+}
+
+// 加载字体
+void UiUtil::loadFonts() {
+    QStringList fontFiles = ConfigInstance.getFontFiles();
+
+    for (const QString file : fontFiles) {
+        qDebug().noquote() << QString("Loading Font file: %1").arg(file);
+        QFontDatabase::addApplicationFont(file);
     }
 }
 
