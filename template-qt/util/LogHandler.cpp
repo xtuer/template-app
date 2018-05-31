@@ -12,6 +12,7 @@
 #include <QTimer>
 #include <QTextStream>
 #include <iostream>
+#include <QTextCodec>
 
 /************************************************************************************************************
  *                                                                                                          *
@@ -170,8 +171,13 @@ void LogHandlerPrivate::messageHandler(QtMsgType type, const QMessageLogContext 
     default:;
     }
 
-    // 输出到标准输出
+    // 输出到标准输出: Windows 下 std::cout 使用 GB2312，而 msg 使用 UTF-8，但是程序的 Local 也还是使用 UTF-8
+#if defined(Q_OS_WIN)
+    QByteArray localMsg = QTextCodec::codecForName("GB2312")->fromUnicode(msg); //msg.toLocal8Bit();
+#else
     QByteArray localMsg = msg.toLocal8Bit();
+#endif
+
     std::cout << std::string(localMsg) << std::endl;
 
     if (NULL == LogHandlerPrivate::logOut) {
