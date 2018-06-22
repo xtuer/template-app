@@ -124,7 +124,7 @@ void TopWindow::showModal() {
     // 进入局部事件循环，阻塞代码继续往下走，窗口关闭时结束此局部事件循环，控制权交还给 QApplication
     // The event loop returns from the call to quit().
     QEventLoop loop;
-    connect(this, &TopWindow::aboutClose, &loop, &QEventLoop::quit);
+    connect(this, &TopWindow::aboutToClose, &loop, &QEventLoop::quit);
     loop.exec();
 }
 
@@ -160,7 +160,7 @@ void TopWindow::mouseMoveEvent(QMouseEvent *event) {
 
 // 关闭窗口时发送 aboutClose() 信号，模态对话框收到此信号时好结束事件循环
 void TopWindow::closeEvent(QCloseEvent *event) {
-    emit aboutClose();
+    emit aboutToClose();
     QWidget::closeEvent(event);
 }
 

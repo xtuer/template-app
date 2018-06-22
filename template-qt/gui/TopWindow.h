@@ -111,7 +111,7 @@ signals:
      /**
       * @brief 即将关闭的信号
       */
-     void aboutClose();
+     void aboutToClose();
 
 protected:
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
