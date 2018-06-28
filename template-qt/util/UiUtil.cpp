@@ -134,11 +134,8 @@ void UiUtil::setWidgetPaddingAndSpacing(QWidget *widget, int padding, int spacin
     }
 }
 
-QModelIndex UiUtil::getTableViewSelectedIndex(QTableView *view) {
-    QItemSelectionModel *ism = view->selectionModel();
-    QModelIndexList mil = ism->selectedIndexes();
-
-    return mil.count() > 0 ? mil.at(0) : QModelIndex();
+QModelIndex UiUtil::getSelectedIndex(QAbstractItemView *view) {
+    return view->selectionModel()->currentIndex();
 }
 
 void UiUtil::appendTableViewRow(QTableView *view, int editColumn) {
@@ -154,7 +151,7 @@ void UiUtil::appendTableViewRow(QTableView *view, int editColumn) {
 }
 
 void UiUtil::removeTableViewSelectedRow(QTableView *view) {
-    QModelIndex index = getTableViewSelectedIndex(view);
+    QModelIndex index = getSelectedIndex(view);
 
     if (index.isValid()) {
         view->model()->removeRow(index.row());

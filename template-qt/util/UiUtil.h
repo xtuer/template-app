@@ -37,7 +37,7 @@ public:
     // 设置 widget 的 padding 和 spacing
     static void setWidgetPaddingAndSpacing(QWidget *widget, int padding, int spacing);
 
-    static QModelIndex getTableViewSelectedIndex(QTableView *view);
+    static QModelIndex getSelectedIndex(QAbstractItemView *view);
     static void appendTableViewRow(QTableView *view, int editColumn);
     static void removeTableViewSelectedRow(QTableView *view);
 
