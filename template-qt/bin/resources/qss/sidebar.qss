@@ -75,7 +75,7 @@
     qproperty-icon: url(image/sidebar/help.png);
 }
 
-.CentralWidget2 .SideBarWidget {
+.CentralWidget2, .CentralWidget2 .SideBarWidget {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
 }
