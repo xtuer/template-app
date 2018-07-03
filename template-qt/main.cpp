@@ -1,4 +1,5 @@
 #include "gui/CentralWidget.h"
+#include "gui/CentralWidget2.h"
 #include "gui/TopWindow.h"
 #include "gui/LoginWidget.h"
 #include "util/UiUtil.h"
@@ -18,18 +19,28 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     ::initialize();
 
-    // [1] 主窗口使用自定义窗口显示
-    TopWindow window(new CentralWidget());
+    // [1] 主窗口使用自定义窗口显示: 2 种风格
+    // 风格 1
+    /*CentralWidget *cw = new CentralWidget();
+    TopWindow window(cw);
     // window.setTitle("普通窗口"); // 默认使用 CentralWidget 的 windowTitle
+    window.resize(1000, 700);
+    UiUtil::centerWindow(&window);
+    window.show();*/
+
+    // 风格 2
+    CentralWidget2 *cw = new CentralWidget2();
+    TopWindow window(cw);
+    cw->setTopWindow(&window);
     window.resize(1000, 700);
     UiUtil::centerWindow(&window);
     window.show();
 
     // [2] 显示登陆对话框，点击取消按钮登陆失败退出程序，登陆成功继续往下运行
     // 输入错误信息虽然登陆不成功，但是不会退出程序，而是提示输入错误，继续输入登陆
-    if (!LoginWidget::login()) {
-        exit(0);
-    }
+//    if (!LoginWidget::login()) {
+//        exit(0);
+//    }
 
     // [3] 进入 Qt 事件队列
     int code = app.exec();

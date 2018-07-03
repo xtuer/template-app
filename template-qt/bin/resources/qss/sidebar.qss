@@ -74,3 +74,63 @@
 #myButton {
     qproperty-icon: url(image/sidebar/help.png);
 }
+
+.CentralWidget2 .SideBarWidget {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar {
+    background: transparent;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar QPushButton {
+    width:  16px;
+    height: 16px;
+    min-width:  16px;
+    max-width:  16px;
+    min-height: 16px;
+    max-height: 16px;
+    border-width: 0;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar #closeButton {
+    border-image: url(image/top-window/mac-traffic-01.png) 0 84 0 0;
+}
+.CentralWidget2 .SideBarWidget #titleBar #closeButton:hover {
+    border-image: url(image/top-window/mac-traffic-02.png) 0 84 0 0;
+}
+.CentralWidget2 .SideBarWidget #titleBar #closeButton:pressed {
+    border-image: url(image/top-window/mac-traffic-03.png) 0 84 0 0;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar #minButton {
+    margin-right: 0;
+    border-image: url(image/top-window/mac-traffic-01.png) 0 56 0 28;
+}
+.CentralWidget2 .SideBarWidget #titleBar #minButton:hover {
+    border-image: url(image/top-window/mac-traffic-02.png) 0 56 0 28;
+}
+.CentralWidget2 .SideBarWidget #titleBar #minButton:pressed {
+    border-image: url(image/top-window/mac-traffic-03.png) 0 56 0 28;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar #maxButton {
+    border-image: url(image/top-window/mac-traffic-01.png) 0 28 0 56;
+}
+.CentralWidget2 .SideBarWidget #titleBar #maxButton:hover {
+    border-image: url(image/top-window/mac-traffic-02.png) 0 0 0 84;
+}
+.CentralWidget2 .SideBarWidget #titleBar #maxButton:pressed {
+    border-image: url(image/top-window/mac-traffic-03.png) 0 0 0 84;
+}
+
+.CentralWidget2 .SideBarWidget #titleBar #restoreButton {
+    border-image: url(image/top-window/mac-traffic-01.png) 0 28 0 56;
+}
+.CentralWidget2 .SideBarWidget #titleBar #restoreButton:hover {
+    border-image: url(image/top-window/mac-traffic-02.png) 0 28 0 56;
+}
+.CentralWidget2 .SideBarWidget #titleBar #restoreButton:pressed {
+    border-image: url(image/top-window/mac-traffic-03.png) 0 28 0 56;
+}
