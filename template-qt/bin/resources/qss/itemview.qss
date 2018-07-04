@@ -89,6 +89,36 @@ QTableCornerButton::section {
 }
 
 /* 树的样式 */
+
+QTreeView::item {
+    color: #495060;
+    min-height: 20px;
+    max-height: 20px;
+    border-width: 0;
+    margin-left: -5px;
+}
+
+QTreeView::branch {
+    min-width: 30px;
+}
+
+QTreeView::branch:hover {
+    background: rgb(235, 247, 255);
+}
+
+QTreeView::branch:selected {
+    background: rgb(248, 248, 248);
+}
+
+QTreeView::branch:has-children {
+    border-image: url(image/treeview/branch-open.png) 0;
+}
+
+QTreeView::branch:has-children:closed {
+    border-image: url(image/treeview/branch-close.png) 0;
+}
+
+/*
 QTreeView::item {
     border: 0px;
     color: #495060;
@@ -109,25 +139,26 @@ QTreeView::branch:selected {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
-     border-image: url(image/treeview/branch-vline.png) 0;
- }
+    border-image: url(image/treeview/branch-vline.png) 0;
+}
 
- QTreeView::branch:has-siblings:adjoins-item {
-     border-image: url(image/treeview/branch-more.png) 0;
- }
+QTreeView::branch:has-siblings:adjoins-item {
+    border-image: url(image/treeview/branch-more.png) 0;
+}
 
- QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url(image/treeview/branch-end.png) 0;
- }
+QTreeView::branch:!has-children:!has-siblings:adjoins-item {
+    border-image: url(image/treeview/branch-end.png) 0;
+}
 
- QTreeView::branch:has-children:!has-siblings:closed,
- QTreeView::branch:closed:has-children:has-siblings {
-         border-image: none;
-         image: url(image/treeview/branch-close.png) 0;
- }
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: url(image/treeview/branch-close.png) 0;
+}
 
- QTreeView::branch:open:has-children:!has-siblings,
- QTreeView::branch:open:has-children:has-siblings  {
-         border-image: none;
-         image: url(image/treeview/branch-open.png) 0;
- }
+QTreeView::branch:open:has-children:!has-siblings,
+QTreeView::branch:open:has-children:has-siblings  {
+    border-image: none;
+    image: url(image/treeview/branch-open.png) 0;
+}
+*/

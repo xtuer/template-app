@@ -21,12 +21,12 @@ int main(int argc, char *argv[]) {
 
     // [1] 主窗口使用自定义窗口显示: 2 种风格
     // 风格 1
-    /*CentralWidget *cw = new CentralWidget();
-    TopWindow window(cw);
-    // window.setTitle("普通窗口"); // 默认使用 CentralWidget 的 windowTitle
-    window.resize(1000, 700);
-    UiUtil::centerWindow(&window);
-    window.show();*/
+//    CentralWidget *cw = new CentralWidget();
+//    TopWindow window(cw);
+//    // window.setTitle("普通窗口"); // 默认使用 CentralWidget 的 windowTitle
+//    window.resize(1000, 700);
+//    UiUtil::centerWindow(&window);
+//    window.show();
 
     // 风格 2
     CentralWidget2 *cw = new CentralWidget2();

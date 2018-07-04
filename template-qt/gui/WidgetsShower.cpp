@@ -15,7 +15,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
     previewButton->setObjectName("previewButton");
 
     QStringList list;
-    list << "北京" << "天津" << "河北" << "山西" << "辽宁" << "吉林" << "黑龙江" << "上海" << "江苏" << "浙江" << "湖南" << "海南";
+    list << "北京" << "天津" << "河北" << "山西" << "辽宁" << "吉林" << "江苏" << "上海";
 
     // 添加 List Items
     QStringListModel *listModel = new QStringListModel();
@@ -45,6 +45,26 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
             }
         }
     }
+
+    // 添加 Tree Items
+    QStandardItemModel *treeModel = new QStandardItemModel();
+    treeModel->setHorizontalHeaderLabels(QStringList() << "树的标题");
+    for (int i = 1; i < 3; ++i) {
+        QStandardItem *firstLevel = new QStandardItem(QString::number(i));
+        treeModel->appendRow(firstLevel);
+
+        for (int j = 1; j < 3; ++j) {
+            QStandardItem *secondLevel = new QStandardItem(QString("%1-%2").arg(i).arg(j));
+            firstLevel->appendRow(secondLevel);
+
+            for (int k = 1; k < 3; ++k) {
+                QStandardItem *thirdLevel = new QStandardItem(QString("%1-%2-%3").arg(i).arg(j).arg(k));
+                secondLevel->appendRow(thirdLevel);
+            }
+        }
+    }
+    ui->treeView->setModel(treeModel);
+    ui->treeView->expandAll();
 
     connect(ui->horizontalSlider, &QSlider::valueChanged, ui->progressBar, &QProgressBar::setValue);
 

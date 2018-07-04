@@ -4,9 +4,11 @@
 * MessageBox: 基于 TopWindow 的消息对话框
 * CentralWidget: 用于界面功能布局的模板，左侧边栏是菜单，右边显示不同功能相关的 widget
 
-编译后把`源码 bin 目录下的所有文件`复制到编译出来的可执行文件所在目录，然后运行，界面效果为
+编译后把`源码 bin 目录下的所有文件`复制到编译出来的可执行文件所在目录，然后运行，界面效果有 2 种:
 
-![](effect.png)
+![](doc/effect-2.png)
+
+![](doc/effect-1.png)
 
 > 请注意查看代码中标记为 `CentralWidget 中 TODO` 的地方
 
