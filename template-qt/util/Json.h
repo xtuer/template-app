@@ -31,6 +31,7 @@ struct JsonPrivate;
  * 访问 street: json.getString("user.address.street")，返回 "Wiessenstrasse"
  * 访问 childrenNames: json.getStringList("user.childrenNames") 得到字符串列表("Alice", "Bob", "John")
  * 设置 "user.address.postCode" 则可以使用 json.set("user.address.postCode", "056231")
+ * 如果根节点是数组，则使用 json.getJsonArray(".") 获取
  *
  * 如果读取的属性不存在，则返回指定的默认值，如 "database.username.firstName" 不存在，
  * 调用 json.getString("database.username.firstName", "defaultName")，由于要访问的属性不存在，

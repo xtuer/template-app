@@ -16,6 +16,7 @@ struct JsonPrivate {
     QJsonValue getValue(const QString &path, const QJsonObject &fromNode) const;
 
     QJsonObject root;    // Json 的根节点
+    QJsonDocument doc;   // Json 的文档对象
     bool valid = true;   // Json 是否有效
     QString errorString; // Json 无效时的错误信息
 };
@@ -41,10 +42,10 @@ JsonPrivate::JsonPrivate(const QString &jsonOrJsonFilePath, bool fromFile) {
 
     // 解析 Json
     QJsonParseError error;
-    QJsonDocument jsonDocument = QJsonDocument::fromJson(json, &error);
+    doc = QJsonDocument::fromJson(json, &error);
 
     if (QJsonParseError::NoError == error.error) {
-        root = jsonDocument.object();
+        root = doc.object();
     } else {
         valid = false;
         errorString = QString("%1\nOffset: %2").arg(error.errorString()).arg(error.offset);
@@ -149,6 +150,11 @@ QStringList Json::getStringList(const QString &path, const QJsonObject &fromNode
 }
 
 QJsonArray Json::getJsonArray(const QString &path, const QJsonObject &fromNode) const {
+    // 如果根节点是数组时特殊处理
+    if (("." == path || "" == path) && fromNode.isEmpty()) {
+        return d->doc.array();
+    }
+
     return getJsonValue(path, fromNode).toArray();
 }
 
