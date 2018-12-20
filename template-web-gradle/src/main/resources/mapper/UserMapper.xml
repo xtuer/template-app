@@ -2,60 +2,71 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace 非常重要：必须是 Mapper 类的全路径-->
-<mapper namespace="ebag.mapper.UserMapper">
+<mapper namespace="edu.mapper.UserMapper">
     <!-- 用户查询结果的列 -->
     <sql id="user_columns">
-        user.id AS user_id, username, password, nickname, email, mobile, phone,
-        school_id, is_enabled, user_role.role AS user_role
+        id, username, password, nickname, email, mobile, phone, avatar, gender, school_id AS schoolId, is_enabled AS enabled, role
     </sql>
 
     <!-- 使用 ID 查找用户 -->
-    <select id="findUserById" parameterType="long" resultMap="userResultMap">
+    <select id="findUserById" parameterType="long" resultType="User">
         SELECT <include refid="user_columns"/>
         FROM user
-        LEFT JOIN user_role ON user.id=user_role.user_id
-        WHERE user.id=#{userId}
+        WHERE user.id = #{userId}
     </select>
 
     <!-- 查找学校的用户 -->
-    <select id="findUsersBySchoolId" resultMap="userResultMap">
+    <select id="findUsersBySchoolId" resultType="User">
         SELECT <include refid="user_columns"/>
         FROM user
-        LEFT JOIN user_role ON user.id=user_role.user_id
-        WHERE school_id=#{schoolId}
+        WHERE school_id = #{schoolId}
         LIMIT ${offset}, ${count}
     </select>
 
     <!-- 使用用户名和密码查找学校下的用户 -->
-    <select id="findUserByUsernameAndPasswordAndSchoolId" resultMap="userResultMap">
+    <select id="findUserByUsernameAndSchoolId" resultType="User">
         SELECT <include refid="user_columns"/>
         FROM user
-        LEFT JOIN user_role ON user.id=user_role.user_id
-        WHERE username=#{username} AND password=#{password} AND school_id=#{schoolId}
+        WHERE school_id = #{schoolId} AND username = #{username}
     </select>
 
     <!-- 插入或更新用户: 如果 ID 存在或者 school_id + username 的组合存在则进行更新 -->
     <insert id="insertOrUpdateUser">
-        INSERT INTO user (id, username, password, nickname, email, mobile, phone, school_id, created_time)
-        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{schoolId}, now())
-        ON DUPLICATE KEY UPDATE username=#{username}, password=#{password}, nickname=#{nickname}, email=#{email},
-                                mobile=#{mobile}, phone=#{phone}, school_id=#{schoolId}
+        INSERT INTO user (id, username, password, nickname, email, mobile, phone, role, gender, school_id, created_time)
+        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{role}, #{gender}, #{schoolId}, now())
+
+        ON DUPLICATE KEY
+        UPDATE username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email},
+               mobile = #{mobile}, phone = #{phone}, school_id = #{schoolId}
     </insert>
 
-    <!-- 用户对象的结果映射 -->
-    <resultMap id="userResultMap" type="User">
-        <id property="id" column="user_id"/>
-        <result property="username" column="username"/>
-        <result property="password" column="password"/>
-        <result property="nickname" column="nickname"/>
-        <result property="email"    column="email"/>
-        <result property="mobile"   column="mobile"/>
-        <result property="phone"    column="phone"/>
-        <result property="schoolId" column="school_id"/>
-        <result property="enabled"  column="is_enabled"/>
+    <!-- 更新用户的登录状态: 登录次数+1，记录最后的登录时间 -->
+    <update id="updateUserLoginStatus">
+        UPDATE user SET login_count = login_count+1, login_time = now() WHERE id = #{userId}
+    </update>
 
-        <collection property="roles" ofType="string">
-            <result column="user_role"/>
-        </collection>
-    </resultMap>
+    <!-- 更新用户的昵称 -->
+    <update id="updateUserNickname">
+        UPDATE user SET nickname = #{nickname} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的头像 -->
+    <update id="updateUserAvatar">
+        UPDATE user SET avatar = #{avatar} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的性别 -->
+    <update id="updateUserGender">
+        UPDATE user SET gender = #{gender} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的手机号 -->
+    <update id="updateUserMobile">
+        UPDATE user SET mobile = #{mobile} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的密码 -->
+    <update id="updateUserPassword">
+        UPDATE user SET password = #{password} WHERE id = #{userId}
+    </update>
 </mapper>

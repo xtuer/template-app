@@ -1,0 +1,160 @@
+html, body {
+    padding: 0;
+    margin: 0;
+    font-family: "微软雅黑", "HelveticaNeue-Light", Arial, sans-serif;
+}
+
+/* 盒子的样式 */
+.box {
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+    position: relative;
+
+    &.box-student {
+
+    }
+    &.box-teacher {
+        background: rgb(255, 255, 255);
+
+        .text {
+            color: #333 !important;
+        }
+    }
+    &.box-parent {
+        background-color: #4798ff;
+        padding: 0;
+
+        .cover {
+            // margin-right: 50px;
+        }
+
+        /* box3 底部的 3 个圆 */
+        .circle {
+            position: absolute;
+            z-index: 10;
+        }
+        .circle-1 {
+            top: 0;
+            left: -20px;
+            width: 300px;
+            height: auto;
+        }
+        .circle-2 {
+            top: 0px;
+            right: 280px;
+            width: 180px;
+            height: auto;
+        }
+        .circle-3 {
+            bottom: 0px;
+            right: 0px;
+            width: 450px;
+            height: auto;
+        }
+    }
+
+    /* 大图 */
+    .cover {
+        width:  auto;
+        height: 350px;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        z-index: 1000;
+
+        /* 二维码 */
+        .app-qr-code {
+            display: flex;
+            align-items: center;
+
+            .qr-code img {
+                width:  130px;
+                height: 130px;
+                margin: 10px;
+            }
+        }
+
+        /* 文字的样式 */
+        .title {
+            color: white;
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .text {
+            color: white;
+            text-align: center;
+        }
+    }
+}
+
+.special-container {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(135deg, rgba(15,164,255,1) 0%, rgba(63,98,255,1) 100%);
+}
+
+/* 头部 */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 90px;
+    padding: 0 70px;
+
+    .title {
+        display: flex;
+        align-items: center;
+
+        .logo {
+            width: 60px;
+            height: 26px;
+            margin-right: 6px;
+            border-image: url(/static-x/img/logo.png) 0 fill;
+            margin-top: 4px;
+        }
+
+        .title-text {
+            color: #FFF;
+            font-size: 26px;
+            font-weight: 550;
+            line-height: 26px;
+            text-shadow: 0px 0px 8px #666;
+        }
+    }
+
+    .login a {
+        display: flex;
+        justify-content: center;
+        color: #FFF;
+        text-decoration: none;
+        font-size: 16px;
+
+        img {
+            width: 20px;
+            height: 20px;
+            margin-right: 4px;
+        }
+
+        span {
+            height: 20px;
+            line-height: 20px;
+        }
+
+        &:hover {
+            color: #EEE;
+        }
+    }
+}
+
+/* 版权 */
+.copy-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+}

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 加载配置 -->
+    <context:property-placeholder location="classpath:config/application.properties" file-encoding="UTF-8"/>
+
+    <!-- Service, Dao, Config, Redis 等公用的、与 Servlet 无关的对象在此生成 -->
+    <import resource="classpath:config/redis.xml"/>
+    <import resource="classpath:config/mongodb.xml"/>
+    <import resource="classpath:config/mybatis.xml"/>
+    <import resource="classpath:config/spring-transaction.xml"/>
+    <import resource="classpath:config/elasticsearch.xml"/>
+    <import resource="classpath:config/activemq.xml"/>
+
+    <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
+    <context:component-scan base-package="edu.service">
+        <!--<context:exclude-filter type="assignable" expression="ebag.service.ResourceConverter"/>-->
+        <!--<context:exclude-filter type="assignable" expression="ebag.service.ResourceService"/>-->
+        <!--<context:exclude-filter type="assignable" expression="ebag.service.ActivityService"/>-->
+    </context:component-scan>
+
+    <!-- 分布式唯一 ID 生成器 -->
+    <bean id="idWorker" class="edu.service.IdWorker">
+        <constructor-arg value="${idWorker}"/>
+    </bean>
+</beans>

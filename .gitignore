@@ -3,9 +3,11 @@
 dump.rdb
 
 ### iView ###
-!template-vue-app/build/
 template-web-gradle/src/main/webapp/WEB-INF/page
+template-web-gradle/src/main/webapp/WEB-INF/page-vue
 template-web-gradle/src/main/webapp/WEB-INF/static
+node_modules/
+_book/
 
 ### Gradle ###
 build/

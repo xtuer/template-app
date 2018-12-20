@@ -236,3 +236,21 @@ QPushButton *UiUtil::createLineEditRightButton(QLineEdit *edit) {
 
     return button;
 }
+
+// 删除 widget 中的所有子 widgets
+void UiUtil::emptyWidget(QWidget *widget) {
+    QLayout *layout = widget->layout();
+    QLayoutItem *item = nullptr;
+
+    if (nullptr == layout) {
+        return;
+    }
+
+    while ((item = layout->takeAt(0)) != nullptr) {
+        if (item->widget()) {
+            delete item->widget();
+        } else {
+            delete item;
+        }
+    }
+}

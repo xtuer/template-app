@@ -26,7 +26,7 @@
                 console.log(result);
             }});
 
-            $.rest.get({url: '/demo/rest/{id}', urlParams: {id: 121}, data: {name: '黄彪'}, success: function(result) {
+            $.rest.get({url: '/demo/rest/{id}', pathVariables: {id: 121}, data: {name: '黄彪'}, success: function(result) {
                 console.log(result);
             }, fail: function(e) {
                 console.log(e);

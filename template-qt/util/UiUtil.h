@@ -55,6 +55,9 @@ public:
 
     // 给 QLineEdit 最右边创建一个按钮
     static QPushButton* createLineEditRightButton(QLineEdit *edit);
+
+    // 删除 widget 中的所有子 widgets
+    static void emptyWidget(QWidget *widget);
 };
 
 #endif // UIUTIL_H

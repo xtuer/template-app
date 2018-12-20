@@ -13,6 +13,9 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
 
     <!-- Filters -->
     <!-- Filter 1: 浏览器的 form 不支持 put, delete 等 method, 由该 filter 将 /blog?_method=delete 转换为标准的 http delete 方法 -->
@@ -63,7 +66,6 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>
                 classpath:config/application-servlet.xml
-                classpath:config/spring-transaction.xml
             </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>

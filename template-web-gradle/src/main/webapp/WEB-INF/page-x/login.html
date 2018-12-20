@@ -1,76 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <title>登录</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="|${school?.name} · 登录|"></title>
 
-    <link href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/static-x/css/login.css" rel="stylesheet">
-
-    <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css"/>
+    <link href="/static-x/css/login.less" rel="stylesheet/less" type="text/css"/>
 </head>
 
 <body>
-<div class="container">
-	<div class="login-container">
-        <!-- status: login-error, login-success, logout-success -->
-        <div id="status" th:text="${status}"></div>
-        <div id="output"></div>
-        <div class="avatar"></div>
+    <!-- 动画背景 -->
+    <div id="particles-js"></div>
 
-        <div class="form-box">
-            <form action="/login" method="POST">
-                <input name="username" type="text"     placeholder="名字">
-                <input name="password" type="password" placeholder="密码">
-                <label style="padding: 5px; margin: 10px; margin-bottom: 0;">
-                    <input type="checkbox" name="remember-me" style="width: auto; height: auto;"/> Remember Me
-                </label>
-                <button id="login" class="btn btn-info btn-block login" type="submit">登录</button>
+    <div class="main">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="title">
+                <div class="logo"></div>
+                <div th:text="${school?.name}" class="title-text"></div>
+            </div>
+            <div class="download"><a href="/page/download"><img src="/static-x/img/download/download.png"><span>App 下载</span></a></div>
+        </div>
 
-                <a class="btn btn-info btn-block login" href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101292272&redirect_uri=http://open.qtdebug.com:8080/oauth/qq/callback&scope=get_user_info">QQ Login</a>
-            </form>
+        <div class="content">
+            <!-- 网站主题图 -->
+            <div class="theme-image"></div>
+            <!-- <div th:if="${school?.imageUrl}" th:style="|background-image: url(${school.imageUrl})|" class="theme-image"></div>
+            <div th:unless="${school?.imageUrl}" style="background-image: url(/static-x/img/theme-default.png)" class="theme-image"></div> -->
+
+            <!-- 登录框 -->
+            <div class="login-container">
+                <div id="status" th:text="${status}"></div>
+
+                <!-- 头像 -->
+                <div th:if="${avatar}" class="avatar" th:style="|background-image: url(${avatar})|"></div>
+                <div th:unless="${avatar}" class="avatar" style="background-image: url(/static-x/img/avatar-default.png)"></div>
+
+                <!-- 用户名密码和登录按钮 -->
+                <form action="/login" method="POST" class="form-box">
+                    <input name="username" type="text"     placeholder="账号">
+                    <input name="password" type="password" placeholder="密码">
+                    <button id="login" type="submit">登录</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 版权 -->
+        <div class="footer">
+            <!-- 版权 -->
+            <div class="copy-right">Copyright ©2000-2018 Cloudbag 教育云平台</div>
         </div>
     </div>
-</div>
 
-<script type="text/javascript">
-$(function(){
-    $('.avatar').css({ "background-image": "url('/static-x/img/admin-offline.png')" });
-    var status = $('#status').text();
-
-    if ('login-success' == status) {
-        // 已经登录状态， 显示注销按钮，隐藏名字和密码输入框
-        $('input').hide();
-        $('form').attr('action', '/logout');
-        $('#login').html("注销").removeClass("btn-info").addClass("btn-default");
-        $('.avatar').css({ "background-image": "url('/static-x/img/admin-online.png')" });
-    } else if ('login-error' == status) {
-        // 登录失败
-        $("#output").removeClass('alert alert-success');
-        $("#output").addClass("alert alert-danger animated fadeInUp").html("名字或者密码错误");
-    }
-
-    // 点击登录按钮
-    $('#login').click(function(e) {
-        if ('login-success' != status) {
-            // 不是登录状态
-            var username = $('input[name=username]').val();
-            var password = $('input[name=password]').val();
-
-            // 如果名字或者密码为空，则不提交登录操作
-            if (username == '' || password == '') {
-                e.preventDefault();
-                // remove success message replaced with error message
-                $("#output").removeClass('alert alert-success');
-                $("#output").addClass("alert alert-danger animated fadeInUp").html("请输入名字和密码");
-                return ; // 停止提交登陆表单
-            }
+    <script src="/static-x/lib/particles/particles.min.js"></script>
+    <script src="/static-x/lib/particles/app.js"></script>
+    <script src="/static-x/lib/less.min.js"></script>
+    <script src="/static-x/lib/jquery.min.js"></script>
+    <script src="/static-x/lib/jquery.browser.min.js"></script>
+    <script>
+        if ($.browser.webkit) {
+            // 正在使用 Chrome, Safari 访问本站
+        } else if ($.browser.mozilla) {
+            alert('您使用的是 Firefox, 推荐使用 Chrome 浏览器获得更好的体验');
+        } else {
+            alert('请使用 Chrome 浏览器进行访问');
         }
-    });
-});
-
-</script>
+    </script>
 </body>
+
 </html>

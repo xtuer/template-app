@@ -1,0 +1,58 @@
+.tags
+.tags*
+.gitkeep
+dump.rdb
+package-lock.json
+
+### Gradle ###
+build/
+.gradle/
+
+### iView ###
+src/main/webapp/WEB-INF/page-vue
+
+### LOG ###
+*.log
+log.txt
+logs/
+
+### Mac OS ###
+.DS_Store
+
+### Maven ###
+target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+*.iws
+*.iml
+*.ipr
+.idea/
+out/
+classes/
+
+### Eclipse ###
+.settings/
+.classpath
+.project
+
+### NetBeans ###
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+
+### GitBook ###
+_book/
+node_modules/
+
+### Qt ###
+*.user
+*.pro.user

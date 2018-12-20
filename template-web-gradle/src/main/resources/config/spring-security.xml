@@ -14,6 +14,15 @@
     <!-- 使用自动装配 -->
     <context:annotation-config/>
 
+    <!-- Token 白名单，在此名单中的 UIR 都不进行 token 校验 -->
+    <beans:bean id="tokenWhiteList" class="java.util.HashSet">
+        <beans:constructor-arg>
+            <beans:set>
+                <beans:value>/api/schools</beans:value>
+            </beans:set>
+        </beans:constructor-arg>
+    </beans:bean>
+
     <!-- 匹配的 URL 不进行身份验证 -->
     <http security="none" pattern="/page/login"/>
     <http security="none" pattern="/static/**"/>
@@ -21,10 +30,13 @@
 
     <!-- 禁止创建 session，使用 token 的方式进行认证 -->
     <http auto-config="true" create-session="stateless" use-expressions="false" access-decision-manager-ref="accessDecisionManager">
-        <intercept-url pattern="/page/admin"   access="ROLE_ADMIN"/>
+        <intercept-url pattern="/page/admin"   access="ROLE_ADMIN_SYSTEM"/>
         <intercept-url pattern="/demo/filters" access="ROLE_USER"/>
-        <intercept-url pattern="/page/teacher" access="ROLE_ADMIN"/>
-        <intercept-url pattern="/page/student" access="ROLE_USER"/>
+        <intercept-url pattern="/page/teacher" access="ROLE_TEACHER"/>
+        <intercept-url pattern="/page/student" access="ROLE_STUDENT"/>
+
+        <intercept-url pattern="/page/admin-system" access="ROLE_ADMIN_SYSTEM"/>
+        <intercept-url pattern="/page/admin-school" access="ROLE_ADMIN_SCHOOL"/>
 
         <form-login login-page="/page/login"
                     login-processing-url="/login"
@@ -56,13 +68,12 @@
     </beans:bean>
 
     <!-- 第三方登陆 filter 和 Token 登陆验证 filter -->
-    <beans:bean id="oauthAuthenticationFilter" class="ebag.security.OAuthAuthenticationFilter"/>
-    <beans:bean id="tokenAuthenticationFilter" class="ebag.security.TokenAuthenticationFilter"/>
+    <beans:bean id="oauthAuthenticationFilter" class="edu.security.OAuthAuthenticationFilter"/>
+    <beans:bean id="tokenAuthenticationFilter" class="edu.security.TokenAuthenticationFilter"/>
 
-    <beans:bean id="tokenService"       class="ebag.security.TokenService"/>
-    <beans:bean id="userService"        class="ebag.service.UserService"/>
-    <beans:bean id="userDetailsService" class="ebag.security.UserDetailsService"/>
-    <beans:bean id="authenticationSuccessHandler" class="ebag.security.AuthenticationSuccessHandler"/>
+    <beans:bean id="tokenService"       class="edu.security.TokenService"/>
+    <beans:bean id="userDetailsService" class="edu.security.UserDetailsService"/>
+    <beans:bean id="authenticationSuccessHandler" class="edu.security.AuthenticationSuccessHandler"/>
 
     <!-- 自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">

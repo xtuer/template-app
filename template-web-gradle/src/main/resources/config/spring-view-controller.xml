@@ -13,7 +13,6 @@
     <mvc:view-controller path="/page/demo/useRequire" view-name="demo/useRequire.html"/>
     <mvc:view-controller path="/page/demo/upload" view-name="demo/upload.html"/>
 
-    <mvc:view-controller path="/page/teacher" view-name="../page/teacher/index.html"/>
-    <mvc:view-controller path="/page/student" view-name="../page/student/index.html"/>
-    <mvc:view-controller path="/page/admin-platform" view-name="../page/admin-platform/index.html"/>
+    <mvc:view-controller path="/page/page1"  view-name="../page-vue/page1.html"/>
+    <mvc:view-controller path="/page/page2"  view-name="../page-vue/page2.html"/>
 </beans>

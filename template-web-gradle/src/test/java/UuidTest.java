@@ -1,4 +1,4 @@
-import ebag.util.Utils;
+import edu.util.Utils;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -17,11 +17,12 @@
     <import resource="classpath:config/spring-view-controller.xml"/>
 
     <!-- 控制器 -->
-    <context:component-scan base-package="ebag.controller"/>
+    <context:component-scan base-package="edu.controller"/>
 
     <!-- 注解映射支持 -->
     <mvc:annotation-driven conversion-service="customConversionService">
         <!--enableMatrixVariables="true">-->
+        <mvc:path-matching registered-suffixes-only="true"/>
         <mvc:message-converters register-defaults="true">
             <!-- StringHttpMessageConverter 编码为 UTF-8，防止乱码 -->
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
@@ -40,38 +41,40 @@
                         <value>application/json;charset=UTF-8</value>
                     </list>
                 </property>
-                <property name="fastJsonConfig">
-                    <bean class="com.alibaba.fastjson.support.config.FastJsonConfig">
-                        <property name="features">
-                            <list>
-                                <value>AllowArbitraryCommas</value>
-                                <value>AllowUnQuotedFieldNames</value>
-                                <value>DisableCircularReferenceDetect</value>
-                            </list>
-                        </property>
-                        <property name="serializerFeatures">
-                            <list>
-                                <value>BrowserCompatible</value> <!-- 解决 JS 不支持 Long 类型: Long 输出为字符串 -->
-                                <value>MapSortField</value>
-                                <value>WriteMapNullValue</value>
-                                <value>WriteNullBooleanAsFalse</value>
-                                <value>WriteNullListAsEmpty</value>
-                                <value>WriteNullNumberAsZero</value>
-                                <value>WriteNullStringAsEmpty</value>
-                            </list>
-                        </property>
-                        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
-                    </bean>
-                </property>
+                <property name="fastJsonConfig" ref="fastJsonConfigExt"/>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+
+    <!-- FastJson Config -->
+    <bean id="fastJsonConfigExt" class="edu.config.FastJsonConfigExt">
+        <property name="features">
+            <list>
+                <value>AllowArbitraryCommas</value>
+                <value>AllowUnQuotedFieldNames</value>
+                <value>DisableCircularReferenceDetect</value>
+            </list>
+        </property>
+
+        <property name="serializerFeatures">
+            <list>
+                <value>MapSortField</value>
+                <value>WriteMapNullValue</value>
+                <value>WriteNullBooleanAsFalse</value>
+                <value>WriteNullListAsEmpty</value>
+                <value>WriteNullNumberAsZero</value>
+                <value>WriteNullStringAsEmpty</value>
+                <value>DisableCircularReferenceDetect</value>
+            </list>
+        </property>
+        <property name="dateFormat" value="yyyy-MM-dd HH:mm:ss"/>
+    </bean>
 
     <!-- 类型转换 -->
     <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="ebag.converter.DateConverter"/>
+                <bean class="edu.converter.DateConverter"/>
             </set>
         </property>
     </bean>
@@ -99,7 +102,7 @@
     <bean id="compositeExceptionResolver" class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
         <property name="exceptionResolvers">
             <list>
-                <bean class="ebag.exception.HandlerExceptionResolver"/>
+                <bean class="edu.exception.HandlerExceptionResolver"/>
             </list>
         </property>
         <property name="order" value="0"/>
@@ -111,17 +114,20 @@
     </mvc:cors>
 
     <!-- 静态资源的访问，如 js, css, jpg, png -->
-    <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/static/js/jquery.js -->
-    <mvc:resources mapping="/static/js/**"     location="/WEB-INF/static/js/"     cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/css/**"    location="/WEB-INF/static/css/"    cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/img/**"    location="/WEB-INF/static/img/"    cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/fonts/**"  location="/WEB-INF/static/fonts/"  cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/lib/**"    location="/WEB-INF/static/lib/"    cache-period="${cachePeriod}"/>
+    <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/page-vue/static/js/jquery.js -->
+    <mvc:resources mapping="/static/js/**"      location="/WEB-INF/page-vue/static/js/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/css/**"     location="/WEB-INF/page-vue/static/css/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/img/**"     location="/WEB-INF/page-vue/static/img/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/fonts/**"   location="/WEB-INF/page-vue/static/fonts/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/lib/**"     location="/WEB-INF/page-vue/static/lib/"   cache-period="${cachePeriod}"/>
 
-    <mvc:resources mapping="/static-x/js/**"   location="/WEB-INF/static-x/js/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/css/**"  location="/WEB-INF/static-x/css/"  cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/img/**"  location="/WEB-INF/static-x/img/"  cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/lib/**"  location="/WEB-INF/static-x/lib/"  cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/html/**" location="/WEB-INF/static-x/html/" cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/favicon.ico"      location="/WEB-INF/static-x/img/favicon.ico" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/books/**" location="/WEB-INF/static-x/books/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/kps/**"   location="/WEB-INF/static-x/kps/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/js/**"    location="/WEB-INF/static-x/js/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/css/**"   location="/WEB-INF/static-x/css/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/img/**"   location="/WEB-INF/static-x/img/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/lib/**"   location="/WEB-INF/static-x/lib/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/html/**"  location="/WEB-INF/static-x/html/"  cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/impex/**" location="/WEB-INF/static-x/impex/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/favicon.ico"       location="/WEB-INF/static-x/img/favicon.ico" cache-period="${cachePeriod}"/>
 </beans>

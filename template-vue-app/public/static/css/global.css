@@ -1,0 +1,67 @@
+/* 滚动条样式，只支持 Webkit 内核浏览器，如 Chrome, Safari */
+::-webkit-scrollbar {
+    width:  5px;
+    height: 5px;
+}
+::-webkit-scrollbar-track {
+    background: #ddd;
+}
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* 文件类型图标样式 */
+.file-type-png {
+    background-image: url(/static/img/file-type/png.png);
+}
+.file-type-jpg {
+    background-image: url(/static/img/file-type/jpg.png);
+}
+.file-type-gif {
+    background-image: url(/static/img/file-type/gif.png);
+}
+.file-type-pdf {
+    background-image: url(/static/img/file-type/pdf.png);
+}
+.file-type-word {
+    background-image: url(/static/img/file-type/word.png);
+}
+.file-type-ppt {
+    background-image: url(/static/img/file-type/ppt.png);
+}
+.file-type-excel {
+    background-image: url(/static/img/file-type/excel.png);
+}
+.file-type-zip {
+    background-image: url(/static/img/file-type/zip.png);
+}
+.file-type-swf {
+    background-image: url(/static/img/file-type/swf.png);
+}
+.file-type-mp4 {
+    background-image: url(/static/img/file-type/mp4.png);
+}
+.file-type-mp3 {
+    background-image: url(/static/img/file-type/mp3.png);
+}
+.file-type-other {
+    background-image: url(/static/img/file-type/other.png);
+}
+
+/* 弹簧拉伸占满剩余空间 */
+.stretch {
+    flex: 1;
+}
+
+/* 文本不换行显示 */
+.nobreak {
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+/* 文本只显示在一行，溢出时显示三个小点: elide 是省略的意思 */
+.elide {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

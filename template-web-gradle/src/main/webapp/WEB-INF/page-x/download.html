@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title th:text="|${school?.name} · 下载|"></title>
+
+    <link href="/static/css/global.css" rel="stylesheet" type="text/css"/>
+    <link href="/static-x/css/download.less" rel="stylesheet/less" type="text/css"/>
+    <script src="/static-x/lib/less.min.js"></script>
+</head>
+
+<body>
+    <div class="special-container">
+        <div class="header">
+            <div class="title">
+                <div class="logo"></div>
+                <div th:text="${school?.name}" class="title-text"></div>
+            </div>
+            <div class="login"><a href="/"><img src="/static-x/img/download/home.png"><span>首页</span></a></div>
+        </div>
+
+        <!-- 我是学生 -->
+        <div class="box box-student">
+            <img src="/static-x/img/download/student.png" class="cover cover-left">
+            <div class="content">
+                <div class="title text">我是学生</div>
+                <div class="app-qr-code">
+                    <div class="qr-code">
+                        <img src="/static-x/img/download/erm.jpg">
+                        <div class="text">Android 下载</div>
+                    </div>
+                    <div class="qr-code">
+                        <img src="/static-x/img/download/erm.jpg">
+                        <div class="text">iOS 下载</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我是老师 -->
+    <div class="box box-teacher">
+        <div class="content">
+            <div class="title text">我是老师</div>
+            <div class="app-qr-code">
+                <div class="qr-code">
+                    <img src="/static-x/img/download/erm.jpg">
+                    <div class="text">Android 下载</div>
+                </div>
+                <div class="qr-code">
+                    <img src="/static-x/img/download/erm.jpg">
+                    <div class="text">iOS 下载</div>
+                </div>
+            </div>
+        </div>
+        <img src="/static-x/img/download/teacher.png" class="cover cover-right">
+    </div>
+
+    <!-- 我是家长 -->
+    <div class="box box-parent">
+        <img src="/static-x/img/download/circle-1.png" class="circle circle-1">
+        <img src="/static-x/img/download/circle-2.png" class="circle circle-2">
+        <img src="/static-x/img/download/circle-3.png" class="circle circle-3">
+
+        <img src="/static-x/img/download/parent.png" class="cover cover-left">
+        <div class="content">
+            <div class="title text">我是家长</div>
+            <div class="app-qr-code">
+                <div class="qr-code">
+                    <img src="/static-x/img/download/erm.jpg">
+                    <div class="text">Android 下载</div>
+                </div>
+                <div class="qr-code">
+                    <img src="/static-x/img/download/erm.jpg">
+                    <div class="text">iOS 下载</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="copy-right">
+        Copyright ©2000-2018 Cloudbag 教育云平台
+    </div>
+</body>
+
+</html>

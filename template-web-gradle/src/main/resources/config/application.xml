@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -10,16 +10,17 @@
     <!-- 加载配置 -->
     <context:property-placeholder location="classpath:config/application.properties" file-encoding="UTF-8"/>
 
-    <!-- Service, Dao, Config, Redis 等公用的、与 Servlet 无关的对象在此生成 -->
+    <!-- Service, Dao, Config, Redis, elasticsearch 等公用的、与 Servlet 无关的对象在此生成 -->
     <import resource="classpath:config/redis.xml"/>
     <import resource="classpath:config/mybatis.xml"/>
     <import resource="classpath:config/spring-security.xml"/>
+    <import resource="classpath:config/spring-transaction.xml"/>
 
     <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
-    <context:component-scan base-package="ebag.service"/>
+    <context:component-scan base-package="edu.service"/>
 
     <!-- 分布式唯一 ID 生成器 -->
-    <bean id="idWorker" class="ebag.service.IdWorker">
+    <bean id="idWorker" class="edu.service.IdWorker">
         <constructor-arg value="${idWorker}"/>
     </bean>
 </beans>

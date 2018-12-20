@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace 非常重要：必须是 Mapper 类的全路径-->
+<mapper namespace="edu.mapper.CommonMapper">
+    <!-- 使用 ID 查询上传的文件 -->
+    <select id="findUploadedFileById" resultType="UploadedFile">
+        SELECT id, filename, url, type, user_id FROM uploaded_file WHERE id = #{id}
+    </select>
+
+    <!-- 插入或者更新上传的文件 -->
+    <insert id="insertOrUpdateUploadedFile" parameterType="UploadedFile">
+        INSERT INTO uploaded_file (id, filename, url, type, user_id, created_time)
+        VALUES (#{id}, #{filename}, #{url}, #{type}, #{userId}, now())
+
+        ON DUPLICATE KEY
+        UPDATE filename = #{filename}, url = #{url}, type = #{type}
+    </insert>
+
+    <!-- 删除上传文件的记录 -->
+    <delete id="deleteUploadedFileById" parameterType="long">
+        DELETE FROM uploaded_file WHERE id=#{id}
+    </delete>
+</mapper>

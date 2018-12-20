@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <configuration scan="true" scanPeriod="30 seconds">
-    <property name="logDir" value="/temp/logs"/>
+    <!-- 日志保存目录 -->
+    <property name="logDir" value="/ebag/logs"/>
 
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- 控制台日志 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%F-%M:%L] - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- 所有日志 -->
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%F-%M:%L] - %msg%n</pattern>
@@ -20,13 +23,37 @@
         </rollingPolicy>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="stdout"/>
+    <!-- 错误日志: 级别大于等于 WARN 的日志再次写入错误日志文件 -->
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+
+        <encoder>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%F-%M:%L] - %msg%n</pattern>
+        </encoder>
+
+        <file>${logDir}/log_error.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logDir}/log_error_%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 根日志对象 -->
+    <root level="debug">
+        <appender-ref ref="console"/>
         <appender-ref ref="file"/>
+        <appender-ref ref="error"/>
     </root>
 
+    <!-- 控制每一个包的日志级别 -->
     <logger name="org.apache.ibatis.io" level="off"/>
     <logger name="org.springframework"  level="info"/>
     <logger name="org.mybatis"          level="off"/>
-    <logger name="ebag.mapper"          level="debug"/>
+    <logger name="edu.mapper" level="debug"/>
+    <logger name="org.mongodb.driver"   level="info"/>
+    <logger name="org.thymeleaf"        level="info"/>
+    <logger name="org.apache.activemq"  level="info"/>
+    <logger name="org.apache.zookeeper" level="info"/>
 </configuration>
