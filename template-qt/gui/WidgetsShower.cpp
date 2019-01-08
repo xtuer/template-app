@@ -68,7 +68,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
 
     connect(ui->horizontalSlider, &QSlider::valueChanged, ui->progressBar, &QProgressBar::setValue);
 
-    connect(ui->confirmButton, &QPushButton::clicked, [this] {
+    connect(ui->confirmButton, &QPushButton::clicked, [] {
         // 信息使用 HTML
         QString info = "<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                        "<b>法人</b>: 齐天大圣<br>"
@@ -78,7 +78,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
         qDebug() << "Confirm:" << result;
     });
 
-    connect(ui->messageButton, &QPushButton::clicked, [this] {
+    connect(ui->messageButton, &QPushButton::clicked, [] {
         MessageBox::message("简单消息对话框");
     });
 

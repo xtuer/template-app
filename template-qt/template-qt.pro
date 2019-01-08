@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # Output directory
 CONFIG(debug, debug|release) {
     output = debug
+    TARGET = template-qt_d
 }
 CONFIG(release, debug|release) {
     output = release

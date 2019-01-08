@@ -44,8 +44,8 @@ struct LogHandlerPrivate {
 
 // 初始化 static 变量
 QMutex LogHandlerPrivate::logMutex;
-QFile* LogHandlerPrivate::logFile = NULL;
-QTextStream* LogHandlerPrivate::logOut = NULL;
+QFile* LogHandlerPrivate::logFile = nullptr;
+QTextStream* LogHandlerPrivate::logOut = nullptr;
 
 LogHandlerPrivate::LogHandlerPrivate() {
     logDir.setPath("log"); // TODO: 日志文件夹的路径，为 exe 所在目录下的 log 文件夹，可从配置文件读取
@@ -70,44 +70,44 @@ LogHandlerPrivate::LogHandlerPrivate() {
     // 定时刷新日志输出到文件，尽快的能在日志文件里看到最新的日志
     flushLogFileTimer.setInterval(1000); // TODO: 可从配置文件读取
     flushLogFileTimer.start();
-    QObject::connect(&flushLogFileTimer, &QTimer::timeout, [this] {
+    QObject::connect(&flushLogFileTimer, &QTimer::timeout, [] {
         // qDebug() << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss"); // 测试不停的写入内容到日志文件
         QMutexLocker locker(&LogHandlerPrivate::logMutex);
-        if (NULL != logOut) {
+        if (nullptr != logOut) {
             logOut->flush();
         }
     });
 }
 
 LogHandlerPrivate::~LogHandlerPrivate() {
-    if (NULL != logFile) {
+    if (nullptr != logFile) {
         logFile->flush();
         logFile->close();
         delete logOut;
         delete logFile;
 
         // 因为他们是 static 变量
-        logOut  = NULL;
-        logFile = NULL;
+        logOut  = nullptr;
+        logFile = nullptr;
     }
 }
 
 // 打开日志文件 log.txt，如果不是当天创建的，则使用创建日期把其重命名为 yyyy-MM-dd.log，并重新创建一个 log.txt
 void LogHandlerPrivate::openAndBackupLogFile() {
     // 总体逻辑:
-    // 1. 程序启动时 logFile 为 NULL，初始化 logFile，有可能是同一天打开已经存在的 logFile，所以使用 Append 模式
-    // 2. logFileCreatedDate is null, 说明日志文件在程序开始时不存在，所以记录下创建时间
+    // 1. 程序启动时 logFile 为 nullptr，初始化 logFile，有可能是同一天打开已经存在的 logFile，所以使用 Append 模式
+    // 2. logFileCreatedDate is nullptr, 说明日志文件在程序开始时不存在，所以记录下创建时间
     // 3. 程序运行时检查如果 logFile 的创建日期和当前日期不相等，则使用它的创建日期重命名，然后再生成一个新的 log.txt 文件
 
     makeSureLogDirectory(); // 如果日志所在目录不存在，则创建
     QString logPath = logDir.absoluteFilePath("log.txt"); // 日志的路径
 
-    // [[1]] 程序启动时 logFile 为 NULL
-    if (NULL == logFile) {
+    // [[1]] 程序启动时 logFile 为 nullptr
+    if (nullptr == logFile) {
         logFile = new QFile(logPath);
-        logOut  = (logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) ?  new QTextStream(logFile) : NULL;
+        logOut  = (logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append)) ?  new QTextStream(logFile) : nullptr;
 
-        if (NULL != logOut) {
+        if (nullptr != logOut) {
             logOut->setCodec("UTF-8");
         }
 
@@ -131,10 +131,10 @@ void LogHandlerPrivate::openAndBackupLogFile() {
         QFile::remove(logPath); // 删除重新创建，改变创建时间
 
         logFile = new QFile(logPath);
-        logOut  = (logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) ?  new QTextStream(logFile) : NULL;
+        logOut  = (logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) ?  new QTextStream(logFile) : nullptr;
         logFileCreatedDate = QDate::currentDate();
 
-        if (NULL != logOut) {
+        if (nullptr != logOut) {
             logOut->setCodec("UTF-8");
         }
     }
@@ -168,7 +168,8 @@ void LogHandlerPrivate::messageHandler(QtMsgType type, const QMessageLogContext 
     case QtFatalMsg:
         level = "FATAL";
         break;
-    default:;
+    default:
+        break;
     }
 
     // 输出到标准输出: Windows 下 std::cout 使用 GB2312，而 msg 使用 UTF-8，但是程序的 Local 也还是使用 UTF-8
@@ -180,7 +181,7 @@ void LogHandlerPrivate::messageHandler(QtMsgType type, const QMessageLogContext 
 
     std::cout << std::string(localMsg) << std::endl;
 
-    if (NULL == LogHandlerPrivate::logOut) {
+    if (nullptr == LogHandlerPrivate::logOut) {
         return;
     }
 
@@ -199,7 +200,7 @@ void LogHandlerPrivate::messageHandler(QtMsgType type, const QMessageLogContext 
  *                                               LogHandler                                                 *
  *                                                                                                          *
  ***********************************************************************************************************/
-LogHandler::LogHandler() : d(NULL) {
+LogHandler::LogHandler() : d(nullptr) {
 }
 
 LogHandler::~LogHandler() {
@@ -208,7 +209,7 @@ LogHandler::~LogHandler() {
 void LogHandler::installMessageHandler() {
     QMutexLocker locker(&LogHandlerPrivate::logMutex);
 
-    if (NULL == d) {
+    if (nullptr == d) {
         d = new LogHandlerPrivate();
         qInstallMessageHandler(LogHandlerPrivate::messageHandler); // 给 Qt 安装自定义消息处理函数
     }
@@ -216,7 +217,7 @@ void LogHandler::installMessageHandler() {
 
 void LogHandler::uninstallMessageHandler() {
     QMutexLocker locker(&LogHandlerPrivate::logMutex);
-    qInstallMessageHandler(0);
+    qInstallMessageHandler(nullptr);
     delete d;
-    d = NULL;
+    d = nullptr;
 }

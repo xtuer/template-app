@@ -28,7 +28,7 @@ public:
     QButtonGroup   *switchButtons; // 侧边栏切换界面的按钮组
     QList<QAbstractButton *> itemButtons; // 侧边栏的所有 class 为 GroupItemButton 的按钮
     QHash<QAbstractButton *, QWidget *> buttonWidgetHash; // key 是侧边栏切换界面的按钮的指针，value 是右侧 widget 的指针
-    TopWindow *topWindow = NULL;
+    TopWindow *topWindow = nullptr;
 };
 
 /*-----------------------------------------------------------------------------|
@@ -59,19 +59,19 @@ void CentralWidget2::setTopWindow(TopWindow *topWindow) {
     ui->restoreButton->disconnect(SIGNAL(clicked()));
 
     connect(ui->closeButton, &QPushButton::clicked, [this] {
-        if (0 != d->topWindow) {
+        if (nullptr != d->topWindow) {
             d->topWindow->close();
         }
     });
 
     connect(ui->minButton, &QPushButton::clicked, [this] {
-        if (0 != d->topWindow) {
+        if (nullptr != d->topWindow) {
             d->topWindow->showMinimized();
         }
     });
 
     connect(ui->maxButton, &QPushButton::clicked, [this] {
-        if (0 != d->topWindow) {
+        if (nullptr != d->topWindow) {
             d->topWindow->showMaximized();
             ui->maxButton->hide();
             ui->restoreButton->show();
@@ -79,7 +79,7 @@ void CentralWidget2::setTopWindow(TopWindow *topWindow) {
     });
 
     connect(ui->restoreButton, &QPushButton::clicked, [this] {
-        if (0 != d->topWindow) {
+        if (nullptr != d->topWindow) {
             d->topWindow->showNormal();
             ui->maxButton->show();
             ui->restoreButton->hide();
@@ -113,7 +113,7 @@ void CentralWidget2::initializeUi() {
         QString className = child->property("class").toString();
         QString action    = child->property("action").toString();
 
-        if (NULL == button) { continue; }
+        if (nullptr == button) { continue; }
 
         if ("GroupButton" == className) {
             // 分组的按钮放到一个组里
@@ -131,7 +131,7 @@ void CentralWidget2::initializeUi() {
 
         // 把 QPushButton 设置为 flat 的效果，这样 QSS 的效果更好
         QPushButton *pushButton = qobject_cast<QPushButton *>(button);
-        if (NULL != pushButton) {
+        if (nullptr != pushButton) {
             pushButton->setFlat(true);
         }
     }
@@ -175,7 +175,7 @@ void CentralWidget2::handleEvents() {
     });
 
     // TODO: 使用自定义无边框窗口显示弹出对话框，这里只是为了演示
-    connect(ui->itemButton7, &QPushButton::clicked, [this] {
+    connect(ui->itemButton7, &QPushButton::clicked, [] {
         MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                             "<b>法人</b>: 齐天大圣<br>"
                             "<b>版本</b>: Release 1.1.3<br>"

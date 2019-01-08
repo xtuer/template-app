@@ -22,7 +22,7 @@ public:
                                                 borderImageBorders.bottom(),
                                                 borderImageHorizontalStretch,
                                                 borderImageVerticalStretch);
-        sizeGrip = new QSizeGrip(NULL);
+        sizeGrip = new QSizeGrip(nullptr);
         padding  = windowPaddings;
     }
 
@@ -42,7 +42,7 @@ TopWindow::TopWindow(QWidget *centralWidget,
                      bool  borderImageVerticalStretch) : ui(new Ui::TopWindow) {
     ui->setupUi(this);
     ui->restoreButton->hide();
-    setWindowFlags(Qt::FramelessWindowHint);
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowTitle(centralWidget->windowTitle());
 

@@ -134,7 +134,7 @@ void CentralWidget::handleEvents() {
     });
 
     // TODO: 使用自定义无边框窗口显示弹出对话框，这里只是为了演示
-    connect(ui->itemButton7, &QPushButton::clicked, [this] {
+    connect(ui->itemButton7, &QPushButton::clicked, [] {
         MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                             "<b>法人</b>: 齐天大圣<br>"
                             "<b>版本</b>: Release 1.1.3<br>"
