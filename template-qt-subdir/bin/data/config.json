@@ -1,0 +1,21 @@
+{
+    "database": {
+        "debug": true,
+        "type": "QSQLITE",
+        "host": "127.0.0.1",
+        "port": 3306,
+        "database_name": "data.db",
+        "username": "root",
+        "password": "root",
+        "test_on_borrow": true,
+        "test_on_borrow_sql": "SELECT 1",
+        "max_wait_time": 5000,
+        "max_connection_count": 5,
+        "sql_files": [
+            "resources/sql/user.sql",
+			"resources/sql/report_settings.sql"
+        ]
+    },
+
+    "qss_files": []
+}

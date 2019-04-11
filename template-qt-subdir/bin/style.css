@@ -1,0 +1,280 @@
+Login {
+	background-color: white;
+}
+
+QDialog {
+	background-color: white;
+}
+
+QLabel {
+	color: rgb(120, 120, 120);
+}
+
+QCheckBox, QRadioButton {
+	color: rgb(120, 120, 120);
+}
+
+QPushButton {
+	height: 30px;
+	min-width: 60px;
+	border: 1 solid rgb(196, 198, 200);
+	border-radius: 4px;
+	background-color: rgb(201, 210, 219);
+	
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+QPushButton:hover {
+	background-color: rgb(201, 200, 209);
+}
+
+QPushButton:default {
+	border: 1 solid rgb(239, 133, 40);
+	background-color: rgb(253, 159, 62);
+}
+
+QPushButton:default:hover {
+	background-color: rgb(243, 149, 52);
+}
+
+QToolBar QToolButton {
+	background: white;
+	border: 0 solid red;
+	min-width: 120px;
+	margin-bottom: 5px;
+	font-size: 14px;
+}
+
+QToolBar QToolButton:checked {
+	color: white;
+	background: rgb(252, 159, 62);
+}
+
+QToolBar {
+	background: white;
+	border: 0px solid red;
+}
+
+QLineEdit {
+	height: 25px;
+	color: #888;
+	border: 1 solid rgb(237, 239, 242);
+	border-radius: 2px;
+	background-color: rgb(243, 246, 249);
+}
+
+QComboBox {
+	height: 25px;
+	color: #888;
+	border: 1 solid rgb(237, 239, 242);
+	border-radius: 2px;
+	background-color: rgb(243, 246, 249);
+	padding: 0px 10px;
+}
+
+QLineEdit:hover, QComboBox:hover {
+	color: #333;
+}
+
+QComboBox::drop-down {
+    width: 12px;
+    height: 12px;
+	margin-right: 2px;
+    subcontrol-origin: border;
+    subcontrol-position: right center;
+    background-image: url(img/arrow-down.png);
+}
+
+/* checkbox, radio button*/
+QCheckBox {
+    color: #888;
+}
+QCheckBox::indicator {
+    subcontrol-origin: border;
+    subcontrol-position: left center;
+
+	width: 20px;
+	height: 20px;
+	
+	border-width: 0 0 0 0;
+	border-image: url(img/checkbox.png) 0 0 0 0 stretch stretch;
+}
+QCheckBox::indicator:checked {
+    border-width: 0 0 0 0;
+	border-image: url(img/checkbox-checked.png) 0 0 0 0 stretch stretch;
+}
+
+QRadioButton {
+    color: #888;
+}
+QRadioButton::indicator {
+    subcontrol-origin: border;
+    subcontrol-position: left center;
+
+	width: 20px;
+	height: 20px;
+	
+	border-width: 0 0 0 0;
+	border-image: url(img/radio-button.png) 0 0 0 0 stretch stretch;
+}
+QRadioButton::indicator:checked {
+    border-width: 0 0 0 0;
+	border-image: url(img/radio-button-checked.png) 0 0 0 0 stretch stretch;
+}
+
+/* QGroupBox */
+QGroupBox {
+    border: 2px dashed #CCC;
+    border-radius: 4px;
+    margin-top: 10px; /* leave space at the top for the title */
+	font-size: 14px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center; /* position at the top center */
+    padding: 2px 3px;
+    color: rgb(228, 119, 0);
+    margin-top: -3px;
+    /*background-color: gray;*/
+    border-radius: 3px;
+    spacing: 5px;
+	font-size: 29px;
+}
+QGroupBox::indicator {
+    width: 13px;
+    height: 13px;
+    border: 1px solid black;
+    background: white;
+}
+QGroupBox::indicator:checked {
+    background: yellow;
+}
+
+QListView::item {
+	height: 25px;
+}
+QListView::item:hover {
+	background: #EEE;
+}
+/* Works for both QListView and QListWidget */
+QListView::item {
+    /* Won't work without borders set */
+    border: 0px;
+    padding-left: 4px;
+}
+
+/* For icon only */
+QListView::icon {
+    left: 4px;
+}
+
+/* For text only */
+QListView::text {
+    left: 4px;
+}
+
+/* Table view */
+QTableView, QHeaderView, QTableView::item {
+	background: white;
+}
+QTableView, QListView {
+	border: 1px solid rgb(225, 225, 225);
+}
+QTableView::item {
+	border: 1px solid rgb(242, 240, 238);
+    border-width: 0 1px 1px 0;
+}
+QTableView::item:alternate {
+    background: rgb(249, 249, 249);
+}
+QTableView::item:selected, QListView::item:selected { /*被选中的index*/
+    color: black;
+    background: rgb(249, 249, 249);
+}
+QHeaderView {
+	min-height: 30px;
+}
+QHeaderView::section:horizontal, QTableCornerButton::section {
+    background-color: rgb(254, 248, 243);
+	border: 1px solid rgb(242, 240, 238);
+    border-width: 0 0 1px 0;
+}
+QHeaderView::section:horizontal:last {
+	border-width: 0 1px 1px 0;
+}
+QHeaderView::section:vertical {
+	color: rgb(252, 159, 62);
+	background: #FFF;
+	border: 1px solid rgb(242, 240, 238);
+    border-width: 0 1px 1px 0;
+}
+
+/* Tab Widget */
+QTabWidget {
+	margin-left: 10px;
+}
+QTabWidget::pane { /* The tab widget frame */
+    border: 1px solid rgb(69, 69, 69);
+    margin-top: -1px;
+	background: white;
+	border: 1px solid rgb(226, 226, 226);
+}
+QTabWidget::tab-bar {
+    left: 0px; /* move to the right by 5px */
+	background: rgb(236, 236, 236);
+}
+QTabBar::tab {
+    color: rgb(151, 151, 151);
+    min-width: 110px;
+    height: 28px;
+	background: rgb(236, 236, 236);
+	border-left: 1px solid rgb(226, 226, 226);
+}
+QTabBar::tab:last {
+	border-right: 1px solid rgb(226, 226, 226);
+}
+QTabBar::tab:selected {
+    color: rgb(252, 120, 33);
+    height: 28px;
+	background: white;
+}
+QTabBar::close-button {
+	image: url(img/tab-close.png);
+}
+
+/* Scrollbar */
+QScrollBar:vertical {
+    width: 8px;
+    background: #DDD;
+    padding-bottom: 8px;
+}
+QScrollBar:horizontal {
+    height: 8px;
+    background: #DDD;
+}
+QScrollBar::handle:vertical,
+QScrollBar::handle:horizontal {
+    background: #AAA;
+}
+QScrollBar::handle:vertical:hover,
+QScrollBar::handle:horizontal:hover {
+    background: #888;
+}
+QScrollBar::sub-line:vertical, QScrollBar::add-line:vertical,
+QScrollBar::sub-line:horizontal, QScrollBar::add-line:horizontal {
+    width: 0;
+    height: 0;
+}
+
+#pBSetting, #pBRead {
+	border: 1px solid #AAA;
+}
+
+#pBSetting:hover, #pBRead:hover {
+	border-color: #666;
+}
+
+#pBSetting:pressed, #pBRead:pressed {
+	border-color: black;
+}

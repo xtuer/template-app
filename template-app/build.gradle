@@ -16,6 +16,7 @@ ext {
 // [2] 打包: gradle clean shadowJar [-DmainClass=Foo]
 shadowJar {
     mergeServiceFiles('META-INF/spring.*')
+    archiveName = 'app.jar' // 输出的 jar 包名字
 }
 
 ////////////////////////////////////////////////////////////////////////////////
