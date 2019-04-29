@@ -1,7 +1,7 @@
 plugins {
     id 'war'
     id 'java'
-    id 'org.gretty' version '2.2.0'
+    id "org.gretty" version "2.3.1"
     id 'org.hidetake.ssh' version '2.9.0'
 }
 
@@ -16,7 +16,7 @@ gretty {
     recompileOnSourceChange = true
 
     // 升级 gretty 自带的 springloaded
-    jvmArgs = ["-javaagent:${project.projectDir}/../springloaded-1.2.8.RELEASE.jar", '-noverify']
+    jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify']
 }
 
 ////////////////////////////////////////////////////////////////////////////////
