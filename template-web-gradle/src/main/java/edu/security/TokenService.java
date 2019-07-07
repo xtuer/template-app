@@ -1,6 +1,7 @@
 package edu.security;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import edu.bean.User;
 import edu.util.Jwt;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 生成 token 的 service.
@@ -26,13 +28,13 @@ public class TokenService {
 
     // 生成 token
     public String generateToken(User user) {
-        // Token 中保存 id, username, roles
+        // Token 中保存 id, username, nickname, roles
         long expiredAt = System.currentTimeMillis() + authTokenDuration * 1000L;
         return Jwt.create(appId, appKey).expiredAt(expiredAt)
-                .param("id", user.getId() + "")
+                .param("id",       user.getId() + "")
                 .param("username", user.getUsername())
                 .param("nickname", user.getNickname())
-                .param("role", user.getRole())
+                .param("roles",    JSON.toJSONString(user.getRoles()))
                 .token();
     }
 
@@ -48,14 +50,14 @@ public class TokenService {
         }
 
         try {
-            // 获取 token 中保存的 id, username, roles
+            // 获取 token 中保存的 id, username, nickname, roles
             Map<String, String> params = Jwt.params(token);
-            Long         id = Long.parseLong(params.get("id"));
-            String username = params.get("username");
-            String nickname = params.get("nickname");
-            String role     = params.get("role");
+            Long         id   = Long.parseLong(params.get("id"));
+            String username   = params.get("username");
+            String nickname   = params.get("nickname");
+            Set<String> roles = JSON.parseObject(params.get("roles"), new TypeReference<Set<String>>() {});
 
-            User user = new User(id, username, "[protected]", role);
+            User user = new User(id, username, "[protected]", roles.toArray(new String[] {}));
             user.setNickname(nickname);
             return user;
         } catch (Exception ex) {
@@ -72,6 +74,7 @@ public class TokenService {
         // 创建用户对象
         User user = new User(1234L, "Biao", "---", "ROLE_ADMIN");
         user.setEmail("biao.mac@icloud.com");
+        user.setNickname("二狗");
 
         // 使用 user 生成 token
         String token = service.generateToken(user);

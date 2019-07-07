@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration scan="true" scanPeriod="30 seconds">
     <!-- 日志保存目录 -->
-    <property name="logDir" value="/ebag/logs"/>
+    <property name="logDir" value="/edu/logs"/>
 
     <!-- 控制台日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

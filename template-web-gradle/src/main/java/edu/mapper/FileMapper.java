@@ -3,13 +3,13 @@ package edu.mapper;
 import edu.bean.UploadedFile;
 
 /**
- * 一些常用，但是不成规模的数据库访问接口放这个文件里
+ * 上传文件的 Mapper
  */
-public interface CommonMapper {
+public interface FileMapper {
     /**
      * 使用 ID 查询上传的文件
      *
-     * @param id 上传的文件的 ID
+     * @param id 文件 ID
      * @return 返回查找到的文件
      */
     UploadedFile findUploadedFileById(long id);
@@ -17,14 +17,23 @@ public interface CommonMapper {
     /**
      * 插入或者更新上传的文件
      *
-     * @param file 上传的文件
+     * @param file 文件
      */
     void insertOrUpdateUploadedFile(UploadedFile file);
 
     /**
+     * 更新文件的 URL
+     *
+     * @param id   文件 ID
+     * @param url  文件 URL
+     * @param type 类型
+     */
+    void updateUploadedFileUrlAndType(long id, String url, int type);
+
+    /**
      * 删除上传文件的记录
      *
-     * @param id 上传的文件的 ID
+     * @param id 文件 ID
      */
     void deleteUploadedFileById(long id);
 }

@@ -1,13 +1,11 @@
 package edu.util;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import edu.bean.Mime;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
@@ -34,10 +32,10 @@ import java.util.stream.Collectors;
 /**
  * 常用功能的工具类，例如计算 MD5, Base64，UUID 等
  */
+@Slf4j
 public final class Utils {
-    private static Logger logger = LoggerFactory.getLogger(Utils.class);
     private static final PasswordEncoder B_CRYPT_PASSWORD_ENCODER = new BCryptPasswordEncoder();
-    private static final DateFormat DATE_FORMATTER_WITH_WEEKDAY = new SimpleDateFormat("M月d日  E", Locale.SIMPLIFIED_CHINESE);
+    private static final DateFormat DATE_FORMATTER_WITH_WEEKDAY = new SimpleDateFormat("M 月 d 日 E", Locale.SIMPLIFIED_CHINESE);
 
     /**
      * BindingResult 中的错误信息很多，对用户不够友好，使用 getBindingMessage()
@@ -189,7 +187,7 @@ public final class Utils {
     }
 
     /**
-     * 格式化日期为: M月d日  星期几
+     * 格式化日期为: M 月 d 日 星期几
      *
      * @param date 日期
      * @return 返回格式化后的日期字符串
@@ -203,42 +201,7 @@ public final class Utils {
     }
 
     /**
-     * 获取指定日期月份第一天
-     */
-    public static Date firstDayOfMonth(Date date) {
-        Calendar c = new GregorianCalendar();
-        c.setTime(date);
-        c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
-
-        return c.getTime();
-    }
-
-    /**
-     * 获取指定日期月份最后一天
-     */
-    public static Date lastDayOfMonth(Date date) {
-        Calendar c = new GregorianCalendar();
-        c.setTime(date);
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.SECOND, 59);
-
-        return c.getTime();
-    }
-
-   /**
-    * 解析学生回复json对象
-    **/
-   public static void  analysisReply (String content) {
-       JSONObject jsonObject =  JSON.parseObject(content);
-   }
-
-    /**
-     * 如果 id 不为 null 且大于 0 则是有效的 ID (数据库里的 ID 都是从 1 开始)
+     * 判断 ID 是否有效，有效 ID 从 1 开始
      *
      * @param id 进行有效性检查的 ID
      * @return id 大于 0 时返回 true，否则返回 false
@@ -248,7 +211,7 @@ public final class Utils {
     }
 
     /**
-     * 如果 id 为 null 或者小于等于 0 则无效
+     * 判断 ID 是否无效，有效 ID 从 1 开始
      *
      * @param id 进行有效性检查的 ID
      * @return id 为 null 或者小于等于 0 返回 true，否则返回 false
@@ -292,12 +255,12 @@ public final class Utils {
                 int height = reader.getHeight(reader.getMinIndex());
                 result = new Dimension(width, height);
             } catch (IOException e) {
-                logger.warn(e.getMessage());
+                log.warn(e.getMessage());
             } finally {
                 reader.dispose();
             }
         } else {
-            logger.warn("No ImageReader found for given format: " + suffix);
+            log.warn("No ImageReader found for given format: " + suffix);
         }
 
         return result;
@@ -405,6 +368,4 @@ public final class Utils {
         System.out.println(isPasswordValidByBCrypt("password", "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
         System.out.println(isPasswordValidByBCrypt("password", "{bcrypt}$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
     }
-
 }
-

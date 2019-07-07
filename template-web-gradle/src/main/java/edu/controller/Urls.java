@@ -8,9 +8,9 @@ package edu.controller;
  *
  * 变量名和 URI 规则:
  * 1. 页面 URI 的变量名以 PAGE_ 开头，此 URI 以 /page 开头，看到 URL 就知道是什么用途了
- * 2. 页面对应模版文件的变量名以 FILE_ 开头，表明这个 URI 是文件的路径，即模版的路径
+ * 2. 页面对应模版文件的变量名以 FILE_ 开头，表明文件的路径，即模版的路径
  * 3. 普通 FORM 表单处理 URI 的变量名以 FORM_ 开头，此 URI 以 /form 开头
- * 4. 操作资源的 api 变量名以 API_ 开头，此 URI 以 /api 开头，使用 RESTful 风格
+ * 4. 操作资源的 api 变量名以 API_ 开头，此 URI 以 /api 开头，使用 RESTful 风格，资源名使用复数
  */
 public interface Urls {
     String JSONP_CONTENT_TYPE = "application/javascript;charset=UTF-8"; // JSONP 响应的 header
@@ -31,11 +31,11 @@ public interface Urls {
     String FILE_DOWNLOAD  = "download.html";  // 下载
 
     // 登录注销
-    String PAGE_LOGIN  = "/page/login";  // 登陆
-    String PAGE_DENY   = "/page/deny";   // 无权访问页面的 URL
-    String FILE_LOGIN  = "login.html";   // 登陆页面
-    String API_LOGIN_TOKENS = "/api/login/tokens"; // 登陆的 token
-    String API_LOGIN_USERS_CURRENT = "/api/login/users/current"; // 当前登录的用户
+    String PAGE_LOGIN = "/page/login"; // 登陆
+    String PAGE_DENY  = "/page/deny";  // 无权访问页面的 URL
+    String FILE_LOGIN = "login.html";  // 登陆页面
+    String API_LOGIN_TOKENS          = "/api/login/tokens"; // 登陆的 token
+    String API_LOGIN_USERS_CURRENT   = "/api/login/users/current";    // 当前登录的用户
     String API_LOGIN_TEACHER_CURRENT = "/api/login/teachers/current"; // 当前登录的老师
 
     // 用户
@@ -56,11 +56,12 @@ public interface Urls {
     String API_SUBJECTS        = "/api/subjects";
     String API_SUBJECTS_BY_ID  = "/api/subjects/{subjectId}";
 
-    // 上传文件、图片到临时目录
-    String FORM_UPLOAD_TEMPORARY_FILE  = "/form/upload/temp/file";       // 上传一个临时文件
-    String FORM_UPLOAD_TEMPORARY_FILES = "/form/upload/temp/files";      // 上传多个临时文件
-    String URL_TEMPORARY_FILE_PREFIX   = "/file/temp/";                  // 临时文件的 URL 前缀
-    String URL_TEMPORARY_FILE          = "/file/temp/{filename}";        // 临时文件的 URL
-    String URL_DATA_FILE_PREFIX        = "/file/data/";                  // 数据文件的 URL 的前缀
-    String URL_DATA_FILE               = "/file/data/{date}/{filename}"; // 数据文件的 URL，按日期保存
+    // 上传文件、图片到临时目录，仓库中的文件为正式的文件
+    String FORM_UPLOAD_TEMP_FILE  = "/form/upload/temp/file";           // 上传一个临时文件
+    String FORM_UPLOAD_TEMP_FILES = "/form/upload/temp/files";          // 上传多个临时文件
+    String URL_TEMP_FILE_PREFIX   = "/file/temp/";                      // 临时文件的 URL 前缀
+    String URL_TEMP_FILE          = "/file/temp/{filename}";            // 临时文件的 URL
+    String URL_REPO_FILE_PREFIX   = "/file/repo/";                      // 仓库文件的 URL 前缀
+    String URL_REPO_FILE          = "/file/repo/{date}/{filename}";     // 仓库文件的 URL，按日期保存
+    String URL_REPO_FILE_DOWNLOAD = "/file/download/{date}/{filename}"; // 下载仓库文件的 URL，按日期保存
 }

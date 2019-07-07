@@ -90,7 +90,7 @@
     </bean>
     <bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
         <property name="templateEngine"    ref="templateEngine"/>
-        <property name="characterEncoding" value="UTF-8"/>  <!--解决中文乱码-->
+        <property name="characterEncoding" value="UTF-8"/> <!--解决中文乱码-->
     </bean>
 
     <!-- 上传文件 -->

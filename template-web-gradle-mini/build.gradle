@@ -1,13 +1,13 @@
 plugins {
     id 'war'
     id 'java'
-    id "org.gretty" version "2.3.1"
+    id 'org.gretty' version '2.3.1'
     id 'org.hidetake.ssh' version '2.9.0'
 }
 
 gretty {
-    httpPort = 8080
-    contextPath = ''
+    httpPort         = 8080
+    contextPath      = ''
     servletContainer = 'tomcat8'
 
     inplaceMode  = 'hard'
@@ -16,7 +16,7 @@ gretty {
     recompileOnSourceChange = true
 
     // 升级 gretty 自带的 springloaded
-    jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify']
+    jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,14 +27,15 @@ repositories {
 }
 
 ext {
-    // 运行和打包的环境选择, 默认是开发环境
-    // 获取 gradle 参数中 env 的值: gradle -Denv=production clean build
-    // 构建 gradle clean build
-    //     gradle -Denv=production clean build
-    // 部署 gradle clean deploy
-    //     gradle -Denv=production clean deploy
-    environment = System.getProperty("env", "development")
-    war.archiveName = 'ROOT.zip' // 打包的文件名
+    // 运行、打包以及部署的环境选择, 默认是开发环境(即命令没有 -Denv 参数)
+    // 运行: gradle clean appStart, gradle clean appStartDebug
+    // 构建: gradle clean assemble, gradle clean assemble -Denv=production
+    // 部署: gradle clean deploy,   gradle clean deploy   -Denv=production
+    environment     = System.getProperty("env", "development") // 获取 gradle 参数中 env 的值，选择环境
+    war.archiveName = "xtuer-${environment}.zip"               // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
+    config          = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
+
+    println "\n::--o 加载配置用于环境: ${environment}\n"
 }
 
 ext.versions = [
@@ -59,19 +60,18 @@ dependencies {
     compileOnly("javax.servlet:javax.servlet-api:${versions.servlet}")
     testCompile("org.springframework:spring-test:${versions.spring}")
     testCompile("junit:junit:${versions.junit}")
+
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                  资源动态替换                                //
 ////////////////////////////////////////////////////////////////////////////////
 processResources {
-    // src/main/resources 下的文件中 @key@ 的内容使用 config.groovy 里对应的进行替换
-    println "==> Load configuration for '${environment}'"
-    def configFile = file('config.groovy') // 配置文件
-    def props = new ConfigSlurper(environment).parse(configFile.toURI().toURL()).toProperties()
-
+    // src/main/resources 下所有文件中 @key@ 的内容使用 config.groovy 里对应的进行替换
+    filteringCharset = 'UTF-8'
     from(sourceSets.main.resources.srcDirs) {
-        filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: props)
+        filter(org.apache.tools.ant.filters.ReplaceTokens, tokens: config)
     }
 }
 
@@ -92,7 +92,7 @@ ssh.settings {
 }
 
 task deploy(dependsOn: war) {
-    def targetDir = '/data/xtuer.com'
+    def targetDir = '/www.xtuer.com'
     doLast {
         ssh.run {
             session(remotes.server) {
@@ -117,6 +117,17 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation'
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation' << '-parameters'
+    options.forkOptions.jvmArgs << '-parameters'
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   Test                                     //
+////////////////////////////////////////////////////////////////////////////////
+test {
+    // we want display the following test events
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+    }
 }

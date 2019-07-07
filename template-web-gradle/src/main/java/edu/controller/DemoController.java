@@ -1,19 +1,13 @@
 package edu.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
-import edu.bean.Demo;
 import edu.bean.Result;
 import edu.bean.User;
-import edu.mapper.DemoMapper;
 import edu.mapper.UserMapper;
-import edu.service.FileService;
 import edu.service.IdWorker;
 import edu.service.RedisDao;
 import edu.util.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -31,21 +25,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * 示范使用的控制器
  */
 @Controller
+@Slf4j
 public class DemoController {
-    private static Logger logger = LoggerFactory.getLogger(DemoController.class.getName());
-
     @Value("${maxUploadSize}")
     private long size;
-
-    @Autowired
-    private DemoMapper demoMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -57,9 +46,6 @@ public class DemoController {
     private RedisDao redis;
 
     @Autowired
-    private FileService fileService;
-
-    @Autowired
     private FilterChainProxy filterChainProxy;
 
     // 网址: http://localhost:8080/page/demo/rest
@@ -67,59 +53,6 @@ public class DemoController {
     public String toRestPage(ModelMap map) {
         map.put("action", "access demo page");
         return Urls.FILE_DEMO_REST;
-    }
-
-    /**
-     * 测试 Java 8 使用 -parameters 把参数名编译到 class 中，这样 MyBatis 传递多个参数时就不必使用 @Param 了
-     * 网址: http://localhost:8080/api/demo/parameters
-     * 参数: 无
-     */
-    @GetMapping("/api/demo/parameters")
-    @ResponseBody
-    public Demo java8ParametersForMyBatis() {
-        return demoMapper.findDemoByIdAndInfo(1, "Biao");
-    }
-
-    /**
-     * 参数自动转换为对象
-     * 网址: http://localhost:8080/api/demo/object
-     * 参数: {"id": 12, "info": "Hello Demo"}
-     *
-     * @param demo
-     * @return
-     */
-    @PostMapping("/api/demo/object")
-    @ResponseBody
-    public Demo paramsToObject(@Valid Demo demo) {
-        return demo;
-    }
-
-    /**
-     * 访问数据库
-     * 网址: http://localhost:8080/api/demo/mybatis/{id}
-     * 参数: 无
-     *
-     * @param id
-     * @return
-     */
-    @RequestMapping(Urls.API_DEMO_MYBATIS)
-    @ResponseBody
-    public Result<Demo> queryDemoFromDatabase(@PathVariable int id) {
-        String redisKey = "demo_" + id; // 对象在 Redis 中的 key
-        Demo d = redis.get(redisKey, Demo.class, () -> demoMapper.findDemoById(id));
-
-        return Result.ok(d);
-    }
-
-    /**
-     * 网址: http://localhost:8080/api/demo/mybatis
-     * 参数: 无
-     */
-    @RequestMapping("/api/demo/mybatis")
-    @ResponseBody
-    public Result<List<Demo>> demos() {
-        List<Demo> demos = redis.get("demos", new TypeReference<List<Demo>>(){}, () -> demoMapper.findDemos());
-        return Result.ok(demos);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -251,14 +184,6 @@ public class DemoController {
         throw new RuntimeException("普通访问发生异常");
     }
 
-    // http://localhost:8080/demo/exception-ajax
-    @GetMapping("/demo/exception-ajax")
-    @ResponseBody
-    public Result exceptionWhenAjax(Demo demo) {
-        System.out.println(JSON.toJSONString(demo));
-        throw new RuntimeException("AJAX 访问发生异常");
-    }
-
     /**
      * 字符串日期转换为日期 Date 对象，接收 2 种格式的字符串: yyyy-MM-dd 或者 yyyy-MM-dd HH:mm:ss
      * 网址: http://localhost:8080/demo/string-to-date?date=2017-03-12
@@ -281,7 +206,7 @@ public class DemoController {
     public Result uploadFile(@RequestParam("file") MultipartFile file,
                              @RequestParam(required = false) String username,
                              @RequestParam(required = false) String password) throws IOException {
-        logger.debug(file.getOriginalFilename());
+        log.debug(file.getOriginalFilename());
         // 不会自动创建文件夹，没有就报错，为了简单，可以使用 IOUtils 来处理
         // 会覆盖同名文件
         file.transferTo(new File("/Users/Biao/Desktop/" + file.getOriginalFilename()));
@@ -293,11 +218,11 @@ public class DemoController {
     //////////////////////////////////////////////////////////////////////////////////////
     // 网址:
     // http://localhost:8080/demo/validate
-    // http://localhost:8080/demo/validate?id=2
-    // http://localhost:8080/demo/validate?id=2&info=amazing
+    // http://localhost:8080/demo/validate?username=bob
+    // http://localhost:8080/demo/validate?username=bob&password=xxx
     @GetMapping("/demo/validate")
     @ResponseBody
-    public Result<Demo> validateDemo(@Valid Demo demo, BindingResult bindingResult) {
+    public Result<User> validateDemo(@Valid User demo, BindingResult bindingResult) {
         // 如有参数错误，则返回错误信息给客户端
         if (bindingResult.hasErrors()) {
             return Result.fail(Utils.getBindingMessage(bindingResult));

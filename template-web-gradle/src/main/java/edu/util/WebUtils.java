@@ -4,17 +4,17 @@ import com.alibaba.fastjson.JSON;
 import edu.bean.Mime;
 import edu.bean.Result;
 import edu.security.SecurityConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -23,18 +23,16 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Web 操作相关的辅助工具，例如:
- * 获取客户端 IP
- * 读写删除 Cookie
- * 读取文件到 HttpServletResponse
- * 向 HttpServletResponse 写入 Ajax 响应
- * 判断请求是否使用 Ajax，获取 URI 的文件名
- * <p>
+ *     获取客户端 IP
+ *     读写删除 Cookie
+ *     读取文件到 HttpServletResponse
+ *     向 HttpServletResponse 写入 Ajax 响应
+ *     判断请求是否使用 Ajax，获取 URI 的文件名
  * 提示:
- * 1. HttpServletRequest.getRequestURI() 返回的 URI 不带有参数
+ *     1. HttpServletRequest.getRequestURI() 返回的 URI 不带有参数
  */
+@Slf4j
 public final class WebUtils {
-    private static Logger logger = LoggerFactory.getLogger(WebUtils.class);
-
     public static final String UNKNOWN = "unknown";
 
     /**
@@ -87,7 +85,7 @@ public final class WebUtils {
             writer.flush();
             writer.close();
         } catch (IOException ex) {
-            logger.warn(ExceptionUtils.getStackTrace(ex));
+            log.warn(ExceptionUtils.getStackTrace(ex));
         }
     }
 
@@ -221,7 +219,7 @@ public final class WebUtils {
         try {
             return new URL(WebUtils.getRequest().getRequestURL().toString()).getHost();
         } catch (MalformedURLException e) {
-            logger.warn(ExceptionUtils.getStackTrace(e));
+            log.warn(ExceptionUtils.getStackTrace(e));
         }
 
         return null;
@@ -267,11 +265,11 @@ public final class WebUtils {
     /**
      * 读取文件到 HttpServletResponse
      *
-     * @param path     文件路径
+     * @param file     文件
      * @param response HttpServletResponse 对象
      */
-    public static void readFileToResponse(String path, HttpServletResponse response) throws IOException {
-        readFileToResponse(path, FilenameUtils.getName(path), WebUtils.getRequest(), response);
+    public static void readFileToResponse(File file, HttpServletResponse response) throws IOException {
+        readFileToResponse(file.getAbsolutePath(), file.getName(), WebUtils.getRequest(), response);
     }
 
     /**
@@ -294,13 +292,13 @@ public final class WebUtils {
         //
         // if (!Files.exists(Paths.get(path))) {
         //     // [1] 如果文件不存在则返回 404 页面
-        //     logger.warn("文件 {} 不存在", path);
+        //     log.warn("文件 {} 不存在", path);
         //     response.sendError(HttpServletResponse.SC_NOT_FOUND);
         //     return;
         // }
         //
         // File file = new File(path);
-        // logger.debug("访问文件 {}", path);
+        // log.debug("访问文件 {}", path);
         //
         // WebUtils.setResponseFilename(filename, response);  // [2] 写入文件名
         // WebUtils.setContentType(file.getName(), response); // [3] 设置 content type，让浏览器能正确的知道文件的处理方式

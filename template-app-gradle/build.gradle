@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '4.0.2'
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +28,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
+    compileOnly 'org.projectlombok:lombok:1.16.18'
     annotationProcessor 'org.projectlombok:lombok:1.16.18'
 }
 

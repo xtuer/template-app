@@ -4,7 +4,7 @@ echo "作用: 导入当前目录下的所有 SQL 文件初始化数据库"
 
 rem 需要三个参数，参数不对时退出
 if "%3%"=="" (
-    echo "命令: init-db.bat db_username db_password db_name"
+    echo "命令: db-init.bat db_username db_password db_name"
     goto End
 )
 

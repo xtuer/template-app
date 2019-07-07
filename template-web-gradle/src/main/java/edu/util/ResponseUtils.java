@@ -1,10 +1,9 @@
 package edu.util;
 
 import edu.bean.Mime;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +24,8 @@ import java.util.List;
  * 参考: How to Implement HTTP byte-range requests in Spring MVC
  * 网址: https://stackoverflow.com/questions/28427339/how-to-implement-http-byte-range-requests-in-spring-mvc
  */
+@Slf4j
 public class ResponseUtils {
-    private static Logger logger = LoggerFactory.getLogger(ResponseUtils.class);
-
     private static final int DEFAULT_BUFFER_SIZE   = 2097152; // bytes = 2MB
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 
@@ -56,7 +54,7 @@ public class ResponseUtils {
 
         // [1] 如果文件不存在则返回 404 页面
         if (!Files.exists(Paths.get(path))) {
-            logger.warn("文件 {} 不存在", path);
+            log.warn("文件 {} 不存在", path);
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -130,8 +128,8 @@ public class ResponseUtils {
             }
 
             // Range 调试信息
-            logger.debug("Range: {}", range);
-            logger.debug(ranges.toString());
+            log.debug("Range: {}", range);
+            log.debug(ranges.toString());
         }
 
         // [3] 设置响应头
@@ -156,10 +154,10 @@ public class ResponseUtils {
         response.setHeader("ETag", filename);
 
         // [4] 根据 ranges 读取文件到 response
-        try (RandomAccessFile input = new RandomAccessFile(path, "r"); OutputStream output = response.getOutputStream()) {
+        try (RandomAccessFile input = new RandomAccessFile(path, "r"); ServletOutputStream output = response.getOutputStream()) {
             if (ranges.isEmpty() || ranges.get(0) == fullRange) {
                 // [4.1] ranges 为空或者只有一个元素并为 fullRange 时，则读取整个文件 (fullRange 为处理 If-Range 头得到的)
-                logger.debug("返回整个文件: {}", path);
+                log.debug("返回整个文件: {}", path);
 
                 response.setHeader("Content-Range", "bytes " + fullRange.start + "-" + fullRange.end + "/" + fullRange.total);
                 response.setHeader("Content-Length", String.valueOf(fullRange.length));
@@ -167,7 +165,7 @@ public class ResponseUtils {
             } else if (ranges.size() == 1) {
                 // [4.2] ranges 只有一个元素并不为 fullRange 时，读取文件的部分，范围由 ranges.get(0) 指定
                 Range r = ranges.get(0);
-                logger.debug("返回文件的一个部分 : from ({}) to ({}), Path: {}", r.start, r.end, path);
+                log.debug("返回文件的一个部分 : from ({}) to ({}), Path: {}", r.start, r.end, path);
 
                 response.setHeader("Content-Range", "bytes " + r.start + "-" + r.end + "/" + r.total); // Content-Range: bytes 0-17611749/17611750
                 response.setHeader("Content-Length", String.valueOf(r.length));
@@ -178,24 +176,21 @@ public class ResponseUtils {
                 response.setContentType("multipart/byteranges; boundary=" + MULTIPART_BOUNDARY);
                 response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); // 206.
 
-                // Cast back to ServletOutputStream to get the easy println methods.
-                ServletOutputStream sos = (ServletOutputStream) output;
-
                 // Copy multi part range.
                 for (Range r : ranges) {
-                    logger.debug("返回文件的多个部分: from ({}) to ({}), Path: ", r.start, r.end, path);
+                    log.debug("返回文件的多个部分: from ({}) to ({}), Path: {}", r.start, r.end, path);
 
                     // Add multipart boundary and header fields for every range.
-                    sos.println();
-                    sos.println("--" + MULTIPART_BOUNDARY);
-                    sos.println("Content-Type: " + contentType);
-                    sos.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
+                    output.println();
+                    output.println("--" + MULTIPART_BOUNDARY);
+                    output.println("Content-Type: " + contentType);
+                    output.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
                     Range.copy(input, output, length, r.start, r.length); // Copy single part range of multi part range.
                 }
 
                 // End with multipart boundary.
-                sos.println();
-                sos.println("--" + MULTIPART_BOUNDARY + "--");
+                output.println();
+                output.println("--" + MULTIPART_BOUNDARY + "--");
             }
         }
     }
@@ -275,7 +270,7 @@ public class ResponseUtils {
          * @return True if the given accept header accepts the given value.
          */
         public static boolean accepts(String acceptHeader, String toAccept) {
-            String[] acceptValues = acceptHeader.split("\\s*(,|;)\\s*");
+            String[] acceptValues = acceptHeader.split("\\s*([,;])\\s*");
             Arrays.sort(acceptValues);
 
             return Arrays.binarySearch(acceptValues, toAccept) > -1

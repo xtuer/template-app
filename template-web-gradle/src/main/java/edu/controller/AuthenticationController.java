@@ -95,7 +95,7 @@ public class AuthenticationController extends BaseController {
 
         if (user != null) {
             user = userService.findUser(user.getId()); // 从数据库里查询用户信息
-            user.setPassword("[protected]");
+            user.protectPassword();
             return Result.ok(user);
         } else {
             return Result.fail();
@@ -114,13 +114,13 @@ public class AuthenticationController extends BaseController {
     @PostMapping(Urls.API_LOGIN_TOKENS)
     @ResponseBody
     public Result<String> loginToken(@RequestParam String username, @RequestParam String password) {
-        User user = userService.findUser(username, password, getSchoolId());
+        User user = userService.findUser(username, password, getOrgId());
 
         if (user == null) {
             return Result.fail("用户名或密码不正确", "");
         }
 
-        userService.updateUserLoginStatus(user.getId()); // 更新登录状态
+        userService.createLoginRecord(user.getId(), user.getUsername()); // 创建用户的登录记录
         String token = tokenService.generateToken(user);
 
         return Result.ok(token);

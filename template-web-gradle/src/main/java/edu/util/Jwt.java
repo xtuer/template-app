@@ -147,9 +147,10 @@ public class Jwt {
          * @return 返回 builder 自己
          */
         public Builder param(String name, String value) {
-            Assert.notNull(name, "JWT param name cannot be null");
+            Assert.notNull(name,  "JWT param name cannot be null");
             Assert.notNull(value, "JWT param value cannot be null");
             params.put(name, value);
+
             return this;
         }
 
@@ -169,6 +170,7 @@ public class Jwt {
             // 添加签名需要的数据项
             params.put("appId", appId);
             params.put("signedAt", System.currentTimeMillis()+"");
+
             if (expiredAt != null) {
                 params.put("expiredAt", expiredAt+"");
             }

@@ -3,7 +3,6 @@ package edu.controller;
 import edu.bean.Result;
 import edu.bean.User;
 import edu.mapper.UserMapper;
-import edu.service.FileService;
 import edu.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,20 +20,17 @@ public class UserController extends BaseController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private FileService fileService;
-
     /**
      * 使用用户 ID 查询用户信息
      * URL: http://localhost:8080/api/users/{userId}
      *
      * @param userId 用户的 ID
-     * @return 查询到时 payload 为用户对象, success 为 true，查询不到时 success 为 false
+     * @return 查询到时 payload 为用户对象, success 为 true，查询不到时 success 为 false, payload 为 null
      */
     @GetMapping(Urls.API_USERS_BY_ID)
     @ResponseBody
-    public Result<User> findUserById(@PathVariable Long userId) {
-        User user = userMapper.findUserById(userId);
+    public Result<User> findUserById(@PathVariable long userId) {
+        User user = userService.findUser(userId);
 
         if (user != null) {
             user.protectPassword();
@@ -54,7 +50,7 @@ public class UserController extends BaseController {
      */
     @PutMapping(Urls.API_USER_NICKNAMES)
     @ResponseBody
-    public Result<String> updateUserNickname(@PathVariable Long userId, @RequestParam String nickname) {
+    public Result<String> updateUserNickname(@PathVariable long userId, @RequestParam String nickname) {
         nickname = StringUtils.trim(nickname);
 
         if (StringUtils.isBlank(nickname)) {
@@ -62,6 +58,7 @@ public class UserController extends BaseController {
         }
 
         userMapper.updateUserNickname(userId, nickname);
+
         return Result.ok();
     }
 
@@ -75,10 +72,15 @@ public class UserController extends BaseController {
      */
     @PutMapping(Urls.API_USER_AVATARS)
     @ResponseBody
-    public Result<String> updateUserAvatar(@PathVariable Long userId, @RequestParam String avatar) {
-        String finalAvatar = fileService.moveFileToDataDirectory(avatar);
-        userMapper.updateUserAvatar(userId, finalAvatar);
-        return Result.ok(finalAvatar);
+    public Result<String> updateUserAvatar(@PathVariable long userId, @RequestParam String avatar) {
+        // 1. 移动 avatar 的图片到 repo
+        // 2. 更新数据库中用户的 avatar
+        // 3. 返回 avatar 的 url
+
+        avatar = getFileService().moveFileToRepo(avatar);
+        userMapper.updateUserAvatar(userId, avatar);
+
+        return Result.ok(avatar);
     }
 
     /**

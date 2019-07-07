@@ -1,8 +1,7 @@
 package edu.converter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.ParseException;
@@ -12,9 +11,8 @@ import java.util.Date;
 /**
  * 把日期字符串转换为 Date 对象。
  */
+@Slf4j
 public class DateConverter implements Converter<String, Date> {
-    private static Logger logger = LoggerFactory.getLogger(DateConverter.class);
-
     /**
      * 把日期字符串转换为 Date 对象，接收两种日期格式: yyyy-MM-dd 或者 yyyy-MM-dd HH:mm:ss。
      * 如果日期的格式不对，则返回 null。
@@ -30,7 +28,7 @@ public class DateConverter implements Converter<String, Date> {
         try {
             return format.parse(source);
         } catch (ParseException ex) {
-            logger.warn(ExceptionUtils.getStackTrace(ex));
+            log.warn(ExceptionUtils.getStackTrace(ex));
         }
 
         return null;

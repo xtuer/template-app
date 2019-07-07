@@ -15,7 +15,7 @@
         <property name="port"       value="${redis.port}"/>
         <property name="password"   value="${redis.password}"/>
         <property name="timeout"    value="${redis.timeout}"/>
-        <property name="database"   value="${redis.database}"/> <!--Redis 数据库的索引-->
+        <property name="database"   value="${redis.database}"/> <!-- Redis 数据库的索引 -->
         <property name="usePool"    value="true"/>
         <property name="poolConfig" ref="jedisPoolConfig"/>
     </bean>

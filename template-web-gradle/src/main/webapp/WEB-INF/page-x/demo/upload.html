@@ -9,7 +9,7 @@
 
     <style media="screen">
         body {
-            font-family: "微软雅黑", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
             margin: 50px;
         }
         #drop-area {
@@ -36,7 +36,7 @@
             auto: true,               // 自动上传
             dnd: '#drop-area',        // 拖拽到 #drop-area 进行上传，可选
             swf: '//cdn.staticfile.org/webuploader/0.1.5/Uploader.swf', // swf 文件路径
-            server: '/form/demo/upload', // 文件接收服务端 URL
+            server: '/form/upload/temp/file', // 文件接收服务端 URL
             pick: '#filePicker',      // 选择文件的按钮，内部根据当前运行时创建，可能是 input 元素，也可能是 flash.
             resize: false,            // 不压缩 image, 默认如果是 jpeg，文件上传前会压缩一把再上传！
             accept: { // 只允许上传图片

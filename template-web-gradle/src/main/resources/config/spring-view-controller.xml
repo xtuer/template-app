@@ -8,11 +8,11 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!-- 不需要写 Controller，快速映射 url 和 view (所有请求都处理，不分 GET, POST 等) -->
+    <!-- 路径相对于 thymeleaf 配置中的 prefix: /WEB-INF/page-x/  -->
     <mvc:view-controller path="/404" view-name="../static-x/html/404.html"/>
     <mvc:view-controller path="/page/admin" view-name="admin.html"/>
-    <mvc:view-controller path="/page/demo/useRequire" view-name="demo/useRequire.html"/>
     <mvc:view-controller path="/page/demo/upload" view-name="demo/upload.html"/>
 
-    <mvc:view-controller path="/page/page1"  view-name="../page-vue/page1.html"/>
-    <mvc:view-controller path="/page/page2"  view-name="../page-vue/page2.html"/>
+    <mvc:view-controller path="/page/page1" view-name="../page-vue/page1.html"/>
+    <mvc:view-controller path="/page/page2" view-name="../page-vue/page2.html"/>
 </beans>

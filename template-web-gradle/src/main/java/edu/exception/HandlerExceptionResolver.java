@@ -5,9 +5,8 @@ import edu.bean.Result;
 import edu.controller.Urls;
 import edu.service.IdWorker;
 import edu.util.WebUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,9 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  * 1. 当 AJAX 请求时发生异常，返回 JSON 格式的错误信息，状态码为 500
  * 2. 非 AJAX 请求时发生异常，错误信息显示到 HTML 网页
  */
+@Slf4j
 public final class HandlerExceptionResolver implements org.springframework.web.servlet.HandlerExceptionResolver {
-    private static Logger logger = LoggerFactory.getLogger(HandlerExceptionResolver.class);
-
     @Autowired
     private IdWorker idWorker;
 
@@ -37,8 +35,8 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
                 ExceptionUtils.getStackTrace(ex));
 
         // 异常记录到日志里，对于运维非常重要
-        logger.warn(error);
-        logger.warn(stack);
+        log.warn(error);
+        log.warn(stack);
 
         return WebUtils.useAjax(request) ? handleAjaxException(response, error, stack)
                                          : handleNonAjaxException(ex, error, stack);

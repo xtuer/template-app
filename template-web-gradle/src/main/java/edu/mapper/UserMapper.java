@@ -4,6 +4,9 @@ import edu.bean.User;
 
 import java.util.List;
 
+/**
+ * 用户的 Mapper
+ */
 public interface UserMapper {
     /**
      * 使用 ID 查找用户
@@ -14,23 +17,23 @@ public interface UserMapper {
     User findUserById(long userId);
 
     /**
-     * 查找学校的用户
-     *
-     * @param schoolId 学校
-     * @param offset   起始位置
-     * @param count    数量
-     * @return 返回用户列表
-     */
-    List<User> findUsersBySchoolId(long schoolId, int offset, int count);
-
-    /**
      * 使用用户名查找学校下的用户 (因为使用的是 BCrypt 加密密码，每次计算出的密码都是不同的，所以不能使用密码进行查询)
      *
      * @param username 用户名
      * @param schoolId 学校 ID
      * @return 返回用户对象
      */
-    User findUserByUsernameAndSchoolId(String username, long schoolId);
+    User findUserByUsernameAndOrgId(String username, long schoolId);
+
+    /**
+     * 查找机构的用户
+     *
+     * @param orgId  机构 ID
+     * @param offset 起始位置
+     * @param count  数量
+     * @return 返回用户列表
+     */
+    List<User> findUsersByOrgId(long orgId, int offset, int count);
 
     /**
      * 插入或更新用户: 如果 ID 存在或者 school_id + username 的组合存在则进行更新
@@ -40,11 +43,12 @@ public interface UserMapper {
     void insertOrUpdateUser(User user);
 
     /**
-     * 更新用户的登录状态: 登录次数+1，记录最后的登录时间
+     * 创建用户的登录记录
      *
-     * @param userId 用户 ID
+     * @param userId   用户 ID
+     * @param username 用户账号
      */
-    void updateUserLoginStatus(long userId);
+    void insertUserLoginRecord(long userId, String username);
 
     /**
      * 更新用户的昵称

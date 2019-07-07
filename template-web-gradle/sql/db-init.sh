@@ -4,7 +4,7 @@ echo "作用: 导入当前目录下的所有 SQL 文件初始化数据库"
 
 # 需要三个参数，参数不对时退出
 if [ $# != 3 ] ; then
-    echo "命令: sh init-db.sh db_username db_password db_name"
+    echo "命令: sh db-init.sh db_username db_password db_name"
     exit 1;
 fi
 

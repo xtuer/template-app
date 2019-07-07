@@ -1,5 +1,13 @@
-// 打包: gradle clean build  -Denv=production
-// 部署: gradle clean deploy -Denv=production
+// 打包: gradle clean assemble -Denv=production
+// 部署: gradle clean deploy   -Denv=production
+
+// 把下面的映射添加到 hosts 文件，如果 mysql, redis 等安装在其他机器上，修改为对应机器的 IP
+// 127.0.0.1 mysql.edu
+// 127.0.0.1 redis.edu
+// 127.0.0.1 mongodb.edu
+// 127.0.0.1 activemq.edu
+// 127.0.0.1 zooKeeper.edu
+// 127.0.0.1 elasticsearch.edu
 
 ////////////////////////////////////////////////////////////////////////////////////
 //                               定义所有环境下都有的通用配置
@@ -13,14 +21,14 @@
         }
 
         database {
-            host     = '127.0.0.1'
+            host     = 'mysql.edu'
             username = 'root'
             password = 'root'
         }
 
         redis {
-            host = '127.0.0.1'
-            port = 6379
+            host     = 'redis.edu'
+            port     = 6379
             password = ''
             database = 0
             timeout  = 2000
@@ -30,10 +38,10 @@
         appId  = 'Default_ID'
         appKey = 'Default_Key'
 
-        idWorker = 0                    // ID 生成器的 ID，范围是 [0, 1023]
-        thymeleafCacheable = true       // thymeleaf 默认使用缓存提高效率
-        dataDirectory    = '/ebag/data' // 数据文件目录
-        tempDirectory    = '/ebag/temp' // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
+        idWorker = 0                 // ID 生成器的 ID，范围是 [0, 1023]
+        thymeleafCacheable = true    // thymeleaf 默认使用缓存提高效率
+        repoDirectory = '/edu/repo'  // 文件仓库目录
+        tempDirectory = '/edu/temp'  // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
 //  }
 //}
 

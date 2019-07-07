@@ -8,23 +8,23 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * 系统中有大量的访问学校、登录用户、生成 ID 等操作，如果每个控制器都各自的注入相关对象进行访问就比较麻烦，
+ * 系统中有大量的访问组织、登录用户、生成 ID 等操作，如果每个控制器都各自的注入相关对象进行访问就比较麻烦，
  * 于是在基础控制器 BaseController 提供这些操作，其他控制器继承 BaseController，就可以省去不少工作量了。
  */
 @Getter
 public class BaseController {
     @Autowired
-    private FileService fileService;
+    private IdWorker idWorker;
 
     @Autowired
-    private IdWorker idWorker;
+    private FileService fileService;
 
     /**
      * 获取当前登录用户
      *
      * @return 登录用户
      */
-    public User getLoginUser() {
+    protected User getLoginUser() {
         return SecurityUtils.getLoginUser();
     }
 
@@ -33,18 +33,19 @@ public class BaseController {
      *
      * @return 登录用户 ID，不存在则返回 0
      */
-    public long getLoginUserId() {
+    protected long getLoginUserId() {
         User user = SecurityUtils.getLoginUser();
         return user == null ? 0 : user.getId();
     }
 
     /**
-     * 获取当前域名对应的学校 ID
+     * 获取当前域名对应的组织 ID
      *
-     * @return 学校的 ID
+     * @return 组织 ID
      */
-    public long getSchoolId() {
-        return 0;
+    protected long getOrgId() {
+        // TODO: 如果没有找到域名对应的组织，则返回 1，表明是系统管理员的机构
+        return 1;
     }
 
     /**
@@ -52,7 +53,7 @@ public class BaseController {
      *
      * @return 返回唯一 ID
      */
-    public long generateId() {
+    protected long nextId() {
         return idWorker.nextId();
     }
 }

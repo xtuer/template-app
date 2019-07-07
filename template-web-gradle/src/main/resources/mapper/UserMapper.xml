@@ -5,44 +5,46 @@
 <mapper namespace="edu.mapper.UserMapper">
     <!-- 用户查询结果的列 -->
     <sql id="user_columns">
-        id, username, password, nickname, email, mobile, phone, avatar, gender, school_id AS schoolId, is_enabled AS enabled, role
+        user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id AS orgId, is_enabled AS enabled
     </sql>
 
     <!-- 使用 ID 查找用户 -->
-    <select id="findUserById" parameterType="long" resultType="User">
-        SELECT <include refid="user_columns"/>
+    <select id="findUserById" parameterType="long" resultMap="userWithRoles">
+        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
         FROM user
+            LEFT JOIN user_role ON user.id = user_role.user_id
         WHERE user.id = #{userId}
     </select>
 
-    <!-- 查找学校的用户 -->
-    <select id="findUsersBySchoolId" resultType="User">
+    <!-- 查找机构下指定用户名的用户 -->
+    <select id="findUserByUsernameAndOrgId" resultMap="userWithRoles">
+        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
+        FROM user
+            LEFT JOIN user_role ON user.id = user_role.user_id
+        WHERE org_id = #{orgId} AND username = #{username}
+    </select>
+
+    <!-- 查找机构的用户 -->
+    <select id="findUsersByOrgId" resultType="User">
         SELECT <include refid="user_columns"/>
         FROM user
-        WHERE school_id = #{schoolId}
+        WHERE org_id = #{orgId}
         LIMIT ${offset}, ${count}
     </select>
 
-    <!-- 使用用户名和密码查找学校下的用户 -->
-    <select id="findUserByUsernameAndSchoolId" resultType="User">
-        SELECT <include refid="user_columns"/>
-        FROM user
-        WHERE school_id = #{schoolId} AND username = #{username}
-    </select>
-
-    <!-- 插入或更新用户: 如果 ID 存在或者 school_id + username 的组合存在则进行更新 -->
+    <!-- 插入或更新用户: 如果 ID 存在或者 org_id + username 的组合存在则进行更新 -->
     <insert id="insertOrUpdateUser">
-        INSERT INTO user (id, username, password, nickname, email, mobile, phone, role, gender, school_id, created_time)
-        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{role}, #{gender}, #{schoolId}, now())
+        INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
+        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 
         ON DUPLICATE KEY
         UPDATE username = #{username}, password = #{password}, nickname = #{nickname}, email = #{email},
-               mobile = #{mobile}, phone = #{phone}, school_id = #{schoolId}
+               mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
     </insert>
 
-    <!-- 更新用户的登录状态: 登录次数+1，记录最后的登录时间 -->
-    <update id="updateUserLoginStatus">
-        UPDATE user SET login_count = login_count+1, login_time = now() WHERE id = #{userId}
+    <!-- 创建用户的登录记录 -->
+    <update id="insertUserLoginRecord">
+        INSERT INTO user_login (user_id, username) VALUES (#{userId}, #{username})
     </update>
 
     <!-- 更新用户的昵称 -->
@@ -69,4 +71,23 @@
     <update id="updateUserPassword">
         UPDATE user SET password = #{password} WHERE id = #{userId}
     </update>
+
+    <!-- 用户，包含角色信息 -->
+    <resultMap id="userWithRoles" type="User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email"    column="email"/>
+        <result property="mobile"   column="mobile"/>
+        <result property="phone"    column="phone"/>
+        <result property="avatar"   column="avatar"/>
+        <result property="orgId"    column="orgId"/>
+        <result property="gender"   column="gender"/>
+        <result property="enabled"  column="enabled"/>
+
+        <collection property="roles" ofType="java.lang.String" javaType="java.util.HashSet">
+            <result column="role"/>
+        </collection>
+    </resultMap>
 </mapper>

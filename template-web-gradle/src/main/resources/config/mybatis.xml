@@ -29,7 +29,7 @@
         <property name="testOnBorrow"    value="false"/>
         <property name="testOnReturn"    value="false"/>
 
-        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <!-- 打开 PSCache，并且指定每个连接上 PSCache 的大小 -->
         <property name="poolPreparedStatements" value="true"/>
         <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
     </bean>

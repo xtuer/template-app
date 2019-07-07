@@ -87,16 +87,12 @@ public final class Result<T> {
         // Result
         Result<User> r1 = Result.ok();
         Result<User> r2 = Result.ok(new User("Alice", "Passw0rd", "ROLE_ADMIN"));
-        Result<User> r3 = Result.ok("Yes", new Demo(123456L, "Physics"));
-        Result<User> r4 = Result.ok("Yes", new Demo(123456L, "Physics"), 1024);
 
         // JSON
         System.out.println(JSON.toJSONString(r1));
         System.out.println(JSON.toJSONString(r2));
-        System.out.println(JSON.toJSONString(r3));
-        System.out.println(JSON.toJSONString(r4));
 
-        System.out.println(r3.getData());
+        System.out.println(JSON.toJSONString(r2.getData(), true));
 
         // JSONP
         System.out.println(Result.jsonp("callback", Result.ok("Hello")));

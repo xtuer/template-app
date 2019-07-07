@@ -25,18 +25,31 @@
 
     <!-- 匹配的 URL 不进行身份验证 -->
     <http security="none" pattern="/page/login"/>
+    <http security="none" pattern="/page/mobile/login"/>
+    <http security="none" pattern="/mobile/static/**"/>
     <http security="none" pattern="/static/**"/>
     <http security="none" pattern="/static-x/**"/>
 
     <!-- 禁止创建 session，使用 token 的方式进行认证 -->
-    <http auto-config="true" create-session="stateless" use-expressions="false" access-decision-manager-ref="accessDecisionManager">
-        <intercept-url pattern="/page/admin"   access="ROLE_ADMIN_SYSTEM"/>
-        <intercept-url pattern="/demo/filters" access="ROLE_USER"/>
-        <intercept-url pattern="/page/teacher" access="ROLE_TEACHER"/>
-        <intercept-url pattern="/page/student" access="ROLE_STUDENT"/>
+    <!--<http auto-config="true" create-session="stateless" access-decision-manager-ref="accessDecisionManager">-->
+    <http auto-config="true" create-session="stateless">
+        <intercept-url pattern="/demo/filters" access="permitAll"/>
+        <intercept-url pattern="/page/admin"   access="hasRole('ADMIN_SYSTEM')"/>
+        <intercept-url pattern="/page/teacher" access="hasRole('TEACHER')"/>
+        <intercept-url pattern="/page/student" access="hasRole('STUDENT')"/>
+        <intercept-url pattern="/page/parent"  access="hasRole('PARENT')"/>
 
-        <intercept-url pattern="/page/admin-system" access="ROLE_ADMIN_SYSTEM"/>
-        <intercept-url pattern="/page/admin-school" access="ROLE_ADMIN_SCHOOL"/>
+        <intercept-url pattern="/page/form-teacher" access="hasRole('FORM_TEACHER')"/>
+        <intercept-url pattern="/page/admin-system" access="hasRole('ADMIN_SYSTEM')"/>
+        <intercept-url pattern="/page/admin-school" access="hasRole('ADMIN_SCHOOL')"/>
+
+        <!-- 匿名用户 -->
+        <intercept-url pattern="/api/schools"         access="permitAll" method="GET"/>
+        <intercept-url pattern="/api/schools/current" access="permitAll" method="GET"/>
+        <intercept-url pattern="/api/login/tokens"    access="permitAll"/>
+
+        <!-- 需要权限 -->
+        <intercept-url pattern="/api/**" access="hasAnyRole('TEACHER', 'STUDENT', 'ADMIN_SYSTEM', 'ADMIN_SCHOOL', 'FORM_TEACHER', 'PARENT')"/>
 
         <form-login login-page="/page/login"
                     login-processing-url="/login"
@@ -75,7 +88,7 @@
     <beans:bean id="userDetailsService" class="edu.security.UserDetailsService"/>
     <beans:bean id="authenticationSuccessHandler" class="edu.security.AuthenticationSuccessHandler"/>
 
-    <!-- 自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
+    <!-- 注意: 不再使用自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
         <beans:constructor-arg>
             <beans:list>
@@ -84,15 +97,18 @@
         </beans:constructor-arg>
     </beans:bean>
     <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
-    	<beans:constructor-arg ref="roleHierarchy"/>
+        <beans:constructor-arg ref="roleHierarchy"/>
     </beans:bean>
     <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
-    	<beans:property name="hierarchy">
-    		<beans:value>
-                ROLE_ADMIN > ROLE_USER
-                ROLE_STAFF > ROLE_USER
+        <beans:property name="hierarchy">
+            <beans:value>
+                ROLE_TEACHER > ROLE_USER
+                ROLE_STUDENT > ROLE_USER
+                ROLE_ADMIN_SYSTEM > ROLE_USER
+                ROLE_ADMIN_SCHOOL > ROLE_USER
+                ROLE_FORM_TEACHER > ROLE_USER
                 ROLE_USER  > ROLE_GUEST
-    		</beans:value>
-    	</beans:property>
+            </beans:value>
+        </beans:property>
     </beans:bean>
 </beans:beans>
