@@ -1,6 +1,7 @@
 package edu.bean;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
+@JSONType(ignores = {"name", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class User extends org.springframework.security.core.userdetails.User {
     private long id;
 
@@ -80,7 +82,8 @@ public class User extends org.springframework.security.core.userdetails.User {
     }
 
     /**
-     * 用户是直接从数据库查询生成的，或者用户信息修改后，例如角色、可用状态修改后不会更新到父类的 authorities 中，需要重新创建一个用户对象才行
+     * 用户是直接从数据库查询到的，或者用户手动创建的，例如修改角色、可用状态等不会更新父类的 authorities 和 enabled，
+     * 也就是说新更新的信息 Spring Security 看不到，需要克隆当前用户生成 Spring Security 需要的用户对象才能给 Spring Security 使用
      *
      * @return 返回新的用户对象，权限等信息更新到了父类的 authorities 中
      */
@@ -111,6 +114,9 @@ public class User extends org.springframework.security.core.userdetails.User {
         return this;
     }
 
+    /**
+     * 保护密码
+     */
     public void protectPassword() {
         password = "[protected]";
     }
@@ -126,5 +132,10 @@ public class User extends org.springframework.security.core.userdetails.User {
 
         user2.setEnabled(false);
         System.out.println(JSON.toJSONString(user2));
+
+        User user3 = new User();
+        user3.setUsername("Bob").setPassword("pass").addRole("ADMIN");
+        user3 = user3.cloneForSecurity();
+        System.out.println(JSON.toJSONString(user3));
     }
 }
