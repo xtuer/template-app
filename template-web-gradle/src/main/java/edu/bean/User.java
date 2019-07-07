@@ -82,16 +82,15 @@ public class User extends org.springframework.security.core.userdetails.User {
     /**
      * 用户是直接从数据库查询生成的，或者用户信息修改后，例如角色、可用状态修改后不会更新到父类的 authorities 中，需要重新创建一个用户对象才行
      *
-     * @param user 已有用户对象
-     * @return 新的用户对象，权限等信息更新到了父类的 authorities 中
+     * @return 返回新的用户对象，权限等信息更新到了父类的 authorities 中
      */
-    public static User userForSpringSecurity(User user) {
-        String[] roles   = user.getRoles().toArray(new String[]{});
-        User newUser     = new User(user.id, user.username, user.password, user.enabled, roles);
-        newUser.email    = user.email;
-        newUser.nickname = user.nickname;
-        newUser.avatar   = user.avatar;
-        newUser.orgId    = user.orgId;
+    public User cloneForSecurity() {
+        String[] roles   = this.getRoles().toArray(new String[] {});
+        User newUser     = new User(this.id, this.username, this.password, this.enabled, roles);
+        newUser.email    = this.email;
+        newUser.nickname = this.nickname;
+        newUser.avatar   = this.avatar;
+        newUser.orgId    = this.orgId;
 
         return newUser;
     }

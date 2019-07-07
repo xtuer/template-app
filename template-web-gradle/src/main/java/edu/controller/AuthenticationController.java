@@ -114,7 +114,7 @@ public class AuthenticationController extends BaseController {
     @PostMapping(Urls.API_LOGIN_TOKENS)
     @ResponseBody
     public Result<String> loginToken(@RequestParam String username, @RequestParam String password) {
-        User user = userService.findUser(username, password, getOrgId());
+        User user = userService.findUser(username, password, super.getCurrentOrganizationId());
 
         if (user == null) {
             return Result.fail("用户名或密码不正确", "");

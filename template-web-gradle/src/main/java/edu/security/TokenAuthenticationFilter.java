@@ -30,9 +30,6 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     @Autowired
     private TokenService tokenService;
 
-    @Resource(name = "tokenWhiteList")
-    private Set<String> tokenWhiteList;
-
     public TokenAuthenticationFilter() {
         super("/"); // 参考 UsernamePasswordAuthenticationFilter
     }
@@ -46,8 +43,8 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (user == null) {
             return null;
         } else {
-            user.setPassword("[protected]");  // 密码不能为 null，但是也没有用，所以随便设置一个吧
-            user = User.userForSpringSecurity(user); // 生成 Spring Security 可使用的用户对象
+            user.protectPassword();  // 密码不能为 null，但是也没有用，所以随便设置一个吧
+            user = user.cloneForSecurity(); // 生成 Spring Security 可使用的用户对象
 
             return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         }
@@ -58,9 +55,8 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
 
-        // 如果在 token 白名单中，则不进行 token 验证
         // 如果 header 或者 cookie 里有 auth-token 时，则使用 token 查询用户数据进行登陆验证
-        if (!tokenWhiteList.contains(request.getRequestURI()) && WebUtils.getAuthToken(request) != null) {
+        if (WebUtils.getAuthToken(request) != null) {
             // 1. 尝试进行身份认证
             // 2. 如果用户无效
             //    2.1. AJAX 请求返回 401，方便拦截统一处理

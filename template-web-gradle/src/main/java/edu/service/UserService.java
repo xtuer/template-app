@@ -1,5 +1,6 @@
 package edu.service;
 
+import edu.bean.RedisKey;
 import edu.bean.Result;
 import edu.bean.User;
 import edu.mapper.UserMapper;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 提供用户相关的服务，例如查询用户、创建用户、更新用户信息
+ * 提供用户相关的服务，例如查询用户、创建用户、更新用户信息。
+ *
+ * 注意: 根据更新的用户信息，决定是否需要从 Redis 中删除缓存的用户。
  */
 @Service
 public class UserService extends BaseService {
@@ -55,7 +58,11 @@ public class UserService extends BaseService {
      * @return 返回查找到的用户，查找不到则返回 null
      */
     public User findUser(long userId) {
-        return userMapper.findUserById(userId);
+        // 先从缓存里查找用户，如果缓存里没有，再从数据库加载
+        String userKey = RedisKey.userKey(userId);
+        User user = getRedisDao().get(userKey, User.class, () -> userMapper.findUserById(userId));
+
+        return user;
     }
 
     /**
@@ -79,7 +86,8 @@ public class UserService extends BaseService {
     public void createOrUpdateUser(User user) {
         // 1. 如果用户 ID 无效，为其分配一个 ID
         // 2. 保存用户到数据库
-        // 3. 保存用户的角色到数据库
+        // 3. 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
+        //    重复导入用户数据的时候可能会用到
 
         long userId = user.getId();
 
@@ -90,8 +98,7 @@ public class UserService extends BaseService {
 
         userMapper.insertOrUpdateUser(user);
 
-        // 查找已经存在的用户 ID
-        // 因为对 orgId + username 做了唯一索引，所以如果用户已经存在则更新用户 ID，如不存在则插入
+        // [3] 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
         userId = userMapper.findUserByUsernameAndOrgId(user.getUsername(), user.getOrgId()).getId();
         user.setId(userId);
     }
@@ -120,6 +127,7 @@ public class UserService extends BaseService {
         if (StringUtils.isNumeric(mobile) && mobile.length() == 11) {
             // 简单的校验：手机号为 11 个数字
             userMapper.updateUserMobile(userId, mobile);
+            deleteUserCache(userId); // 删除缓存用户
             return Result.ok();
         } else {
             return Result.fail("请输入正确的手机号", "");
@@ -179,5 +187,58 @@ public class UserService extends BaseService {
     public void resetUserPassword(long userId) {
         String password = Utils.passwordByBCrypt("123456"); // 使用 BCrypt 加密
         userMapper.updateUserPassword(userId, password);
+    }
+
+    /**
+     * 更新用户的昵称
+     *
+     * @param userId   用户的 ID
+     * @param nickname 用户的昵称
+     */
+    public void updateUserNickname(long userId, String nickname) {
+        userMapper.updateUserNickname(userId, nickname);
+        deleteUserCache(userId); // 删除缓存用户
+    }
+
+    /**
+     * 更新用户的头像
+     *
+     * @param userId 用户 ID
+     * @param avatar 用户头像
+     */
+    public String updateUserAvatar(long userId, String avatar) {
+        // 1. 移动 avatar 的图片到 repo 并得到 avatar 的最新 URL
+        // 2. 更新数据库中用户的 avatar
+        // 3. 删除缓存用户
+        // 4. 返回 avatar 的 url
+
+        avatar = getFileService().moveFileToRepo(avatar);
+
+        if (avatar != null) {
+            userMapper.updateUserAvatar(userId, avatar);
+            deleteUserCache(userId); // 删除缓存用户
+        }
+
+        return avatar;
+    }
+
+    /**
+     * 更新用户的性别
+     *
+     * @param userId 用户的 ID
+     * @param gender 用户的性别
+     */
+    public void updateUserGender(long userId, int gender) {
+        userMapper.updateUserGender(userId, gender);
+        deleteUserCache(userId); // 删除缓存用户
+    }
+
+    /**
+     * 从 Redis 中删除缓存的用户，更新用户信息后进行删除
+     *
+     * @param userId 用户 ID
+     */
+    private void deleteUserCache(long userId) {
+        getRedisDao().delete(RedisKey.userKey(userId));
     }
 }

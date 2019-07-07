@@ -12,7 +12,7 @@ CREATE TABLE organization (
     id        bigint(20)   NOT NULL COMMENT '机构 ID',
     name      varchar(128) NOT NULL COMMENT '机构名字',
     host      varchar(128)          COMMENT '机构域名',
-    port      int DEFAULT 80        COMMENT '网址端口',
+    port      int DEFAULT 80        COMMENT '网站端口',
     admin_id  bigint(20)            COMMENT '管理员 ID',
     parent_id bigint(20) DEFAULT 0  COMMENT '上级机构 ID',
 

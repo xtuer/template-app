@@ -1,9 +1,13 @@
 package edu.controller;
 
+import edu.bean.Organization;
+import edu.bean.RedisKey;
 import edu.bean.User;
-import edu.service.FileService;
-import edu.service.IdWorker;
+import edu.mapper.OrganizationMapper;
+import edu.mapper.UserMapper;
+import edu.service.*;
 import edu.util.SecurityUtils;
+import edu.util.WebUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,33 +23,43 @@ public class BaseController {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private RedisDao redisDao;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OrganizationService orgService;
+
     /**
      * 获取当前登录用户
      *
-     * @return 登录用户
+     * @return 登录用户，如果没有登录返回 null
      */
     protected User getLoginUser() {
-        return SecurityUtils.getLoginUser();
+        long userId = this.getLoginUserId();
+        return userService.findUser(userId);
     }
 
     /**
      * 获取当前登录用户 ID
      *
-     * @return 登录用户 ID，不存在则返回 0
+     * @return 登录用户 ID，如果没有登录返回 0
      */
     protected long getLoginUserId() {
+        // 从 Security context 中获取登录的用户，此用户信息是从 token 里解析出来的，只有用户的关键信息
         User user = SecurityUtils.getLoginUser();
         return user == null ? 0 : user.getId();
     }
 
     /**
-     * 获取当前域名对应的组织 ID
+     * 获取当前域名对应的机构 ID
      *
      * @return 组织 ID
      */
-    protected long getOrgId() {
-        // TODO: 如果没有找到域名对应的组织，则返回 1，表明是系统管理员的机构
-        return 1;
+    protected long getCurrentOrganizationId() {
+        return orgService.getCurrentOrganizationId();
     }
 
     /**

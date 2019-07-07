@@ -15,6 +15,9 @@ public class BaseService {
     @Autowired
     private RedisDao redisDao;
 
+    @Autowired
+    private FileService fileService;
+
     /**
      * 生成唯一的 64 位 long 的 ID
      *

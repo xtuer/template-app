@@ -16,9 +16,9 @@ public class RedisKey {
     public static long HALF_HOUR_IN_SECONDS  = 1800;    // 半小时的秒数
     public static long HALF_DAY_IN_SECONDS   = 43200;   // 半天的秒数
 
-    private static String ORG_HOST       = "org:${host}";               // 机构缓存 (使用 host)
+    private static String USER = "user:${id}";  // 用户
+    private static String ORG  = "org:${host}"; // 机构 (使用 host)
     private static String CLAZZ_STUDENTS = "clazz:${clazzId}:students"; // 班级学生 ID 列表缓存
-    private static String UPLOADED_FILE  = "uploaded_file:${id}";       // 上传的文件信息缓存
     private static String CONVERT_FILE_PROGRESS = "convert_progress:";  // 转换文件进度
     private static String CONVERT_FILE_ERROR    = "convert_error:";     // 转换文件错误
 
@@ -29,16 +29,16 @@ public class RedisKey {
      * @return 返回 key
      */
     public static String orgKey(String host) {
-        return StringSubstitutor.replace(ORG_HOST, Collections.singletonMap("org", host));
+        return StringSubstitutor.replace(ORG, Collections.singletonMap("org", host));
     }
 
     /**
-     * 上传文件的 key，如 uploaded_file:12345
+     * 用户的 key，如 user:332516032017072128
      *
-     * @param fileId 文件 id
+     * @param userId 用户 ID
      * @return 返回 key
      */
-    public static String fileKey(long fileId) {
-        return StringSubstitutor.replace(UPLOADED_FILE, Collections.singletonMap("id", fileId));
+    public static String userKey(long userId) {
+        return StringSubstitutor.replace(USER, Collections.singletonMap("id", userId));
     }
 }

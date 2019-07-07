@@ -50,7 +50,7 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
 
         // [4] 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 接下来的鉴权使用
-        user = User.userForSpringSecurity(user);
+        user = user.cloneForSecurity();
         Authentication auth =  new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
