@@ -39,7 +39,7 @@ public class User extends org.springframework.security.core.userdetails.User {
     private int     gender;   // 性别: 0 (未设置), 1 (男), 2 (女)
     private boolean enabled;  // 状态: 0 (禁用), 1 (启用)
 
-    private Set<String> roles = new HashSet<>(); // 角色
+    private Set<String> roles = new HashSet<>(); // 角色，需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
 
     public User() {
         // 父类不允许空的用户名、密码和权限，所以给个默认的，这样就可以用默认的构造函数创建 User 对象。
@@ -112,6 +112,16 @@ public class User extends org.springframework.security.core.userdetails.User {
         }
 
         return this;
+    }
+
+    /**
+     * 判断用户是否有传入的角色
+     *
+     * @param role 角色
+     * @return 有此角色返回 true，否则返回 false
+     */
+    public boolean hasRole(String role) {
+        return this.roles.contains(role);
     }
 
     /**

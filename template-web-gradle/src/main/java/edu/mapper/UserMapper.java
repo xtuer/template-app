@@ -20,10 +20,10 @@ public interface UserMapper {
      * 使用用户名查找学校下的用户 (因为使用的是 BCrypt 加密密码，每次计算出的密码都是不同的，所以不能使用密码进行查询)
      *
      * @param username 用户名
-     * @param schoolId 学校 ID
+     * @param orgId    机构 ID
      * @return 返回用户对象
      */
-    User findUserByUsernameAndOrgId(String username, long schoolId);
+    User findUserByUsernameAndOrgId(String username, long orgId);
 
     /**
      * 查找机构的用户

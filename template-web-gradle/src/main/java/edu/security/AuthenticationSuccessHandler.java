@@ -3,6 +3,7 @@ package edu.security;
 import edu.bean.Role;
 import edu.bean.User;
 import edu.service.ConfigService;
+import edu.service.OrganizationService;
 import edu.service.UserService;
 import edu.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private OrganizationService orgService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
@@ -40,7 +44,8 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         // [1] 获取登录用户 (访问这个函数，说明是通过表单成功登录过来的，一定能够查询到用户)
         String username = request.getParameter(SecurityConstant.LOGIN_USERNAME);
         String password = request.getParameter(SecurityConstant.LOGIN_PASSWORD);
-        User   user     = userService.findUser(username, password, 0);
+        long   orgId    = orgService.getCurrentOrganizationId();
+        User   user     = userService.findUser(username, password, orgId);
 
         // [2] 创建用户的登录记录
         userService.createLoginRecord(user.getId(), user.getUsername());
@@ -51,13 +56,13 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
 
         // [4] 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 接下来的鉴权使用
         user = user.cloneForSecurity();
-        Authentication auth =  new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         // [5] 登录成功后根据用户的角色跳转到对应的页面
-        if (user.getRoles().contains(Role.ROLE_ADMIN_SYSTEM)) {
+        if (user.hasRole(Role.ROLE_ADMIN_SYSTEM)) {
             response.sendRedirect("/page/admin-system");
-        } else if (user.getRoles().contains(Role.ROLE_ADMIN_SCHOOL)) {
+        } else if (user.hasRole(Role.ROLE_ADMIN_SCHOOL)) {
             response.sendRedirect("/page/admin-school");
         } else {
             response.sendRedirect("/page/teacher");

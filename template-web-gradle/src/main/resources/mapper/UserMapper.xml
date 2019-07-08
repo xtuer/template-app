@@ -9,7 +9,7 @@
     </sql>
 
     <!-- 使用 ID 查找用户 -->
-    <select id="findUserById" parameterType="long" resultMap="userWithRoles">
+    <select id="findUserById" parameterType="_long" resultMap="userWithRoles">
         SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
         FROM user
             LEFT JOIN user_role ON user.id = user_role.user_id
@@ -86,7 +86,7 @@
         <result property="gender"   column="gender"/>
         <result property="enabled"  column="enabled"/>
 
-        <collection property="roles" ofType="java.lang.String" javaType="java.util.HashSet">
+        <collection property="roles" ofType="string" javaType="java.util.HashSet">
             <result column="role"/>
         </collection>
     </resultMap>

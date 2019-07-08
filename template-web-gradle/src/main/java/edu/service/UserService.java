@@ -69,7 +69,7 @@ public class UserService extends BaseService {
      * 检查用户名在机构中是否使用过
      *
      * @param username 用户名
-     * @param orgId    学校 ID
+     * @param orgId    机构 ID
      * @return 用户名使用过返回 true，没有使用过返回 false
      */
     public boolean isUsernameUsed(String username, long orgId) {

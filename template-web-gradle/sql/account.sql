@@ -59,6 +59,7 @@ CREATE TABLE user (
 # 日期：2019-06-20
 # 版本：1.0
 # 描述：角色表
+# 注意：角色的字符串需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
 #------------------------------------------
 DROP TABLE IF EXISTS role;
 
@@ -113,14 +114,14 @@ VALUES (1, 'admin', '系统管理员', '{bcrypt}$2a$10$KYIBStaQwdYEetYcKlb/Uu0vE
 
 # 2. admin 的角色为系统管理员
 INSERT INTO user_role (user_id, role)
-VALUES (1, 'ADMIN_SYSTEM');
+VALUES (1, 'ROLE_ADMIN_SYSTEM');
 
 # 3. 创建角色
 INSERT INTO role (name, value)
-VALUES ('ADMIN_SYSTEM',       '系统管理员'),
-       ('ADMIN_ORGANIZATION', '机构管理员'),
-       ('STUDENT',            '学生'),
-       ('TEACHER',            '老师');
+VALUES ('ROLE_ADMIN_SYSTEM',       '系统管理员'),
+       ('ROLE_ADMIN_ORGANIZATION', '机构管理员'),
+       ('ROLE_STUDENT',            '学生'),
+       ('ROLE_TEACHER',            '老师');
 
 #-------------------------------------------
 # SQL 示例
