@@ -38,7 +38,6 @@
         appId  = 'Default_ID'
         appKey = 'Default_Key'
 
-        idWorker = 0                 // ID 生成器的 ID，范围是 [0, 1023]
         thymeleafCacheable = true    // thymeleaf 默认使用缓存提高效率
         repoDirectory = '/edu/repo'  // 文件仓库目录
         tempDirectory = '/edu/temp'  // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
@@ -61,10 +60,14 @@ environments {
      |                                 测试环境配置                                 |
      |----------------------------------------------------------------------------*/
     test1 {
-        idWorker = 0
+        deploy {
+            host = '192.168.1.98'
+        }
     }
 
     test2 {
-        idWorker = 1
+        deploy {
+            host = '192.168.1.99'
+        }
     }
 }

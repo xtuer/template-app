@@ -1,6 +1,9 @@
 package edu.service;
 
+import edu.util.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Service;
 
 /**
  * 使用 Snowflake 算法生成的 64 位 long 类型的 ID，结构如下:<br>
@@ -15,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
  * SnowFlake 的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生 ID 碰撞(由数据中心 ID 和机器 ID 作区分)，并且效率较高。
  * 最多支持 1024 台机器，每台机器每毫秒能够生成最多 4096 个 ID，整个集群理论上每秒可以生成 1024 * 1000 * 4096 = 42 亿个 ID。
  */
+@Slf4j
+@Service
 public class IdWorker {
     /** 开始时间截(2017-01-01)，单位毫秒 */
     private static final long START_TIMESTAMP = 1483228800000L;
@@ -26,10 +31,10 @@ public class IdWorker {
     private static final long DATACENTER_ID_BITS = 5L;
 
     /** 支持的最大机器 ID，结果是 31: 0B11111 */
-    private static final long MAX_WORKER_ID = -1L ^ (-1L << WORKER_ID_BITS);
+    private static final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
 
     /** 支持的最大数据中心 ID，结果是 31: 0B11111 */
-    private static final long MAX_DATACENTER_ID = -1L ^ (-1L << DATACENTER_ID_BITS);
+    private static final long MAX_DATACENTER_ID = ~(-1L << DATACENTER_ID_BITS);
 
     /** 序列在 ID 中占的位数 */
     private static final long SEQUENCE_BITS = 12L;
@@ -44,7 +49,7 @@ public class IdWorker {
     private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS + DATACENTER_ID_BITS;
 
     /** 生成序列的掩码，这里为 4095(0B111111111111=0xFFF=4095) */
-    private static final long SEQUENCE_MASK = -1L ^ (-1L << SEQUENCE_BITS);
+    private static final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
 
     /** 工作机器 ID(0~31) */
     private long workerId;
@@ -59,19 +64,22 @@ public class IdWorker {
     private long lastTimestamp = -1L;
 
     /**
+     * 读取服务器 ID 的环境变量 SERVER_ID 作为 ID 生成器的 ID，范围是 [0, 1023]
+     */
+    public IdWorker() {
+        int workerId = Utils.getServerId();
+        parseIds(workerId);
+
+        log.info("IdWorker is initialized with ID {}", workerId);
+    }
+
+    /**
      * 创建 ID 生成器的方式一: 使用工作机器的序号，范围是 [0, 1023]，优点是方便给机器编号
      *
      * @param workerId 工作机器 ID
      */
     public IdWorker(long workerId) {
-        long maxMachineId = (MAX_DATACENTER_ID +1) * (MAX_WORKER_ID +1) - 1; // 1023
-
-        if (workerId < 0 || workerId > maxMachineId) {
-            throw new IllegalArgumentException(String.format("Worker ID can't be greater than %d or less than 0", maxMachineId));
-        }
-
-        this.datacenterId = (workerId >> WORKER_ID_BITS) & MAX_DATACENTER_ID;
-        this.workerId = workerId & MAX_WORKER_ID;
+        parseIds(workerId);
     }
 
     /**
@@ -81,6 +89,29 @@ public class IdWorker {
      * @param workerId     工作机器 ID (0~31)
      */
     public IdWorker(long datacenterId, long workerId) {
+        parseIds(datacenterId, workerId);
+    }
+
+    /**
+     * 解析 workerId
+     */
+    private void parseIds(long workerId) {
+        long maxMachineId = (MAX_DATACENTER_ID +1) * (MAX_WORKER_ID +1) - 1; // 1023
+
+        if (workerId < 0 || workerId > maxMachineId) {
+            throw new IllegalArgumentException(String.format("Worker ID can't be greater than %d or less than 0", maxMachineId));
+        }
+
+        long datacenterId = (workerId >> WORKER_ID_BITS) & MAX_DATACENTER_ID;
+        long workerId2    = workerId & MAX_WORKER_ID;
+
+        parseIds(datacenterId, workerId2);
+    }
+
+    /**
+     * 解析 workerId
+     */
+    private void parseIds(long datacenterId, long workerId) {
         if (workerId > MAX_WORKER_ID || workerId < 0) {
             throw new IllegalArgumentException(String.format("Worker ID can't be greater than %d or less than 0", MAX_WORKER_ID));
         }
@@ -88,7 +119,7 @@ public class IdWorker {
             throw new IllegalArgumentException(String.format("Datacenter ID can't be greater than %d or less than 0", MAX_DATACENTER_ID));
         }
 
-        this.workerId = workerId;
+        this.workerId     = workerId;
         this.datacenterId = datacenterId;
     }
 

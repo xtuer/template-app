@@ -1,13 +1,8 @@
 package edu.controller;
 
-import edu.bean.Organization;
-import edu.bean.RedisKey;
 import edu.bean.User;
-import edu.mapper.OrganizationMapper;
-import edu.mapper.UserMapper;
 import edu.service.*;
 import edu.util.SecurityUtils;
-import edu.util.WebUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -35,7 +30,7 @@ public class BaseController {
     /**
      * 获取当前登录用户
      *
-     * @return 登录用户，如果没有登录返回 null
+     * @return 返回登录用户，如果没有登录返回 null
      */
     protected User getLoginUser() {
         long userId = this.getLoginUserId();
@@ -45,7 +40,7 @@ public class BaseController {
     /**
      * 获取当前登录用户 ID
      *
-     * @return 登录用户 ID，如果没有登录返回 0
+     * @return 返回登录用户 ID，如果没有登录返回 0
      */
     protected long getLoginUserId() {
         // 从 Security context 中获取登录的用户，此用户信息是从 token 里解析出来的，只有用户的关键信息

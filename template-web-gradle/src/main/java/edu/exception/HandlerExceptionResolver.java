@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import edu.bean.Result;
 import edu.controller.Urls;
 import edu.service.IdWorker;
+import edu.util.Utils;
 import edu.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -21,6 +22,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Slf4j
 public final class HandlerExceptionResolver implements org.springframework.web.servlet.HandlerExceptionResolver {
+    // 服务器的 ID
+    private int workerId = Utils.getServerId();
+
+    // ID 生成器
     @Autowired
     private IdWorker idWorker;
 
@@ -28,7 +33,7 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
     public ModelAndView resolveException(HttpServletRequest request,
                                          HttpServletResponse response,
                                          Object handler, Exception ex) {
-        String error = "异常 ID: " + idWorker.nextId();
+        String error = "服务器: " + workerId + ", 异常 ID: " + idWorker.nextId();
         String stack = String.format("网址: %s%n参数: %s%n堆栈: %s",
                 request.getRequestURL(),
                 JSON.toJSONString(request.getParameterMap()),

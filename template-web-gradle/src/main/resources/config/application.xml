@@ -18,9 +18,4 @@
 
     <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
     <context:component-scan base-package="edu.service"/>
-
-    <!-- 分布式唯一 ID 生成器 -->
-    <bean id="idWorker" class="edu.service.IdWorker">
-        <constructor-arg value="${idWorker}"/>
-    </bean>
 </beans>

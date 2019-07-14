@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import edu.bean.Mime;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -352,6 +353,22 @@ public final class Utils {
         }
 
         return new Dimension(resultW, resultH);
+    }
+
+    /**
+     * 读取服务器 ID 的环境变量 SERVER_ID，范围是 [0, 1023]，集群中每个服务器的 ID 唯一
+     *
+     * @return 返回服务器 ID，如果没有设置环境变量 SERVER_ID 则抛出异常
+     */
+    public static int getServerId() {
+        String id = System.getenv("SERVER_ID");
+
+        // 是整数则为有效的 ID
+        if (NumberUtils.isDigits(id)) {
+            return NumberUtils.toInt(id);
+        } else {
+            throw new RuntimeException("请设置正确的环境变量 SERVER_ID，范围是 [0, 1023]");
+        }
     }
 
     public static void main(String[] args) {

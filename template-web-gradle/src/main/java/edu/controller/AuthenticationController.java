@@ -29,7 +29,7 @@ public class AuthenticationController extends BaseController {
     }
 
     /**
-     * 处理登录，登录错误，注销，对应的 URL 为:
+     * 登录页面，登录错误，注销页面，对应的 URL 为:
      *     登录页面: /page/login
      *     登录错误: /page/login?error=1
      *     注销成功: /page/login?logout=1
@@ -84,13 +84,13 @@ public class AuthenticationController extends BaseController {
 
     /**
      * 请求当前登录用户
-     * URL: http://localhost:8080/api/login/users/current
+     * 网址: http://localhost:8080/api/login/users/current
      *
      * @return payload 为登录用户，如没有登录则 payload 为 null，success 为 false
      */
     @GetMapping(Urls.API_LOGIN_USERS_CURRENT)
     @ResponseBody
-    public Result<User> getLoginUser2() {
+    public Result<User> getCurrentUser() {
         User user = super.getLoginUser();
 
         if (user != null) {
@@ -105,7 +105,7 @@ public class AuthenticationController extends BaseController {
 
     /**
      * 使用用户名和密码请求 token.
-     * URL: http://localhost:8080/api/login/tokens
+     * 网址: http://localhost:8080/api/login/tokens
      * 参数: username and password
      *
      * @param username 账号

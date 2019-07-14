@@ -14,8 +14,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * 用户类型，根据 userdetails.User 的设计，roles, authorities, enabled, expired 等状态不能修改，
- * 只能是创建用户对象的时候传入进来。
+ * 用户类型，根据 userdetails.User 的设计, authorities, enabled, expired 等状态不能修改，只能是创建用户对象的时候传入进来。
+ * Roles 和 authorities 是对应的，authorities 是给 Spring Security 使用的，roles 是给普通业务逻辑使用的。
+ * 但更新 roles 后并不会自动更新用户的 authorities，需要调用 cloneForSecurity() 生成新的对象才能更新 authorities。
  */
 @Getter
 @Setter
