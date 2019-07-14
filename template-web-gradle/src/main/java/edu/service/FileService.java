@@ -20,10 +20,34 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 文件工具，用于读写临时文件和文件仓库中的文件，相关文件夹有:
+ *     临时文件夹 ${uploadDirectory}，用于存储临时文件，里面的文件会定期删除
+ *     仓库文件夹 ${repoDirectory}，  用于存储文件仓库中的文件，删除由业务逻辑来决定
+ *
+ * 上传文件逻辑:
+ *     1. 前端使用富文本编辑器异步上传文件到临时文件夹 ${uploadDirectory}，每个上传的文件都有一个对应的 url 如 tempFileUrl
+ *     2. 前端提交表单的 html
+ *     3. 服务器端解析 html 得到文件的 url，调用 moveFileToRepo() 把 url 指向的临时文件从临时文件夹 ${uploadDirectory}
+ *        移动到仓库的文件夹 ${repoDirectory}/{date}，如果 url 没有指向临时文件则不进行移动，最后替换 html 里临时文件的 url 为最终的 url
+ *        提示:
+ *            a. 文件按日期 yyyy-MM-dd 分文件夹存储，每个文件有一个 url，此 url 和文件信息保存到数据库
+ *            b. 每个目录下存放的文件或文件夹不宜过多，不超过 2 万个时性能还是很高的，2 万天有 55 年，所以按天存储文件足够使用
+ *            c. 每个上传的文件系统都会为其分配一个不重复的文件名，格式为 {long-number}.[ext]
+ *
+ * 其他函数:
+ *     获取临时文件: getTempFile()
+ *     获取仓库文件: getRepoFile()
+ *     删除仓库文件: deleteRepoFile()
+ *
+ * 注意:
+ *     1. 上传文件名的格式为 {long-number}.[ext]，long-number 是使用 IdWorker 生成的 64 位的 long 类型整数
+ *     2. 因为 URL 比 URI 更好记，此文件中如果特殊说明，URL 则代表 URI，也就是没有 host, port，protocol 等部分
+ */
 @Service
 @Slf4j
 public class FileService extends BaseService {
-    // 仓库文件 URL 的 pattern
+    // 仓库文件 URL 的 pattern: /file/repo/{date}/{filename}
     // 文件的 URL：/file/repo/2018-04-10/168242114298118144.doc
     // 图片的 URL：/file/repo/2018-04-10/165694386577866752.jpg
     public static final Pattern REPO_FILE_URL_PATTERN = Pattern.compile("/file/repo/(\\d{4}-\\d{2}-\\d{2})/(.+)");
@@ -35,7 +59,7 @@ public class FileService extends BaseService {
     private FileMapper fileMapper;
 
     /**
-     * 使用临时文件的名字获取对应的文件对象
+     * 使用临时文件名获取临时文件
      *
      * @param filename 临时文件名
      * @return 返回临时文件对象
@@ -45,11 +69,11 @@ public class FileService extends BaseService {
     }
 
     /**
-     * 获取仓库中的文件
+     * 使用文件名和日期目录名获取仓库中的文件
      *
      * @param filename 文件名
-     * @param date     存储文件的日期
-     * @return 返回文件对象
+     * @param date     日期目录名
+     * @return 返回仓库文件对象
      */
     public File getRepoFile(String filename, String date) {
         File repo = new File(config.getRepoDirectory(), date);
@@ -59,7 +83,7 @@ public class FileService extends BaseService {
     }
 
     /**
-     * 使用仓库文件的 URI 获取对应的文件对象
+     * 使用仓库文件的 URI 获取对应的文件
      *
      * @param uri 文件的 URI
      * @return 返回仓库文件夹下的文件对象，如果 uri 的格式不对则返回 null
@@ -83,26 +107,34 @@ public class FileService extends BaseService {
     }
 
     /**
-     * 判断传入的 uri 是否临时文件的 URI
+     * 判断传入的 URI 是否临时文件的 URI
      *
      * @param uri 文件的  URI
-     * @return 如果 uri 以 /file/temp/ 开头说明是临时文件的 URI，返回 true，否则返回 false
+     * @return 如果 URI 以 /file/temp/ 开头说明是临时文件的 URI 则返回 true，否则返回 false
      */
     public boolean isTempFileUri(String uri) {
         return StringUtils.startsWith(uri, Urls.URL_TEMP_FILE_PREFIX);
     }
 
     /**
-     * 判断传入的 uri 是否仓库文件的 URI
+     * 判断传入的 URI 是否仓库文件的 URI
      *
      * @param uri 文件的 URI
-     * @return 如果 uri 匹配 REPO_FILE_URL_PATTERN 说明是仓库文件的 URI，返回 true，否则返回 false
+     * @return 如果 URI 匹配 REPO_FILE_URL_PATTERN 说明是仓库文件的 URI 则返回 true，否则返回 false
      */
     public boolean isRepoFileUri(String uri) {
         Matcher fileMatcher = REPO_FILE_URL_PATTERN.matcher(uri);
         return fileMatcher.matches();
     }
 
+    /**
+     * 上传文件到临时目录
+     *
+     * @param file   上传的文件
+     * @param userId 上传文件的用户 ID
+     * @return 返回上传的文件信息对象
+     * @throws IOException 保存文件到临时目录出错时抛出 IO 异常
+     */
     public UploadedFile uploadFileToTemp(MultipartFile file, long userId) throws IOException {
         // 1. 为文件生成一个唯一 ID
         // 2. 获取原始文件后和缀名
@@ -117,7 +149,7 @@ public class FileService extends BaseService {
         String extension          = FilenameUtils.getExtension(originalFilename); // 上传的文件的后缀名
         String tempFilename       = fileId + (StringUtils.isBlank(extension) ? "" : "." + extension); // 临时文件名
         File   tempFile           = getTempFile(tempFilename); // 临时文件
-        String tempUrl            = Urls.URL_TEMP_FILE_PREFIX + tempFilename; // 临时文件的 URL: /file/temp/165694386577866752.png
+        String tempUrl            = Urls.URL_TEMP_FILE_PREFIX + tempFilename; // 临时文件的 URI: /file/temp/165694386577866752.png
         UploadedFile uploadedFile = new UploadedFile(fileId, originalFilename, tempUrl, UploadedFile.TEMPORARY_FILE, userId); // 上传的文件
 
         log.info("[开始] 上传文件 {}", originalFilename);
@@ -146,14 +178,14 @@ public class FileService extends BaseService {
     }
 
     /**
-     * 移动 uri 对应的文件到文件仓库中，按照日期进行存储，返回此文件对应的正式 URI，
-     * 也就是说，只有 uri 指向临时文件时才会移动文件 (调用此函数的地方不需要判断是否临时文件)，其他情况返回原来的 uri，不移动文件:
+     * 移动 uri 对应的文件到文件仓库中，按照日期进行存储，返回此文件对应的正式 URI
+     * 注意: 只有 uri 指向临时文件时才会移动文件 (调用此函数的地方不需要判断是否临时文件)，其他情况返回原来的 uri，不移动文件:
      * 1. 如果 uri 是临时文件的 URI 则进行移动
      *    1.1 临时文件不存在返回 null
      *    1.2 移动出错如操作文件失败返回 null
      *    1.3 移动成功返回文件对应的正式 URI
-     * 2. 如果 uri 不是临时文件的 URI 则不进行移动，直接返回 uri，例如 URI 已经是仓库中文件的 URI 就用再移动了，
-     *    如果 uri 是一个第三方的 URL 如 http://www.edu-edu.com/fox.png 就更不用移动了，在我们系统里没有对应的文件
+     * 2. 如果 uri 不是临时文件的 URI 则不进行移动，直接返回 uri，例如 URI 已经是仓库中文件的 URI 就不用再移动了，
+     *    如果 uri 是一个第三方的 URL 如 http://www.edu-edu.com/fox.png 不用移动，因为在我们系统里没有对应的文件
      *
      * @param uri 文件的 URI
      * @return 返回移动文件后的 URI
@@ -170,22 +202,22 @@ public class FileService extends BaseService {
             return url;
         } else {
             // uri 指向仓库文件，或者是一个第三方完整的 URL 则直接返回
-            log.info("非临时文件不进行移动: {}", uri);
+            log.info("非临时文件不移动到仓库: {}", uri);
             return StringUtils.trim(uri);
         }
     }
 
     /**
-     * 移动文件 sourceFile 到数据文件夹，文件按照日期进行存储，并返回访问文件的 URL
+     * 移动文件 sourceFile 到仓库，文件按照日期进行存储，并返回访问文件的 URL
      *
      * @param sourceFile 被移动的文件
-     * @param date       移动文件的日期
+     * @param date       存储文件的日期目录
      * @return 返回文件对应的 URL，如果移动时发生异常，例如文件不存在，则返回 null
      */
     public String moveFileToRepo(File sourceFile, String date) {
         // 1. 计算访问文件的 URL，例如为 /file/repo/2018-05-03/165694386577866752.doc
-        // 2. 移动文件到数据文件夹
-        // 3. 更新文件的 URL
+        // 2. 移动文件到仓库中的文件夹
+        // 3. 更新文件的 URL 到数据库
         long fileId     = getFileId(sourceFile.getName());
         String filename = sourceFile.getName();
         String finalUrl = Urls.URL_REPO_FILE_PREFIX + date + "/" + filename;
@@ -194,8 +226,8 @@ public class FileService extends BaseService {
         try {
             log.info("[开始] 移动文件 {} 到文件仓库 {}", sourceFile.getAbsolutePath(), targetDirectory.getAbsolutePath());
 
-            FileUtils.moveFileToDirectory(sourceFile, targetDirectory, true); // [2] 移动文件到数据文件夹
-            fileMapper.updateUploadedFileUrlAndType(fileId, finalUrl, UploadedFile.PLATFORM_FILE); // [3] 更新文件的 URL
+            FileUtils.moveFileToDirectory(sourceFile, targetDirectory, true); // [2] 移动文件到仓库中的文件夹
+            fileMapper.updateUploadedFileUrlAndType(fileId, finalUrl, UploadedFile.PLATFORM_FILE); // [3] 更新文件的 URL 到数据库
 
             log.info("[结束] 移动文件 {} 到文件仓库 {}", sourceFile.getAbsolutePath(), targetDirectory.getAbsolutePath());
 
@@ -229,7 +261,7 @@ public class FileService extends BaseService {
     }
 
     /**
-     * 根据文件名获取文件的 ID，文件名格式为 {long number}[.ext]
+     * 根据文件名获取文件的 ID，文件名格式为 {long-number}[.ext]
      *
      * @param filename 文件名
      * @return 返回文件的 ID，如果文件名格式不正确则返回 0
@@ -244,12 +276,7 @@ public class FileService extends BaseService {
      * @param filename 文件名
      * @return 返回查询到的文件
      */
-    public UploadedFile findUploadedFileFile(String filename) {
+    public UploadedFile findUploadedFile(String filename) {
         return fileMapper.findUploadedFileById(getFileId(filename));
-    }
-
-    public static void main(String[] args) {
-        FileService s = new FileService();
-        System.out.println(s.getRepoFile("/file/repo/2018-04-10/165694386577866752.jpg"));
     }
 }

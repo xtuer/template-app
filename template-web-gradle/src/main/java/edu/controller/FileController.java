@@ -26,8 +26,8 @@ import java.util.List;
  *     当 URI 最后部分是文件名格式 (带点, 如 abc.png), 响应使用 @ResponseBody 不会生效, 而是继续寻找 view,
  *     这时 Ajax 的响应需要直接写到 response, content-type 设置为 application/json
  *
- *     访问临时文件和仓库中的文件，直接读取文件返回，不需要查询文件的原始名字
- *     下载文件时，先查询文件的原始名字，然后才读取文件返回，因为保存下载文件时使用原始名字更友好
+ *     访问临时文件和仓库中的文件，直接读取文件返回，不需要查询文件的原始名字，这样也可以支持从 nginx 访问
+ *     下载文件时，先查询文件原来的名字，然后才读取文件返回，使用文件原来的名字保存比使用一个无意义的名字更友好
  */
 @Controller
 public class FileController extends BaseController {
@@ -68,7 +68,7 @@ public class FileController extends BaseController {
         File file = fileService.getRepoFile(filename, date);    // 仓库中的文件
 
         // 查询上传时的文件信息，获取文件的原始名字
-        UploadedFile upFile = fileService.findUploadedFileFile(filename);
+        UploadedFile upFile = fileService.findUploadedFile(filename);
         if (upFile != null) {
             originalName = upFile.getFilename();
         }
