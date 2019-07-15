@@ -29,4 +29,9 @@ public class DBTest {
     public void testMoveTempFileToRepo() {
         fileService.moveFileToRepo("/file/repo/332524228286873600.jpg");
     }
+
+    @Test
+    public void handleHtml() {
+        System.out.println(fileService.moveFileToRepoInHtml("<a href=\"/file/temp/332804396779831296.png\">Go</a>"));
+    }
 }

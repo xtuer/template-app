@@ -10,6 +10,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +28,12 @@ import java.util.regex.Pattern;
  *     临时文件夹 ${uploadDirectory}，用于存储临时文件，里面的文件会定期删除
  *     仓库文件夹 ${repoDirectory}，  用于存储文件仓库中的文件，删除由业务逻辑来决定
  *
- * 上传文件逻辑:
+ * 文件上传逻辑:
+ *     1. 上传文件到临时文件夹
+ *     2. 把文件从临时文件夹移动到文件仓库，并得到对应的 url
+ *     3. 定时删除临时文件夹中 1 小时前创建的文件 (1 小时都还没使用，说明已经不再需要)
+ *
+ * 表单处理逻辑:
  *     1. 前端使用富文本编辑器异步上传文件到临时文件夹 ${uploadDirectory}，每个上传的文件都有一个对应的 url 如 tempFileUrl
  *     2. 前端提交表单的 html
  *     3. 服务器端解析 html 得到文件的 url，调用 moveFileToRepo() 把 url 指向的临时文件从临时文件夹 ${uploadDirectory}
@@ -34,6 +42,7 @@ import java.util.regex.Pattern;
  *            a. 文件按日期 yyyy-MM-dd 分文件夹存储，每个文件有一个 url，此 url 和文件信息保存到数据库
  *            b. 每个目录下存放的文件或文件夹不宜过多，不超过 2 万个时性能还是很高的，2 万天有 55 年，所以按天存储文件足够使用
  *            c. 每个上传的文件系统都会为其分配一个不重复的文件名，格式为 {long-number}.[ext]
+ *            d. 调用 moveFileToRepoInHtml() 即可
  *
  * 其他函数:
  *     获取临时文件: getTempFile()
@@ -232,11 +241,62 @@ public class FileService extends BaseService {
             log.info("[结束] 移动文件 {} 到文件仓库 {}", sourceFile.getAbsolutePath(), targetDirectory.getAbsolutePath());
 
             return finalUrl;
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.warn("[结束] 移动文件异常: {}", e.getMessage());
         }
 
         return null;
+    }
+
+    /**
+     * 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中，移动后得到的 url 替换原来的 url，
+     * 如果引用的不是临时文件，则不改变它们的 url
+     *
+     * @param html 要处理的 html
+     * @return 返回处理后的 html
+     */
+    public String moveFileToRepoInHtml(String html) {
+        // 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中
+        // 1. 解析 html 生成 document 对象
+        // 2. 获取所有的 <img>，把 src 引用的临时文件移动到文件仓库中
+        // 3. 获取所有的 <a>，把 href 引用的临时文件移动到文件仓库中
+        // 4. 获取所有的 <source> (audio, video)，把 src 引用的临时文件移动到文件仓库中
+        // 提示: 移动后得到的 url 替换原来的 url
+
+        if (StringUtils.isBlank(html)) {
+            return "";
+        }
+
+        // [1] 解析 html 生成 document 对象
+        Document doc = Jsoup.parse(html);
+
+        // [2] 获取所有的 <img>，把 src 引用的临时文件移动到文件仓库中
+        for (Element img : doc.select("img")) {
+            String src = img.attr("src");
+            src = this.moveFileToRepo(src);
+            img.attr("src", src);
+        }
+
+        // [3] 获取所有的 <a>，把 href 引用的临时文件移动到文件仓库中
+        for (Element a : doc.select("a")) {
+            String href = a.attr("href");
+            href = this.moveFileToRepo(href);
+            a.attr("href", href);
+        }
+
+        // [4] 获取所有的 <source> (audio, video)，把 src 引用的临时文件移动到文件仓库中
+        // <video width="320" height="240" controls>
+        //     <source src="/file/temp/movie.mp4" type="video/mp4">
+        // </video>
+        for (Element mp3 : doc.select("source")) {
+            String src = mp3.attr("src");
+            src = this.moveFileToRepo(src);
+            mp3.attr("src", src);
+        }
+
+        doc.outputSettings().prettyPrint(false);
+
+        return doc.body().html();
     }
 
     /**

@@ -48,6 +48,7 @@ ext.versions = [
         junit         : '4.12',
         logback       : '1.3.0-alpha4',
         slf4j         : '1.7.25',
+        jsoup         : '1.12.1',
 ]
 
 dependencies {
@@ -71,6 +72,7 @@ dependencies {
             "commons-fileupload:commons-fileupload:${versions.commonsFileupload}",
             "cn.afterturn:easypoi-base:${versions.easyPoi}",
             "com.mzlion:easy-okhttp:${versions.easyOkHttp}",
+            "org.jsoup:jsoup:${versions.jsoup}",
     )
 
     // Log dependencies
