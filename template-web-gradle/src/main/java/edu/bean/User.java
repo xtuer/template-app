@@ -23,6 +23,8 @@ import java.util.Set;
 @Accessors(chain = true)
 @JSONType(ignores = {"name", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class User extends org.springframework.security.core.userdetails.User {
+    private static final long serialVersionUID = 1L;
+
     private long id;
 
     @NotBlank(message = "账号不能为空")

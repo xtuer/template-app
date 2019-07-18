@@ -13,6 +13,8 @@ import java.io.Serializable;
 @Setter
 @Accessors(chain = true)
 public class Organization implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private long   id;       // 机构 ID
     private String name;     // 机构名字
     private String host;     // 机构域名
