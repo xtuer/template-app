@@ -122,7 +122,7 @@ public class UserService extends BaseService {
      * @param userId 用户的 ID
      * @param mobile 用户的手机号
      */
-    @Cached(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
+    @CacheInvalidate(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
     public Result<String> updateUserMobile(long userId, String mobile) {
         mobile = StringUtils.trim(mobile);
 
