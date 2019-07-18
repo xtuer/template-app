@@ -36,7 +36,7 @@ public class JetCacheConfig {
     private AppConfig service;
 
     @Bean
-    public Pool<Jedis> pool(){
+    public Pool<Jedis> pool() {
         GenericObjectPoolConfig pc = new GenericObjectPoolConfig();
         pc.setMinIdle(service.getRedisMinIdle());
         pc.setMaxIdle(service.getRedisMaxIdle());
@@ -60,11 +60,11 @@ public class JetCacheConfig {
     }
 
     @Bean
-    public GlobalCacheConfig config(SpringConfigProvider configProvider, Pool<Jedis> pool){
+    public GlobalCacheConfig config(SpringConfigProvider configProvider, Pool<Jedis> pool) {
         Map<String, CacheBuilder> localBuilders = new HashMap<>();
         EmbeddedCacheBuilder localBuilder = LinkedHashMapCacheBuilder.createLinkedHashMapCacheBuilder()
                 .keyConvertor(FastjsonKeyConvertor.INSTANCE)
-                .expireAfterWrite(3600, TimeUnit.SECONDS) // 全局 expire，@Cached 能够指定自己的 expire
+                .expireAfterWrite(1000, TimeUnit.SECONDS) // 全局 expire，@Cached 能够指定自己的 expire
                 .limit(3000);
         localBuilders.put(CacheConsts.DEFAULT_AREA, localBuilder);
 
