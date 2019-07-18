@@ -2,6 +2,7 @@ package edu.service;
 
 import com.alibaba.fastjson.JSON;
 import edu.bean.UploadedFile;
+import edu.config.AppConfig;
 import edu.controller.Urls;
 import edu.mapper.FileMapper;
 import edu.util.Utils;
@@ -62,7 +63,7 @@ public class FileService extends BaseService {
     public static final Pattern REPO_FILE_URL_PATTERN = Pattern.compile("/file/repo/(\\d{4}-\\d{2}-\\d{2})/(.+)");
 
     @Autowired
-    private ConfigService config;
+    private AppConfig config;
 
     @Autowired
     private FileMapper fileMapper;

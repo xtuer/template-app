@@ -2,7 +2,7 @@ package edu.security;
 
 import edu.bean.Role;
 import edu.bean.User;
-import edu.service.ConfigService;
+import edu.config.AppConfig;
 import edu.service.OrganizationService;
 import edu.service.UserService;
 import edu.util.WebUtils;
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class AuthenticationSuccessHandler implements org.springframework.security.web.authentication.AuthenticationSuccessHandler {
     @Autowired
-    private ConfigService config;
+    private AppConfig config;
 
     @Autowired
     private UserService userService;

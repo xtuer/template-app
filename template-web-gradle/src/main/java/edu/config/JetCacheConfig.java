@@ -17,7 +17,6 @@ import com.alicp.jetcache.support.FastjsonKeyConvertor;
 import com.alicp.jetcache.support.JavaValueDecoder;
 import com.alicp.jetcache.support.JavaValueEncoder;
 import com.mzlion.core.lang.StringUtils;
-import edu.service.ConfigService;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +33,7 @@ import redis.clients.util.Pool;
 @EnableCreateCacheAnnotation
 public class JetCacheConfig {
     @Autowired
-    private ConfigService service;
+    private AppConfig service;
 
     @Bean
     public Pool<Jedis> pool(){

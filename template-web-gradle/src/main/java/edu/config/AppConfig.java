@@ -1,4 +1,4 @@
-package edu.service;
+package edu.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,12 +6,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
- * 配置服务，系统中使用的配置都使用一个变量保存，方便访问以及修改
+ * 应用的配置，系统中使用的配置都使用一个变量保存，方便访问以及修改
  */
 @Service
 @Getter
 @Setter
-public class ConfigService {
+public class AppConfig {
     // 上传文件的临时文件夹
     @Value("${uploadDirectory}")
     private String uploadDirectory;
