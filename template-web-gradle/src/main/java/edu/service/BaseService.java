@@ -13,9 +13,6 @@ public class BaseService {
     private IdWorker idWorker;
 
     @Autowired
-    private RedisDao redisDao;
-
-    @Autowired
     private FileService fileService;
 
     /**

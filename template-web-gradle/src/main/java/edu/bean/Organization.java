@@ -4,13 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.io.Serializable;
+
 /**
  * 机构
  */
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Organization {
+public class Organization implements Serializable {
     private long   id;       // 机构 ID
     private String name;     // 机构名字
     private String host;     // 机构域名

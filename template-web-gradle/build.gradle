@@ -29,7 +29,6 @@ repositories {
 ext.versions = [
         spring        : '5.0.2.RELEASE',
         springSecurity: '5.0.0.RELEASE',
-        springSession : '2.0.0.RELEASE',
         redisClient   : '2.9.0',
         servlet       : '4.0.0',
         lombok        : '1.16.20',
@@ -49,13 +48,13 @@ ext.versions = [
         logback       : '1.3.0-alpha4',
         slf4j         : '1.7.25',
         jsoup         : '1.12.1',
+        jetCache      : '2.5.13',
 ]
 
 dependencies {
     compile(
             "org.springframework:spring-webmvc:${versions.spring}",
             "org.springframework:spring-context-support:${versions.spring}",
-            "org.springframework.session:spring-session-data-redis:${versions.springSession}",
             "org.springframework.security:spring-security-web:${versions.springSecurity}",
             "org.springframework.security:spring-security-config:${versions.springSecurity}",
             "redis.clients:jedis:${versions.redisClient}",
@@ -73,6 +72,8 @@ dependencies {
             "cn.afterturn:easypoi-base:${versions.easyPoi}",
             "com.mzlion:easy-okhttp:${versions.easyOkHttp}",
             "org.jsoup:jsoup:${versions.jsoup}",
+            "com.alicp.jetcache:jetcache-anno:${versions.jetCache}",
+            "com.alicp.jetcache:jetcache-redis:${versions.jetCache}",
     )
 
     // Log dependencies

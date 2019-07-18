@@ -1,5 +1,7 @@
 package edu.service;
 
+import com.alicp.jetcache.anno.Cached;
+import edu.bean.CacheConst;
 import edu.bean.Organization;
 import edu.bean.RedisKey;
 import edu.mapper.OrganizationMapper;
@@ -23,8 +25,7 @@ public class OrganizationService extends BaseService {
     public Organization getCurrentOrganization() {
         // 先从缓存里查找机构，如果缓存里没有，再从数据库加载
         String host = WebUtils.getHost();
-        String orgKey = RedisKey.orgKey(host);
-        Organization org = getRedisDao().get(orgKey, Organization.class, () -> orgMapper.findOrganizationByHost(host));
+        Organization org = findOrganizationByHost(host);
 
         return org;
     }
@@ -39,5 +40,17 @@ public class OrganizationService extends BaseService {
         Organization org = getCurrentOrganization();
 
         return org != null ? org.getId() : 1;
+    }
+
+    /**
+     * 查找域名所属的机构
+     * 先从缓存里查找机构，如果缓存里没有，再从数据库加载
+     *
+     * @param host 机构的域名
+     * @return 返回域名所属机构
+     */
+    @Cached(name = CacheConst.NAME_ORG, key = CacheConst.KEY_ORG)
+    public Organization findOrganizationByHost(String host) {
+        return orgMapper.findOrganizationByHost(host);
     }
 }

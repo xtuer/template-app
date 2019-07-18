@@ -1,7 +1,10 @@
 package edu.controller;
 
 import edu.bean.User;
-import edu.service.*;
+import edu.service.FileService;
+import edu.service.IdWorker;
+import edu.service.OrganizationService;
+import edu.service.UserService;
 import edu.util.SecurityUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +20,6 @@ public class BaseController {
 
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private RedisDao redisDao;
 
     @Autowired
     private UserService userService;

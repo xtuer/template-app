@@ -1,5 +1,8 @@
 package edu.service;
 
+import com.alicp.jetcache.anno.CacheInvalidate;
+import com.alicp.jetcache.anno.Cached;
+import edu.bean.CacheConst;
 import edu.bean.RedisKey;
 import edu.bean.Result;
 import edu.bean.User;
@@ -53,16 +56,14 @@ public class UserService extends BaseService {
 
     /**
      * 查找用户
+     * 先从缓存里查找用户，如果缓存里没有，再从数据库加载
      *
      * @param userId 用户 ID
      * @return 返回查找到的用户，查找不到则返回 null
      */
+    @Cached(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
     public User findUser(long userId) {
-        // 先从缓存里查找用户，如果缓存里没有，再从数据库加载
-        String userKey = RedisKey.userKey(userId);
-        User user = getRedisDao().get(userKey, User.class, () -> userMapper.findUserById(userId));
-
-        return user;
+        return userMapper.findUserById(userId);
     }
 
     /**
@@ -121,13 +122,13 @@ public class UserService extends BaseService {
      * @param userId 用户的 ID
      * @param mobile 用户的手机号
      */
-    public Result<String> updateUserMobile(Long userId, String mobile) {
+    @Cached(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
+    public Result<String> updateUserMobile(long userId, String mobile) {
         mobile = StringUtils.trim(mobile);
 
         if (StringUtils.isNumeric(mobile) && mobile.length() == 11) {
             // 简单的校验：手机号为 11 个数字
             userMapper.updateUserMobile(userId, mobile);
-            deleteUserCache(userId); // 删除缓存用户
             return Result.ok();
         } else {
             return Result.fail("请输入正确的手机号", "");
@@ -195,9 +196,9 @@ public class UserService extends BaseService {
      * @param userId   用户的 ID
      * @param nickname 用户的昵称
      */
+    @CacheInvalidate(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
     public void updateUserNickname(long userId, String nickname) {
         userMapper.updateUserNickname(userId, nickname);
-        deleteUserCache(userId); // 删除缓存用户
     }
 
     /**
@@ -206,6 +207,7 @@ public class UserService extends BaseService {
      * @param userId 用户 ID
      * @param avatar 用户头像
      */
+    @CacheInvalidate(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
     public String updateUserAvatar(long userId, String avatar) {
         // 1. 移动 avatar 的图片到 repo 并得到 avatar 的最新 URL
         // 2. 更新数据库中用户的 avatar
@@ -216,7 +218,6 @@ public class UserService extends BaseService {
 
         if (avatar != null) {
             userMapper.updateUserAvatar(userId, avatar);
-            deleteUserCache(userId); // 删除缓存用户
         }
 
         return avatar;
@@ -228,17 +229,8 @@ public class UserService extends BaseService {
      * @param userId 用户的 ID
      * @param gender 用户的性别
      */
+    @CacheInvalidate(name = CacheConst.NAME_USER, key = CacheConst.KEY_USER)
     public void updateUserGender(long userId, int gender) {
         userMapper.updateUserGender(userId, gender);
-        deleteUserCache(userId); // 删除缓存用户
-    }
-
-    /**
-     * 从 Redis 中删除缓存的用户，更新用户信息后进行删除
-     *
-     * @param userId 用户 ID
-     */
-    private void deleteUserCache(long userId) {
-        getRedisDao().delete(RedisKey.userKey(userId));
     }
 }

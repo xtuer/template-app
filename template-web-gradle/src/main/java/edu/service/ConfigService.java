@@ -33,4 +33,26 @@ public class ConfigService {
 
     @Value("${appKey}")
     private String appKey;
+
+    // Redis 配置
+    @Value("${redis.host}")
+    private String redisHost;
+
+    @Value("${redis.port}")
+    private int redisPort;
+
+    @Value("${redis.timeout}")
+    private int redisTimeout;
+
+    @Value("${redis.password}")
+    private String redisPassword;
+
+    @Value("${redis.minIdle}")
+    private int redisMinIdle;
+
+    @Value("${redis.maxIdle}")
+    private int redisMaxIdle;
+
+    @Value("${redis.maxTotal}")
+    private int redisMaxTotal;
 }

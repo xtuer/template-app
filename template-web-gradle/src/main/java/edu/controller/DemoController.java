@@ -1,10 +1,11 @@
 package edu.controller;
 
+import edu.bean.Organization;
 import edu.bean.Result;
 import edu.bean.User;
 import edu.mapper.UserMapper;
 import edu.service.IdWorker;
-import edu.service.RedisDao;
+import edu.service.OrganizationService;
 import edu.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -43,10 +44,10 @@ public class DemoController {
     private IdWorker idWorker;
 
     @Autowired
-    private RedisDao redis;
+    private FilterChainProxy filterChainProxy;
 
     @Autowired
-    private FilterChainProxy filterChainProxy;
+    private OrganizationService orgService;
 
     // 网址: http://localhost:8080/page/demo/rest
     @RequestMapping(Urls.PAGE_DEMO_REST)
@@ -350,5 +351,15 @@ public class DemoController {
     @ResponseBody
     public Result<User> findUserById(@PathVariable Long id) {
         return Result.ok(userMapper.findUserById(id));
+    }
+
+    /**
+     * 使用 host 查询机构
+     * 网址: http://localhost:8080/api/demo/org?host=localhost
+     */
+    @GetMapping("/api/demo/org")
+    @ResponseBody
+    public Result<Organization> findOrgByHost(@RequestParam String host) {
+        return Result.ok(orgService.findOrganizationByHost(host));
     }
 }
