@@ -65,7 +65,8 @@ public class JetCacheConfig {
         Map<String, CacheBuilder> localBuilders = new HashMap<>();
         EmbeddedCacheBuilder localBuilder = LinkedHashMapCacheBuilder
                 .createLinkedHashMapCacheBuilder()
-                .keyConvertor(FastjsonKeyConvertor.INSTANCE);
+                .keyConvertor(FastjsonKeyConvertor.INSTANCE)
+                .limit(3000);
         localBuilders.put(CacheConsts.DEFAULT_AREA, localBuilder);
 
         Map<String, CacheBuilder> remoteBuilders = new HashMap<>();
