@@ -66,6 +66,7 @@ public class JetCacheConfig {
         EmbeddedCacheBuilder localBuilder = LinkedHashMapCacheBuilder
                 .createLinkedHashMapCacheBuilder()
                 .keyConvertor(FastjsonKeyConvertor.INSTANCE)
+                .expireAfterWrite(3600, TimeUnit.SECONDS) // 全局 expire，@Cached 能够指定自己的 expire
                 .limit(3000);
         localBuilders.put(CacheConsts.DEFAULT_AREA, localBuilder);
 
