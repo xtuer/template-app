@@ -3,7 +3,6 @@ package edu.service;
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.Cached;
 import edu.bean.CacheConst;
-import edu.bean.RedisKey;
 import edu.bean.Result;
 import edu.bean.User;
 import edu.mapper.UserMapper;
