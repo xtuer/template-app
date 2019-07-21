@@ -10,8 +10,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET   = template-qt
 TEMPLATE = app
 
-CONFIG  -= app_bundle
-RC_ICONS = App.ico
+ICON     = AppIcon.icns
+RC_ICONS = AppIcon.ico
 
 DEFINES += QT_MESSAGELOGCONTEXT
 DEFINES += QT_DEPRECATED_WARNINGS

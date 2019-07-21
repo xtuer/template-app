@@ -15,10 +15,11 @@ class CentralWidget2 : public QWidget {
     Q_OBJECT
 
 public:
-    explicit CentralWidget2(QWidget *parent = 0);
-    ~CentralWidget2();
+    explicit CentralWidget2(QWidget *parent = nullptr);
+    ~CentralWidget2() override;
 
-    void setTopWindow(TopWindow *topWindow);
+    // 调整 Ui
+    void twitterUi(TopWindow *topWindow);
 
 private:
     void initializeUi(); // 初始化界面

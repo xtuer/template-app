@@ -41,7 +41,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
                 item->setCheckable(true);
                 item->setCheckState(row % 2 == 0 ? Qt::Checked : Qt::Unchecked);
             } else if (col == 2) {
-                item->setIcon(QIcon("image/common/close.png"));
+                item->setIcon(QIcon("img/common/close.png"));
             }
         }
     }
@@ -73,7 +73,7 @@ WidgetsShower::WidgetsShower(QWidget *parent) : QWidget(parent), ui(new Ui::Widg
         QString info = "<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                        "<b>法人</b>: 齐天大圣<br>"
                        "<b>版本</b>: Release 1.1.3<br>"
-                       "<center><img src='image/common/fairy.png' width=64 height=64></center>";
+                       "<center><img src='img/common/fairy.png' width=64 height=64></center>";
         bool result = MessageBox::confirm(info, 350, 140);
         qDebug() << "Confirm:" << result;
     });

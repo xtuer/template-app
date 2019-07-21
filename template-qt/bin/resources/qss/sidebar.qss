@@ -33,7 +33,7 @@
 
     background: rgb(54, 62, 78);
     icon-size: 20px 20px;
-    qproperty-icon: url(image/sidebar/report.png);
+    qproperty-icon: url(img/sidebar/report.png);
 }
 .GroupItemButton:checked {
     color: #EEE;
@@ -42,37 +42,37 @@
 
 /* 根据按钮的 objectName 设置每一个按钮的图标 */
 #groupButton1 {
-    qproperty-icon: url(image/sidebar/home.png);
+    qproperty-icon: url(img/sidebar/home.png);
 }
 #groupButton2 {
-    qproperty-icon: url(image/sidebar/warn.png);
+    qproperty-icon: url(img/sidebar/warn.png);
 }
 #itemButton1 {
-    qproperty-icon: url(image/sidebar/add.png);
+    qproperty-icon: url(img/sidebar/add.png);
 }
 #itemButton2 {
-    qproperty-icon: url(image/sidebar/user.png);
+    qproperty-icon: url(img/sidebar/user.png);
 }
 #itemButton3 {
-    qproperty-icon: url(image/sidebar/curve.png);
+    qproperty-icon: url(img/sidebar/curve.png);
 }
 #itemButton4 {
-    qproperty-icon: url(image/sidebar/audit.png);
+    qproperty-icon: url(img/sidebar/audit.png);
 }
 #itemButton5 {
-    qproperty-icon: url(image/sidebar/setting.png);
+    qproperty-icon: url(img/sidebar/setting.png);
 }
 #itemButton6 {
-    qproperty-icon: url(image/sidebar/help.png);
+    qproperty-icon: url(img/sidebar/help.png);
 }
 #itemButton7 {
-    qproperty-icon: url(image/sidebar/security.png);
+    qproperty-icon: url(img/sidebar/security.png);
 }
 #itemButton8 {
-    qproperty-icon: url(image/sidebar/version.png);
+    qproperty-icon: url(img/sidebar/version.png);
 }
 #myButton {
-    qproperty-icon: url(image/sidebar/help.png);
+    qproperty-icon: url(img/sidebar/help.png);
 }
 
 .CentralWidget2, .CentralWidget2 .SideBarWidget {
@@ -95,42 +95,42 @@
 }
 
 .CentralWidget2 .SideBarWidget #titleBar #closeButton {
-    border-image: url(image/top-window/mac-traffic-01.png) 0 84 0 0;
+    border-image: url(img/top-window/mac-traffic-01.png) 0 84 0 0;
 }
 .CentralWidget2 .SideBarWidget #titleBar #closeButton:hover {
-    border-image: url(image/top-window/mac-traffic-02.png) 0 84 0 0;
+    border-image: url(img/top-window/mac-traffic-02.png) 0 84 0 0;
 }
 .CentralWidget2 .SideBarWidget #titleBar #closeButton:pressed {
-    border-image: url(image/top-window/mac-traffic-03.png) 0 84 0 0;
+    border-image: url(img/top-window/mac-traffic-03.png) 0 84 0 0;
 }
 
 .CentralWidget2 .SideBarWidget #titleBar #minButton {
     margin-right: 0;
-    border-image: url(image/top-window/mac-traffic-01.png) 0 56 0 28;
+    border-image: url(img/top-window/mac-traffic-01.png) 0 56 0 28;
 }
 .CentralWidget2 .SideBarWidget #titleBar #minButton:hover {
-    border-image: url(image/top-window/mac-traffic-02.png) 0 56 0 28;
+    border-image: url(img/top-window/mac-traffic-02.png) 0 56 0 28;
 }
 .CentralWidget2 .SideBarWidget #titleBar #minButton:pressed {
-    border-image: url(image/top-window/mac-traffic-03.png) 0 56 0 28;
+    border-image: url(img/top-window/mac-traffic-03.png) 0 56 0 28;
 }
 
 .CentralWidget2 .SideBarWidget #titleBar #maxButton {
-    border-image: url(image/top-window/mac-traffic-01.png) 0 28 0 56;
+    border-image: url(img/top-window/mac-traffic-01.png) 0 28 0 56;
 }
 .CentralWidget2 .SideBarWidget #titleBar #maxButton:hover {
-    border-image: url(image/top-window/mac-traffic-02.png) 0 0 0 84;
+    border-image: url(img/top-window/mac-traffic-02.png) 0 0 0 84;
 }
 .CentralWidget2 .SideBarWidget #titleBar #maxButton:pressed {
-    border-image: url(image/top-window/mac-traffic-03.png) 0 0 0 84;
+    border-image: url(img/top-window/mac-traffic-03.png) 0 0 0 84;
 }
 
 .CentralWidget2 .SideBarWidget #titleBar #restoreButton {
-    border-image: url(image/top-window/mac-traffic-01.png) 0 28 0 56;
+    border-image: url(img/top-window/mac-traffic-01.png) 0 28 0 56;
 }
 .CentralWidget2 .SideBarWidget #titleBar #restoreButton:hover {
-    border-image: url(image/top-window/mac-traffic-02.png) 0 28 0 56;
+    border-image: url(img/top-window/mac-traffic-02.png) 0 28 0 56;
 }
 .CentralWidget2 .SideBarWidget #titleBar #restoreButton:pressed {
-    border-image: url(image/top-window/mac-traffic-03.png) 0 28 0 56;
+    border-image: url(img/top-window/mac-traffic-03.png) 0 28 0 56;
 }

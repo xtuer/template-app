@@ -138,7 +138,7 @@ void CentralWidget::handleEvents() {
         MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                             "<b>法人</b>: 齐天大圣<br>"
                             "<b>版本</b>: Release 1.1.3<br>"
-                            "<center><img src='image/common/fairy.png' width=64 height=64></center>", 350, 140);
+                            "<center><img src='img/common/fairy.png' width=64 height=64></center>", 350, 140);
     });
 }
 

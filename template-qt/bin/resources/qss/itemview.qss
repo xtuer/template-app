@@ -26,11 +26,11 @@ QAbstractItemView::indicator {
 }
 
 QAbstractItemView::indicator {
-    border-image: url(image/common/checkbox.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/checkbox.png) 0 0 0 0 stretch stretch;
 }
 
 QAbstractItemView::indicator:checked {
-    border-image: url(image/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
 }
 
 QAbstractItemView::icon {
@@ -110,11 +110,11 @@ QTreeView::branch:selected {
 }
 
 QTreeView::branch:has-children {
-    border-image: url(image/treeview/branch-open.png) 0;
+    border-image: url(img/treeview/branch-open.png) 0;
 }
 
 QTreeView::branch:has-children:closed {
-    border-image: url(image/treeview/branch-close.png) 0;
+    border-image: url(img/treeview/branch-close.png) 0;
 }
 
 /*
@@ -138,26 +138,26 @@ QTreeView::branch:selected {
 }
 
 QTreeView::branch:has-siblings:!adjoins-item {
-    border-image: url(image/treeview/branch-vline.png) 0;
+    border-image: url(img/treeview/branch-vline.png) 0;
 }
 
 QTreeView::branch:has-siblings:adjoins-item {
-    border-image: url(image/treeview/branch-more.png) 0;
+    border-image: url(img/treeview/branch-more.png) 0;
 }
 
 QTreeView::branch:!has-children:!has-siblings:adjoins-item {
-    border-image: url(image/treeview/branch-end.png) 0;
+    border-image: url(img/treeview/branch-end.png) 0;
 }
 
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings {
     border-image: none;
-    image: url(image/treeview/branch-close.png) 0;
+    image: url(img/treeview/branch-close.png) 0;
 }
 
 QTreeView::branch:open:has-children:!has-siblings,
 QTreeView::branch:open:has-children:has-siblings  {
     border-image: none;
-    image: url(image/treeview/branch-open.png) 0;
+    image: url(img/treeview/branch-open.png) 0;
 }
 */

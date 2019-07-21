@@ -24,11 +24,11 @@ QComboBox::drop-down {
     subcontrol-origin: border;
     subcontrol-position: right center;
     border-width: 0 0 0 0;
-    border-image: url(image/common/arrow-down.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/arrow-down.png) 0 0 0 0 stretch stretch;
 }
 
 QComboBox::drop-down:hover {
-    border-image: url(image/common/arrow-down-hover.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/arrow-down-hover.png) 0 0 0 0 stretch stretch;
 }
 
 QComboBox QAbstractItemView {
@@ -66,12 +66,12 @@ QAbstractSpinBox::down-button, QAbstractSpinBox::up-button {
 QAbstractSpinBox::down-button {
     subcontrol-position: center left;
     margin-left: 5px;
-    border-image: url(image/common/minus.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/minus.png) 0 0 0 0 stretch stretch;
 }
 QAbstractSpinBox::up-button {
     subcontrol-position: center right;
     margin-right: 5px;
-    border-image: url(image/common/plus.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/plus.png) 0 0 0 0 stretch stretch;
 }
 
 /******************************************************************************

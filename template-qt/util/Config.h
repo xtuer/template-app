@@ -12,8 +12,8 @@ class QSettings;
 
 /**
  * 用于读写配置文件:
- * 1. 配置文件位于: data/config.json，存储配置的信息，例如数据库信息，QSS 文件的路径
- * 2. 读取配置，如 Singleton<Config>::getInstance().getDatabaseName();
+ * 1. 配置文件: config.json，存储配置的信息，例如数据库信息，QSS 文件的路径
+ * 2. 读取配置: Config::instance().getDatabaseName() 或者 Singleton<Config>::getInstance().getDatabaseName();
  */
 class Config {
     SINGLETON(Config)

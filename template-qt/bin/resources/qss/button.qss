@@ -46,17 +46,17 @@ QCheckBox::indicator, .QRadioButton::indicator {
 }
 
 QCheckBox::indicator {
-    border-image: url(image/common/checkbox.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/checkbox.png) 0 0 0 0 stretch stretch;
 }
 
 QCheckBox::indicator:checked {
-    border-image: url(image/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/checkbox-checked.png) 0 0 0 0 stretch stretch;
 }
 
 QRadioButton::indicator {
-    border-image: url(image/common/radiobutton.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/radiobutton.png) 0 0 0 0 stretch stretch;
 }
 
 QRadioButton::indicator:checked {
-    border-image: url(image/common/radiobutton-checked.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/radiobutton-checked.png) 0 0 0 0 stretch stretch;
 }

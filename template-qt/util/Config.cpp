@@ -6,18 +6,18 @@
 #include <QSettings>
 #include <QTextCodec>
 #include <QCoreApplication>
+#include <QDebug>
 
 Config::Config() {
     json = new Json("config.json", true); // 配置文件路径
-    appSettings = new QSettings("data/app.data", QSettings::IniFormat);
+    appSettings = new QSettings("app.data", QSettings::IniFormat);
     appSettings->setIniCodec(QTextCodec::codecForName("UTF8"));
 
+    // 程序退出时保存配置到文件
     if (qApp != nullptr) {
         QObject::connect(qApp, &QCoreApplication::aboutToQuit, [this] {
-            // 保存配置到文件
-            if (nullptr != appSettings) {
-                appSettings->sync();
-            }
+            appSettings->sync();
+            qDebug() << "程序退出，保存配置";
         });
     }
 }

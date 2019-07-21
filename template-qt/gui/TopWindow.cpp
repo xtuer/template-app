@@ -1,12 +1,13 @@
 #include "ui_TopWindow.h"
 #include "TopWindow.h"
-#include "util/UiUtil.h"
 #include "util/NinePatchPainter.h"
 
 #include <QDebug>
 #include <QSizeGrip>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QApplication>
+#include <QScreen>
 
 class TopWindowPrivate {
 public:
@@ -42,7 +43,7 @@ TopWindow::TopWindow(QWidget *centralWidget,
                      bool  borderImageVerticalStretch) : ui(new Ui::TopWindow) {
     ui->setupUi(this);
     ui->restoreButton->hide();
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinimizeButtonHint);
+    setWindowFlags(Qt::FramelessWindowHint);
     setAttribute(Qt::WA_TranslucentBackground);
     setWindowTitle(centralWidget->windowTitle());
 
@@ -72,32 +73,43 @@ TopWindow::~TopWindow() {
     delete d;
 }
 
+// 设置窗口的标题
 void TopWindow::setTitle(const QString &title) {
     ui->titleLabel->setText(title);
 }
 
+// 使用自定义的标题栏 (会隐藏默认的标题栏)
 void TopWindow::setTitleBar(QWidget *titleBar) {
     ui->titleBar->hide();
     delete layout()->replaceWidget(ui->titleBar, titleBar);
 }
 
+// 设置是否显示标题栏
 void TopWindow::setTitleBarVisible(bool visible) {
     ui->titleBar->setVisible(visible);
 }
 
+// 设置是否显示最小化，最大化，关闭按钮
 void TopWindow::setTitleBarButtonsVisible(bool min, bool max, bool close) {
     ui->minButton->setVisible(min);
     ui->maxButton->setVisible(max);
     ui->closeButton->setVisible(close);
 }
 
+// 设置是否可以修改窗口的大小，默认为可以修改窗口大小
 void TopWindow::setResizable(bool resizable) {
     d->resizable = resizable;
     d->sizeGrip->setVisible(resizable);
 }
 
+// 最大化窗口
 void TopWindow::showMaximized() {
-    layout()->setContentsMargins(0, 0, 0, 0); // 最大化窗口时不需要阴影，所以去掉窗口的 padding
+    // 最大化窗口时不需要阴影，所以去掉窗口的 padding
+    // 隐藏最大化按钮
+    // 显示恢复按钮
+    // 隐藏 sizeGrip
+
+    layout()->setContentsMargins(0, 0, 0, 0);
     ui->maxButton->hide();
     ui->restoreButton->show();
     d->sizeGrip->setVisible(false);
@@ -118,13 +130,39 @@ void TopWindow::showModal() {
     // 作为 Dialog 需要同时设置 Qt::Dialog | Qt::Popup 两个 flags
     setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
     setWindowModality(Qt::ApplicationModal);
-    UiUtil::showCenter(this);
+    showCenter(this);
 
     // 进入局部事件循环，阻塞代码继续往下走，窗口关闭时结束此局部事件循环，控制权交还给 QApplication
     // The event loop returns from the call to quit().
     QEventLoop loop;
     connect(this, &TopWindow::aboutToClose, &loop, &QEventLoop::quit);
     loop.exec();
+}
+
+// 查找 widget 所在的顶级窗口
+QWidget *TopWindow::findWindow(QWidget *widget) {
+    QWidget *p = widget;
+
+    while (nullptr != p->parentWidget()) {
+        p = p->parentWidget();
+    }
+
+    return p;
+}
+
+// 居中显示窗口
+void TopWindow::showCenter(QWidget *window) {
+    // This doesn't show the widget on the screen since you don't relinquish control back to the queue
+    // until the hide() happens. In between, the invalidate() computes the correct positions.
+    window->show();
+    window->layout()->invalidate();
+    window->hide();
+
+    QSize size = qApp->primaryScreen()->availableSize() - window->size();
+    int x = qMax(0, size.width() / 2);
+    int y = qMax(0, size.height() / 2);
+    window->move(x, y);
+    window->show();
 }
 
 // 使用九宫格的方式绘制背景

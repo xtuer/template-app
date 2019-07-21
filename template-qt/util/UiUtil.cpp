@@ -28,6 +28,7 @@
 #include <QDesktopWidget>
 #include <QScreen>
 #include <QFontDatabase>
+#include <QStyle>
 
 // 为整个应用程序加载 QSS
 void UiUtil::loadQss() {
@@ -56,7 +57,7 @@ void UiUtil::loadQss() {
 void UiUtil::loadFonts() {
     QStringList fontFiles = ConfigInstance.getFontFiles();
 
-    for (const QString file : fontFiles) {
+    for (const QString &file : fontFiles) {
         qDebug().noquote() << QString("Loading Font file: %1").arg(file);
         QFontDatabase::addApplicationFont(file);
     }
@@ -64,7 +65,7 @@ void UiUtil::loadFonts() {
 
 // 修改过 widget 的属性后，使此属性对应的 Style Sheet 生效
 void UiUtil::updateQss(QWidget *widget) {
-    widget->setStyleSheet("/**/");
+    widget->style()->polish(widget);
 }
 
 // 安装加载 QSS 的快捷键: Ctrl + L
@@ -85,7 +86,7 @@ void UiUtil::addWidgetIntoStackedWidget(QWidget *widget, QStackedWidget *stacked
     // 使用 widget 居左上
     QGridLayout *layout = new QGridLayout();
 
-    QSpacerItem *spacer = NULL;
+    QSpacerItem *spacer = nullptr;
     if (!toLeft) {
         spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
         layout->addItem(spacer, 1, 0);
@@ -115,7 +116,7 @@ void UiUtil::addWidgetIntoStackedWidget(QWidget *widget, QStackedWidget *stacked
 
 // 把使用上面的函数 addWidgetIntoStackedWidget 添加过的 widget 设置为它的当前 widget
 void UiUtil::setCurrentWidgetOfStackedWidget(QWidget *widget, QStackedWidget *stackedWidget) {
-    for (; NULL != widget; widget = widget->parentWidget()) {
+    for (; nullptr != widget; widget = widget->parentWidget()) {
         if (widget->parentWidget() == stackedWidget) {
             stackedWidget->setCurrentWidget(widget);
             break;
@@ -128,7 +129,7 @@ void UiUtil::setWidgetPaddingAndSpacing(QWidget *widget, int padding, int spacin
     // 设置 Widget 的 padding 和 spacing
     QLayout *layout = widget->layout();
 
-    if (NULL != layout) {
+    if (nullptr != layout) {
         layout->setContentsMargins(padding, padding, padding, padding);
         layout->setSpacing(spacing);
     }
@@ -178,7 +179,7 @@ void UiUtil::showCenter(QWidget *window) {
 QWidget *UiUtil::findWindow(QWidget *w) {
     QWidget *p = w;
 
-    while (NULL != p->parentWidget()) {
+    while (nullptr != p->parentWidget()) {
         p = p->parentWidget();
     }
 
@@ -211,16 +212,16 @@ void UiUtil::previewImage(const QString &url, const QString &dir) {
         // [2.1] 如果预览图片已经缓存就用缓存的，否则下载最新的
         MessageBox::message(QString("<img src='%1'>").arg(previewImagePath));
     } else {
-        HttpClient(url).debug(true).download(previewImagePath, [=] (const QString &) {
+        HttpClient(url).debug(true).success([=] (const QString &) {
             // [2.2] 如果没有缓存过，则从网络下载缓存到本地，缩放到适合的大小，然后显示
             QImage image = QImage(previewImagePath).scaledToWidth(256, Qt::SmoothTransformation);
             image.save(previewImagePath);
 
             MessageBox::message(QString("<img src='%1'>").arg(previewImagePath));
-        }, [] (const QString &error) {
+        }).fail([](const QString &error, int) {
             // 显示下载错误
             MessageBox::message(error);
-        });
+        }).download(previewImagePath);
     }
 }
 

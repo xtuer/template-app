@@ -3,11 +3,11 @@
 #include "gui/TopWindow.h"
 #include "gui/LoginWidget.h"
 #include "util/UiUtil.h"
-#include "util/Config.h"
 #include "util/LogHandler.h"
 
 #include <QApplication>
 #include <QTextCodec>
+#include <QDir>
 
 static void initialize(); // 程序启动时进行初始化
 static void finalize();   // 程序结束时清理工作
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
     // 风格 2
     CentralWidget2 *cw = new CentralWidget2();
     TopWindow window(cw);
-    cw->setTopWindow(&window);
+    cw->twitterUi(&window);
     window.resize(1000, 700);
     UiUtil::showCenter(&window);
 
@@ -43,7 +43,10 @@ int main(int argc, char *argv[]) {
 
     // [3] 进入 Qt 事件队列
     int code = app.exec();
+
+    // [4] 程序退出时善后处理
     ::finalize();
+
     return code;
 }
 
@@ -57,6 +60,9 @@ static void initialize() {
 
     // 安装日志处理工具
     LogHandlerInstance.installMessageHandler();
+
+    // 今后访问相对路径的文件，则是相对于可执行文件所在目录了，而不是系统的根目录
+    QDir::setCurrent(QCoreApplication::applicationDirPath());
 
     // 设置界面样式
     UiUtil::loadQss();

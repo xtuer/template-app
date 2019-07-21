@@ -14,18 +14,17 @@ class TopWindow;
  * 默认提供了标题栏、边框，可以在构造函数中传入对应的参数自定义它们，也可以调用对应的成员函数进行自定义。
  *
  * 使用非侵入式的集成方式，只需要把要显示的 widget 作为构造函数的第一个参数传入即可，不需要修改 widget 的代码。
- * 有 3 种使用方式:
- * 1. 普通对窗口:
+ * 有 2 种使用方式:
+ * 1. 普通窗口:
  *    DemoWidget *c = new DemoWidget();
  *    TopWindow window(c);
  *    window.show();
- * 2. 模态对话框，会阻塞当前线程
+ * 2. 模态窗口，会阻塞当前线程
  *    DemoWidget *c = new DemoWidget();
  *    TopWindow window(c);
  *    window.showModal();
+ *
  *    c->getStatus(); // 获取操作结果
- * 3. 显示消息对话框:
- *    TopWindow::message("Hello God");
  *
  * 此外提供了自定义标题栏的功能，这样就能够自定义复杂的标题栏了
  *    DemoWidget *c = new DemoWidget();
@@ -50,10 +49,10 @@ public:
     explicit TopWindow(QWidget *centralWidget,
                        const QMargins &windowPaddings     = QMargins(16, 10, 16, 16),
                        const QMargins &borderImageBorders = QMargins(23, 13, 23, 33),
-                       const QString  &borderImagePath    = QString("image/top-window/shadow.png"),
+                       const QString  &borderImagePath    = QString("img/top-window/shadow.png"),
                        bool  borderImageHorizontalStretch = true,
                        bool  borderImageVerticalStretch   = true);
-    ~TopWindow();
+    ~TopWindow() override;
 
     /**
       * @brief 设置窗口的标题
@@ -63,7 +62,7 @@ public:
      void setTitle(const QString &title);
 
      /**
-      * @brief 使用自定义的标题栏(会隐藏默认的标题栏)
+      * @brief 使用自定义的标题栏 (会隐藏默认的标题栏)
       * @param titleBar 自定义的标题栏
       */
      void setTitleBar(QWidget *titleBar);
@@ -107,6 +106,20 @@ public:
       */
      void showModal();
 
+     /**
+      * @brief 查找 widget 所在的顶级窗口
+      * @param  widget
+      * @return 返回 widget 所在的顶级窗口
+      */
+     static QWidget* findWindow(QWidget *widget);
+
+     /**
+      * @brief 居中显示窗口
+      *
+      * @param window 要显示的窗口
+      */
+     static void showCenter(QWidget *window);
+
 signals:
      /**
       * @brief 即将关闭的信号
@@ -114,11 +127,11 @@ signals:
      void aboutToClose();
 
 protected:
-    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
-    void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void closeEvent(QCloseEvent *event) Q_DECL_OVERRIDE;
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
 
 private:
     void handleEvents(); // 信号槽事件处理

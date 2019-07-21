@@ -48,11 +48,11 @@ CentralWidget2::~CentralWidget2() {
     delete d;
 }
 
-void CentralWidget2::setTopWindow(TopWindow *topWindow) {
+void CentralWidget2::twitterUi(TopWindow *topWindow) {
     d->topWindow = topWindow;
     d->topWindow->setTitleBarVisible(false);
 
-    // 关闭、最小化、最大化、恢复按钮事件
+    // 关闭、最小化、最大化、恢复按钮事件，先 disconnect 是为了防止多次 connect
     ui->closeButton->disconnect(SIGNAL(clicked()));
     ui->minButton->disconnect(SIGNAL(clicked()));
     ui->maxButton->disconnect(SIGNAL(clicked()));
@@ -179,7 +179,7 @@ void CentralWidget2::handleEvents() {
         MessageBox::message("<b>公司</b>: 花果山再来一瓶科技信息技术有限公司<br>"
                             "<b>法人</b>: 齐天大圣<br>"
                             "<b>版本</b>: Release 1.1.3<br>"
-                            "<center><img src='image/common/fairy.png' width=64 height=64></center>", 350, 140);
+                            "<center><img src='img/common/fairy.png' width=64 height=64></center>", 350, 140);
     });
 }
 

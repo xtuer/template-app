@@ -20,7 +20,7 @@ class MessageBox : public QWidget {
 
 public:
     explicit MessageBox(const QString &message, bool confirm = true);
-    ~MessageBox();
+    ~MessageBox() override;
 
     /**
      * @brief 显示模态消息对话框，但是不会阻塞当前线程。
@@ -40,7 +40,7 @@ public:
     static void message(const QString  &msg, int width = 300, int height = 150,
                         const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
-                        const QString  &borderImagePath    = QString("image/top-window/colorful-border.png"),
+                        const QString  &borderImagePath    = QString("img/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
                         bool  borderImageVerticalStretch   = false);
 
@@ -63,7 +63,7 @@ public:
     static bool confirm(const QString  &msg, int width = 300, int height = 150,
                         const QMargins &windowPaddings     = QMargins(13, 13, 13, 13),
                         const QMargins &borderImageBorders = QMargins(18, 18, 18, 18),
-                        const QString  &borderImagePath    = QString("image/top-window/colorful-border.png"),
+                        const QString  &borderImagePath    = QString("img/top-window/colorful-border.png"),
                         bool  borderImageHorizontalStretch = false,
                         bool  borderImageVerticalStretch   = false);
 

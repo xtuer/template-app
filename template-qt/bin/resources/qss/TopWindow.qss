@@ -25,50 +25,50 @@
 
 .TopWindow #titleBar #minButton {
     margin-right: 4px;
-    border-image: url(image/top-window/s-min.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-min.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #minButton:hover {
-    border-image: url(image/top-window/s-min-hover.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-min-hover.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #minButton:pressed {
-    border-image: url(image/top-window/s-min-pressed.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-min-pressed.png) 0 0 0 0 stretch stretch;
 }
 
 .TopWindow #titleBar #maxButton {
-    border-image: url(image/top-window/s-max.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #maxButton:hover {
-    border-image: url(image/top-window/s-max-hover.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max-hover.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #maxButton:pressed {
-    border-image: url(image/top-window/s-max-pressed.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max-pressed.png) 0 0 0 0 stretch stretch;
 }
 
 .TopWindow #titleBar #restoreButton {
-    border-image: url(image/top-window/s-max.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #restoreButton:hover {
-    border-image: url(image/top-window/s-max-hover.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max-hover.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #restoreButton:pressed {
-    border-image: url(image/top-window/s-max-pressed.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-max-pressed.png) 0 0 0 0 stretch stretch;
 }
 
 .TopWindow #titleBar #closeButton {
-    border-image: url(image/top-window/s-close.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-close.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #closeButton:hover {
-    border-image: url(image/top-window/s-close-hover.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-close-hover.png) 0 0 0 0 stretch stretch;
 }
 .TopWindow #titleBar #closeButton:pressed {
-    border-image: url(image/top-window/s-close-pressed.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/s-close-pressed.png) 0 0 0 0 stretch stretch;
 }
 
 .TopWindow QSizeGrip {
     width: 12px;
     height: 12px;
     border-width: 0 0 0 0;
-    border-image: url(image/top-window/size-grip.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/top-window/size-grip.png) 0 0 0 0 stretch stretch;
 }
 
 .MessageBox #closeButton {
@@ -80,13 +80,13 @@
     background-color: transparent;
     border-radius: 0;
     border-width: 0;
-    border-image: url(image/top-window/t-close.png) 0 stretch stretch;
+    border-image: url(img/top-window/t-close.png) 0 stretch stretch;
 }
 
 .MessageBox #closeButton:hover {
-    border-image: url(image/top-window/t-close-hover.png) 0 stretch stretch;
+    border-image: url(img/top-window/t-close-hover.png) 0 stretch stretch;
 }
 
 .MessageBox #closeButton:pressed {
-    border-image: url(image/top-window/t-close-pressed.png) 0 stretch stretch;
+    border-image: url(img/top-window/t-close-pressed.png) 0 stretch stretch;
 }

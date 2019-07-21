@@ -129,7 +129,7 @@ QSS 文件位于可执行文件同目录的 `resources/qss` 文件夹下，例�
 
 QSS 文件修改后，按下 `Ctrl + L` 即可自动加载就能看到效果，不需要重启程序。
 
-可以增加新的 QSS 文件，文件名添加到 `data/config.json` 中的 `qss_files` 数组中即可。
+可以增加新的 QSS 文件，文件名添加到 `config.json` 中的 `qss_files` 数组中即可。
 
 ## 日志工具
 
@@ -170,7 +170,7 @@ Qt 没有显示网络图片的 widget，为此提供了函数 `UiUtil::previewIm
 
 1. 网上下载字体文件，放到 font 目录
 
-2. 加载字体: 修改配置文件 `data/config.json` 的 `font_files`，程序启动时会调用 `QFontDatabase::addApplicationFont(file)` 加载字体到程序中
+2. 加载字体: 修改配置文件 `config.json` 的 `font_files`，程序启动时会调用 `QFontDatabase::addApplicationFont(file)` 加载字体到程序中
 
 3. 修改 QSS 设置字体: 在 `resources/qss` 目录下的 QSS 文件中设置 Widget 的字体，例如
 

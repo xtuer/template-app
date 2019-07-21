@@ -32,7 +32,7 @@ void LoginWidget::handleEvents() {
         UiUtil::findWindow(this)->close();
     });
 
-    // 点击登陆按钮登陆
+    // 点击登陆按钮登陆: 成功登录后自动关闭登录窗口
     connect(ui->loginButton, &QPushButton::clicked, [this] {
         QString username = ui->usernameLineEdit->text().trimmed();
         QString password = ui->passwordLineEdit->text();

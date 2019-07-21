@@ -4,6 +4,7 @@
 #include <QRect>
 #include <QPainter>
 #include <QPixmap>
+#include <QDebug>
 
 /*-----------------------------------------------------------------------------|
  |                           NinePatchPainterPrivate                           |
@@ -156,7 +157,7 @@ void NinePatchPainter::paint(QPainter *painter, const QRect &rect) const {
     } else if (d->horizontalStretch && !d->verticalStretch) {
         // 水平拉伸，垂直平铺
         if (crh % pmh != 0) {
-            pmh = ((float)crh) / (crh/pmh+1);
+            pmh = int(crh / (crh/pmh+1.0));
         }
         QSize size(crw, pmh);
         QPixmap centerPixmap = d->scalePixmap(d->centerPixmap, size);
@@ -164,7 +165,7 @@ void NinePatchPainter::paint(QPainter *painter, const QRect &rect) const {
     } else if (!d->horizontalStretch && d->verticalStretch) {
         // 水平平铺，垂直拉伸
         if (crw % pmw != 0) {
-            pmw = ((float)crw) / (crw/pmw+1);
+            pmw = int(crw / (crw/pmw+1.0));
         }
         QSize size(pmw, crh);
         QPixmap centerPixmap = d->scalePixmap(d->centerPixmap, size);

@@ -11,13 +11,13 @@ QWidget {
 }
 
 .WidgetsShower #previewButton {
-    border-image: url(image/common/preview.png) 0;
+    border-image: url(img/common/preview.png) 0;
 }
 
 .WidgetsShower #previewButton:hover {
-    border-image: url(image/common/preview-hover.png) 0;
+    border-image: url(img/common/preview-hover.png) 0;
 }
 
 .WidgetsShower #previewButton:pressed {
-    border-image: url(image/common/preview-pressed.png) 0;
+    border-image: url(img/common/preview-pressed.png) 0;
 }

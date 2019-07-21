@@ -34,7 +34,7 @@ LoginWidget #avatarLabel {
     min-height: 128px;
     max-height: 128px;
     border-width: 0 0 0 0;
-    border-image: url(image/common/fox.png) 0 0 0 0 stretch stretch;
+    border-image: url(img/common/fox.png) 0 0 0 0 stretch stretch;
 }
 
 LoginWidget #cancelButton, LoginWidget #loginButton {
