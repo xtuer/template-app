@@ -72,7 +72,7 @@ void CentralWidget::initializeUi() {
         QString className = child->property("class").toString();
         QString action    = child->property("action").toString();
 
-        if (NULL == button) { continue; }
+        if (nullptr == button) { continue; }
 
         if ("GroupButton" == className) {
             // 分组的按钮放到一个组里
@@ -90,7 +90,7 @@ void CentralWidget::initializeUi() {
 
         // 把 QPushButton 设置为 flat 的效果，这样 QSS 的效果更好
         QPushButton *pushButton = qobject_cast<QPushButton *>(button);
-        if (NULL != pushButton) {
+        if (nullptr != pushButton) {
             pushButton->setFlat(true);
         }
     }

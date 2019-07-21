@@ -159,7 +159,7 @@ void UiUtil::removeTableViewSelectedRow(QTableView *view) {
 }
 
 // 移动窗口到屏幕的中间
-void UiUtil::centerWindow(QWidget *window) {
+void UiUtil::showCenter(QWidget *window) {
     // This doesn't show the widget on the screen since you don't relinquish control back to the queue
     // until the hide() happens. In between, the invalidate() computes the correct positions.
     window->show();
@@ -171,6 +171,7 @@ void UiUtil::centerWindow(QWidget *window) {
     int x = qMax(0, size.width() / 2);
     int y = qMax(0, size.height() / 2);
     window->move(x, y);
+    window->show();
 }
 
 // 查找 w 所在窗口的顶层窗口

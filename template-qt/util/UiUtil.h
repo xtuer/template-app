@@ -42,7 +42,7 @@ public:
     static void removeTableViewSelectedRow(QTableView *view);
 
     // 移动窗口到屏幕的中间
-    static void centerWindow(QWidget *window);
+    static void showCenter(QWidget *window);
 
     // 查找 w 所在窗口的顶层窗口
     static QWidget* findWindow(QWidget *w);

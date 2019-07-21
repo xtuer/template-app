@@ -33,8 +33,7 @@ int main(int argc, char *argv[]) {
     TopWindow window(cw);
     cw->setTopWindow(&window);
     window.resize(1000, 700);
-    UiUtil::centerWindow(&window);
-    window.show();
+    UiUtil::showCenter(&window);
 
     // [2] 显示登陆对话框，点击取消按钮登陆失败退出程序，登陆成功继续往下运行
     // 输入错误信息虽然登陆不成功，但是不会退出程序，而是提示输入错误，继续输入登陆
@@ -71,6 +70,5 @@ static void initialize() {
  * 程序结束时释放回收资源，例如释放日志资源，释放数据库连接池资源等
  */
 static void finalize() {
-    ConfigInstance.destroy();
     LogHandlerInstance.uninstallMessageHandler(); // 程序结束时释放 LogHandler 的资源，例如刷新并关闭日志文件
 }

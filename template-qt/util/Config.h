@@ -19,9 +19,6 @@ class Config {
     SINGLETON(Config)
 
 public:
-    // 销毁 Config 的资源，如有必要，在 main 函数结束前调用，例如保存配置文件
-    void destroy();
-
     // 数据库信息
     QString getDatabaseType() const;            // 数据库的类型, 如QPSQL, QSQLITE, QMYSQL
     QString getDatabaseHost() const;            // 数据库主机的IP

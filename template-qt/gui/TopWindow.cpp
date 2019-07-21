@@ -118,8 +118,7 @@ void TopWindow::showModal() {
     // 作为 Dialog 需要同时设置 Qt::Dialog | Qt::Popup 两个 flags
     setWindowFlags(Qt::Dialog | Qt::Popup | Qt::FramelessWindowHint);
     setWindowModality(Qt::ApplicationModal);
-    UiUtil::centerWindow(this);
-    show();
+    UiUtil::showCenter(this);
 
     // 进入局部事件循环，阻塞代码继续往下走，窗口关闭时结束此局部事件循环，控制权交还给 QApplication
     // The event loop returns from the call to quit().

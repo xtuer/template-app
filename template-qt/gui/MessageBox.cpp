@@ -51,7 +51,7 @@ void MessageBox::message(const QString &msg, int width, int height,
                                       borderImageHorizontalStretch, borderImageVerticalStretch);
     MessageBox::setWindowForMessageBox(window, width, height);
     window->setAttribute(Qt::WA_DeleteOnClose);
-    window->show();
+    UiUtil::showCenter(window);
 }
 
 bool MessageBox::confirm(const QString &msg, int width, int height,

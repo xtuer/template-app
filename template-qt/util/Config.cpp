@@ -5,28 +5,26 @@
 #include <QStringList>
 #include <QSettings>
 #include <QTextCodec>
+#include <QCoreApplication>
 
 Config::Config() {
-    json = new Json("data/config.json", true); // 配置文件路径
+    json = new Json("config.json", true); // 配置文件路径
     appSettings = new QSettings("data/app.data", QSettings::IniFormat);
     appSettings->setIniCodec(QTextCodec::codecForName("UTF8"));
+
+    if (qApp != nullptr) {
+        QObject::connect(qApp, &QCoreApplication::aboutToQuit, [this] {
+            // 保存配置到文件
+            if (nullptr != appSettings) {
+                appSettings->sync();
+            }
+        });
+    }
 }
 
 Config::~Config() {
-    destroy();
-}
-
-void Config::destroy() {
-    // 保存配置到文件
-    if (NULL != appSettings) {
-        appSettings->sync();
-    }
-
     delete json;
     delete appSettings;
-
-    json = NULL;
-    appSettings = NULL;
 }
 
 QString Config::getDatabaseType() const {
