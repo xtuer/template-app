@@ -362,4 +362,14 @@ public class DemoController {
     public Result<Organization> findOrgByHost(@RequestParam String host) {
         return Result.ok(orgService.findOrganizationByHost(host));
     }
+
+    /**
+     * 测试 api 中返回 double
+     * 网址: http://localhost:8080/api/demo/double
+     */
+    @GetMapping("/api/demo/double")
+    @ResponseBody
+    public Result<Double> doubleValue() {
+        return Result.ok(3.1415926);
+    }
 }

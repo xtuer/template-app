@@ -41,13 +41,13 @@
                         <value>application/json;charset=UTF-8</value>
                     </list>
                 </property>
-                <property name="fastJsonConfig" ref="fastJsonConfigExt"/>
+                <property name="fastJsonConfig" ref="fastJsonConfig"/>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
 
     <!-- FastJson Config -->
-    <bean id="fastJsonConfigExt" class="edu.config.FastJsonConfigExt">
+    <bean id="fastJsonConfig" class="edu.config.FastJsonConfig">
         <property name="features">
             <list>
                 <value>AllowArbitraryCommas</value>
