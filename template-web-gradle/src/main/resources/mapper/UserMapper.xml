@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace 非常重要：必须是 Mapper 类的全路径-->
-<mapper namespace="edu.mapper.UserMapper">
+<mapper namespace="training.mapper.UserMapper">
     <!-- 用户查询结果的列 -->
     <sql id="user_columns">
         user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id AS orgId, is_enabled AS enabled

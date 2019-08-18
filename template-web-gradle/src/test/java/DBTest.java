@@ -1,7 +1,7 @@
-import edu.bean.User;
-import edu.mapper.UserMapper;
-import edu.service.FileService;
-import edu.util.Utils;
+import training.bean.User;
+import training.mapper.UserMapper;
+import training.service.FileService;
+import training.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

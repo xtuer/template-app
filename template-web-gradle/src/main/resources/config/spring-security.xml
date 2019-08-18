@@ -49,7 +49,7 @@
         <intercept-url pattern="/api/login/tokens"    access="permitAll"/>
 
         <!-- 需要权限 -->
-        <intercept-url pattern="/api/**" access="hasAnyRole('TEACHER', 'STUDENT', 'ADMIN_SYSTEM', 'ADMIN_SCHOOL', 'FORM_TEACHER', 'PARENT')"/>
+        <!-- <intercept-url pattern="/api/**" access="hasAnyRole('TEACHER', 'STUDENT', 'ADMIN_SYSTEM', 'ADMIN_SCHOOL', 'FORM_TEACHER', 'PARENT')"/>-->
 
         <form-login login-page="/page/login"
                     login-processing-url="/login"
@@ -81,12 +81,12 @@
     </beans:bean>
 
     <!-- 第三方登陆 filter 和 Token 登陆验证 filter -->
-    <beans:bean id="oauthAuthenticationFilter" class="edu.security.OAuthAuthenticationFilter"/>
-    <beans:bean id="tokenAuthenticationFilter" class="edu.security.TokenAuthenticationFilter"/>
+    <beans:bean id="oauthAuthenticationFilter" class="training.security.OAuthAuthenticationFilter"/>
+    <beans:bean id="tokenAuthenticationFilter" class="training.security.TokenAuthenticationFilter"/>
 
-    <beans:bean id="tokenService"       class="edu.security.TokenService"/>
-    <beans:bean id="userDetailsService" class="edu.security.UserDetailsService"/>
-    <beans:bean id="authenticationSuccessHandler" class="edu.security.AuthenticationSuccessHandler"/>
+    <beans:bean id="tokenService"       class="training.security.TokenService"/>
+    <beans:bean id="userDetailsService" class="training.security.UserDetailsService"/>
+    <beans:bean id="authenticationSuccessHandler" class="training.security.AuthenticationSuccessHandler"/>
 
     <!-- 注意: 不再使用自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">

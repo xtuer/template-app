@@ -62,102 +62,69 @@ AJAX 请求时的响应对象使用 Result，前端接收到 JSON 数据:
 
 ## 浏览器
 
-使用 jQuery 的 Rest 插件 **jquery.rest.js** 进行 Ajax 请求，使用 RESTful 风格:
+使用 Axios 的 Rest 插件 **axios.rest.js** 进行 Ajax 请求，使用 RESTful 风格:
 
-* `获取数据` 使用 GET，前端调用 `$.rest.get()`，后端使用 `@GetMapping`
-
-  ```js
-  $.rest.get({url: '/rest', data: {name: '黄彪'}, success: function(result) {
-      console.log(result);
-  }});
-  ```
-
-* `创建数据` 使用 POST，前端调用 `$.rest.create()`，后端使用 `@PostMapping`
+* `获取数据` 使用 GET，前端调用 `Rest.get()`，后端使用 `@GetMapping`
 
   ```js
-  $.rest.create({url: '/rest', success: function(result) {
+  Rest.get({ url: '/api/rest', data: { pageNumber: 3 } }).then(result => {
       console.log(result);
-  }});
+  });
   ```
 
-* `更新数据` 使用 PUT，前端调用 `$.rest.update()`，后端使用 `@PutMapping`
+* `创建数据` 使用 POST，前端调用 `Rest.create()`，后端使用 `@PostMapping`
 
   ```js
-  $.rest.update({url: '/rest', data: {name: 'Bob', age: 22}, success: function(result) {
+  Rest.create({ url: '/rest' } }).then(result => {
       console.log(result);
-  }});
+  });
   ```
 
-* `删除数据` 使用 DELETE，前端调用 `$.rest.remove()`，后端使用 `@DeleteMapping`
+* `更新数据` 使用 PUT，前端调用 `Rest.update()`，后端使用 `@PutMapping`
 
   ```js
-  $.rest.remove({url: '/rest', success: function(result) {
+  Rest.update({ url: '/rest', data: { name: 'Bob', age: 22 } }).then(result => {
       console.log(result);
-  }});
+  });
   ```
 
-提示: 请求时如果发生异常、token 无效、url 找不到、无权访问等，jquery.rest.js 中已经对错误进行了拦截进行统一处理，弹窗提示用户，所以在我们的业务代码里不需要关心这些错误，只需要在 success 函数中编写正常的业务逻辑代码，偶尔处理一下 complete 函数，如隐藏加载状态。
+* `删除数据` 使用 DELETE，前端调用 `Rest.remove()`，后端使用 `@DeleteMapping`
+
+  ```js
+  Rest.remove({ url: '/rest' }).then(result => {
+      console.log(result);
+  });
+  ```
+
+提示: 请求时如果发生异常、token 无效、url 找不到、无权访问等，axios.rest.js 中已经对错误进行了拦截进行统一处理，弹窗提示用户，所以在我们的业务代码里不需要关心这些错误，只需要在 success 函数中编写正常的业务逻辑代码，偶尔处理一下 complete 函数，如隐藏加载状态。
 
 ## 更多示例
 
-使用方法参考 <http://qtdebug.com/fe-rest/>，下面列举了一些例子:
+使用方法参考 <https://qtdebug.com/fe-axios-rest/>，下面列举了一些例子:
 
 ```js
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>REST</title>
-</head>
-<body>
-    <script src="http://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="/js/jquery.rest.js"></script>
-    <script>
-        // [1] 服务器端的 GET 需要启用 UTF-8 才不会乱吗
-        $.rest.get({url: '/rest', data: {name: 'Alice'}, success: function(result) {
-            console.log(result);
-        }});
- 
-        // url 中可以使用 {name} 的参数占位符，然后使用 pathVariables 中的属性替换
-        $.rest.get({url: '/api/users/{userId}', pathVariables: {userId: 23}, data: {name: 'Alice'}, 
-            success: function(result) {
-                console.log(result);
-            }
-        });
-      
-        // [2] 普通 form 表单提交 rest Ajax 请求
-        $.rest.create({url: '/rest', success: function(result) {
-            console.log(result);
-        }});
-        $.rest.update({url: '/rest', data: {name: '黄飞鸿', age: 22}, success: function(result) {
-            console.log(result);
-        }});
-      
-        $.rest.remove({url: '/rest', success: function(result) {
-            console.log(result);
-        }});
-      
-        // [3] 使用 request body 传递复杂 Json 对象
-        $.rest.create({url: '/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, 
-            success: function(result) {
-                console.log(result);
-            }
-        });
-      
-        $.rest.update({url: '/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, 
-            success: function(result) {
-                console.log(result);
-            }
-        });
-      
-        $.rest.remove({url: '/rest/requestBody', data: {name: 'Alice'}, jsonRequestBody: true, 
-            success: function(result) {
-                console.log(result);
-            }
-        });
-    </script>
-</body>
-</html>
+Rest.get({ url: '/api/rest', data: { name: '张飞', value: 99 } }).then(result => {
+    console.log(result);
+});
+Rest.create({ url: '/api/rest', data: { name: '张飞', value: 99 } }).then(result => {
+    console.log(result);
+});
+Rest.update({ url: '/api/rest', data: { name: '张飞', value: 99 } }).then(result => {
+    console.log(result);
+});
+Rest.remove({ url: '/api/rest', data: { name: '张飞', value: 99 } }).then(result => {
+    console.log(result);
+});
+
+Rest.create({ url: '/api/rest1', data: { name: '张飞', value: 99 }, json: true }).then(result => {
+    console.log(result);
+});
+Rest.update({ url: '/api/rest1', data: { name: '张飞', value: 99 }, json: true }).then(result => {
+    console.log(result);
+});
+Rest.remove({ url: '/api/rest1', data: { name: '张飞', value: 99 }, json: true }).then(result => {
+    console.log(result);
+});
 ```
 
 > 尽量使用 Restful 风格

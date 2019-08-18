@@ -3,8 +3,8 @@
 1. 安装 MySQL:
    * 账号: root
    * 密码: roo
-   * 创建数据库 edu
-   
+   * 创建数据库 training
+
 2. 安装 Redis
 
 3. 安装 Gradle
@@ -17,9 +17,9 @@
 
 ## 修改项目名
 
-项目、包名等命名为 edu，可修改为实际项目名字:
+项目、包名等命名为 training，可修改为实际项目名字:
 
-* IDEA 中搜索整个项目里的 edu: `Edit -> Find -> Replace in Path...` 输入 `edu`
-* 全部替换为需要的名字如 `traning`
-* 修改 Java 源码中文件夹名 edu 为 `traning`
+* IDEA 中搜索整个项目里的 training: `Edit -> Find -> Replace in Path...` 输入 `edu`
+* 全部替换为需要的名字如 `edu`
+* 修改 Java 源码中文件夹名 training 为 `edu`
 

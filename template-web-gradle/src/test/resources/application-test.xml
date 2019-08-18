@@ -19,14 +19,14 @@
     <import resource="classpath:config/activemq.xml"/>
 
     <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
-    <context:component-scan base-package="edu.service">
+    <context:component-scan base-package="training.service">
         <!--<context:exclude-filter type="assignable" expression="ebag.service.ResourceConverter"/>-->
         <!--<context:exclude-filter type="assignable" expression="ebag.service.ResourceService"/>-->
         <!--<context:exclude-filter type="assignable" expression="ebag.service.ActivityService"/>-->
     </context:component-scan>
 
     <!-- 分布式唯一 ID 生成器 -->
-    <bean id="idWorker" class="edu.service.IdWorker">
+    <bean id="idWorker" class="training.service.IdWorker">
         <constructor-arg value="${idWorker}"/>
     </bean>
 </beans>

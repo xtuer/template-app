@@ -1,60 +1,24 @@
-在代码中使用 Redis 缓存需要借助类 `StringRedisTemplate` 或者  `RedisDao`。RedisDao 故名思义就是要和数据库一起使用的: 访问的时候，先去 Redis 查找是否已经缓存:
+[JetCache](https://github.com/alibaba/jetcache/wiki) 是一个基于 Java 的缓存系统封装，提供统一的API和注解来简化缓存的使用。 JetCache 提供了比 SpringCache 更加强大的注解，可以原生的支持 TTL、两级缓存、分布式自动刷新，还提供了 `Cache` 接口用于手工缓存操作。 当前有四个实现，`RedisCache`、`TairCache` (此部分未在 github 开源)、`CaffeineCache` (in memory) 和一个简易的`LinkedHashMapCache` (in memory)，要添加新的实现也是非常简单的。
 
-* 如果已经缓存则直接从 Redis 读取，不再查询数据库
-* 如果没有缓存在 Redis 中，则先从数据库查询，并且缓存到数据库
+网上很多文章介绍 JetCache 的文章包括官方文档主要是基于 Spring Boot 的，也介绍了[未使用 SpringBoot 的配置方式](https://github.com/alibaba/jetcache/wiki/GettingStarted_CN#未使用springboot的配置方式)，但是估计很多同学还是不明白怎么在传统的 Spring MVC 的 Web 项目里使用 JetCache 吧，毕竟不是所有 Web 项目都使用 Spring Boot，接下来就一步一步的介绍使用的方法。
 
-## RedisDao
+使用缓存示例:
 
-使用 RedisDao 编写代码时如下即可:
+```java
+@Service
+public class HelloService {
+    @Cached(name = "user.", key = "#userId", expire = 600)
+    public String getUsernameById(long userId) {
+        System.out.println("Fetch username from DB");
+        return "Bob";
+    }
 
-1. 注入 RedisDao
+    @CacheInvalidate(name = "user.", key = "#userId")
+    public void removeUsername(long userId) {
+        System.out.println("Remove user from Redis");
+    }
+}
+```
 
-   ```java
-   @Autowired
-   private RedisDao redis;
-   ```
-
-2. 访问单个 Bean，提供 Class 和 mapper 查找数据的方法
-
-   ```java
-   String redisKey = "demo_" + id; // 对象在 Redis 中的 key
-   Demo d = redis.get(redisKey, Demo.class, () -> demoMapper.findDemoById(id));
-   ```
-
-3. 访问 List, Map，提供 TypeReference 和 mapper 查找数据的方法
-
-   ```java
-   List<Demo> demos = redis.get("demos", new TypeReference<List<Demo>>(){}, () -> demoMapper.allDemos());
-   ```
-
-如果对实现原理感兴趣，可参考 <http://qtdebug.com/spring-web-redis/>
-
-> 注意: 不要什么数据都用缓存，能够使用缓存的数据要很少变化才行，并且更新的时候需要把响应缓存中的数据更新或者删除掉，否则数据库更新了，缓存里还是旧的数据。
-
-## StringRedisTemplate
-
-使用 StringRedisTemplate 编写代码时如下即可:
-
-1. 注入 StringRedisTemplate
-
-   ```java
-   @Autowired
-   private StringRedisTemplate redisTemplate;
-   ```
-
-2. 使用 StringRedisTemplate 的函数，具体请查看文档
-
-   ```java
-   redisTemplate.opsForHash()
-   redisTemplate.opsForSet()
-   redisTemplate.opsForZSet()
-   redisTemplate.opsForList()
-   redisTemplate.opsForValue()
-   ------------------------------------
-   redisTemplate.opsForValue().get()
-   redisTemplate.opsForValue().set()
-   redisTemplate.delete()
-   ```
-
-   ​
+更详细信息请参考 https://qtdebug.com/spring-jetcache/。
 

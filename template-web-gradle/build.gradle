@@ -98,7 +98,7 @@ ext {
     // 构建: gradle clean assemble, gradle clean assemble -Denv=production
     // 部署: gradle clean deploy,   gradle clean deploy   -Denv=production
     environment     = System.getProperty("env", "development") // 获取 gradle 参数中 env 的值，选择环境
-    war.archiveName = "edu-${environment}.zip"                 // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
+    war.archiveName = "training-${environment}.zip"                 // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
     config          = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
 
     println "\n::--o 加载配置用于环境: ${environment}\n"
@@ -131,19 +131,19 @@ ssh.settings {
 }
 
 task deploy(dependsOn: war) {
-    def targetDir = '/www.edu.com'
+    def targetDir = '/www.training.com'
     doLast {
         ssh.run {
             session(remotes.server) {
                 put from: "${buildDir}/libs/${war.archiveName}", into: "${targetDir}"
                 execute """
                     source /root/.bash_profile;
-                    sh /usr/local/edu/tomcat/bin/shutdown.sh;
+                    sh /usr/local/training/tomcat/bin/shutdown.sh;
                     rm -rf   ${targetDir}/ROOT;
                     unzip -u ${targetDir}/${war.archiveName} -d ${targetDir}/ROOT > /dev/null;
                     rm -rf   ${targetDir}/${war.archiveName};
                     kill `ps aux | grep -i tomcat | grep -v grep | awk '{print \$2}'`;
-                    sh /usr/local/edu/tomcat/bin/startup.sh;
+                    sh /usr/local/training/tomcat/bin/startup.sh;
                 """
             }
         }

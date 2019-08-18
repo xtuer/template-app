@@ -13,7 +13,7 @@ password=$2
 database=$3
 
 # 遍历当前文件夹下的所有 SQL 文件，使用 mysql 命令导入数据库
-# mysql -uroot -proot ebag < demo.sql
+# mysql -uroot -proot training < demo.sql
 
 for sqlFile in ./*.sql
 do

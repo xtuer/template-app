@@ -17,7 +17,7 @@
     <import resource="classpath:config/spring-view-controller.xml"/>
 
     <!-- 控制器 -->
-    <context:component-scan base-package="edu.controller"/>
+    <context:component-scan base-package="training.controller"/>
 
     <!-- 注解映射支持 -->
     <mvc:annotation-driven conversion-service="customConversionService">
@@ -47,7 +47,7 @@
     </mvc:annotation-driven>
 
     <!-- FastJson Config -->
-    <bean id="fastJsonConfig" class="edu.config.FastJsonConfig">
+    <bean id="fastJsonConfig" class="training.config.FastJsonConfig">
         <property name="features">
             <list>
                 <value>AllowArbitraryCommas</value>
@@ -74,7 +74,7 @@
     <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="edu.converter.DateConverter"/>
+                <bean class="training.converter.DateConverter"/>
             </set>
         </property>
     </bean>
@@ -102,7 +102,7 @@
     <bean id="compositeExceptionResolver" class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
         <property name="exceptionResolvers">
             <list>
-                <bean class="edu.exception.HandlerExceptionResolver"/>
+                <bean class="training.exception.HandlerExceptionResolver"/>
             </list>
         </property>
         <property name="order" value="0"/>

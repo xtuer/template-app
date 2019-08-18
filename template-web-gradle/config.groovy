@@ -2,12 +2,12 @@
 // 部署: gradle clean deploy   -Denv=production
 
 // 把下面的映射添加到 hosts 文件，如果 mysql, redis 等安装在其他机器上，修改为对应机器的 IP
-// 127.0.0.1 mysql.edu
-// 127.0.0.1 redis.edu
-// 127.0.0.1 mongodb.edu
-// 127.0.0.1 activemq.edu
-// 127.0.0.1 zooKeeper.edu
-// 127.0.0.1 elasticsearch.edu
+// 127.0.0.1 mysql.training
+// 127.0.0.1 redis.training
+// 127.0.0.1 mongodb.training
+// 127.0.0.1 activemq.training
+// 127.0.0.1 zooKeeper.training
+// 127.0.0.1 elasticsearch.training
 
 ////////////////////////////////////////////////////////////////////////////////////
 //                               定义所有环境下都有的通用配置
@@ -21,13 +21,13 @@
         }
 
         database {
-            host     = 'mysql.edu'
+            host     = 'mysql.training'
             username = 'root'
             password = 'root'
         }
 
         redis {
-            host     = 'redis.edu'
+            host     = 'redis.training'
             port     = 6379
             password = ''
             database = 0
@@ -41,9 +41,9 @@
         appId  = 'Default_ID'
         appKey = 'Default_Key'
 
-        thymeleafCacheable = true    // thymeleaf 默认使用缓存提高效率
-        repoDirectory = '/edu/repo'  // 文件仓库目录
-        tempDirectory = '/edu/temp'  // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
+        thymeleafCacheable = true        // thymeleaf 使用缓存提高效率
+        repoDirectory = '/training/repo' // 文件仓库目录
+        tempDirectory = '/training/temp' // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
 //  }
 //}
 

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace 非常重要：必须是 Mapper 类的全路径-->
-<mapper namespace="edu.mapper.OrganizationMapper">
+<mapper namespace="training.mapper.OrganizationMapper">
     <!-- 使用域名查询机构，每个机构有独立的域名 -->
     <select id="findOrganizationByHost" parameterType="string" resultType="Organization">
         SELECT id, name, host, port, admin_id AS adminId, parent_id AS parentId

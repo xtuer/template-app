@@ -1,5 +1,5 @@
 {
-    "name": "template-vue-app",
+    "name": "traning-vue-pc",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -39,7 +39,10 @@
             "vue/no-reserved-keys": "warning",
             "vue/no-parsing-error": 0,
             "import/extensions": 0,
-            "indent": ["error", 4],
+            "indent": [
+                "error",
+                4
+            ],
             "no-multi-spaces": 0,
             "key-spacing": 0,
             "spaced-comment": 0,
@@ -71,6 +74,7 @@
             "radix": 0,
             "object-shorthand": 0,
             "prefer-const": 0,
+            "object-curly-newline": 0,
             "no-unused-expressions": 0
         },
         "parserOptions": {

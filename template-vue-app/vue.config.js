@@ -13,7 +13,7 @@ module.exports = {
     },
 
     // yarn build 的输出目录
-    outputDir: '../template-web-gradle/src/main/webapp/WEB-INF/page-vue',
+    outputDir: '../training-web-app/src/main/webapp/WEB-INF/page-vue',
     assetsDir: 'static',
 
     css: {

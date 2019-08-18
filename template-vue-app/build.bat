@@ -1,2 +1,2 @@
-rd /q /s ..\ebag-web-app\src\main\webapp\WEB-INF\page-vue
+rd /q /s ..\training-web-app\src\main\webapp\WEB-INF\page-vue
 yarn build

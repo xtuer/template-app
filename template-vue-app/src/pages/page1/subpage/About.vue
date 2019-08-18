@@ -7,6 +7,7 @@
 
 <script>
 import FileUploader from '@/components/FileUploader';
+import UserDao from '@/../public/static/js/dao/UserDao.js';
 
 export default {
     components: {
@@ -16,6 +17,11 @@ export default {
         return {
 
         };
+    },
+    mounted() {
+        // UserDao.findCurrentUser(user => {
+        //     console.log(user);
+        // });
     },
     methods: {
         fileUploaded(file) {

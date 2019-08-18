@@ -1,4 +1,4 @@
-import edu.util.PageUtils;
+import training.util.PageUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
