@@ -12,7 +12,7 @@
         <property name="password" value="${database.password}"/>
 
         <!-- 配置初始化大小、最小、最大 -->
-        <property name="initialSize" value="1"/>
+        <property name="initialSize" value="0"/>
         <property name="minIdle"     value="1"/>
         <property name="maxActive"   value="600"/>
 

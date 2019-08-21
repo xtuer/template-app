@@ -1,6 +1,7 @@
 package training.security;
 
 import training.bean.User;
+import training.config.AppConfig;
 import training.controller.Urls;
 import training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ import java.util.Set;
 public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private AppConfig config;
 
     public TokenAuthenticationFilter() {
         super("/"); // 参考 UsernamePasswordAuthenticationFilter
@@ -75,6 +79,14 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
                 return;
             } else  {
                 SecurityContextHolder.getContext().setAuthentication(auth);
+
+                // 如果 header 里有 save-auth-token: true，则保存 token 到 cookie
+                // 移动端使用 web view 打开页面时通过 header 设置 auth-token，通过这样的方式把 auth-token 持久化到 cookie 里，
+                // 以后页面中的访问都能带上用户登录信息了
+                if ("true".equals(request.getHeader("save-auth-token"))) {
+                    String token = WebUtils.getAuthToken(request);
+                    WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+                }
             }
         }
 
