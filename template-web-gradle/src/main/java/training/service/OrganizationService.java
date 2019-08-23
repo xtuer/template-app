@@ -16,6 +16,9 @@ public class OrganizationService extends BaseService {
     @Autowired
     private OrganizationMapper orgMapper;
 
+    @Autowired
+    private OrganizationService that;
+
     /**
      * 获取当前请求使用的域名所属机构
      *
@@ -24,7 +27,7 @@ public class OrganizationService extends BaseService {
     public Organization getCurrentOrganization() {
         // 先从缓存里查找机构，如果缓存里没有，再从数据库加载
         String host = WebUtils.getHost();
-        Organization org = findOrganizationByHost(host);
+        Organization org = that.findOrganizationByHost(host);
 
         return org;
     }
@@ -36,7 +39,7 @@ public class OrganizationService extends BaseService {
      */
     public long getCurrentOrganizationId() {
         // 如果没有找到域名对应的机构，则返回 1，表明是系统管理员的机构
-        Organization org = getCurrentOrganization();
+        Organization org = that.getCurrentOrganization();
 
         return org != null ? org.getId() : 1;
     }
@@ -48,7 +51,7 @@ public class OrganizationService extends BaseService {
      * @param host 机构的域名
      * @return 返回域名所属机构
      */
-    @Cached(name = CacheConst.NAME_ORG, key = CacheConst.KEY_ORG)
+    @Cached(name = CacheConst.CACHE, key = CacheConst.KEY_ORG)
     public Organization findOrganizationByHost(String host) {
         return orgMapper.findOrganizationByHost(host);
     }

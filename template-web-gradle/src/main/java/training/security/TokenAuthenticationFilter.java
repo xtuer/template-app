@@ -1,8 +1,8 @@
 package training.security;
 
+import training.controller.Urls;
 import training.bean.User;
 import training.config.AppConfig;
-import training.controller.Urls;
 import training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,7 +12,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -20,7 +19,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * 使用 token 进行身份验证的过滤器。
@@ -83,7 +81,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
                 // 如果 header 里有 save-auth-token: true，则保存 token 到 cookie
                 // 移动端使用 web view 打开页面时通过 header 设置 auth-token，通过这样的方式把 auth-token 持久化到 cookie 里，
                 // 以后页面中的访问都能带上用户登录信息了
-                if ("true".equals(request.getHeader("save-auth-token"))) {
+                if ("true".equals(request.getHeader(SecurityConstant.SAVE_AUTH_TOKEN_KEY))) {
                     String token = WebUtils.getAuthToken(request);
                     WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
                 }

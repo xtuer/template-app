@@ -6,6 +6,7 @@ import training.bean.User;
 import training.mapper.UserMapper;
 import training.service.IdWorker;
 import training.service.OrganizationService;
+import training.service.UserService;
 import training.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -39,6 +40,9 @@ public class DemoController {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private IdWorker idWorker;
@@ -350,7 +354,7 @@ public class DemoController {
     @GetMapping("/api/demo/users/{id}")
     @ResponseBody
     public Result<User> findUserById(@PathVariable Long id) {
-        return Result.ok(userMapper.findUserById(id));
+        return Result.ok(userService.findUser(id));
     }
 
     /**
