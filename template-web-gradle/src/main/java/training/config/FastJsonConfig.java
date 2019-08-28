@@ -17,8 +17,8 @@ public class FastJsonConfig extends com.alibaba.fastjson.support.config.FastJson
         serializeConfig.put(Long.class, ToStringSerializer.instance);
         serializeConfig.put(Long.TYPE, ToStringSerializer.instance);
 
-        this.setSerializeFilters(new PrimitiveLongFilter());
         this.setSerializeConfig(serializeConfig);
+        this.setSerializeFilters(new PrimitiveLongFilter());
     }
 
     /**

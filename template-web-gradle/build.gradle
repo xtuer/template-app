@@ -32,7 +32,7 @@ ext.versions = [
         redisClient   : '2.9.0',
         servlet       : '4.0.0',
         lombok        : '1.16.20',
-        fastjson      : '1.2.41',
+        fastjson      : '1.2.59',
         thymeleaf     : '3.0.9.RELEASE',
         mysql         : '5.1.46',
         mybatis       : '3.5.0',
