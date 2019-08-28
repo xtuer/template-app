@@ -2,6 +2,7 @@ package training.config;
 
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson.serializer.ValueFilter;
 
 import java.math.BigInteger;
 
@@ -16,6 +17,21 @@ public class FastJsonConfig extends com.alibaba.fastjson.support.config.FastJson
         serializeConfig.put(Long.class, ToStringSerializer.instance);
         serializeConfig.put(Long.TYPE, ToStringSerializer.instance);
 
+        this.setSerializeFilters(new PrimitiveLongFilter());
         this.setSerializeConfig(serializeConfig);
+    }
+
+    /**
+     * 普通 long 类型的 filter
+     */
+    public static class PrimitiveLongFilter implements ValueFilter {
+        @Override
+        public Object process(Object object, String name, Object value) {
+            if (value != null && Long.class == value.getClass()) {
+                return value + "";
+            }
+
+            return value;
+        }
     }
 }
