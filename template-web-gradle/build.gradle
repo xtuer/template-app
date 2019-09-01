@@ -138,12 +138,12 @@ task deploy(dependsOn: war) {
                 put from: "${buildDir}/libs/${war.archiveName}", into: "${targetDir}"
                 execute """
                     source /root/.bash_profile;
-                    sh /usr/local/training/tomcat/bin/shutdown.sh;
+                    sh /usr/local/edu/tomcat/bin/shutdown.sh;
                     rm -rf   ${targetDir}/ROOT;
                     unzip -u ${targetDir}/${war.archiveName} -d ${targetDir}/ROOT > /dev/null;
                     rm -rf   ${targetDir}/${war.archiveName};
                     kill `ps aux | grep -i tomcat | grep -v grep | awk '{print \$2}'`;
-                    sh /usr/local/training/tomcat/bin/startup.sh;
+                    sh /usr/local/edu/tomcat/bin/startup.sh;
                 """
             }
         }

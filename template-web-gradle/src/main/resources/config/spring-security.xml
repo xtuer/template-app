@@ -39,14 +39,14 @@
         <intercept-url pattern="/page/student" access="hasRole('STUDENT')"/>
         <intercept-url pattern="/page/parent"  access="hasRole('PARENT')"/>
 
-        <intercept-url pattern="/page/form-teacher" access="hasRole('FORM_TEACHER')"/>
+        <intercept-url pattern="/page/teacher"      access="hasRole('FORM_TEACHER')"/>
         <intercept-url pattern="/page/admin-system" access="hasRole('ADMIN_SYSTEM')"/>
-        <intercept-url pattern="/page/admin-school" access="hasRole('ADMIN_SCHOOL')"/>
+        <intercept-url pattern="/page/admin-org"    access="hasRole('ADMIN_SCHOOL')"/>
 
         <!-- 匿名用户 -->
-        <intercept-url pattern="/api/schools"         access="permitAll" method="GET"/>
-        <intercept-url pattern="/api/schools/current" access="permitAll" method="GET"/>
-        <intercept-url pattern="/api/login/tokens"    access="permitAll"/>
+        <intercept-url pattern="/api/orgs"         access="permitAll" method="GET"/>
+        <intercept-url pattern="/api/orgs/current" access="permitAll" method="GET"/>
+        <intercept-url pattern="/api/login/tokens" access="permitAll"/>
 
         <!-- 需要权限 -->
         <!-- <intercept-url pattern="/api/**" access="hasAnyRole('TEACHER', 'STUDENT', 'ADMIN_SYSTEM', 'ADMIN_SCHOOL', 'FORM_TEACHER', 'PARENT')"/>-->
@@ -81,12 +81,12 @@
     </beans:bean>
 
     <!-- 第三方登陆 filter 和 Token 登陆验证 filter -->
-    <beans:bean id="oauthAuthenticationFilter" class="training.security.OAuthAuthenticationFilter"/>
-    <beans:bean id="tokenAuthenticationFilter" class="training.security.TokenAuthenticationFilter"/>
+    <beans:bean id="oauthAuthenticationFilter" class="com.edu.training.security.OAuthAuthenticationFilter"/>
+    <beans:bean id="tokenAuthenticationFilter" class="com.edu.training.security.TokenAuthenticationFilter"/>
 
-    <beans:bean id="tokenService"       class="training.security.TokenService"/>
-    <beans:bean id="userDetailsService" class="training.security.UserDetailsService"/>
-    <beans:bean id="authenticationSuccessHandler" class="training.security.AuthenticationSuccessHandler"/>
+    <beans:bean id="tokenService"       class="com.edu.training.security.TokenService"/>
+    <beans:bean id="userDetailsService" class="com.edu.training.security.UserDetailsService"/>
+    <beans:bean id="authenticationSuccessHandler" class="com.edu.training.security.AuthenticationSuccessHandler"/>
 
     <!-- 注意: 不再使用自己定义 AccessDecisionManager 对应的 bean，实现角色继承 -->
     <beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">

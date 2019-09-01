@@ -17,9 +17,8 @@
 
 ## 修改项目名
 
-项目、包名等命名为 training，可修改为实际项目名字:
+项目、包名等命名为 **com.edu.training**，可修改为实际项目名字:
 
-* IDEA 中搜索整个项目里的 training: `Edit -> Find -> Replace in Path...` 输入 `edu`
-* 全部替换为需要的名字如 `edu`
-* 修改 Java 源码中文件夹名 training 为 `edu`
-
+* IDEA 中搜索整个项目里的 training: `Edit -> Find -> Replace in Path...` 输入 `com.edu.training`
+* 全部替换为需要的名字如 `com.xtuer`
+* 修改 Java 源码中文件夹名 com.edu.training 为 `com.xtuer`

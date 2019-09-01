@@ -17,7 +17,7 @@
     <import resource="classpath:config/spring-view-controller.xml"/>
 
     <!-- 控制器 -->
-    <context:component-scan base-package="training.controller"/>
+    <context:component-scan base-package="com.edu.training.controller"/>
 
     <!-- 注解映射支持 -->
     <mvc:annotation-driven conversion-service="customConversionService">
@@ -47,7 +47,7 @@
     </mvc:annotation-driven>
 
     <!-- FastJson Config -->
-    <bean id="fastJsonConfig" class="training.config.FastJsonConfig">
+    <bean id="fastJsonConfig" class="com.edu.training.config.FastJsonConfig">
         <property name="features">
             <list>
                 <value>AllowArbitraryCommas</value>
@@ -74,7 +74,7 @@
     <bean id="customConversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="training.converter.DateConverter"/>
+                <bean class="com.edu.training.converter.DateConverter"/>
             </set>
         </property>
     </bean>
@@ -102,7 +102,7 @@
     <bean id="compositeExceptionResolver" class="org.springframework.web.servlet.handler.HandlerExceptionResolverComposite">
         <property name="exceptionResolvers">
             <list>
-                <bean class="training.exception.HandlerExceptionResolver"/>
+                <bean class="com.edu.training.exception.HandlerExceptionResolver"/>
             </list>
         </property>
         <property name="order" value="0"/>
@@ -114,12 +114,12 @@
     </mvc:cors>
 
     <!-- 静态资源的访问，如 js, css, jpg, png -->
-    <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/page-vue/static/js/jquery.js -->
-    <mvc:resources mapping="/static/js/**"      location="/WEB-INF/page-vue/static/js/"    cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/css/**"     location="/WEB-INF/page-vue/static/css/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/img/**"     location="/WEB-INF/page-vue/static/img/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/fonts/**"   location="/WEB-INF/page-vue/static/fonts/" cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/lib/**"     location="/WEB-INF/page-vue/static/lib/"   cache-period="${cachePeriod}"/>
+    <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/page-pc/static/js/jquery.js -->
+    <mvc:resources mapping="/static/js/**"      location="/WEB-INF/page-pc/static/js/"    cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/css/**"     location="/WEB-INF/page-pc/static/css/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/img/**"     location="/WEB-INF/page-pc/static/img/"   cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/fonts/**"   location="/WEB-INF/page-pc/static/fonts/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static/lib/**"     location="/WEB-INF/page-pc/static/lib/"   cache-period="${cachePeriod}"/>
 
     <mvc:resources mapping="/static-x/books/**" location="/WEB-INF/static-x/books/" cache-period="${cachePeriod}"/>
     <mvc:resources mapping="/static-x/kps/**"   location="/WEB-INF/static-x/kps/"   cache-period="${cachePeriod}"/>

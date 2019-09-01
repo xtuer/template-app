@@ -16,5 +16,5 @@
     <import resource="classpath:config/spring-transaction.xml"/>
 
     <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
-    <context:component-scan base-package="training.service, training.config"/>
+    <context:component-scan base-package="com.edu.training.service, com.edu.training.config"/>
 </beans>

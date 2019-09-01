@@ -4,7 +4,9 @@ dump.rdb
 
 ### iView ###
 template-web-gradle/src/main/webapp/WEB-INF/page
+template-web-gradle/src/main/webapp/WEB-INF/page-pc
 template-web-gradle/src/main/webapp/WEB-INF/page-vue
+template-web-gradle/src/main/webapp/WEB-INF/page-mobile
 template-web-gradle/src/main/webapp/WEB-INF/static
 node_modules/
 _book/

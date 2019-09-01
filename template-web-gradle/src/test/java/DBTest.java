@@ -1,7 +1,11 @@
-import training.bean.User;
-import training.mapper.UserMapper;
-import training.service.FileService;
-import training.util.Utils;
+import com.edu.training.bean.Role;
+import com.edu.training.bean.User;
+import com.edu.training.mapper.OrganizationMapper;
+import com.edu.training.mapper.UserMapper;
+import com.edu.training.service.FileService;
+import com.edu.training.service.OrganizationService;
+import com.edu.training.service.UserService;
+import com.edu.training.util.Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,10 @@ public class DBTest {
     @Autowired
     private FileService fileService;
 
+    @Autowired
+    private UserService userService;
+
+    // gradle clean test --tests DBTest.testFindUser
     @Test
     public void testFindUser() {
         User user = userMapper.findUserById(1);
@@ -33,5 +41,19 @@ public class DBTest {
     @Test
     public void handleHtml() {
         System.out.println(fileService.moveFileToRepoInHtml("<a href=\"/file/temp/332804396779831296.png\">Go</a>"));
+    }
+
+    // 测试插入用户
+    @Test
+    public void testInsertUser() {
+        User user = new User();
+        user.setId(2);
+        user.setUsername("test-user");
+        user.setPassword(Utils.passwordByBCrypt("Passw0rd"));
+        user.setNickname("机构管理员");
+        user.addRole(Role.ROLE_ADMIN_ORG);
+        user.setOrgId(1);
+
+        userService.createOrUpdateUser(user);
     }
 }

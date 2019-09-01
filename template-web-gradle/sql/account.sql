@@ -13,8 +13,14 @@ CREATE TABLE organization (
     name      varchar(128) NOT NULL COMMENT '机构名字',
     host      varchar(128)          COMMENT '机构域名',
     port      int DEFAULT 80        COMMENT '网站端口',
-    admin_id  bigint(20)            COMMENT '管理员 ID',
+    admin_id  bigint(20) DEFAULT 0  COMMENT '管理员 ID',
     parent_id bigint(20) DEFAULT 0  COMMENT '上级机构 ID',
+
+    contact_person varchar(128) NOT NULL COMMENT '单位对接人名字',
+    contact_mobile varchar(32)  NOT NULL COMMENT '单位对接人电话',
+    portal_name    varchar(128) NOT NULL COMMENT '门户平台名称',
+    logo           varchar(256)          COMMENT 'Logo',
+    is_enabled     tinyint DEFAULT 1     COMMENT '状态: 0 (禁用), 1 (启用)',
 
     created_at datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

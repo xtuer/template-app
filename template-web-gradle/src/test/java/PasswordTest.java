@@ -1,4 +1,4 @@
-import training.util.Utils;
+import com.edu.training.util.Utils;
 import org.junit.Test;
 
 public class PasswordTest {

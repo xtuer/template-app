@@ -26,7 +26,7 @@
     </context:component-scan>
 
     <!-- 分布式唯一 ID 生成器 -->
-    <bean id="idWorker" class="training.service.IdWorker">
+    <bean id="idWorker" class="com.edu.training.service.IdWorker">
         <constructor-arg value="${idWorker}"/>
     </bean>
 </beans>

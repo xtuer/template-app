@@ -2,11 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!--namespace 非常重要：必须是 Mapper 类的全路径-->
-<mapper namespace="training.mapper.OrganizationMapper">
+<mapper namespace="com.edu.training.mapper.OrganizationMapper">
+    <sql id="organization_columns">
+        id, name, host, port, admin_id AS adminId, parent_id AS parentId,
+        contact_person AS contactPerson, contact_mobile AS contactMobile,
+        portal_name AS portalName, logo, is_enabled AS enabled
+    </sql>
+
+    <!-- 使用 ID 查询机构 -->
+    <select id="findOrganizationById" parameterType="long" resultType="Organization">
+        SELECT <include refid="organization_columns"/>
+        FROM organization
+        WHERE id = #{id}
+    </select>
+
     <!-- 使用域名查询机构，每个机构有独立的域名 -->
     <select id="findOrganizationByHost" parameterType="string" resultType="Organization">
-        SELECT id, name, host, port, admin_id AS adminId, parent_id AS parentId
+        SELECT <include refid="organization_columns"/>
         FROM organization
         WHERE host = #{host}
     </select>
+
+    <!-- 使用域名、名称、门户平台名称查询机构列表 -->
+    <select id="findOrganizationsLikeName" parameterType="string" resultType="Organization">
+        SELECT <include refid="organization_columns"/>
+        FROM organization
+        <where>
+            <if test="name != null and name != '' ">
+                name like CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 判断指定 ID 的机构是否可使用此域名 -->
+    <select id="isHostAvailable" resultType="boolean">
+        SELECT NOT EXISTS (
+            SELECT 1 FROM organization WHERE host = #{host} AND id != #{organizationId}
+        )
+    </select>
+
+    <!-- 新增或更新机构 -->
+    <insert id="insertOrUpdateOrganization" parameterType="Organization">
+        INSERT INTO organization (id, name, host, port, admin_id, parent_id, contact_person,
+                                  contact_mobile, portal_name, logo)
+            VALUES (#{id}, #{name}, #{host}, #{port}, #{adminId}, #{parentId}, #{contactPerson},
+                  #{contactMobile}, #{portalName}, #{logo})
+
+        ON DUPLICATE KEY
+        UPDATE name = #{name}, host = #{host}, port = #{port}, admin_id = #{adminId},
+                   parent_id = #{parentId}, contact_person = #{contactPerson},
+                   contact_mobile = #{contactMobile}, portal_name = #{portalName}, logo = #{logo}, is_enabled = #{enabled}
+    </insert>
+
+    <!-- 启用禁用机构 -->
+    <update id="enableOrganization">
+        UPDATE organization SET is_enabled = #{enabled} WHERE id = #{id}
+    </update>
+
+    <!-- 使用机构 ID 删除机构 -->
+    <delete id="deleteOrganization" parameterType="long">
+        DELETE from organization where id = #{id}
+    </delete>
 </mapper>
