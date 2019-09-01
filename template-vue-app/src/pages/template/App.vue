@@ -16,5 +16,6 @@ body, html, #app {
     height: 100%;
     padding: 0;
     margin: 0;
+    background: white;
 }
 </style>
