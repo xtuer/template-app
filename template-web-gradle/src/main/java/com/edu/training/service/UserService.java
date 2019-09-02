@@ -84,7 +84,7 @@ public class UserService extends BaseService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void createOrUpdateUser(User user) {
-        // 1. 如果用户 ID 无效，为其分配一个 ID
+        // 1. 如果用户 ID 无效，为其分配一个 ID，加密密码
         // 2. 保存用户到数据库
         // 3. 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
         //    重复导入用户数据的时候可能会用到
@@ -97,9 +97,12 @@ public class UserService extends BaseService {
             user.setId(userId);
         }
 
+        user.setPassword(Utils.passwordByBCrypt(user.getPassword())); // 加密密码
+
+        // [2] 保存用户到数据库
         userMapper.insertOrUpdateUser(user);
 
-        // [4] 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
+        // [3] 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
         userId = userMapper.findUserByUsernameAndOrgId(user.getUsername(), user.getOrgId()).getId();
         user.setId(userId);
 

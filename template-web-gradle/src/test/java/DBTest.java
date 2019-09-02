@@ -49,7 +49,7 @@ public class DBTest {
         User user = new User();
         user.setId(2);
         user.setUsername("test-user");
-        user.setPassword(Utils.passwordByBCrypt("Passw0rd"));
+        user.setPassword("Passw0rd");
         user.setNickname("机构管理员");
         user.addRole(Role.ROLE_ADMIN_ORG);
         user.setOrgId(1);
