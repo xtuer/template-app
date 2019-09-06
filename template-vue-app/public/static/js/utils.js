@@ -30,8 +30,8 @@ String.prototype.format = function(replacements) {
 var formatString = function (str, replacements) {
     replacements = (typeof replacements === 'object') ? replacements : Array.prototype.slice.call(arguments, 1);
     return str.replace(/\{\{|\}\}|\{(\w+)\}/g, function(m, n) {
-        if (m == '{{') { return '{'; }
-        if (m == '}}') { return '}'; }
+        if (m === '{{') { return '{'; }
+        if (m === '}}') { return '}'; }
         return replacements[n];
     });
 };
@@ -139,7 +139,7 @@ Date.prototype.format = function (fmt) {
         'q': Math.floor((this.getMonth() + 3) / 3), // 季度
         'w': this.getDay(),         // 星期，注意是0-6
         'H': this.getHours(),       // 24小时制
-        'h': this.getHours() % 12 == 0 ? 12 : this.getHours() % 12, // 12小时制
+        'h': this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, // 12小时制
         'm': this.getMinutes(),     // 分钟
         's': this.getSeconds(),     // 秒
         'S': this.getMilliseconds() // 毫秒
@@ -148,9 +148,9 @@ Date.prototype.format = function (fmt) {
     for (var i in obj) {
         fmt = fmt.replace(new RegExp(i + '+', 'g'), function (m) {
             var val = obj[i] + '';
-            if (i == 'w') return (m.length > 2 ? '星期' : '周') + week[val];
-            for (var j = 0, len = val.length; j < m.length - len; j++) val = '0' + val;
-            return m.length == 1 ? val : val.substring(val.length - m.length);
+            if (i === 'w') return (m.length > 2 ? '星期' : '周') + week[val];
+            for (var j = 0, len = val.length; j < m.length - len; j += 1) val = '0' + val;
+            return m.length === 1 ? val : val.substring(val.length - m.length);
         });
     }
     return fmt;
@@ -257,7 +257,7 @@ Utils.getFilenameExtension = function(filename) {
 Utils.getFileClass = function(filename) {
     const type = Utils.types[Utils.getFilenameExtension(filename)];
 
-    return type ? type : 'file-type-other';
+    return type || 'file-type-other';
 };
 
 /**
@@ -269,11 +269,7 @@ Utils.getFileClass = function(filename) {
 Utils.isImage = function(filename) {
     const ext = Utils.getFilenameExtension(filename);
 
-    if ("png" === ext || "jpg" === ext || "jpeg" === ext || "gif" === ext) {
-        return true;
-    } else {
-        return false;
-    }
+    return ('png' === ext || 'jpg' === ext || 'jpeg' === ext || 'gif' === ext);
 };
 
 /**
@@ -334,10 +330,10 @@ Utils.toCnNumber = function(n) {
 
         if (1 === shi) {
             // 11-19: 十一、十二、...
-            return '十' + (ge!=0?Utils.BASE_CN_NUMBERS[ge]:'');
+            return '十' + (ge!==0?Utils.BASE_CN_NUMBERS[ge]:'');
         } else {
             // 20-99: 二十一、二十二、...
-            return Utils.BASE_CN_NUMBERS[shi] + '十' + (ge==0?'':Utils.BASE_CN_NUMBERS[ge]);
+            return Utils.BASE_CN_NUMBERS[shi] + '十' + (ge===0?'':Utils.BASE_CN_NUMBERS[ge]);
         }
     } else {
         return '';
@@ -430,7 +426,7 @@ Utils.locateCurrentCity = function(BMapAk, callback) {
         const longitude = position.lng; // 经度
         const url = `https://api.map.baidu.com/geocoder/v2/?ak=${BMapAk}&location=${latitude},${longitude}&output=json&pois =1`;
 
-        if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+        if (this.getStatus() === BMAP_STATUS_SUCCESS) {
             $.ajax({
                 url     : url,
                 dataType: 'jsonp',
@@ -446,7 +442,7 @@ Utils.locateCurrentCity = function(BMapAk, callback) {
         } else {
             Utils.warning('定位失败');
         }
-    }, { enableHighAccuracy: true} ); // 指示浏览器获取高精度的位置，默认false
+    }, { enableHighAccuracy: true }); // 指示浏览器获取高精度的位置，默认false
 };
 
 
@@ -597,7 +593,7 @@ Utils.canPreview = function({ uri, ready, progress, complete, timeout }) {
             }
         }, fail: () => {
             stopRequestPreviewInfo();
-        }});
+        } });
     }
 
     requestPreviewInfo(); // 立即执行请求
