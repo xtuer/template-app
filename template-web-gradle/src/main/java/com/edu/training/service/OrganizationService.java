@@ -6,7 +6,6 @@ import com.edu.training.bean.*;
 import com.edu.training.mapper.OrganizationMapper;
 import com.edu.training.util.Utils;
 import com.edu.training.util.WebUtils;
-import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +29,7 @@ public class OrganizationService extends BaseService {
      */
     public Organization getCurrentOrganization() {
         // 先从缓存里查找机构，如果缓存里没有，再从数据库加载
-        String host = justifyHost(WebUtils.getHost());
+        String host = WebUtils.getHost();
         Organization org = self.findOrganizationByHost(host);
 
         return org;
@@ -97,7 +96,7 @@ public class OrganizationService extends BaseService {
         org.setName(StringUtils.trim(org.getName()));
         org.setContactPerson(StringUtils.trim(org.getContactPerson()));
         org.setContactMobile(StringUtils.trim(org.getContactMobile()));
-        org.setHost(justifyHost(org.getHost()));
+        org.setHost(WebUtils.simplifyHost(org.getHost()));
         org.setLogo(StringUtils.trim(org.getLogo()));
         org.getAdmin().setUsername(org.getAdmin().getUsername());
 
@@ -173,17 +172,5 @@ public class OrganizationService extends BaseService {
     @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_ORG)
     public void invalidateOrganizationCache(String host) {
 
-    }
-
-    /**
-     * 把域名前后的空白字符去掉，去掉域名前的 www. :
-     * google.com     返回 google.com
-     * www.google.com 返回 google.com
-     *
-     * @param host 域名
-     * @return 返回调整后的域名
-     */
-    public String justifyHost(String host) {
-        return RegExUtils.removePattern(StringUtils.trim(host), "^www\\.");
     }
 }

@@ -1,15 +1,16 @@
 package com.edu.training.util;
 
 import com.alibaba.fastjson.JSON;
+import com.edu.training.bean.Mime;
+import com.edu.training.bean.Result;
 import com.edu.training.security.SecurityConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.edu.training.bean.Mime;
-import com.edu.training.bean.Result;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -217,7 +218,8 @@ public final class WebUtils {
      */
     public static String getHost() {
         try {
-            return new URL(WebUtils.getRequest().getRequestURL().toString()).getHost();
+            String host = new URL(WebUtils.getRequest().getRequestURL().toString()).getHost();
+            return WebUtils.simplifyHost(host);
         } catch (MalformedURLException e) {
             log.warn(ExceptionUtils.getStackTrace(e));
         }
@@ -333,5 +335,17 @@ public final class WebUtils {
                 response.setHeader("Content-Disposition", "attachment;filename=" + filename);
             }
         }
+    }
+
+    /**
+     * 把域名前后的空白字符去掉，去掉域名前的 www. :
+     * google.com     返回 google.com
+     * www.google.com 返回 google.com
+     *
+     * @param host 域名
+     * @return 返回简化后的域名
+     */
+    public static String simplifyHost(String host) {
+        return RegExUtils.removePattern(StringUtils.trim(host), "^www\\.");
     }
 }

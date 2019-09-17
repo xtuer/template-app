@@ -8,6 +8,7 @@ import com.edu.training.service.IdWorker;
 import com.edu.training.service.OrganizationService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.Utils;
+import com.edu.training.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -364,7 +365,7 @@ public class DemoController {
     @GetMapping("/api/demo/org")
     @ResponseBody
     public Result<Organization> findOrgByHost(@RequestParam String host) {
-        host = orgService.justifyHost(host);
+        host = WebUtils.simplifyHost(host);
         return Result.ok(orgService.findOrganizationByHost(host));
     }
 

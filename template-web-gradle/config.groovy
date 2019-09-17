@@ -60,6 +60,7 @@ environments {
     }
 
     win {
+        thymeleafCacheable = false
         repoDirectory = 'D:/training/repo' // 文件仓库目录
         tempDirectory = 'D:/training/temp' // 临时文件目录
     }
