@@ -4,6 +4,7 @@
      *      Get    请求调用 $.rest.get(),    $.rest.syncGet()
      *      Create 请求调用 $.rest.create(), $.rest.syncCreate()
      *      Update 请求调用 $.rest.update(), $.rest.syncUpdate()
+     *      Patch  请求调用 $.rest.patch(),  $.rest.syncPatch()
      *      Delete 请求调用 $.rest.remove(), $.rest.syncRemove()
      *
      * 默认使用 contentType 为 application/x-www-form-urlencoded 的方式提交请求，只能传递简单的 key/value，
@@ -29,7 +30,7 @@
      *          console.log(result);
      *      }}, fail: function(failResponse) {});
      * 提示:
-     *     绝大多数时候不需要传入 fail 的回调函数，已经默认提供了 401，403，404，服务器抛异常时的 500，服务不可达的 502 等错误处理: 弹窗提示和打印错误信息。
+     *     绝大多数时候不需要传入 fail 的回调函数，已经默认提供了 401，403，404，服务器抛异常时的 500，服务不可达的 502 等错误处理: 弹窗提示和控制台打印错误信息。
      */
     $.rest = {
         /**
@@ -61,13 +62,19 @@
         update: function(options) {
             options.data = options.data || {};
             options.httpMethod   = 'POST';
-            options.data._method = 'PUT'; // SpringMvc HiddenHttpMethodFilter 的 PUT 请求
+            options.data._method = 'PUT'; // SpringMvc HiddenHttpMethodFilter 会把此 POST 请求转发为 PUT 请求
+            this.sendRequest(options);
+        },
+        patch: function(options) {
+            options.data = options.data || {};
+            options.httpMethod   = 'POST';
+            options.data._method = 'PATCH'; // SpringMvc HiddenHttpMethodFilter 会把此 POST 请求转发为 PATCH 请求
             this.sendRequest(options);
         },
         remove: function(options) {
             options.data = options.data || {};
             options.httpMethod   = 'POST';
-            options.data._method = 'DELETE'; // SpringMvc HiddenHttpMethodFilter 的 DELETE 请求
+            options.data._method = 'DELETE'; // SpringMvc HiddenHttpMethodFilter 会把此 POST 请求转发为 DELETE 请求
             this.sendRequest(options);
         },
         // 阻塞请求
@@ -83,6 +90,10 @@
             options.async = false;
             this.update(options);
         },
+        syncPatch: function(options) {
+            options.async = false;
+            this.patch(options);
+        },
         syncRemove: function(options) {
             options.async = false;
             this.remove(options);
@@ -94,7 +105,7 @@
          * @param {Json} options 有以下几个选项:
          *               {String}   url        请求的 URL        (必选)
          *               {String}   httpMethod 请求的方式，有 GET, PUT, POST, DELETE (必选)
-         *               {Json}     pathVariables URL 中的变量      (可选)
+         *               {Json}     pathVariables URL 中的变量   (可选)
          *               {Json}     data       请求的参数        (可选)
          *               {Boolean}  async      默认为异步方式     (可选)
          *               {Boolean}  jsonRequestBody 是否使用 application/json 的方式进行请求，默认为 false 不使用(可选)
@@ -116,7 +127,7 @@
                 complete       : function() {}
             };
 
-            // 使用 jQuery.extend 合并用户传递的 options 和 defaults
+            // 使用 jQuery.extend 合并用户传递的 options 和 defaults 为最终的参数 settings
             var settings = $.extend(true, {}, defaults, options);
 
             // 使用 application/json 的方式进行请求时，需要处理相关参数
@@ -125,6 +136,8 @@
                     settings.httpMethod = 'PUT';
                 } else if (settings.data._method === 'DELETE') {
                     settings.httpMethod = 'DELETE';
+                } else if (settings.data._method === 'PATCH') {
+                    settings.httpMethod = 'PATCH';
                 }
 
                 delete settings.data._method; // 没必要传递一个无用的参数
@@ -136,7 +149,7 @@
                 }
             }
 
-            // 替换 url 中的变量，例如 /rest/users/{id}, 其中 {id} 为要被 settings.pathVariables.id 替换的部分
+            // 替换 url 中的变量，例如 /rest/users/{id}, 变量部分 {id} 使用 settings.pathVariables.id 的值进行替换
             if (settings.pathVariables) {
                 settings.url = settings.url.replace(/\{\{|\}\}|\{(\w+)\}/g, function(m, n) {
                     // m 是正则中捕捉的组 $0，n 是 $1，function($0, $1, $2, ...)

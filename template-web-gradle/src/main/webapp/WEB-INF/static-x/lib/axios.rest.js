@@ -13,26 +13,25 @@
  *     console.log(result);
  * });
  *
- * [2] 替换 url 中的变量: {bookId} 会被替换为 pathVariables 的 bookId 的值 23，得到请求的 url '/rest/books/23'
- * Rest.update({ url: '/rest/books/{bookId}', pathVariables: { bookId: 23 }, data: {name: 'C&S'} }).then(result => {
+ * [2] 替换 url 中的变量: {bookId} 会被替换为 pathVariables.bookId 的值 23，得到请求的 url '/rest/books/23'
+ * Rest.update({ url: '/rest/books/{bookId}', pathVariables: { bookId: 23 }, data: { name: 'C&S' } }).then(result => {
  *     console.log(result);
  * });
  *
  * [3] 设置 json 为 true 使用 request body 传输复杂的 data 对象 (有多级属性)
- * json 默认为 fale，使用 application/x-www-form-urlencoded 的方式，即普通表单的方式
+ * json 默认为 false，使用 application/x-www-form-urlencoded 的方式，即普通表单的方式
  * Rest.get({ url: '/api/rest', data: { user: { username: 'Bob', password: '123456' }, company: 'Appo' }, json: true }).then(result => {
  *     console.log(result);
  * });
  *
- * [4]
- * axios 不支持同步请求，但可以在同一个函数里使用 async await 进行同步操作:
+ * [4] axios 不支持同步请求，但可以在同一个函数里使用 async await 进行同步操作:
  * async function syncFunc() {
  *     const r1 = await Rest.get({ url: '/api/rest' }); // r1 为 then 或者 catch 的参数
  *     const r2 = await Rest.create({ url: '/api/rest', data: { name: 'Goqu' } });
  *
  *     console.log(r1, r2);
  * }
- * 注: jQuery 的 Ajax 支持同步请求，但是新版本中也不推荐使用了
+ * 注: jQuery 的 Ajax 支持同步请求，但是新版本中也不推荐使用了，浏览器中会有警告
  *
  * 提示:
  *     错误处理: 绝大多数时候不需要在 catch 中进行错误处理，已经默认提供了 401，403，404，服务器抛异常时的 500，服务不可达的 502 等错误处理: 弹窗提示和控制台打印错误信息。
