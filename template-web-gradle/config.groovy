@@ -44,6 +44,7 @@
         thymeleafCacheable = true        // thymeleaf 使用缓存提高效率
         repoDirectory = '/training/repo' // 文件仓库目录
         tempDirectory = '/training/temp' // 临时文件目录，例如存储上传的临时文件，里面的文件可以超过几天不放问可以用 crontab 自动删除
+        logsDirectory = '/training/logs' // 日志目录
 //  }
 //}
 
@@ -63,6 +64,14 @@ environments {
         thymeleafCacheable = false
         repoDirectory = 'D:/training/repo' // 文件仓库目录
         tempDirectory = 'D:/training/temp' // 临时文件目录
+        logsDirectory = 'D:/training/logs' // 日志目录
+    }
+
+    mac {
+        thymeleafCacheable = false
+        repoDirectory = '/tmp/training/repo' // 文件仓库目录
+        tempDirectory = '/tmp/training/temp' // 临时文件目录
+        logsDirectory = '/tmp/training/logs' // 日志目录
     }
 
     /*-----------------------------------------------------------------------------|

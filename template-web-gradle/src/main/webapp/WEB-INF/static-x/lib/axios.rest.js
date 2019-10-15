@@ -4,6 +4,7 @@
  * 获取资源: Rest.get()    -> GET  请求
  * 创建资源: Rest.create() -> POST 请求
  * 更新资源: Rest.update() -> PUT  请求
+ * 部分更新: Rest.patch()  -> PATCH  请求
  * 删除资源: Rest.remove() -> DELETE 请求
  *
  * 这 4 个函数都返回 Promise 对象，then 的参数为请求成功的响应，catch 的参数为失败的响应, 调用示例
@@ -67,6 +68,11 @@ class Rest {
         return Rest.executeRequest(options);
     }
 
+    static patch(options) {
+        options.method = 'PATCH';
+        return Rest.executeRequest(options);
+    }
+
     static remove(options) {
         options.method = 'DELETE';
         return Rest.executeRequest(options);
@@ -84,7 +90,7 @@ class Rest {
             }
 
             // json 为 false，构建 POST, PUT, DELETE 请求的参数
-            // 注: 此处结合 Spring MVC 的 HiddenHttpMethodFilter 拦截器，使用 POST 执行 PUT, DELETE 请求，
+            // 注: 此处结合 Spring MVC 的 HiddenHttpMethodFilter 拦截器，使用 POST 执行 PUT, PATCH, DELETE 请求，
             //     PUT 时需要额外参数 _method=PUT，DELETE 时需要 _method=DELETE
             //     服务器端是其他框架的话，根据具体情况进行修改
             if (!json && method !== 'GET') {

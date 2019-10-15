@@ -378,4 +378,50 @@ public class DemoController {
     public Result<Double> doubleValue() {
         return Result.ok(3.1415926);
     }
+
+    /**
+     * 测试 Patch 请求 (更新部分数据)
+     * 网址: http://localhost:8080/api/demo/patch
+     * 参数:
+     *     username: 可选
+     *     password: 可选
+     *
+     * @param username 名字
+     * @param password 密码
+     */
+    @PatchMapping("/api/demo/patch")
+    @ResponseBody
+    public Result<String> patch(@RequestParam(required = false) String username,
+                                @RequestParam(required = false) String password) {
+        if (username != null) {
+            System.out.println("Path username: " + username);
+        }
+
+        if (password != null) {
+            System.out.println("Path password: " + password);
+        }
+
+        return Result.ok();
+    }
+
+    /**
+     * 测试 Patch 请求 (更新部分数据)
+     * 网址: http://localhost:8080/api/demo/patchJson
+     * 参数:
+     *     username: 可选
+     *     password: 可选
+     */
+    @PatchMapping("/api/demo/patchJson")
+    @ResponseBody
+    public Result<String> patchJson(@RequestBody Map map) {
+        if (map.get("username") != null) {
+            System.out.println("Path username: " + map.get("username"));
+        }
+
+        if (map.get("password") != null) {
+            System.out.println("Path password: " + map.get("password"));
+        }
+
+        return Result.ok();
+    }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <configuration scan="true" scanPeriod="30 seconds">
     <!-- 日志保存目录 -->
-    <property name="logDir" value="/training/logs"/>
+    <property name="logDir" value="@logsDirectory@"/>
 
     <!-- 日志格式 -->
     <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%F-%M\\(\\):%L] - %msg%n"/>
