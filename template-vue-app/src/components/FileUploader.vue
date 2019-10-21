@@ -17,7 +17,7 @@
     image: 默认为 false, 为 true 允许上传图片格式为 'jpg', 'jpeg', 'gif', 'png'
     video: 默认为 false, 为 true 允许上传视频格式为 mp4、avi、flv、swf、wmv、mov、3gp、mpg、rmvb、mkv
     audio: 默认为 false, 为 true 允许上传视频格式为 mp3
-    upload-button，默认为 false, 为 true 显示默认的上传按钮，可以使用 slot 按钮的文本
+    button，默认为 false, 为 true 显示默认的上传按钮，可以使用 slot 按钮的文本
 
 参数配置:
     主要是配置上传文件大小的限制，在 /static/js/config.js 中配置，目前有 defaultMaxSize，imageMaxSize，fileMaxSize
@@ -30,7 +30,7 @@
 <template>
     <div class="file-uploader">
         <!-- 上传按钮，默认不显示 -->
-        <Button v-if="uploadButton" type="primary" icon="ios-cloud-upload-outline" @click="showFileUploader"><slot>上传</slot></Button>
+        <Button v-if="button" type="primary" icon="ios-cloud-upload-outline" @click="showFileUploader"><slot>上传</slot></Button>
 
         <Modal ref="fileUploader" v-model="modalVisible" :mask-closable="false" ok-text="确定" title="上传文件" class="file-uploader-modal" @on-ok="uploadFinished">
             <Upload ref="uploader"
@@ -64,14 +64,14 @@
             <!-- 文件格式说明 -->
             <div class="description">
                 <strong>上传的文件大小限制 {{ maxSizeInKB / 1024 }}MB 以内，文件格式:</strong>
-                <p style="padding: 0 5px">
+                <div style="padding: 0 5px">
                     <div v-if="doc">文档：PPT (ppt，pptx)、Word (doc，docx)、Excel (xls,xlsx)、PDF</div>
                     <div v-if="file">文件：zip, rar, 7z, png, jpg, gif, mp3, mp4, pdf, doc, docx, ppt, pptx, xls, xlsx 等任意格式</div>
                     <div v-if="image">图片：png, jpg, gif</div>
                     <div v-if="video">视频：mp4、avi、flv、swf、wmv、mov、3gp、mpg、rmvb、mkv</div>
                     <div v-if="audio">音频：mp3</div>
                     <div v-if="excel">表格：Excel (xls, xlsx)</div>
-                </p>
+                </div>
             </div>
 
             <Alert v-show="error" type="warning" show-icon>{{ errorText }}</Alert>
@@ -91,7 +91,7 @@ export default {
         video: { type: Boolean, default: false }, // 视频
         audio: { type: Boolean, default: false }, // 音频
         excel: { type: Boolean, default: false }, // Excel
-        uploadButton: { type: Boolean, default: false }, // 是否显示默认的上传按钮
+        button: { type: Boolean, default: false }, // 是否显示默认的上传按钮
     },
     data() {
         return {

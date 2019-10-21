@@ -2,21 +2,6 @@
  |                                 字符串格式化                                  |
  |----------------------------------------------------------------------------*/
 /**
- * 扩展了 String 类型，给其添加格式化的功能，替换字符串中 {placeholder} 或者 {0}, {1} 等模式部分为参数中传入的字符串
- * 使用方法:
- *     'I can speak {language} since I was {age}'.format({language: 'Javascript', age: 10})
- *     'I can speak {0} since I was {1}'.format('Javascript', 10)
- * 输出都为:
- *     I can speak Javascript since I was 10
- *
- * @param replacements 用来替换 placeholder 的 JSON 对象或者数组
- */
-String.prototype.format = function(replacements) {
-    replacements = (typeof replacements === 'object') ? replacements : Array.prototype.slice.call(arguments, 0);
-    return formatString(this, replacements);
-};
-
-/**
  * 替换字符串中 {placeholder} 或者 {0}, {1} 等模式部分为参数中传入的字符串
  * 使用方法:
  *     formatString('I can speak {language} since I was {age}', {language: 'Javascript', age: 10})
@@ -34,6 +19,21 @@ var formatString = function (str, replacements) {
         if (m === '}}') { return '}'; }
         return replacements[n];
     });
+};
+
+/**
+ * 扩展了 String 类型，给其添加格式化的功能，替换字符串中 {placeholder} 或者 {0}, {1} 等模式部分为参数中传入的字符串
+ * 使用方法:
+ *     'I can speak {language} since I was {age}'.format({language: 'Javascript', age: 10})
+ *     'I can speak {0} since I was {1}'.format('Javascript', 10)
+ * 输出都为:
+ *     I can speak Javascript since I was 10
+ *
+ * @param replacements 用来替换 placeholder 的 JSON 对象或者数组
+ */
+String.prototype.format = function(replacements) {
+    replacements = (typeof replacements === 'object') ? replacements : Array.prototype.slice.call(arguments, 0);
+    return formatString(this, replacements);
 };
 
 /**
@@ -133,16 +133,16 @@ Array.prototype.replace = function(index, elem) {
 Date.prototype.format = function (fmt) {
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     var obj = {
-        'y': this.getFullYear(),    // 年份，注意必须用getFullYear
-        'M': this.getMonth() + 1,   // 月份，注意是从0-11
-        'd': this.getDate(),        // 日期
-        'q': Math.floor((this.getMonth() + 3) / 3), // 季度
-        'w': this.getDay(),         // 星期，注意是0-6
-        'H': this.getHours(),       // 24小时制
-        'h': this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, // 12小时制
-        'm': this.getMinutes(),     // 分钟
-        's': this.getSeconds(),     // 秒
-        'S': this.getMilliseconds() // 毫秒
+        y: this.getFullYear(),    // 年份，注意必须用getFullYear
+        M: this.getMonth() + 1,   // 月份，注意是从0-11
+        d: this.getDate(),        // 日期
+        q: Math.floor((this.getMonth() + 3) / 3), // 季度
+        w: this.getDay(),         // 星期，注意是0-6
+        H: this.getHours(),       // 24小时制
+        h: this.getHours() % 12 === 0 ? 12 : this.getHours() % 12, // 12小时制
+        m: this.getMinutes(),     // 分钟
+        s: this.getSeconds(),     // 秒
+        S: this.getMilliseconds() // 毫秒
     };
     var week = ['天', '一', '二', '三', '四', '五', '六'];
     for (var i in obj) {
@@ -174,7 +174,7 @@ Utils.Notice = null;
  * @param  {Integer} duration  关闭时间，单位为秒
  * @return 无返回值
  */
-Utils.warning = function(title, desc = '', duration = 30) {
+Utils.warning = function(title, desc = '', duration = 10) {
     if (Utils.Notice) {
         Utils.Notice.warning({ title, desc, duration });
     } else {
@@ -199,6 +199,8 @@ Utils.info = function(title, desc = '', duration = 4.5) {
         alert(`${title}\n${desc}`);
     }
 };
+
+Utils.message = Utils.info; // Utils.info 的别名
 
 Utils.notice = function(title, desc = '', duration = 4.5) {
     if (Utils.Notice) {
@@ -243,7 +245,7 @@ Utils.getFilenameExtension = function(filename) {
 
     filename     = parser.pathname.toLowerCase(); // 去掉参数等和文件名无关的部分
     const dotPos = filename.lastIndexOf('.');
-    const ext    = filename.substring(dotPos+1);
+    const ext    = filename.substring(dotPos + 1);
 
     return ext;
 };
@@ -358,164 +360,6 @@ Utils.numbersInRange = function(start, end, step = 1, asc = true) {
     return asc ? ns : ns.reverse();
 };
 
-/**
- * 判断 html 是否包裹在 tag 标签中，也就是最上级的标签是否传入的 tag,
- * 例如:
- *     <p>Hello</p> 的最上级标签是 p, 则 Utils.isWrappedIn(html, 'p') 返回 true
- *     <div>Hello</div> 的最上级标签是 div, 则 Utils.isWrappedIn(html, 'p') 返回 false
- *     ABC<p>Hello</p> 是多个平级节点, 则 Utils.isWrappedIn(html, 'p') 返回 false
- *
- * @param  {String} html 要判断是否被包裹的 html
- * @param  {String} tag  最上级的标签 tag 名字
- * @return {Boolean} 如果 html 的最上级标签是传入的 tag 则返回 true，否则返回 false
- */
-Utils.isWrappedIn = function(html, tag) {
-    try {
-        var tagName = $(html).get(0).tagName;
-
-        if (tagName === tag.toUpperCase()) {
-            return true;
-        }
-    } catch (ex) {
-        // No root
-    }
-
-    return false;
-};
-
-/**
- * 把 html 包裹在 p 标签中，如果已经被包裹在了 p 标签中就不再重复包裹
- * 特殊: 如果 html 为空则返回 <p><br></p>
- *
- * @param  {String} html 要被包裹的 html
- * @param  {String} tag  用于包裹的标签名
- * @return {String} 返回包裹后的 html
- */
-Utils.wrapIn = function(html, tag) {
-    html = html || '<br>'; // 如果为空则赋值为 <br>
-    return Utils.isWrappedIn(html, tag) ? html : `<p>${html}</p>`;
-};
-
-/**
- * 使用百度地图 API 获取当前城市
- *
- * @param {String}   BMapAk   百度地图的 App Key (在 config.js 中有定义)
- * @param {Function} callback 请求成功的回调函数，参数为当前城市，格式为 (adcode 为城市编码):
- *     {
- *         "country"          : "中国",
- *         "country_code"     : 0,
- *         "country_code_iso" : "CHN",
- *         "country_code_iso2": "CN",
- *         "province"         : "北京市",
- *         "city"             : "北京市",
- *         "city_level"       : 2,
- *         "district"         : "东城区",
- *         "town"             : "",
- *         "adcode"           : "110101",
- *         "street"           : "中华路",
- *         "street_number"    : "甲10号",
- *         "direction"        : "西南",
- *         "distance"         : "85"
- *     }
- * @return 无返回值
- */
-Utils.locateCurrentCity = function(BMapAk, callback) {
-    new BMap.Geolocation().getCurrentPosition(function(r) {
-        const position  = r.point;      // 位置
-        const latitude  = position.lat; // 纬度
-        const longitude = position.lng; // 经度
-        const url = `https://api.map.baidu.com/geocoder/v2/?ak=${BMapAk}&location=${latitude},${longitude}&output=json&pois =1`;
-
-        if (this.getStatus() === BMAP_STATUS_SUCCESS) {
-            $.ajax({
-                url     : url,
-                dataType: 'jsonp',
-                callback: 'BMap._rd._cbk43398',
-                success : function(response) {
-                    const city     = response.result.addressComponent;
-                    city.longitude = longitude;
-                    city.latitude  = latitude;
-
-                    callback(city);
-                }
-            });
-        } else {
-            Utils.warning('定位失败');
-        }
-    }, { enableHighAccuracy: true }); // 指示浏览器获取高精度的位置，默认false
-};
-
-
-/**
- * 获取指定经纬度地区的天气
- *
- * @param {String}   longitude  经度
- * @param {String}   latitude   纬度
- * @param {String}   aliAppCode 阿里墨迹天气的 App Code
- * @param {Function} callback   请求成功的回调函数，参数为天气对象:
- * @return 无返回值
- */
-Utils.getWeather = function(longitude, latitude, aliAppCode, callback) {
-    const briefforecast3daysUrl = 'http://apifreelat.market.alicloudapi.com/whapi/json/aliweather/briefforecast3days'; // 3 天的天气预报，有每天的最高最低温度
-    const briefconditionUrl     = 'http://apifreelat.market.alicloudapi.com/whapi/json/aliweather/briefcondition';     // 实时天气预报，有当前的温度和天气状况
-    const weather = {};
-
-    // 请求 3 天的天气预报
-    $.ajax({
-        url     : briefforecast3daysUrl,
-        type    : 'POST',
-        dataType: 'json',
-        headers : { 'Authorization': `APPCODE ${aliAppCode}` },
-        data    : { lat: latitude, lon: longitude }
-    }).done((forecast3DaysResult) => {
-        const todayWeather     = forecast3DaysResult.data.forecast[0]; // forecast 里有 3 天的天气预报，第一个为今天的
-        weather.minTemperature = Math.min(todayWeather.tempDay, todayWeather.tempNight); // 最低温度
-        weather.maxTemperature = Math.max(todayWeather.tempDay, todayWeather.tempNight); // 最高温度
-
-        // 请求实时天气
-        $.ajax({
-            url     : briefconditionUrl,
-            type    : 'POST',
-            dataType: 'json',
-            headers : { 'Authorization': `APPCODE ${aliAppCode}` },
-            data    : { lat: latitude, lon: longitude }
-        }).done((briefConditionResult) => {
-            const data          = briefConditionResult.data;
-            weather.city        = data.city.pname + data.city.name;
-            weather.condition   = data.condition.condition;
-            weather.temperature = data.condition.temp;
-
-            callback(weather);
-        }).fail((error) => {
-            Utils.warning('请求实时天气出错');
-            console.error(error);
-        });
-    }).fail((error) => {
-        Utils.warning('请求 3 天天气预报出错');
-        console.error(error);
-    });
-};
-
-// 天气状况
-Utils.WEATHER_CONDITIONS = [
-    '晴', '阴', '雾', '中雨', '中雪', '多云', '大雨', '大雪', '小雨', '小雪',
-    '暴雨', '暴雪', '阵雨', '大暴雨', '雨加雪', '雷阵雨', '特大暴雨'
-];
-
-/**
- * 使用天气情况获取天气的图片
- *
- * @param  {String} condition 天气状况
- * @return {String} 返回天气状况对应的图片地址
- */
-Utils.getWeatherConditionImage = function(condition) {
-    if (Utils.WEATHER_CONDITIONS.indexOf(condition) >= 0) {
-        return `/static/img/weather/${condition}.png`;
-    } else {
-        return '/static/img/weather/阴.png';
-    }
-};
-
 Utils.CAN_NOT_PREVIEW  = 0; // 不可预览
 Utils.CAN_PREVIEW      = 1; // 可以预览
 Utils.CONVERTING       = 2; // 转换中
@@ -598,4 +442,11 @@ Utils.canPreview = function({ uri, ready, progress, complete, timeout }) {
 
     requestPreviewInfo(); // 立即执行请求
     timerId = window.setInterval(requestPreviewInfo, 3000); // 每 3 秒执行请求一次
+};
+
+/**
+ * 日期转为 JSON 字符串
+ */
+Date.prototype.toJSON = function() {
+    return dayjs(this).format('YYYY-MM-DD HH:mm:ss'); // 使用 dayjs，输出 2019-09-30 11:10:53
 };

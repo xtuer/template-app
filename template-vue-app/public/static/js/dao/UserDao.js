@@ -1,154 +1,74 @@
+/**
+ * 访问用户数据的 Dao
+ */
 export default class UserDao {
     /**
-     * 请求当前登录用户
-     * 网址: http://localhost:8080/api/login/users/current
+     * 获取当前页面登录的用户
      *
-     * @param  {Function} callback 请求成功的回调函数，参数为登录用户
-     * @return 无返回值
+     * @return 返回 Promise，成功的参数为用户对象，失败的参数为错误信息
      */
-    static findCurrentUser(callback) {
-        Rest.get({ url: Urls.API_USERS_CURRENT }).then(result => {
-            if (result.success) {
-                const user = result.data;
-                callback(user);
-            } else {
-                Utils.warning('还没有登录');
-            }
+    static findCurrentUser() {
+        return new Promise((resolve, reject) => {
+            Rest.get({ url: Urls.API_USERS_CURRENT }).then(({ data: user, success, message }) => {
+                if (success) {
+                    resolve(user);
+                } else {
+                    Message.error(message);
+                    reject(message);
+                }
+            });
         });
     }
 
     /**
-     * 使用用户 ID 查询用户信息
+     * 查询 ID 为传入的 userId 的用户
+     *
+     * @param  {String}  userId 用户 ID
+     * @return {Promise} 成功的参数为用户对象，失败的参数为错误消息
+     */
+    static findUserById(userId) {
+        return new Promise((resolve, reject) => {
+            Rest.get({ url: Urls.API_USERS_BY_ID, pathVariables: { userId } }).then(({ data: user, success, message }) => {
+                if (success) {
+                    resolve(user);
+                } else {
+                    Message.error(message);
+                    reject(message);
+                }
+            });
+        });
+    }
+
+    /**
+     * 更新用户的昵称、头像、手机、性别、密码。
+     * 注意: 一次只能更新一个属性。
+     *
      * 网址: http://localhost:8080/api/users/{userId}
+     * 参数:
+     *      nickname [可选]: 昵称
+     *      avatar   [可选]: 头像
+     *      mobile   [可选]: 手机
+     *      gender   [可选]: 性别 (0, 1, 2)
+     *      oldPassword   [可选]: 旧密码
+     *      newPassword   [可选]: 新密码
+     *      renewPassword [可选]: 确认的密码
      *
-     * @param  {Long}     userId   用户的 ID
-     * @param  {Function} callback 请求成功时的回调函数，参数为用户对象
-     * @return 无返回值
-     */
-    static findUserById(userId, callback) {
-        Rest.get({ url: Urls.API_USERS_BY_ID, pathVariables: { userId } }).then(result => {
-            if (result.success) {
-                let user = result.data;
-                callback(user);
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 更新用户的性别
-     * 网址: http://localhost:8080/api/users/{userId}/genders
+     * 案例: UserDao.patchUser({ id: 1, nickname: 'Bob' })
      *
-     * @param  {Long}     userId   用户的 ID
-     * @param  {Integer}  gender   用户的性别
-     * @param  {Function} callback 请求成功的回调函数，参数无
-     * @return 无返回值
+     * 1. 更新头像成功时，data 为头像的正式 URL
+     * 2. 更新其他属性成功时 data 为空，message 为对应属性更新成功提示
      */
-    static updateUserGender(userId, gender, callback) {
-        Rest.update({ url: Urls.API_USER_GENDERS, pathVariables: { userId }, data: { gender } }).then(result => {
-            if (result.success) {
-                callback();
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 更新用户的手机号
-     * 网址: http://localhost:8080/api/users/{userId}/mobiles
-     *
-     * @param  {Long}     userId   用户的 ID
-     * @param  {String}   mobile   用户的手机号
-     * @param  {Function} callback 请求成功的回调函数，参数无
-     * @return 无返回值
-     */
-    static updateUserMobile(userId, mobile, callback) {
-        Rest.update({ url: Urls.API_USER_MOBILES, pathVariables: { userId }, data: { mobile } }).then(result => {
-            if (result.success) {
-                callback();
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 更新用户的密码
-     * 网址: http://localhost:8080/api/users/{userId}/passwords
-     *
-     * @param  {Long}     userId        用户的 ID
-     * @param  {String}   oldPassword   旧密码
-     * @param  {String}   newPassword   新密码
-     * @param  {String}   renewPassword 确认的新密码
-     * @param  {Function} callback      请求成功的回调函数，参数无
-     * @return 无返回值
-     */
-    static updateUserPassword(userId, oldPassword, newPassword, renewPassword, callback) {
-        Rest.update({ url: Urls.API_USER_PASSWORDS, pathVariables: { userId }, data: { oldPassword, newPassword, renewPassword } }).then(result => {
-            if (result.success) {
-                callback();
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 更新用户的头像
-     * 网址: http://localhost:8080/api/users/{userId}/avatars
-     *
-     * @param  {Long}   userId     用户的 ID
-     * @param  {String} avatar     用户头像的临时 URL
-     * @param  {Function} callback 请求成功的回调函数，参数为头像的正式 URL
-     * @return 无返回值
-     */
-    static updateUserAvatar(userId, avatar, callback) {
-        Rest.update({ url: Urls.API_USER_AVATARS, pathVariables: { userId }, data: { avatar } }).then(result => {
-            if (result.success) {
-                const finalAvatar = result.data; // 头像的正式 URL
-                callback(finalAvatar);
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 更新用户昵称
-     * 网址: http://localhost:8080/api/users/{userId}/nicknames
-     *
-     * @param  {Long}     userId   用户的 ID
-     * @param  {String}   nickname 新昵称
-     * @param  {Function} callback 请求成功的回调函数，参数无
-     * @return 无返回值
-     */
-    static updateUserNickname(userId, nickname, callback) {
-        Rest.update({ url: Urls.API_USER_NICKNAMES, pathVariables: { userId }, data: { nickname } }).then(result => {
-            if (result.success) {
-                callback();
-            } else {
-                Utils.warning(result.message);
-            }
-        });
-    }
-
-    /**
-     * 重置用户的密码
-     * 网址: http://localhost:8080/api/users/{userId}/passwords/reset
-     *
-     * @param {Long}     userId   用户的 ID
-     * @param {Function} callback 请求成功的回调函数，参数无
-     * @return 无返回值
-     */
-    static resetUserPassword(userId, callback) {
-        Rest.update({ url: Urls.API_USER_PASSWORDS_RESET, pathVariables: { userId } }).then(result => {
-            if (result.success) {
-                callback();
-            } else {
-                Utils.warning(result.message);
-            }
+    static patchUser(user) {
+        return new Promise((resolve, reject) => {
+            Rest.patch({ url: Urls.API_USERS_BY_ID, pathVariables: { userId: user.id }, data: user }).then(({ data, success, message }) => {
+                if (success) {
+                    Message.success(message);
+                    resolve(data);
+                } else {
+                    Message.error(message);
+                    reject(message);
+                }
+            });
         });
     }
 }

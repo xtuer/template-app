@@ -11,8 +11,11 @@
 }
 
 /* 文件类型图标样式 */
+.file-type-other {
+    background-image: url(/static/img/file-type/other.png);
+}
 .file-type-png {
-    background-image: url(/static/img/file-type/png.png);
+    background-image: url(/static/img/file-type/jpg.png);
 }
 .file-type-jpg {
     background-image: url(/static/img/file-type/jpg.png);
@@ -26,14 +29,26 @@
 .file-type-word {
     background-image: url(/static/img/file-type/word.png);
 }
+.file-type-doc {
+    background-image: url(/static/img/file-type/word.png);
+}
+.file-type-docx {
+    background-image: url(/static/img/file-type/word.png);
+}
 .file-type-ppt {
+    background-image: url(/static/img/file-type/ppt.png);
+}
+.file-type-pptx {
     background-image: url(/static/img/file-type/ppt.png);
 }
 .file-type-excel {
     background-image: url(/static/img/file-type/excel.png);
 }
-.file-type-zip {
-    background-image: url(/static/img/file-type/zip.png);
+.file-type-xlsx {
+    background-image: url(/static/img/file-type/excel.png);
+}
+.file-type-xls {
+    background-image: url(/static/img/file-type/excel.png);
 }
 .file-type-swf {
     background-image: url(/static/img/file-type/swf.png);
@@ -44,10 +59,18 @@
 .file-type-mp3 {
     background-image: url(/static/img/file-type/mp3.png);
 }
-.file-type-other {
-    background-image: url(/static/img/file-type/other.png);
+.file-type-zip {
+    background-image: url(/static/img/file-type/zip.png);
 }
-
+.file-type-rar {
+    background-image: url(/static/img/file-type/zip.png);
+}
+.file-type-7z {
+    background-image: url(/static/img/file-type/7z.png);
+}
+.file-type-txt {
+    background-image: url(/static/img/file-type/txt.png);
+}
 /* 弹簧拉伸占满剩余空间 */
 .stretch {
     flex: 1;

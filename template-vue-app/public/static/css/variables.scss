@@ -39,7 +39,6 @@ $correctColor      : #5cadff;
 // 水平和垂直居中
 @mixin alignCenter {
     display        : flex;
-    flex-direction : column;
     justify-content: center;
     align-items    : center;
 }

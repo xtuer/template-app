@@ -1,4 +1,4 @@
-# template-vue-app
+# hello-world
 
 ## Project setup
 ```
@@ -25,8 +25,5 @@ yarn run test
 yarn run lint
 ```
 
-## 访问
-
-* <http://localhost:8888/page1.html>
-* <http://localhost:8888/page2.html>
-
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
