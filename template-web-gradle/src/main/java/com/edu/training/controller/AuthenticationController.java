@@ -97,10 +97,9 @@ public class AuthenticationController extends BaseController {
 
         if (user != null) {
             user = userService.findUser(user.getId()); // 从数据库里查询用户信息
-            user.protectPassword();
             return Result.ok(user);
         } else {
-            return Result.fail();
+            return Result.failMessage("还没有登录");
         }
     }
 

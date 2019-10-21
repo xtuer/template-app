@@ -32,7 +32,6 @@ public class UserController extends BaseController {
         User user = userService.findUser(userId);
 
         if (user != null) {
-            user.protectPassword();
             return Result.ok(user);
         } else {
             return Result.fail("ID 为 " + userId + "的用户不存在");

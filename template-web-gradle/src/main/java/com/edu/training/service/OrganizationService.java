@@ -58,7 +58,6 @@ public class OrganizationService extends BaseService {
 
         if (org != null) {
             User admin = userService.findUser(org.getAdminId());
-            admin.protectPassword();
             org.setAdmin(admin);
         }
 

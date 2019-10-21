@@ -21,7 +21,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-@JSONType(ignores = {"name", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
+@JSONType(ignores = {"name", "password", "authorities", "accountNonExpired", "accountNonLocked", "credentialsNonExpired"})
 public class User extends org.springframework.security.core.userdetails.User {
     private static final long serialVersionUID = 1L;
 
@@ -125,13 +125,6 @@ public class User extends org.springframework.security.core.userdetails.User {
      */
     public boolean hasRole(String role) {
         return this.roles.contains(role);
-    }
-
-    /**
-     * 保护密码
-     */
-    public void protectPassword() {
-        password = "[protected]";
     }
 
     public static void main(String[] args) {

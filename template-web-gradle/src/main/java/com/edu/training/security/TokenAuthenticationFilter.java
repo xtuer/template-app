@@ -45,8 +45,8 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (user == null) {
             return null;
         } else {
-            user.protectPassword();  // 密码不能为 null，但是也没有用，所以随便设置一个吧
-            user = user.cloneForSecurity(); // 生成 Spring Security 可使用的用户对象
+            user.setPassword("[protected]"); // 密码不能为 null，但是也没有用，所以随便设置一个吧
+            user = user.cloneForSecurity();  // 生成 Spring Security 可使用的用户对象
 
             return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
         }
