@@ -22,6 +22,7 @@
 
         database {
             host     = 'mysql.training'
+            dbname   = 'training'
             username = 'root'
             password = 'root'
         }

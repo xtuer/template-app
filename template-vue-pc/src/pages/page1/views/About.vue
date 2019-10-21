@@ -12,9 +12,6 @@ export default {
     data() {
         return {};
     },
-    mounted() {
-        this.$UserDao.patchUser({ id: 1, nickname: 'Bob' });
-    },
 };
 </script>
 
