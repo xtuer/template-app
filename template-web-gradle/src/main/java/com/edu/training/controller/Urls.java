@@ -39,12 +39,7 @@ public interface Urls {
     String API_LOGIN_TEACHER_CURRENT = "/api/login/teachers/current"; // 当前登录的老师
 
     // 用户
-    String API_USERS_BY_ID    = "/api/users/{userId}";           // 指定 ID 的用户
-    String API_USER_NICKNAMES = "/api/users/{userId}/nicknames"; // 用户的昵称
-    String API_USER_AVATARS   = "/api/users/{userId}/avatars";   // 用户的头像
-    String API_USER_GENDERS   = "/api/users/{userId}/genders";   // 用户性别
-    String API_USER_MOBILES   = "/api/users/{userId}/mobiles";   // 用户手机
-    String API_USER_PASSWORDS = "/api/users/{userId}/passwords"; // 用户密码
+    String API_USERS_BY_ID          = "/api/users/{userId}";                 // 指定 ID 的用户
     String API_USER_PASSWORDS_RESET = "/api/users/{userId}/passwords/reset"; // 重置密码
 
     String API_SERVER_CURRENT_TIME = "/api/serverCurrentTime"; // 服务器当前时间

@@ -5,7 +5,6 @@ import com.edu.training.bean.User;
 import com.edu.training.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * 注意: 由于会涉及到缓存，此类中不要直接使用 UserMapper 访问用户数据，而应该使用 UserService
  */
-@Controller
+@RestController
 public class UserController extends BaseController {
     @Autowired
     private UserService userService;
@@ -27,7 +26,6 @@ public class UserController extends BaseController {
      * @return 查询到时 payload 为用户对象, success 为 true，查询不到时 success 为 false, payload 为 null
      */
     @GetMapping(Urls.API_USERS_BY_ID)
-    @ResponseBody
     public Result<User> findUserById(@PathVariable long userId) {
         User user = userService.findUser(userId);
 
@@ -39,97 +37,69 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 更新用户的昵称
+     * 更新用户的昵称、头像、手机、性别、密码。注意，一次只能更新一个属性
      *
-     * 网址: http://localhost:8080/api/users/{userId}/nicknames
-     * 参数: nickname: 新昵称
-     *
-     * @param userId   用户的 ID
-     * @param nickname 用户的昵称
-     */
-    @PutMapping(Urls.API_USER_NICKNAMES)
-    @ResponseBody
-    public Result<String> updateUserNickname(@PathVariable long userId, @RequestParam String nickname) {
-        nickname = StringUtils.trim(nickname);
-
-        if (StringUtils.isBlank(nickname)) {
-            return Result.failMessage("名字不能为空");
-        }
-
-        userService.updateUserNickname(userId, nickname);
-
-        return Result.ok();
-    }
-
-    /**
-     * 更新用户的头像
-     *
-     * 网址: http://localhost:8080/api/users/{userId}/avatars
-     * 参数: avatar: 头像的 URL，类型为字符串
-     *
-     * @param userId 用户的 ID
-     * @param avatar 头像的 URL
-     */
-    @PutMapping(Urls.API_USER_AVATARS)
-    @ResponseBody
-    public Result<String> updateUserAvatar(@PathVariable long userId, @RequestParam String avatar) {
-        avatar = userService.updateUserAvatar(userId, avatar);
-        return avatar == null ? Result.fail() : Result.ok(avatar);
-    }
-
-    /**
-     * 更新用户的性别
-     *
-     * 网址: http://localhost:8080/api/users/{userId}/genders
-     * 参数: gender: 性别，类型为整数，0(未设置), 1(男), 2(女)
-     *
-     * @param userId 用户的 ID
-     * @param gender 用户的性别
-     */
-    @PutMapping(Urls.API_USER_GENDERS)
-    @ResponseBody
-    public Result<String> updateUserGender(@PathVariable long userId, @RequestParam int gender) {
-        userService.updateUserGender(userId, gender);
-        return Result.ok();
-    }
-
-    /**
-     * 更新用户的手机号
-     *
-     * 网址: http://localhost:8080/api/users/{userId}/mobiles
-     * 参数: mobile: 手机号，类型为字符串
-     *
-     * @param userId 用户的 ID
-     * @param mobile 用户的手机号
-     */
-    @PutMapping(Urls.API_USER_MOBILES)
-    @ResponseBody
-    public Result<String> updateUserMobile(@PathVariable long userId, @RequestParam String mobile) {
-        return userService.updateUserMobile(userId, mobile);
-    }
-
-    /**
-     * 更新用户的密码
-     *
-     * 网址: http://localhost:8080/api/users/{userId}/passwords
+     * 网址: http://localhost:8080/api/users/{userId}
      * 参数:
-     *     oldPassword: 密码，类型为字符串
-     *     newPassword: 新密码，类型为字符串
-     *     renewPassword: 确认的新密码，类型为字符串
+     *      nickname [可选]: 昵称
+     *      avatar   [可选]: 头像
+     *      mobile   [可选]: 手机
+     *      gender   [可选]: 性别 (0, 1, 2)
+     *      oldPassword   [可选]: 旧密码
+     *      newPassword   [可选]: 新密码
+     *      renewPassword [可选]: 确认的密码
      *
-     * @param userId        用户的 ID
+     * @param userId        用户 ID
+     * @param nickname      昵称
+     * @param avatar        头像
+     * @param mobile        手机
      * @param oldPassword   旧密码
      * @param newPassword   新密码
-     * @param renewPassword 确认的新密码
-     * @return 返回执行结果 Result
+     * @param renewPassword 确认的密码
+     * @param gender        性别
+     * @return 1. 更新头像成功时，payload 为头像的正式 URL
+     *         2. 更新其他属性成功时 payload 为空，message 为对应属性更新成功提示
      */
-    @PutMapping(Urls.API_USER_PASSWORDS)
-    @ResponseBody
-    public Result<String> updateUserPassword(@PathVariable long   userId,
-                                             @RequestParam String oldPassword,
-                                             @RequestParam String newPassword,
-                                             @RequestParam String renewPassword) {
-        return userService.updateUserPassword(userId, oldPassword, newPassword, renewPassword);
+    @PatchMapping(Urls.API_USERS_BY_ID)
+    public Result<String> patchUser(@PathVariable long userId,
+                                    @RequestParam(required = false) String nickname,
+                                    @RequestParam(required = false) String avatar,
+                                    @RequestParam(required = false) String mobile,
+                                    @RequestParam(required = false) String oldPassword,
+                                    @RequestParam(required = false) String newPassword,
+                                    @RequestParam(required = false) String renewPassword,
+                                    @RequestParam(required = false, defaultValue = "-1") int gender) {
+        // 更新昵称
+        if (StringUtils.isNotBlank(nickname)) {
+            userService.updateUserNickname(userId, nickname.trim());
+            return Result.okMessage("昵称更新成功");
+        }
+
+        // 更新头像
+        if (StringUtils.isNotBlank(avatar)) {
+            avatar = userService.updateUserAvatar(userId, avatar.trim());
+            return avatar == null ? Result.fail() : Result.ok(avatar);
+        }
+
+        // 更新性别
+        if (gender != -1) {
+            userService.updateUserGender(userId, gender);
+            return Result.okMessage("性别更新成功");
+        }
+
+        // 更新手机
+        if (StringUtils.isNotBlank(mobile)) {
+            return userService.updateUserMobile(userId, mobile.trim());
+        }
+
+        // 更新密码
+        if (StringUtils.isNotBlank(oldPassword) || StringUtils.isNotBlank(newPassword) || StringUtils.isNotBlank(renewPassword)) {
+            return userService.updateUserPassword(userId, oldPassword, newPassword, renewPassword);
+        }
+
+        // 什么都没有更新，则认为更新失败
+        // 提示: 例如前端更新昵称，输入空的昵称，服务器就什么都没有更新，返回成功，前端就认为更新成功了，页面上就会使用空的昵称
+        return Result.failMessage("用户信息修改失败");
     }
 
     /**
