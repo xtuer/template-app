@@ -2,6 +2,8 @@ package com.edu.training.controller;
 
 import com.edu.training.bean.Result;
 import com.edu.training.bean.User;
+import com.edu.training.config.AppConfig;
+import com.edu.training.security.SecurityConstant;
 import com.edu.training.security.TokenService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.WebUtils;
@@ -10,10 +12,14 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class AuthenticationController extends BaseController {
@@ -22,6 +28,9 @@ public class AuthenticationController extends BaseController {
 
     @Autowired
     private TokenService tokenService;
+
+    @Autowired
+    private AppConfig config;
 
     @GetMapping("/")
     public String index() {
@@ -114,17 +123,30 @@ public class AuthenticationController extends BaseController {
      */
     @PostMapping(Urls.API_LOGIN_TOKENS)
     @ResponseBody
-    public Result<String> loginToken(@RequestParam String username, @RequestParam String password) {
+    public Result<String> loginToken(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
         User user = userService.findUser(username, password, super.getCurrentOrganizationId());
 
         if (user == null) {
             return Result.failMessage("用户名或密码不正确");
         }
 
+        // 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)
         userService.createLoginRecord(user.getId(), user.getUsername()); // 创建用户的登录记录
         String token = tokenService.generateToken(user);
+        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
 
         return Result.ok(token);
+    }
+
+    /**
+     * 访问当前登录用户的后台页面地址
+     *
+     * 网址: http://localhost:8080/page/userBackend
+     * 参数: 无
+     */
+    @GetMapping(Urls.PAGE_USER_BACKEND)
+    public void toUserBackendPage(HttpServletResponse response) throws IOException {
+        userService.redirectToUserBackendPage(super.getLoginUser(), response);
     }
 
     /**

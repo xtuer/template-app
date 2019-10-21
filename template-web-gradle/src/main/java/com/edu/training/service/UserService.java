@@ -4,6 +4,7 @@ import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.Cached;
 import com.edu.training.bean.CacheConst;
 import com.edu.training.bean.Result;
+import com.edu.training.bean.Role;
 import com.edu.training.bean.User;
 import com.edu.training.mapper.UserMapper;
 import com.edu.training.util.Utils;
@@ -11,6 +12,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 提供用户相关的服务，例如查询用户、创建用户、更新用户信息。
@@ -240,5 +244,23 @@ public class UserService extends BaseService {
     @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
     public void updateUserGender(long userId, int gender) {
         userMapper.updateUserGender(userId, gender);
+    }
+
+    /**
+     * 根据用户的角色重定向到用户对应的后台页面，管理员重定向到管理员页面，学员重定向到学习中心
+     *
+     * @param user     用户
+     * @param response HttpServletResponse
+     */
+    public void redirectToUserBackendPage(User user, HttpServletResponse response) throws IOException {
+        if (user.hasRole(Role.ROLE_ADMIN_SYSTEM)) {
+            response.sendRedirect("/page/admin");
+        } else if (user.hasRole(Role.ROLE_ADMIN_ORG)) {
+            response.sendRedirect("/page/admin-org");
+        } else if (user.hasRole(Role.ROLE_USER)) {
+            response.sendRedirect("/page/admin");
+        } else {
+            response.sendRedirect("/");
+        }
     }
 }

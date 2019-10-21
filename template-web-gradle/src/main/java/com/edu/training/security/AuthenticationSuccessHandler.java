@@ -60,12 +60,6 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         // [5] 登录成功后根据用户的角色跳转到对应的页面
-        if (user.hasRole(Role.ROLE_ADMIN_SYSTEM)) {
-            response.sendRedirect("/page/admin-system");
-        } else if (user.hasRole(Role.ROLE_ADMIN_ORG)) {
-            response.sendRedirect("/page/admin-org");
-        } else {
-            response.sendRedirect("/page/teacher");
-        }
+        userService.redirectToUserBackendPage(user, response);
     }
 }
