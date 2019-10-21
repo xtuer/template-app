@@ -77,11 +77,11 @@ public class AuthenticationController extends BaseController {
     public String toDenyPage(HttpServletRequest request) {
         // Ajax 访问时权限不够抛异常，我们提供的异常处理器会转换为 JSON 格式返回.
         if (WebUtils.useAjax(request)) {
-            throw new RuntimeException("权限不够");
+            throw new RuntimeException("无权访问");
         }
 
         // 普通访问返回错误信息或者相关页面
-        return "权限不够!";
+        return "无权访问";
     }
 
     /**
@@ -118,7 +118,7 @@ public class AuthenticationController extends BaseController {
         User user = userService.findUser(username, password, super.getCurrentOrganizationId());
 
         if (user == null) {
-            return Result.fail("用户名或密码不正确", "");
+            return Result.failMessage("用户名或密码不正确");
         }
 
         userService.createLoginRecord(user.getId(), user.getUsername()); // 创建用户的登录记录

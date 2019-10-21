@@ -34,7 +34,7 @@ public class UserController extends BaseController {
         if (user != null) {
             return Result.ok(user);
         } else {
-            return Result.fail("ID 为 " + userId + "的用户不存在");
+            return Result.failMessage("ID 为 " + userId + "的用户不存在");
         }
     }
 
@@ -53,7 +53,7 @@ public class UserController extends BaseController {
         nickname = StringUtils.trim(nickname);
 
         if (StringUtils.isBlank(nickname)) {
-            return Result.fail("名字不能为空", "");
+            return Result.failMessage("名字不能为空");
         }
 
         userService.updateUserNickname(userId, nickname);
