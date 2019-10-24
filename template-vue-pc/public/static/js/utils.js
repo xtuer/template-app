@@ -450,3 +450,121 @@ Utils.canPreview = function({ uri, ready, progress, complete, timeout }) {
 Date.prototype.toJSON = function() {
     return dayjs(this).format('YYYY-MM-DD HH:mm:ss'); // 使用 dayjs，输出 2019-09-30 11:10:53
 };
+
+/**
+ * 使用 Promise 异步加载 JS
+ *
+ * @param {String} url JS 的路径
+ * @param {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为时间戳
+ * @return 返回 Promise 对象, then 的参数为加载成功的信息，无多大意义
+ */
+Utils.loadJs = function(url, id = Date.now()) {
+    // 1. 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
+    // 2. 定时检查任务状态，加载结束时清楚定时器，执行对应的 promise 函数
+    // 3. 如果是第一个加载任务则从服务器加载，否则返回
+
+    // 加载状态
+    var STATUS_LOADING = 1; // 加载中
+    var STATUS_SUCCESS = 2; // 加载成功
+    var STATUS_ERROR   = 3; // 加载失败
+
+    // [1] 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
+    window.jsLoadingTasks = window.jsLoadingTasks || [];      // 所有加载任务 { id, status: 1|2|3 }
+    var task  = window.jsLoadingTasks.find(j => j.id === id); // 查找此 id 的任务
+    var first = !task; // 是否第一次加载
+
+    // 如果是第一次加载，则创建加载任务
+    if (first) {
+        task = { id, status: STATUS_LOADING };
+        window.jsLoadingTasks.push(task);
+    }
+
+    return new Promise(function(resolve, reject) {
+        // [2] 定时检查任务状态，加载结束时清楚定时器，执行对应的 promise 函数
+        var timer = setInterval(() => {
+            if (task.status === STATUS_LOADING) {
+                return;
+            }
+
+            clearInterval(timer);
+
+            if (task.status === STATUS_SUCCESS) {
+                resolve('loaded: ' + url);
+            } else if (task.status === STATUS_ERROR) {
+                reject(Error(url + ' load error!'));
+            }
+        }, 100);
+
+        // [3] 如果是第一个加载任务则从服务器加载，否则返回
+        if (!first) {
+            return;
+        }
+
+        var script = document.createElement('script');
+
+        if (script.readyState) {  // IE
+            script.onreadystatechange = function() {
+                if (script.readyState === 'loaded' || script.readyState === 'complete') {
+                    script.onreadystatechange = null;
+                    task.status = STATUS_SUCCESS;
+                }
+            };
+        } else {  // Other Browsers
+            script.onload = function() {
+                task.status = STATUS_SUCCESS;
+            };
+        }
+
+        script.onerror = function() {
+            window.dynamicLoading.delete(id);
+            task.status = STATUS_ERROR;
+        };
+
+        script.type = 'text/javascript';
+        script.id   = id;
+        script.src  = `${url}?${id}`;
+        document.getElementsByTagName('head').item(0).appendChild(script);
+    });
+};
+
+/**
+ * 异步加载 CSS
+ *
+ * @param {String} url CSS 路径
+ * @param {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为时间戳+随机数
+ * @return 返回 Promise 对象
+ */
+Utils.loadCss = function(url, id = Date.now() + '-' + Math.random()) {
+    // 不会短时间内重复加载同一个 CSS，所以不需要像加载 JS 那样使用任务队列检查加载状态
+    return new Promise(function(resolve, reject) {
+        // 避免重复加载
+        if (document.getElementById(id)) {
+            resolve('success: ' + url);
+            return;
+        }
+
+        var script = document.createElement('link');
+
+        if (script.readyState) {  // IE
+            script.onreadystatechange = function() {
+                if (script.readyState == 'loaded' || script.readyState == 'complete') {
+                    script.onreadystatechange = null;
+                    resolve('success: ' + url);
+                }
+            };
+        } else {  // Other Browsers
+            script.onload = function() {
+                resolve('success: ' + url);
+            };
+        }
+
+        script.onerror = function() {
+            reject(Error(url + ' load error!'));
+        };
+
+        script.rel  = 'stylesheet';
+        script.id   = id;
+        script.href = `${url}?hash=${id}`;
+        document.getElementsByTagName('head').item(0).appendChild(script);
+    });
+};
