@@ -234,18 +234,31 @@ Utils.types = {
 };
 
 /**
+ * 获取 URL 中的文件名，
+ * 例如 https://www.qtdebug.com/vue-array.html 输出 vue-array.html
+ *
+ * @param {String} URL 连接
+ * @return 返回 URL 的文件名
+ */
+Utils.getFilename = function(url) {
+    var parser  = document.createElement('a');
+    parser.href = url;
+    const token = parser.pathname.split('/'); // 去掉参数等和文件名无关的部分
+    const filename = token[token.length - 1];
+
+    return filename;
+};
+
+/**
  * 获取文件名的后缀
  *
- * @param  {String} filename 文件名或者 URI、URL
+ * @param  {String} url 文件名或者 URI、URL
  * @return {String} 返回文件名的后缀
  */
-Utils.getFilenameExtension = function(filename) {
-    var parser = document.createElement('a');
-    parser.href  = filename;
-
-    filename     = parser.pathname.toLowerCase(); // 去掉参数等和文件名无关的部分
-    const dotPos = filename.lastIndexOf('.');
-    const ext    = filename.substring(dotPos + 1);
+Utils.getFilenameExtension = function(url) {
+    const filename = Utils.getFilename(url);
+    const dotPos   = filename.lastIndexOf('.');
+    const ext      = filename.substring(dotPos + 1);
 
     return ext;
 };
@@ -455,10 +468,10 @@ Date.prototype.toJSON = function() {
  * 使用 Promise 异步加载 JS
  *
  * @param {String} url JS 的路径
- * @param {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为时间戳
+ * @param {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为 JS 文件名
  * @return 返回 Promise 对象, then 的参数为加载成功的信息，无多大意义
  */
-Utils.loadJs = function(url, id = Date.now()) {
+Utils.loadJs = function(url, id) {
     // 1. 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
     // 2. 定时检查任务状态，加载结束时清楚定时器，执行对应的 promise 函数
     // 3. 如果是第一个加载任务则从服务器加载，否则返回
@@ -467,6 +480,8 @@ Utils.loadJs = function(url, id = Date.now()) {
     var STATUS_LOADING = 1; // 加载中
     var STATUS_SUCCESS = 2; // 加载成功
     var STATUS_ERROR   = 3; // 加载失败
+
+    id = id || Utils.getFilename(url);
 
     // [1] 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
     window.jsLoadingTasks = window.jsLoadingTasks || [];      // 所有加载任务 { id, status: 1|2|3 }
@@ -531,10 +546,12 @@ Utils.loadJs = function(url, id = Date.now()) {
  * 异步加载 CSS
  *
  * @param {String} url CSS 路径
- * @param {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为时间戳+随机数
+ * @param {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为 CSS 文件名
  * @return 返回 Promise 对象
  */
-Utils.loadCss = function(url, id = Date.now() + '-' + Math.random()) {
+Utils.loadCss = function(url, id) {
+    id = id || Utils.getFilename(url);
+
     // 不会短时间内重复加载同一个 CSS，所以不需要像加载 JS 那样使用任务队列检查加载状态
     return new Promise(function(resolve, reject) {
         // 避免重复加载
