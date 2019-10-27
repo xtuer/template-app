@@ -146,7 +146,7 @@ export default {
                                 const width  = file.imageWidth;
                                 const height = file.imageHeight;
 
-                                const image = document.getElementById(imageId) || document.getElementById(`${self.editorId}_ifr`).contentWindow.document.getElementById(imageId);
+                                const image  = document.getElementById(imageId) || document.getElementById(`${self.editorId}_ifr`).contentWindow.document.getElementById(imageId);
                                 image.src    = file.url;
                                 image.width  = width;
                                 image.height = height;

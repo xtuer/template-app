@@ -556,32 +556,32 @@ Utils.loadCss = function(url, id) {
     return new Promise(function(resolve, reject) {
         // 避免重复加载
         if (document.getElementById(id)) {
-            resolve('success: ' + url);
+            resolve('loaded: ' + url);
             return;
         }
 
-        var script = document.createElement('link');
+        var link = document.createElement('link');
 
-        if (script.readyState) {  // IE
-            script.onreadystatechange = function() {
-                if (script.readyState == 'loaded' || script.readyState == 'complete') {
-                    script.onreadystatechange = null;
-                    resolve('success: ' + url);
+        if (link.readyState) {  // IE
+            link.onreadystatechange = function() {
+                if (link.readyState == 'loaded' || link.readyState == 'complete') {
+                    link.onreadystatechange = null;
+                    resolve('loaded: ' + url);
                 }
             };
         } else {  // Other Browsers
-            script.onload = function() {
-                resolve('success: ' + url);
+            link.onload = function() {
+                resolve('loaded: ' + url);
             };
         }
 
-        script.onerror = function() {
+        link.onerror = function() {
             reject(Error(url + ' load error!'));
         };
 
-        script.rel  = 'stylesheet';
-        script.id   = id;
-        script.href = `${url}?hash=${id}`;
-        document.getElementsByTagName('head').item(0).appendChild(script);
+        link.rel  = 'stylesheet';
+        link.id   = id;
+        link.href = `${url}?hash=${id}`;
+        document.getElementsByTagName('head').item(0).appendChild(link);
     });
 };
