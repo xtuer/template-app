@@ -93,7 +93,7 @@ class Rest {
             //     PUT 时需要额外参数 _method=PUT，DELETE 时需要 _method=DELETE
             //     服务器端是其他框架的话，根据具体情况进行修改
             if (!json && method !== 'GET') {
-                data = Rest.formDataString({ ...data, '_method': method });
+                data = Rest.formDataString({ ...data, _method: method });
                 method = 'POST';
             }
 
@@ -185,3 +185,5 @@ class Rest {
             .join('&');
     }
 }
+
+window.Rest = Rest;

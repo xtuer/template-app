@@ -22,3 +22,5 @@ const Urls = {
     API_DICTS_ID : '/api/dicts/{dictId}',   // 单个查询/修改/删除
     API_DICTS    : '/api/currentOrg/dicts', // 查询当前机构字典列表
 };
+
+window.Urls = Urls;

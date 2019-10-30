@@ -564,7 +564,7 @@ Utils.loadCss = function(url, id) {
 
         if (link.readyState) {  // IE
             link.onreadystatechange = function() {
-                if (link.readyState == 'loaded' || link.readyState == 'complete') {
+                if (link.readyState === 'loaded' || link.readyState === 'complete') {
                     link.onreadystatechange = null;
                     resolve('loaded: ' + url);
                 }
@@ -585,3 +585,7 @@ Utils.loadCss = function(url, id) {
         document.getElementsByTagName('head').item(0).appendChild(link);
     });
 };
+
+// 定义为全局变量
+window.Utils = Utils;
+window.formatString = formatString;
