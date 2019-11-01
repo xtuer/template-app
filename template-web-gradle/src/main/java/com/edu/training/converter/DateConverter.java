@@ -27,13 +27,9 @@ public class DateConverter implements Converter<String, Date> {
      */
     @Override
     public Date convert(String source) {
-        if (StringUtils.isBlank(source)) {
-            return null;
-        }
-
         SimpleDateFormat format = null;
 
-        switch (source.length()) {
+        switch (StringUtils.length(source)) {
             case 10: format = format1; break;
             case 19: format = format2; break;
             case 24: format = format3; break;
