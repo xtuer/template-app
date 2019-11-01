@@ -34,7 +34,9 @@ public class DateConverter implements Converter<String, Date> {
             case 10: format = format1.get(); break;
             case 19: format = format2.get(); break;
             case 24: format = format3.get(); break;
-            default: return null;
+            default:
+                log.warn("日期格式不对: {}", source);
+                return null;
         }
 
         try {
