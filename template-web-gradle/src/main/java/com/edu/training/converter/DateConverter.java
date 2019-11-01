@@ -14,9 +14,10 @@ import java.util.Date;
  */
 @Slf4j
 public class DateConverter implements Converter<String, Date> {
-    private static final SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat format2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+    // 使用 ThreadLocal 解决 SimpleDateFormat 高并发问题
+    private static final ThreadLocal<SimpleDateFormat> format1 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+    private static final ThreadLocal<SimpleDateFormat> format2 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+    private static final ThreadLocal<SimpleDateFormat> format3 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'"));
 
     /**
      * 把日期字符串转换为 Date 对象，接收三种日期格式: yyyy-MM-dd、yyyy-MM-dd HH:mm:ss 或者 yyyy-MM-ddTHH:mm:ss.SZ
@@ -30,9 +31,9 @@ public class DateConverter implements Converter<String, Date> {
         SimpleDateFormat format = null;
 
         switch (StringUtils.length(source)) {
-            case 10: format = format1; break;
-            case 19: format = format2; break;
-            case 24: format = format3; break;
+            case 10: format = format1.get(); break;
+            case 19: format = format2.get(); break;
+            case 24: format = format3.get(); break;
             default: return null;
         }
 
