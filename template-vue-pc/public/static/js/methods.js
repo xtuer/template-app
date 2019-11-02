@@ -1,7 +1,8 @@
 /**
  * 下载 url 指定的文件
  *
- * @param {String} url 要下载的 URL
+ * @param  {String} url 要下载的 URL
+ * @return 无返回值
  */
 const download = function(url) {
     // 1. 如果 url 是文件仓库的 url，则替换为下载使用的 url
@@ -29,6 +30,8 @@ const download = function(url) {
  * 返回上一路由
  *
  * 案例: <Button @click="goBack()">返回</Button>
+ *
+ * @return 无返回值
  */
 const goBack = function() {
     window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/');

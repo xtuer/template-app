@@ -5,7 +5,7 @@ export default class UserDao {
     /**
      * 获取当前页面登录的用户
      *
-     * @return {Promise}，resolve 的参数为用户对象，reject 的参数为错误信息
+     * @return {Promise} 返回 Promise 对象，resolve 的参数为用户对象，reject 的参数为错误信息
      */
     static findCurrentUser() {
         return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export default class UserDao {
      * 查询 ID 为传入的 userId 的用户
      *
      * @param  {String}  userId 用户 ID
-     * @return {Promise} resolve 的参数为用户对象，reject 的参数为错误消息
+     * @return {Promise} 返回 Promise 对象，resolve 的参数为用户对象，reject 的参数为错误消息
      */
     static findUserById(userId) {
         return new Promise((resolve, reject) => {
@@ -58,7 +58,7 @@ export default class UserDao {
      * 1. 更新头像成功时，data 为头像的正式 URL
      * 2. 更新其他属性成功时 data 为空，message 为对应属性更新成功提示
      *
-     * @return {Promise}，resolve 的参数为对于更新操作的结果，reject 的参数为错误信息
+     * @return {Promise} 返回 Promise 对象，resolve 的参数为对于更新操作的结果，reject 的参数为错误信息
      */
     static patchUser(user) {
         return new Promise((resolve, reject) => {

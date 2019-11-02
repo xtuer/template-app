@@ -9,10 +9,11 @@
  * 输出都为:
  *     I can speak Javascript since I was 10
  *
- * @param str 带有 placeholder 的字符串
- * @param replacements 用来替换 placeholder 的 JSON 对象或者数组
+ * @param  {String} str 带有 placeholder 的字符串
+ * @param  {JSON}   replacements 用来替换 placeholder 的 JSON 对象 (或者数组)
+ * @return {String} 返回格式化后的字符串
  */
-var formatString = function (str, replacements) {
+var formatString = function(str, replacements) {
     replacements = (typeof replacements === 'object') ? replacements : Array.prototype.slice.call(arguments, 1);
     return str.replace(/\{\{|\}\}|\{(\w+)\}/g, function(m, n) {
         if (m === '{{') { return '{'; }
@@ -29,7 +30,9 @@ var formatString = function (str, replacements) {
  * 输出都为:
  *     I can speak Javascript since I was 10
  *
- * @param replacements 用来替换 placeholder 的 JSON 对象或者数组
+ * @param  {JSON} replacements 用来替换 placeholder 的 JSON 对象 (或者数组)
+ * @return {String} 返回格式化后的字符串
+ * @
  */
 String.prototype.format = function(replacements) {
     replacements = (typeof replacements === 'object') ? replacements : Array.prototype.slice.call(arguments, 0);
@@ -127,10 +130,10 @@ Array.prototype.replace = function(index, elem) {
 /**
  * 将日期格式化成指定格式的字符串
  *
- * @param fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
- * @returns 返回格式化后的日期字符串
+ * @param  {String} fmt 目标字符串格式，支持的字符有：y,M,d,q,w,H,h,m,S，默认：yyyy-MM-dd HH:mm:ss
+ * @return {String} 返回格式化后的日期字符串
  */
-Date.prototype.format = function (fmt) {
+Date.prototype.format = function(fmt) {
     fmt = fmt || 'yyyy-MM-dd HH:mm:ss';
     var obj = {
         y: this.getFullYear(),    // 年份，注意必须用getFullYear
@@ -159,56 +162,7 @@ Date.prototype.format = function (fmt) {
 /*-----------------------------------------------------------------------------|
  |                                   Utils                                     |
  |----------------------------------------------------------------------------*/
-function Utils() {
-
-}
-
-// iView 的 Notice，需要注入，例如在 vue 的 created() 中注入: Utils.Notice = this.$Notice
-Utils.Notice = null;
-
-/**
- * 显示警告信息，默认使用 iView 的 Notice，如果没有设置则使用 alert()
- *
- * @param  {String}  title 标题
- * @param  {String}  desc  描述
- * @param  {Integer} duration  关闭时间，单位为秒
- * @return 无返回值
- */
-Utils.warning = function(title, desc = '', duration = 10) {
-    if (Utils.Notice) {
-        Utils.Notice.warning({ title, desc, duration });
-    } else {
-        alert(`${title}\n${desc}`);
-    }
-};
-
-// 成功
-Utils.success = function(title, desc = '', duration = 4.5) {
-    if (Utils.Notice) {
-        Utils.Notice.success({ title, desc, duration });
-    } else {
-        alert(`${title}\n${desc}`);
-    }
-};
-
-// 通知
-Utils.info = function(title, desc = '', duration = 4.5) {
-    if (Utils.Notice) {
-        Utils.Notice.info({ title, desc, duration });
-    } else {
-        alert(`${title}\n${desc}`);
-    }
-};
-
-Utils.message = Utils.info; // Utils.info 的别名
-
-Utils.notice = function(title, desc = '', duration = 4.5) {
-    if (Utils.Notice) {
-        Utils.Notice.info({ title, desc, duration });
-    } else {
-        alert(`${title}\n${desc}`);
-    }
-};
+function Utils() {}
 
 /**
  * 文件类型和对应的 CSS 样式名
@@ -237,8 +191,8 @@ Utils.types = {
  * 获取 URL 中的文件名，
  * 例如 https://www.qtdebug.com/vue-array.html 输出 vue-array.html
  *
- * @param {String} URL 连接
- * @return 返回 URL 的文件名
+ * @param  {String} URL 链接
+ * @return {String} 返回 URL 的文件名
  */
 Utils.getFilename = function(url) {
     var parser  = document.createElement('a');
@@ -312,18 +266,38 @@ Utils.isMp4 = function(filename) {
 };
 
 /**
- * 从 100 开始生成新的 ID
+ * 从 100 开始生成递增的整数
  *
- * @return {Integer} 返回页面打开后按顺序生成的 ID
+ * @return {Integer} 返回整数
  */
-Utils.nextId = function() {
-    if (window.newGeneratedId) {
-        window.newGeneratedId += 1;
+Utils.nextSn = function() {
+    if (window.nextSequentialInt) {
+        window.nextSequentialInt += 1;
     } else {
-        window.newGeneratedId = 100;
+        window.nextSequentialInt = 100;
     }
 
-    return window.newGeneratedId;
+    return window.nextSequentialInt;
+};
+
+/**
+ * 从 100 开始生成新的 ID，类型为字符串，因为服务器端使用 long 为 ID，而 JS 不支持 64 位 long，
+ * 所以服务器返回的 ID 在 JS 中使用字符串存储
+ *
+ * @return {String} 返回页面打开后按顺序生成的 ID
+ */
+Utils.nextId = function() {
+    return Utils.nextSn() + '';
+};
+
+/**
+ * 判断 id 是否有效，不为 0 或者 '0' 则有效
+ *
+ * @param  {String} 进行校验的 ID
+ * @return {Boolean} ID 有效返回 true，否则返回 false
+ */
+Utils.isValidId = function(id) {
+    return id && (id + '' !== '0');
 };
 
 Utils.BASE_CN_NUMBERS = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
@@ -332,7 +306,7 @@ Utils.BASE_CN_NUMBERS = ['零', '一', '二', '三', '四', '五', '六', '七',
  * 阿拉伯数字转为中文数字，支持 [0, 99]
  *
  * @param  {Integer} n 阿拉伯数字
- * @return {String}  返回 [0, 99] 之间的中文数字字符串，超出范围的返回 ''
+ * @return {String} 返回 [0, 99] 之间的中文数字字符串，超出范围的返回 ''
  */
 Utils.toCnNumber = function(n) {
     n = parseInt(n);
@@ -459,6 +433,8 @@ Utils.canPreview = function({ uri, ready, progress, complete, timeout }) {
 
 /**
  * 日期转为 JSON 字符串
+ *
+ * @return {String} 返回日期的字符串表示
  */
 Date.prototype.toJSON = function() {
     return dayjs(this).format('YYYY-MM-DD HH:mm:ss'); // 使用 dayjs，输出 2019-09-30 11:10:53
@@ -467,9 +443,9 @@ Date.prototype.toJSON = function() {
 /**
  * 使用 Promise 异步加载 JS
  *
- * @param {String} url JS 的路径
- * @param {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为 JS 文件名
- * @return 返回 Promise 对象, then 的参数为加载成功的信息，无多大意义
+ * @param  {String} url JS 的路径
+ * @param  {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为 JS 文件名
+ * @return {Promise} 返回 Promise 对象, resolve 的参数为加载成功的信息 (无多大意义), reject 的参数为错误提示
  */
 Utils.loadJs = function(url, id) {
     // 1. 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
@@ -545,9 +521,9 @@ Utils.loadJs = function(url, id) {
 /**
  * 异步加载 CSS
  *
- * @param {String} url CSS 路径
- * @param {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为 CSS 文件名
- * @return 返回 Promise 对象
+ * @param  {String} url CSS 路径
+ * @param  {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为 CSS 文件名
+ * @return {Promise} 返回 Promise 对象, resolve 的参数为加载成功的信息 (无多大意义), reject 的参数为错误提示
  */
 Utils.loadCss = function(url, id) {
     id = id || Utils.getFilename(url);

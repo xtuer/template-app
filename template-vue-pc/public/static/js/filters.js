@@ -13,7 +13,8 @@
 /**
  * 格式化时间的过滤器
  *
- * @param {Date} date 时间对象
+ * @param  {Date} date 时间对象
+ * @return {String} 返回日期格式化得到的字符串
  */
 const formatDate = function(date) {
     // 1. 如果日期不存在，返回 ---
@@ -30,8 +31,8 @@ const formatDate = function(date) {
 /**
  * 返回角色对应的名字
  *
- * @param {String} role 角色
- * @return 返回角色的名字
+ * @param  {String} role 角色
+ * @return {String} 返回角色的名字
  */
 const roleName = function(role) {
     return ROLES.filter(r => r.value === role).map(r => r.name).join('');
@@ -40,8 +41,8 @@ const roleName = function(role) {
 /**
  * 根据性别的值获取对应的名字
  *
- * @param {Integer} gender 性别的值，查看 constants.js 中 GENDERS 的定义
- * @return 返回性别的名字
+ * @param  {Integer} gender 性别的值，查看 constants.js 中 GENDERS 的定义
+ * @return {String} 返回性别的名字
  */
 const genderName = function(gender) {
     return GENDERS.filter(t => t.value === gender).map(t => t.name).join('');
@@ -50,8 +51,8 @@ const genderName = function(gender) {
 /**
  * 根据身份信息类型值获取对应的名字
  *
- * @param {Integer} value 身份信息的类型值
- * @return 返回身份类型名字
+ * @param  {Integer} value 身份信息的类型值
+ * @return {String} 返回身份类型名字
  */
 const idCardName = function(value) {
     return ID_CARD_TYPES.filter(t => t.value === value).map(t => t.name).join('');
@@ -61,8 +62,8 @@ const idCardName = function(value) {
  * 把文件仓库的 URL '/file/repo/2018-06-19/293591971581788160.docx'
  * 转换为下载的 URL '/file/download/2018-06-19/293591971581788160.docx'
  *
- * @param {String} repoUrl 文件仓库的 URL
- * @return 返回下载使用的 URL
+ * @param  {String} repoUrl 文件仓库的 URL
+ * @return {String} 返回下载使用的 URL
  */
 const repoUrlToDownloadUrl = function(repoUrl) {
     if (repoUrl) {
