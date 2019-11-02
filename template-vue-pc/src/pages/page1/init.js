@@ -1,5 +1,5 @@
-import { LoadingBar, Message, Notice } from 'view-design';
 import Vue from 'vue';
+import { LoadingBar, Message, Notice } from 'view-design';
 
 import '@/../public/static/js/urls';
 import '@/../public/static/js/utils';
