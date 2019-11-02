@@ -2,16 +2,26 @@
  * 定义常量为全局变量: window.VAR_NAME = xxx;
  */
 
-window.QUESTION_TYPES = {
-    BASE_TYPE_SINGLE_CHOICE    : 1, // 单选题单选题
-    BASE_TYPE_MULTI_CHOICE     : 2, // 多选题多选题
-    BASE_TYPE_TFNG             : 3, // 判断题判断题: true(是), false(否), not given(未提及)
-    BASE_TYPE_ESSAY_QUESTION   : 4, // 问答题问答题
-    BASE_TYPE_FILL_IN_THE_BLANK: 5, // 填空题填空题
-    BASE_TYPE_COMPLEX          : 6, // 复合题
-    BASE_TYPE_HOMEWORK         : 7, // 作业题
-    BASE_TYPE_DESCRIPTION      : 8, // 描述
+// 题目类型
+window.QUESTION_TYPE = {
+    SINGLE_CHOICE  : 1, // 单选题
+    MULTIPLE_CHOICE: 2, // 多选题
+    TFNG           : 3, // 判断题: true(是), false(否), not given(未提及)
+    FITB           : 4, // 填空题: fill in the blank
+    ESSAY_QUESTION : 5, // 问答题
+    COMPLEX        : 6, // 复合题
+    DESCRIPTION    : 7, // 题型题 (大题分组、介绍)
 };
+
+// 题目类型 (value 在前，name 在后，好排版)
+window.QUESTION_TYPES = [
+    { value: 1, name: '单选题' },
+    { value: 2, name: '多选题' },
+    { value: 3, name: '判断题' },
+    { value: 4, name: '填空题' },
+    { value: 5, name: '问答题' },
+    { value: 6, name: '复合题' },
+];
 
 // 项目的状态
 window.PROJECT_STATUS = [
@@ -51,27 +61,27 @@ window.ROLES = [
 
 // 性别
 window.GENDERS = [
-    { name: '未设置', value: 0 },
-    { name: '男', value: 1 },
-    { name: '女', value: 2 },
+    { value: 0, name: '未选' },
+    { value: 1, name: '男' },
+    { value: 2, name: '女' },
 ];
 
 // 身份证件类型
 window.ID_CARD_TYPES = [
-    { name: '护照', value: 1 },
-    { name: '户口簿', value: 2 },
-    { name: '其他', value: 3 },
-    { name: '居民身份证', value: 4 },
-    { name: '军官证', value: 5 },
-    { name: '士兵证', value: 6 },
-    { name: '文职干部证', value: 7 },
-    { name: '部队离退休证', value: 8 },
-    { name: '香港特区护照/身份证明', value: 9 },
-    { name: '澳门特区护照/身份证明', value: 10 },
-    { name: '台湾居民来往大陆通行证', value: 11 },
-    { name: '境外永久居住证', value: 12 },
-    { name: '涉密证件', value: 13 },
-    { name: '手机号码涉密', value: 14 },
+    { value: 1,  name: '护照' },
+    { value: 2,  name: '户口簿' },
+    { value: 3,  name: '其他' },
+    { value: 4,  name: '居民身份证' },
+    { value: 5,  name: '军官证' },
+    { value: 6,  name: '士兵证' },
+    { value: 7,  name: '文职干部证' },
+    { value: 8,  name: '部队离退休证' },
+    { value: 9,  name: '香港特区护照/身份证明' },
+    { value: 10, name: '澳门特区护照/身份证明' },
+    { value: 11, name: '台湾居民来往大陆通行证' },
+    { value: 12, name: '境外永久居住证' },
+    { value: 13, name: '涉密证件' },
+    { value: 14, name: '手机号码涉密' },
 ];
 
 // 字典类型
