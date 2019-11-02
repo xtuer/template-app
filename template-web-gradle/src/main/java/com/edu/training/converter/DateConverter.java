@@ -2,7 +2,6 @@ package com.edu.training.converter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.ParseException;
@@ -17,7 +16,7 @@ public class DateConverter implements Converter<String, Date> {
     // 使用 ThreadLocal 解决 SimpleDateFormat 高并发问题
     private static final ThreadLocal<SimpleDateFormat> FORMAT_1 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
     private static final ThreadLocal<SimpleDateFormat> FORMAT_2 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    private static final ThreadLocal<SimpleDateFormat> FORMAT_3 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'"));
+    private static final ThreadLocal<SimpleDateFormat> FORMAT_3 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
 
     /**
      * 把日期字符串转换为 Date 对象，接收三种日期格式: yyyy-MM-dd、yyyy-MM-dd HH:mm:ss 或者 yyyy-MM-ddTHH:mm:ss.SZ
@@ -42,7 +41,7 @@ public class DateConverter implements Converter<String, Date> {
         try {
             return format.parse(source);
         } catch (ParseException ex) {
-            log.warn(ExceptionUtils.getStackTrace(ex));
+            log.warn(ex.getMessage());
         }
 
         return null;
