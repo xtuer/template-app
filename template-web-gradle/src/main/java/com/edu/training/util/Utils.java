@@ -207,7 +207,7 @@ public final class Utils {
      * @param id 进行有效性检查的 ID
      * @return id 大于 0 时返回 true，否则返回 false
      */
-    public static boolean isValidId(Long id) {
+    public static boolean isIdValid(Long id) {
         return id != null && id > 0;
     }
 
@@ -217,8 +217,8 @@ public final class Utils {
      * @param id 进行有效性检查的 ID
      * @return id 为 null 或者小于等于 0 返回 true，否则返回 false
      */
-    public static boolean isInvalidId(Long id) {
-        return !isValidId(id);
+    public static boolean isIdInvalid(Long id) {
+        return !isIdValid(id);
     }
 
     /**

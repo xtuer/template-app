@@ -109,13 +109,13 @@ public class OrganizationService extends BaseService {
         org.setLogo(logo);
 
         // [3] 如果机构的 ID 为 0，则说明是新建机构，则为其分配 ID，否则为更新机构
-        if (Utils.isInvalidId(org.getId())) {
+        if (Utils.isIdInvalid(org.getId())) {
             org.setId(nextId());
         }
 
         // [4] 如果管理员的 ID 为 0，则新建管理员，如果管理员已经存在，则不进行处理
         User admin = org.getAdmin();
-        if (Utils.isInvalidId(admin.getId())) {
+        if (Utils.isIdInvalid(admin.getId())) {
             // 提示: 管理员的 username 不需要判断是否可以，因为他是本机构的第一个用户
             admin.setId(nextId());
             admin.addRole(Role.ROLE_ADMIN_ORG);
