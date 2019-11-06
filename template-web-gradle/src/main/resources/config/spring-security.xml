@@ -39,7 +39,6 @@
         <intercept-url pattern="/page/student" access="hasRole('STUDENT')"/>
         <intercept-url pattern="/page/parent"  access="hasRole('PARENT')"/>
 
-        <intercept-url pattern="/page/teacher"      access="hasRole('FORM_TEACHER')"/>
         <intercept-url pattern="/page/admin-system" access="hasRole('ADMIN_SYSTEM')"/>
         <intercept-url pattern="/page/admin-org"    access="hasRole('ADMIN_SCHOOL')"/>
 

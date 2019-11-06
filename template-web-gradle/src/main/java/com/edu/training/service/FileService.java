@@ -179,7 +179,7 @@ public class FileService extends BaseService {
         }
 
         // [7] 插入文件 ID、原始文件名到数据库
-        fileMapper.insertOrUpdateUploadedFile(uploadedFile);
+        fileMapper.upsertUploadedFile(uploadedFile);
 
         log.info("[结束] 上传文件 {}\n{}", originalFilename, JSON.toJSONString(uploadedFile, true));
 

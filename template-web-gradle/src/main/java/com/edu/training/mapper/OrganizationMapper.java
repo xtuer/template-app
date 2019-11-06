@@ -47,7 +47,7 @@ public interface OrganizationMapper {
      *
      * @param organization 机构
      */
-    void insertOrUpdateOrganization(Organization organization);
+    void upsertOrganization(Organization organization);
 
     /**
      * 启用禁用机构

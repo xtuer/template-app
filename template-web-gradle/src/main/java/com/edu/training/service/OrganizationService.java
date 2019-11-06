@@ -82,7 +82,7 @@ public class OrganizationService extends BaseService {
      * @param org 机构对象
      */
     @Transactional(rollbackFor = Exception.class)
-    public Result<String> insertOrUpdateOrganization(Organization org){
+    public Result<String> upsertOrganization(Organization org){
         // 0. 去掉字符串两端的空格，并调整域名
         // 1. 检查机构的域名是否可用 (如果域名被其他机构使用了则不可使用)
         // 2. 移动机构的 Logo 到文件仓库
@@ -126,7 +126,7 @@ public class OrganizationService extends BaseService {
 
         // [5] 插入或者更新机构
         org.setAdminId(admin.getId()); // 设置机构的管理员
-        orgMapper.insertOrUpdateOrganization(org);
+        orgMapper.upsertOrganization(org);
 
         // [6] 清楚机构的缓存
         self.invalidateOrganizationCache(org.getHost());

@@ -66,13 +66,13 @@ public class OrganizationController extends BaseController {
      * @param bindingResult 统一校验
      */
     @PutMapping(Urls.API_ORGS_BY_ID)
-    public Result<String> insertOrUpdateOrganization(@RequestBody @Valid Organization organization, BindingResult bindingResult) {
+    public Result<String> upsertOrganization(@RequestBody @Valid Organization organization, BindingResult bindingResult) {
         // 如果校验失败，返回失败信息给前端
         if(bindingResult.hasErrors()){
             return Result.failMessage(Utils.getBindingMessage(bindingResult));
         }
 
-        return orgService.insertOrUpdateOrganization(organization);
+        return orgService.upsertOrganization(organization);
     }
 
     /**

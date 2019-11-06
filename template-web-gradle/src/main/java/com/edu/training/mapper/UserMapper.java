@@ -40,7 +40,7 @@ public interface UserMapper {
      *
      * @param user 用户
      */
-    void insertOrUpdateUser(User user);
+    void upsertUser(User user);
 
     /**
      * 创建用户的登录记录

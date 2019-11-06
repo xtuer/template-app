@@ -52,7 +52,7 @@ public class OrgTest {
         admin.setPassword("Passw0rd");
         org.setAdmin(admin);
 
-        Result<String> result = orgService.insertOrUpdateOrganization(org);
+        Result<String> result = orgService.upsertOrganization(org);
         Utils.dump(result);
     }
 }

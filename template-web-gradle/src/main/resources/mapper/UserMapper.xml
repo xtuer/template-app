@@ -33,7 +33,7 @@
     </select>
 
     <!-- 插入或更新用户: 如果 ID 存在或者 org_id + username 的组合存在则进行更新 -->
-    <insert id="insertOrUpdateUser">
+    <insert id="upsertUser">
         INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
         VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 

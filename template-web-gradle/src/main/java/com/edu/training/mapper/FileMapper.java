@@ -19,7 +19,7 @@ public interface FileMapper {
      *
      * @param file 文件
      */
-    void insertOrUpdateUploadedFile(UploadedFile file);
+    void upsertUploadedFile(UploadedFile file);
 
     /**
      * 更新文件的 URL

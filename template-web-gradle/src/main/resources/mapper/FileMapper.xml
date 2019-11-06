@@ -9,7 +9,7 @@
     </select>
 
     <!-- 插入或者更新上传的文件 -->
-    <insert id="insertOrUpdateUploadedFile" parameterType="UploadedFile">
+    <insert id="upsertUploadedFile" parameterType="UploadedFile">
         INSERT INTO uploaded_file (id, filename, url, type, user_id)
         VALUES (#{id}, #{filename}, #{url}, #{type}, #{userId})
 

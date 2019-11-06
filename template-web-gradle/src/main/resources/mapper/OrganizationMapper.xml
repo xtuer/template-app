@@ -42,7 +42,7 @@
     </select>
 
     <!-- 新增或更新机构 -->
-    <insert id="insertOrUpdateOrganization" parameterType="Organization">
+    <insert id="upsertOrganization" parameterType="Organization">
         INSERT INTO organization (id, name, host, port, admin_id, parent_id, contact_person,
                                   contact_mobile, portal_name, logo)
             VALUES (#{id}, #{name}, #{host}, #{port}, #{adminId}, #{parentId}, #{contactPerson},

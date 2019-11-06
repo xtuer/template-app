@@ -104,7 +104,7 @@ public class UserService extends BaseService {
         user.setPassword(Utils.passwordByBCrypt(user.getPassword())); // 加密密码
 
         // [2] 保存用户到数据库
-        userMapper.insertOrUpdateUser(user);
+        userMapper.upsertUser(user);
 
         // [3] 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
         userId = userMapper.findUserByUsernameAndOrgId(user.getUsername(), user.getOrgId()).getId();
