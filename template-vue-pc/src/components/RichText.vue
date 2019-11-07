@@ -52,7 +52,7 @@ export default {
     },
     mounted() {
         // 创建各种场景使用的 toolbar
-        const toolbar1 = `${this.baseToolbar} image media file code`; // 普通场景使用
+        const toolbar1 = `${this.baseToolbar} image media file fitb code`; // 普通场景使用
         const toolbar2 = `${this.baseToolbar} image media fitb code`; // 编辑题目使用
         this.toolbars  = [toolbar1, toolbar2];
 
@@ -146,10 +146,17 @@ export default {
                                 const width  = file.imageWidth;
                                 const height = file.imageHeight;
 
-                                const image  = document.getElementById(imageId) || document.getElementById(`${self.editorId}_ifr`).contentWindow.document.getElementById(imageId);
-                                image.src    = file.url;
-                                image.width  = width;
-                                image.height = height;
+                                // 只修改 RichText 里面的图片 src
+                                const editorDom = document.querySelector(`#${self.editorId}`);
+                                const image     = editorDom.querySelector(`#${imageId}`)
+                                               || editorDom.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
+
+                                image.src = file.url;
+
+                                if (width && height) {
+                                    image.width  = width;
+                                    image.height = height;
+                                }
                             }).catch(err => {
                                 console.log('上传失败！');
                             });
@@ -193,8 +200,8 @@ export default {
 
         addToolbarButtons(editor) {
             // 添加填空按钮
-            editor.addButton('fitb', { icon: 'code', title: '插入填空', onclick: () => {
-                editor.insertContent('&nbsp;<abbr class="fitb">________</abbr>&nbsp;');
+            editor.addButton('fitb', { icon: 'line', title: '插入填空', onclick: () => {
+                editor.insertContent(' <abbr class="fitb">________</abbr> ');
             } });
 
             // 添加上传图片按钮
@@ -228,7 +235,7 @@ export default {
                 // [2.1] 上传图片插入文本框
                 const width  = file.imageWidth;
                 const height = file.imageHeight;
-                this.editor.insertContent(`<img src="${url}" title="${filename}" width="${width}" height="${height}">`);
+                this.editor.insertContent(`<img src="${url}" title="${filename}" align="top" width="${width}" height="${height}">`);
             } else if (this.uploadProps.audio && Utils.isMp3(url)) {
                 // [2.2] 上传 MP3
                 this.editor.insertContent(`&nbsp;<audio controls><source src="${url}"></audio>&nbsp;`);

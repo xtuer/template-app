@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--namespace 非常重要：必须是 Mapper 类的全路径-->
+<!-- namespace 非常重要：必须是 Mapper 类的全路径 -->
 <mapper namespace="com.edu.training.mapper.OrganizationMapper">
     <sql id="organization_columns">
         id, name, host, port, admin_id AS adminId, parent_id AS parentId,
