@@ -97,95 +97,10 @@ export default {
                 },
                 // 粘贴的回调函数
                 paste_preprocess: function(plugin, args) {
-                    // 1. 上传的不是图片，则不进一步处理
-                    // 2. 给粘贴的图片设置一个唯一 ID
-                    // 3. 使用 XMLHttpRequest 获取 Blob URL 源数据
-                    // 4. 上传 Blob 图片
-                    // 5. 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
-
-                    // [1] 上传的不是图片，则不进一步处理
-                    if (!args.content.startsWith('<img')) {
-                        return;
+                    // 上传粘贴的图片
+                    if (args.content.startsWith('<img')) {
+                        self.uploadPastedImage(args);
                     }
-
-                    // [2] 给粘贴的图片设置一个唯一 ID
-                    const imageId = 'pasted-image-' + Date.now();
-                    const xhr = new XMLHttpRequest();
-
-                    // [3] 使用 XMLHttpRequest 获取 Blob URL 源数据
-                    xhr.onreadystatechange = function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                            const imageBlob = this.response;
-                            const imageType = imageBlob.type;
-                            let   imageName = null;
-
-                            // 根据文件的类型确定文件名
-                            if (imageType.includes('png')) {
-                                imageName = `${imageId}.png`;
-                            } else if (imageType.includes('gif')) {
-                                imageName = `${imageId}.gif`;
-                            } else if (imageType.includes('bmp')) {
-                                imageName = `${imageId}.bmp`;
-                            } else {
-                                imageName = `${imageId}.jpg`;
-                            }
-
-                            // [4] 上传 Blob 图片
-                            const form = new FormData();
-                            form.append('file', imageBlob, imageName);
-
-                            // 使用 Axios 上传图片
-                            axios({
-                                method : 'POST',
-                                url    : Urls.FORM_UPLOAD_TEMPORARY_FILE,
-                                data   : form,
-                                headers: { 'Content-Type': 'multipart/form-data' }
-                            }).then(result => {
-                                // [5] 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
-                                const file   = result.data.data;
-                                const width  = file.imageWidth;
-                                const height = file.imageHeight;
-
-                                // 只修改 RichText 里面的图片 src
-                                const image = self.$refs.editor.querySelector(`#${imageId}`)
-                                           || self.$refs.editor.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
-
-                                image.src = file.url;
-                                image.setAttribute('align', 'top');
-
-                                if (width && height) {
-                                    image.width  = width;
-                                    image.height = height;
-                                }
-                            }).catch(err => {
-                                console.log('上传失败！');
-                            });
-
-                            // 使用 jQuery 上传图片
-                            // $.ajax({
-                            //     type: 'POST',
-                            //     url : Urls.FORM_UPLOAD_TEMPORARY_FILE,
-                            //     data: form,
-                            //     processData: false,
-                            //     contentType: false,
-                            // }).done(function(result) {
-                            //     // [5] 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
-                            //     const file   = result.data;
-                            //     const width  = file.imageWidth;
-                            //     const height = file.imageHeight;
-
-                            //     const imgId  = '#' + imageId;
-                            //     const $image = $(imgId).length > 0 ? $(imgId) : $(`#${self.editorId}_ifr`).contents().find(imgId);
-                            //     $image.attr('src', file.url).width(width).height(height);
-                            // });
-                        }
-                    };
-
-                    // 粘贴文件得到 blob
-                    args.content = args.content.replace('<img', `<img id="${imageId}"`); // 给上传的图片增加唯一 ID
-                    xhr.open('GET', args.content.split('"')[3]); // blob:http://localhost:8888/da126298-1b6b-4dfb-8a92-2e3ccbee611d
-                    xhr.responseType = 'blob';
-                    xhr.send();
                 }
             }).then(editors => {
                 this.editor = editors[0];
@@ -246,6 +161,103 @@ export default {
                 // [2.4] 上传文件
                 this.editor.insertContent(`&nbsp;<a href="${url}">${filename}</a>&nbsp;`);
             }
+        },
+        // 上传粘贴的图片
+        uploadPastedImage(args) {
+            // 1. 显示上传中提示
+            // 2. 给粘贴的图片设置一个唯一 ID
+            // 3. 使用 XMLHttpRequest 获取 Blob URL 源数据
+            // 4. 上传 Blob 图片
+            // 5. 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
+
+            const self = this;
+
+            // [1] 显示上传中提示
+            const msg = self.$Message.loading({ content: '上传中...', duration: 0 });
+
+            // [2] 给粘贴的图片设置一个唯一 ID
+            const imageId = 'pasted-image-' + Date.now();
+            const xhr = new XMLHttpRequest();
+
+            // [3] 使用 XMLHttpRequest 获取 Blob URL 源数据
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    const imageBlob = this.response;
+                    const imageType = imageBlob.type;
+                    let   imageName = null;
+
+                    // 根据文件的类型确定文件名
+                    if (imageType.includes('png')) {
+                        imageName = `${imageId}.png`;
+                    } else if (imageType.includes('gif')) {
+                        imageName = `${imageId}.gif`;
+                    } else if (imageType.includes('bmp')) {
+                        imageName = `${imageId}.bmp`;
+                    } else {
+                        imageName = `${imageId}.jpg`;
+                    }
+
+                    // [4] 上传 Blob 图片
+                    const form = new FormData();
+                    form.append('file', imageBlob, imageName);
+
+                    // 使用 Axios 上传图片
+                    axios({
+                        method : 'POST',
+                        url    : Urls.FORM_UPLOAD_TEMPORARY_FILE,
+                        data   : form,
+                        headers: { 'Content-Type': 'multipart/form-data' }
+                    }).then(result => {
+                        // [5] 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
+                        const file   = result.data.data;
+                        const src    = file.url;
+                        const width  = file.imageWidth;
+                        const height = file.imageHeight;
+
+                        // 不知道为啥，不放到 nextTick 有些浏览器里替换图片会有问题
+                        self.$nextTick(() => {
+                            // 只修改 RichText 里面图片的 src
+                            const image = self.$refs.editor.querySelector(`#${imageId}`)
+                                       || self.$refs.editor.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
+
+                            if (width && height) {
+                                image.width  = width;
+                                image.height = height;
+                            }
+
+                            image.onload = msg; // 图片加载结束时关闭加载中提示
+                            image.setAttribute('align', 'top');
+                            image.src = src;
+                        });
+                    }).catch(err => {
+                        console.log('上传失败！');
+                    });
+
+                    // 使用 jQuery 上传图片
+                    // $.ajax({
+                    //     type: 'POST',
+                    //     url : Urls.FORM_UPLOAD_TEMPORARY_FILE,
+                    //     data: form,
+                    //     processData: false,
+                    //     contentType: false,
+                    // }).done(function(result) {
+                    //     // [5] 上传完成后设置使用图片的 ID 查找图片，替换它的 src 为上传得到的 src
+                    //     const file   = result.data;
+                    //     const width  = file.imageWidth;
+                    //     const height = file.imageHeight;
+
+                    //     const imgId  = '#' + imageId;
+                    //     const $image = $(imgId).length > 0 ? $(imgId) : $(`#${self.editorId}_ifr`).contents().find(imgId);
+                    //     $image.attr('src', file.url).width(width).height(height);
+                    // });
+                }
+            };
+
+            // 粘贴文件得到 blob
+            args.content = args.content.replace('<img', `<img id="${imageId}"`); // 给上传的图片增加唯一 ID
+            xhr.open('GET', args.content.split('"')[3]); // blob:http://localhost:8888/da126298-1b6b-4dfb-8a92-2e3ccbee611d
+            xhr.responseType = 'blob';
+            xhr.send();
         },
     },
     computed: {
