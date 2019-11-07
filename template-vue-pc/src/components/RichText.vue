@@ -13,7 +13,7 @@
 4. 获取编辑器的内容: 编辑后传入的 html 会自动同步编辑的内容
 -->
 <template>
-    <div class="rich-text">
+    <div ref="editor" class="rich-text">
         <!-- 富文本编辑器 -->
         <div :id="editorId"></div>
 
@@ -147,11 +147,11 @@ export default {
                                 const height = file.imageHeight;
 
                                 // 只修改 RichText 里面的图片 src
-                                const editorDom = document.querySelector(`#${self.editorId}`);
-                                const image     = editorDom.querySelector(`#${imageId}`)
-                                               || editorDom.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
+                                const image = self.$refs.editor.querySelector(`#${imageId}`)
+                                           || self.$refs.editor.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
 
                                 image.src = file.url;
+                                image.setAttribute('align', 'top');
 
                                 if (width && height) {
                                     image.width  = width;
