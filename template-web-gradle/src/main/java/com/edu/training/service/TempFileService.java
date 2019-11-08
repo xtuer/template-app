@@ -19,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * 临时文件服务:
+ * 临时文件服务，用于上传文件到临时文件夹，访问临时文件。
  * 临时文件夹 ${uploadDirectory}，用于存储临时文件，里面的文件会定期删除
  *
  * 文件上传逻辑:

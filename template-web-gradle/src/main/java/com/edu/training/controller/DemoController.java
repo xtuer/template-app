@@ -6,7 +6,6 @@ import com.edu.training.bean.User;
 import com.edu.training.mapper.UserMapper;
 import com.edu.training.service.IdWorker;
 import com.edu.training.service.OrganizationService;
-import com.edu.training.service.RepoFileService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.Utils;
 import com.edu.training.util.WebUtils;
@@ -435,6 +434,6 @@ public class DemoController extends BaseController {
     @PostMapping("/api/demo/html")
     @ResponseBody
     public Result<String> submitHtml(@RequestParam String html) {
-        return Result.ok(repoFileService.moveFileToRepoInHtml(html, "avatar", "paper"));
+        return Result.ok(repoFileService.moveTempFileToRepoInHtml(html, "avatar", "paper"));
     }
 }

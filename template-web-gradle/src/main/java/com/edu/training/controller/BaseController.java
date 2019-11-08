@@ -3,7 +3,6 @@ package com.edu.training.controller;
 import com.edu.training.bean.User;
 import com.edu.training.service.*;
 import com.edu.training.util.SecurityUtils;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

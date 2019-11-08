@@ -19,9 +19,15 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 /**
- * 仓库文件服务:
+ * 仓库文件服务，用于移动文件到文件仓库，访问仓库文件。
+ * 主要接口:
+ *     获取仓库文件: getRepoFileByUrl(repoUrl)
+ *     移动临时文件到文件仓库: moveTempFileToRepo(tempUrl, [dirs])
+ *     移动 HTML 中的临时文件到文件仓库: moveTempFileToRepoInHtml(html, [dirs])
+ *
+ *
  * 临时文件夹 ${uploadDirectory}，用于存储临时文件，里面的文件会定期删除
- * 仓库文件夹 ${repoDirectory}，  用于存储文件仓库中的文件，删除由业务逻辑来决定
+ * 仓库文件夹 ${repoDirectory}，  用于存储仓库文件，删除由业务逻辑来决定
  *
  * 提示: 为了简化命名，下面的 url 都是指 uri，即 http://www.xtuer.com/api/files/12345.png?stamp=2
  * 中的 /api/files/12345.png，去掉协议、域名、参数剩下的部分。
@@ -58,83 +64,51 @@ public class RepoFileService {
     private TempFileService tempFileService;
 
     /**
-     * 移动 url 对应的临时文件到文件仓库中，文件所在仓库目录由 dirs 指定，如果 dirs 为空则目录名为当前日期。
-     * 注意: 文件名格式为 {long-number}[.ext]
+     * 移动 url 对应的临时文件到文件仓库中，文件在仓库里的目录由 dirs 指定，如果 dirs 为空则目录名为当前日期。
      *
-     * 注意: 只有 uri 指向临时文件时才会移动文件 (调用此函数的地方不需要判断是否临时文件)，其他情况返回原来的 uri。
-     * 不移动文件:
+     * 提示:
+     * 1. 临时文件名格式为 {long-number}[.ext] (上传得到的)
+     * 2. 只有 uri 指向临时文件时才会移动到文件仓库并返回文件对应的仓库 url，其他情况返回原来的 url
+     *    (调用此函数的地方不需要判断是否临时文件，内部已经进行了判断)
+     *
+     * 处理逻辑:
      * 1. 如果 url 是临时文件的 url 则进行移动
-     *    1.1 临时文件不存在返回 null
-     *    1.2 移动出错如操作文件失败返回 null
-     *    1.3 移动成功返回对应仓库文件的 url
+     *    A. 临时文件不存在返回 null
+     *    B. 移动出错如操作文件失败返回 null
+     *    C. 移动成功返回对应仓库文件的 url
      * 2. 如果 url 不是临时文件的 url 则不进行移动，直接返回原 url
-     *        A. 如果 url 是仓库文件的 url 则不移动，如 /file/repo/2018-04-10/165694386577866752.jpg
-     *        B. 如果 url 是完整网址的 url 则不移动，如 http://www.training.com/fox.png
+     *    A. 如果 url 是仓库文件的 url 则不移动，如 /file/repo/2018-04-10/165694386577866752.jpg
+     *    B. 如果 url 是完整网址的 url 则不移动，如 http://www.training.com/fox.png
      *
      * @param url  临时文件的 url (文件名为数字.suffix)
      * @param dirs 文件夹名的数组
      *
-     * @return 返回移动文件后的 url
+     * @return 返回移动文件到仓库后得到的 url 或者非临时文件返回原 url
      */
     public String moveTempFileToRepo(String url, String... dirs) {
         url = StringUtils.trim(url);
 
         if (tempFileService.isTempFileUrl(url)) {
-            // url 指向临时文件则进行移动
+            // 1. url 指向临时文件时移动对应的临时文件到文件仓库
             File tempFile = tempFileService.getTempFile(FilenameUtils.getName(url));
             return this.moveFileToRepo(tempFile, dirs);
         } else {
-            // url 指向仓库文件，或者是一个第三方完整的 url 则直接返回
+            // 2. url 指向仓库文件，或者是一个第三方的 url 则返回原 url
             log.info("非临时文件不移动到仓库: {}", url);
-            return org.apache.commons.lang3.StringUtils.trim(url);
+            return url;
         }
     }
 
     /**
-     * 移动文件 sourceFile 到文件仓库，文件所在仓库目录由 dirs 指定，如果 dirs 为空则目录名为当前日期。
-     * 注意: 文件名格式为 {long-number}[.ext]
-     *
-     * @param sourceFile 被移动的文件
-     * @param dirs       文件夹名的数组
-     * @return 返回文件对应的 url，如果移动时发生异常，例如文件不存在，则返回 null
-     */
-    public String moveFileToRepo(File sourceFile, String... dirs) {
-        // 1. 计算仓库文件的 url，例如为 /file/repo/2018-05-03/165694386577866752.doc
-        // 2. 移动文件到仓库中
-        // 3. 更新文件的 url 到数据库
-
-        long   fileId   = getFileId(sourceFile.getName());
-        String filename = sourceFile.getName();
-        String repoPath = this.getRepoPath(filename, dirs);
-        File   repoFile = this.getRepoFile(repoPath);
-        String repoUrl  = Urls.URL_REPO_FILE_PREFIX + repoPath;
-
-        try {
-            log.info("[开始] 移动文件 {} 到文件仓库 {}", sourceFile.getAbsolutePath(), repoFile.getAbsolutePath());
-
-            FileUtils.moveFile(sourceFile, repoFile); // [2] 移动文件到仓库中
-            fileMapper.updateUploadedFileUrlAndType(fileId, repoUrl , UploadedFile.PLATFORM_FILE); // [3] 更新文件的 URL 到数据库
-
-            log.info("[结束] 移动文件 {} 到文件仓库 {}", sourceFile.getAbsolutePath(), repoFile.getAbsolutePath());
-
-            return repoUrl ;
-        } catch (Exception e) {
-            log.warn("[结束] 移动文件异常: {}", e.getMessage());
-        }
-
-        return null;
-    }
-
-    /**
-     * 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中，移动后得到的 url 替换原来的 url，
-     * 如果引用的不是临时文件，则不改变它们的 url
+     * 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中，移动后得到的 url 替换原来的 url (如果引用的不是临时文件，则不改变它们的 url)。
+     * 文件在仓库里的目录由 dirs 指定，如果 dirs 为空则目录名为当前日期。
      *
      * @param html 要处理的 html
      * @param dirs 文件夹名的数组
      * @return 返回处理后的 html
      */
-    public String moveFileToRepoInHtml(String html, String... dirs) {
-        // 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中
+    public String moveTempFileToRepoInHtml(String html, String... dirs) {
+        // 移动 html 中的图片、链接、音频、视频引用的临时文件到文件仓库中:
         // 1. 解析 html 生成 document 对象
         // 2. 获取所有的 <img>，把 src 引用的临时文件移动到文件仓库中
         // 3. 获取所有的 <a>，把 href 引用的临时文件移动到文件仓库中
@@ -178,6 +152,42 @@ public class RepoFileService {
     }
 
     /**
+     * 移动文件 srcFile 到文件仓库，文件在仓库中的文件夹由 destDirs 指定:
+     *     1. 多级文件夹: /repo/paper/123/x.png
+     *     2. 如果 destDirs 为空则文件夹名为当前日期: /repo/2019-10-12/x.png
+     *
+     * @param srcFile  被移动的文件
+     * @param destDirs 文件夹名的数组
+     * @return 返回文件对应的 url，如果移动时发生异常，例如文件不存在，则返回 null
+     */
+    public String moveFileToRepo(File srcFile, String... destDirs) {
+        // 1. 计算仓库文件的 url，例如为 /file/repo/2018-05-03/165694386577866752.doc
+        // 2. 移动文件到仓库中
+        // 3. 更新文件的 url 到数据库
+
+        long   fileId   = getFileId(srcFile.getName());
+        String filename = srcFile.getName();
+        String repoPath = this.getRepoPath(filename, destDirs);
+        File   repoFile = this.getRepoFile(repoPath);
+        String repoUrl  = Urls.URL_REPO_FILE_PREFIX + repoPath;
+
+        try {
+            log.info("[开始] 移动文件 {} 到文件仓库 {}", srcFile.getAbsolutePath(), repoFile.getAbsolutePath());
+
+            FileUtils.moveFile(srcFile, repoFile); // [2] 移动文件到仓库中
+            fileMapper.updateUploadedFileUrlAndType(fileId, repoUrl , UploadedFile.PLATFORM_FILE); // [3] 更新文件的 URL 到数据库
+
+            log.info("[结束] 移动文件 {} 到文件仓库 {}", srcFile.getAbsolutePath(), repoFile.getAbsolutePath());
+
+            return repoUrl ;
+        } catch (Exception e) {
+            log.warn("[结束] 移动文件异常: {}", e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * 获取传入的文件名 filename 的仓库路径，dirs 为文件夹名的数组，如果为空则 dirs 为当前日期，如 2019-10-11
      *
      * @param filename 文件名
@@ -196,6 +206,12 @@ public class RepoFileService {
         return repoPath;
     }
 
+    /**
+     * 使用文件仓库的相对路径获取文件
+     *
+     * @param repoPath 文件仓库的相对路径
+     * @return 返回获取到的文件
+     */
     public File getRepoFile(String repoPath) {
         return new File(config.getRepoDirectory(), repoPath);
     }
@@ -212,7 +228,7 @@ public class RepoFileService {
             return null;
         }
 
-        String repoPath = url.substring(11); // 去掉 /file/repo/ 的剩余部分
+        String repoPath = url.substring(11); // 去掉 /file/repo/ 得到的剩余部分
         return this.getRepoFile(repoPath);
     }
 
@@ -237,10 +253,10 @@ public class RepoFileService {
     }
 
     /**
-     * 使用文件名查询上传的文件
+     * 使用文件名查询上传的文件信息
      *
      * @param filename 文件名
-     * @return 返回查询到的文件
+     * @return 返回查询到的文件信息
      */
     public UploadedFile findUploadedFile(String filename) {
         return fileMapper.findUploadedFileById(getFileId(filename));
