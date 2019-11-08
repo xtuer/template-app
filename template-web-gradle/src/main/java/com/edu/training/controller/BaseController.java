@@ -1,10 +1,7 @@
 package com.edu.training.controller;
 
 import com.edu.training.bean.User;
-import com.edu.training.service.FileService;
-import com.edu.training.service.IdWorker;
-import com.edu.training.service.OrganizationService;
-import com.edu.training.service.UserService;
+import com.edu.training.service.*;
 import com.edu.training.util.SecurityUtils;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +15,16 @@ public class BaseController {
     protected IdWorker idWorker;
 
     @Autowired
-    protected FileService fileService;
-
-    @Autowired
     protected UserService userService;
 
     @Autowired
     protected OrganizationService orgService;
+
+    @Autowired
+    protected TempFileService tempFileService;
+
+    @Autowired
+    protected RepoFileService repoFileService;
 
     /**
      * 获取当前登录用户

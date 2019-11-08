@@ -2,9 +2,7 @@ package com.edu.training.controller;
 
 import com.edu.training.bean.Result;
 import com.edu.training.bean.UploadedFile;
-import com.edu.training.service.FileService;
 import com.edu.training.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,23 +29,19 @@ import java.util.List;
  */
 @Controller
 public class FileController extends BaseController {
-    @Autowired
-    private FileService fileService;
-
     /**
      * 访问文件仓库中的文件
      * 网址: http://localhost:8080/file/repo/2018-06-19/293591971581788160.docx
      *
-     * @param date     存储的日期目录
      * @param request  HttpServletRequest 对象
      * @param response HttpServletResponse 对象
      * @throws IOException 读取文件出错时抛出异常
      */
     @GetMapping(Urls.URL_REPO_FILE)
-    public void accessRepoFile(@PathVariable String date, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void accessRepoFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 没有直接使用参数中的 filename 是因为 registered-suffixes-only 有 Bug，不能识别 .xml, .json 等后缀
-        String filename = WebUtils.getUriFilename(request);
-        File file = fileService.getRepoFile(filename, date);
+        String uri = WebUtils.getUri(request);
+        File file  = repoFileService.getRepoFileByUrl(uri);
 
         WebUtils.readFileToResponse(file, response);
     }
@@ -56,24 +50,34 @@ public class FileController extends BaseController {
      * 下载文件仓库中的文件
      * 网址: http://localhost:8080/file/download/2018-06-19/293591971581788160.docx
      *
-     * @param date     存储的日期目录
      * @param request  HttpServletRequest 对象
      * @param response HttpServletResponse 对象
      * @throws IOException 读取文件出错时抛出异常
      */
     @GetMapping(Urls.URL_REPO_FILE_DOWNLOAD)
-    public void downloadRepoFile(@PathVariable String date, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String filename     = WebUtils.getUriFilename(request); // 上传时系统分配的文件名
-        String originalName = null;                             // 文件的原始名
-        File file = fileService.getRepoFile(filename, date);    // 仓库中的文件
+    public void downloadRepoFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // 1. 从下载的 url 中得到文件的仓库路径
+        // 2. 获取仓库文件对象
+        // 3. 查询上传时的文件信息，获取文件的原始名字
+        // 4. 向 response 写入文件
 
-        // 查询上传时的文件信息，获取文件的原始名字
-        UploadedFile upFile = fileService.findUploadedFile(filename);
+        // [1] 从下载的 url 中得到文件的仓库路径
+        // [2] 获取仓库文件对象
+        String uri      = WebUtils.getUri(request);
+        String repoPath = uri.substring(15);
+        File   repoFile = repoFileService.getRepoFile(repoPath);
+
+        // [3] 查询上传时的文件信息，获取文件的原始名字
+        String originalName = null;           // 文件的原始名
+        String uploadedName = repoFile.getName(); // 文件的原始名
+        UploadedFile upFile = repoFileService.findUploadedFile(uploadedName);
+
         if (upFile != null) {
             originalName = upFile.getFilename();
         }
 
-        WebUtils.readFileToResponse(file.getAbsolutePath(), originalName, request, response);
+        // [4] 向 response 写入文件
+        WebUtils.readFileToResponse(repoFile.getAbsolutePath(), originalName, request, response);
     }
 
     /**
@@ -87,7 +91,7 @@ public class FileController extends BaseController {
     @GetMapping(Urls.URL_TEMP_FILE)
     public void accessTempFile(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String filename = WebUtils.getUriFilename(request);
-        File file = fileService.getTempFile(filename);
+        File file = tempFileService.getTempFile(filename);
 
         WebUtils.readFileToResponse(file, response);
     }
@@ -99,8 +103,8 @@ public class FileController extends BaseController {
     @DeleteMapping(Urls.URL_REPO_FILE)
     public void deleteRepoFile(HttpServletRequest request, HttpServletResponse response) {
         String uri = WebUtils.getUri(request);
-        File file = fileService.getRepoFile(uri);
-        fileService.deleteRepoFile(file, uri);
+        File  file = repoFileService.getRepoFile(uri);
+        repoFileService.deleteRepoFile(file, uri);
 
         // 没有返回 Result 是因为 Spring MVC 在处理带 . 的 URL 时返回对象，@ResponseBody 不能正确的处理
         WebUtils.ajaxResponse(response, Result.ok());
@@ -118,7 +122,7 @@ public class FileController extends BaseController {
     @ResponseBody
     public Result<UploadedFile> uploadFileToTemp(@RequestParam("file") MultipartFile file) throws IOException {
         long userId = super.getLoginUserId();
-        UploadedFile result = fileService.uploadFileToTemp(file, userId);
+        UploadedFile result = tempFileService.uploadFileToTemp(file, userId);
         return Result.ok(result);
     }
 
@@ -137,7 +141,7 @@ public class FileController extends BaseController {
         List<UploadedFile> upFiles = new LinkedList<>();
 
         for (MultipartFile file : files) {
-            upFiles.add(fileService.uploadFileToTemp(file, userId));
+            upFiles.add(tempFileService.uploadFileToTemp(file, userId));
         }
 
         return Result.ok(upFiles);

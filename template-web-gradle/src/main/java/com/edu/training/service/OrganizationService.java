@@ -105,7 +105,7 @@ public class OrganizationService extends BaseService {
         }
 
         // [2] 移动机构的 Logo 到文件仓库
-        String logo = fileService.moveFileToRepo(org.getLogo());
+        String logo = repoFileService.moveTempFileToRepo(org.getLogo());
         org.setLogo(logo);
 
         // [3] 如果机构的 ID 为 0，则说明是新建机构，则为其分配 ID，否则为更新机构

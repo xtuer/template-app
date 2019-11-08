@@ -226,7 +226,7 @@ public class UserService extends BaseService {
         // 3. 删除缓存用户
         // 4. 返回 avatar 的 url
 
-        avatar = fileService.moveFileToRepo(avatar);
+        avatar = repoFileService.moveTempFileToRepo(avatar, "avatar");
 
         if (avatar != null) {
             userMapper.updateUserAvatar(userId, avatar);

@@ -6,6 +6,7 @@ import com.edu.training.bean.User;
 import com.edu.training.mapper.UserMapper;
 import com.edu.training.service.IdWorker;
 import com.edu.training.service.OrganizationService;
+import com.edu.training.service.RepoFileService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.Utils;
 import com.edu.training.util.WebUtils;
@@ -35,7 +36,7 @@ import java.util.Map;
  */
 @Controller
 @Slf4j
-public class DemoController {
+public class DemoController extends BaseController {
     @Value("${maxUploadSize}")
     private long size;
 
@@ -423,5 +424,17 @@ public class DemoController {
         }
 
         return Result.ok();
+    }
+
+    /**
+     * 测试处理富文本，移动 html 里的临时文件到仓库
+     *
+     * @param html 富文本的 html
+     * @return payload 为处理后的 html
+     */
+    @PostMapping("/api/demo/html")
+    @ResponseBody
+    public Result<String> submitHtml(@RequestParam String html) {
+        return Result.ok(repoFileService.moveFileToRepoInHtml(html, "avatar", "paper"));
     }
 }
