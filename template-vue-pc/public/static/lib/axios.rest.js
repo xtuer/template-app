@@ -137,8 +137,11 @@ class Rest {
             alert('404: URL 不存在');
         } else if (500 === status) {
             // 发生 500 错误时服务器抛出异常，在控制台打印出异常信息
-            console.error(error.data.data);
-            alert(`500: 发生异常，${error.data.message}\n\n详细错误信息请查看控制台输出 (Chrome 按下快捷键 F12)`);
+            console.error(error);
+
+            if (error.data && error.data.message) {
+                alert(`500: 发生异常，${error.data.message}\n\n详细错误信息请查看控制台输出 (Chrome 按下快捷键 F12)`);
+            }
         } else if (502 === status) {
             // 发生 502 错误时，Tomcat Web 服务器不可访问，一般有 2 个原因
             // 1. Nginx 配置出错

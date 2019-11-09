@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
 
 Vue.use(Router);
 
@@ -9,12 +8,21 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            component: Home,
-        },
-        {
-            path: '/about',
-            name: 'about',
-            component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+            component: () => import(/* webpackChunkName: "common" */ './views/Home.vue'),
+            redirect: { name: 'about' },
+
+            children: [
+                {
+                    path: '/about',
+                    name: 'about',
+                    component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
+                },
+                {
+                    path: '/scroll-demo',
+                    name: 'scroll-demo',
+                    component: () => import(/* webpackChunkName: "about" */ './views/ScrollDemo.vue'),
+                },
+            ]
         },
         {
             // 404 页面

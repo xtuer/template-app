@@ -1,7 +1,7 @@
 <template>
-    <div id="app">
+    <PerfectScrollbar id="app">
         <router-view/>
-    </div>
+    </PerfectScrollbar>
 </template>
 
 <style lang="scss">

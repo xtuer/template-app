@@ -1,17 +1,17 @@
 <template>
     <div class="about">
-        <FileUpload button/>
+        About
     </div>
 </template>
 
 <script>
-import FileUpload from '@/components/FileUpload.vue';
-
 export default {
-    components: { FileUpload },
+    props: {},
     data() {
         return {};
     },
+    mounted() {},
+    methods: {}
 };
 </script>
 

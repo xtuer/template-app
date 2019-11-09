@@ -5,8 +5,6 @@ import store from './store';
 import '@/plugins/iview';
 import './init';
 
-Vue.config.productionTip = false;
-
 // 获取登录用户
 router.beforeEach((to, from, next) => {
     if (store.getters.logined) {
@@ -24,6 +22,8 @@ router.beforeEach((to, from, next) => {
         });
     }
 });
+
+Vue.config.productionTip = false;
 
 new Vue({
     router,
