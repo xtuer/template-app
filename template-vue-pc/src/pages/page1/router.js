@@ -18,9 +18,9 @@ export default new Router({
                     component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
                 },
                 {
-                    path: '/scroll-demo',
-                    name: 'scroll-demo',
-                    component: () => import(/* webpackChunkName: "about" */ './views/ScrollDemo.vue'),
+                    path: '/scroll',
+                    name: 'scroll',
+                    component: () => import(/* webpackChunkName: "about" */ './views/Scroll.vue'),
                 },
             ]
         },

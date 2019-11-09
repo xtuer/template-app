@@ -1,6 +1,4 @@
-<!--
-页面布局
--->
+<!-- 页面布局 -->
 <template>
     <div class="home">
         <!-- Header -->
@@ -13,7 +11,7 @@
             </Menu>
         </div>
 
-        <!-- 中心内容显示区 -->
+        <!-- 内容显示区 -->
         <div class="content">
             <PerfectScrollbar class="content-wrapper">
                 <router-view/>
@@ -34,7 +32,7 @@ export default {
             activeName: '',
             menuItems: [ // 所有菜单项，每个菜单项有不同的权限
                 { label: '问题管理', name: 'about'               },
-                { label: '任务管理', name: 'scroll-demo'         },
+                { label: '任务管理', name: 'scroll'              },
                 { label: '课程处理', name: 'admin-courses'       },
                 { label: '问题统计', name: 'question-statistics' },
                 { label: '绩效查询', name: 'performance',        },
