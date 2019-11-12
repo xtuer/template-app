@@ -81,7 +81,7 @@
 
     <!-- 使用 thymeleaf 模版 -->
     <bean id="templateResolver" class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
-        <property name="prefix"       value="/WEB-INF/page-x/"/>
+        <property name="prefix"       value="/WEB-INF/"/>
         <property name="templateMode" value="HTML"/>
         <property name="cacheable"    value="${thymeleafCacheable}"/>
     </bean>

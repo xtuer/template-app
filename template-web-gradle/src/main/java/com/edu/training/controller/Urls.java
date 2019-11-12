@@ -19,24 +19,24 @@ public interface Urls {
     String FORWARD    = "forward:";
     String REDIRECT   = "redirect:";
     String PAGE_404   = "/404";
-    String FILE_ERROR = "error.html";
+    String FILE_ERROR = "page-x/error.html";
 
     // 案例展示
     String PAGE_DEMO_REST   = "/page/demo/rest";
-    String FILE_DEMO_REST   = "demo/rest.html";
+    String FILE_DEMO_REST   = "page-x/demo/rest.html";
     String FORM_DEMO_UPLOAD = "/form/demo/upload";
     String API_DEMO_MYBATIS = "/api/demo/mybatis/{id}";
 
     String PAGE_DOWNLOAD  = "/page/download"; // 下载
-    String FILE_DOWNLOAD  = "download.html";  // 下载
+    String FILE_DOWNLOAD  = "page-x/download.html";  // 下载
 
     // 登录注销
     String PAGE_LOGIN = "/page/login"; // 登陆
     String PAGE_DENY  = "/page/deny";  // 无权访问页面的 URL
-    String FILE_LOGIN = "login.html";  // 登陆页面
-    String API_LOGIN_TOKENS          = "/api/login/tokens";        // 登陆用户的 token
-    String API_LOGIN_USERS_CURRENT   = "/api/login/users/current"; // 当前登录的用户
-    String PAGE_USER_BACKEND         = "/page/userBackend";        // 访问当前登录用户的后台页面地址
+    String FILE_LOGIN = "page-x/login.html";  // 登陆页面
+    String API_LOGIN_TOKENS        = "/api/login/tokens";        // 登陆用户的 token
+    String API_LOGIN_USERS_CURRENT = "/api/login/users/current"; // 当前登录的用户
+    String PAGE_USER_BACKEND       = "/page/userBackend";        // 访问当前登录用户的后台页面地址
 
     // 用户
     String API_USERS_BY_ID          = "/api/users/{userId}";                 // 指定 ID 的用户
