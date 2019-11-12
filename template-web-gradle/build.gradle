@@ -135,13 +135,13 @@ task deploy(dependsOn: war) {
     doLast {
         ssh.run {
             session(remotes.server) {
-                put from: "${buildDir}/libs/${war.archiveName}", into: "${targetDir}"
+                put from: "${buildDir}/libs/${war.archiveFileName}", into: "${targetDir}"
                 execute """
                     source /root/.bash_profile;
                     sh /usr/local/edu/tomcat/bin/shutdown.sh;
                     rm -rf   ${targetDir}/ROOT;
-                    unzip -u ${targetDir}/${war.archiveName} -d ${targetDir}/ROOT > /dev/null;
-                    rm -rf   ${targetDir}/${war.archiveName};
+                    unzip -u ${targetDir}/${war.archiveFileName} -d ${targetDir}/ROOT > /dev/null;
+                    rm -rf   ${targetDir}/${war.archiveFileName};
                     kill `ps aux | grep -i tomcat | grep -v grep | awk '{print \$2}'`;
                     sh /usr/local/edu/tomcat/bin/startup.sh;
                 """
