@@ -97,9 +97,9 @@ ext {
     // 运行: gradle clean appStart, gradle clean appStartDebug
     // 构建: gradle clean assemble, gradle clean assemble -Denv=production
     // 部署: gradle clean deploy,   gradle clean deploy   -Denv=production
-    environment     = System.getProperty("env", "development") // 获取 gradle 参数中 env 的值，选择环境
-    war.archiveName = "training-${environment}.zip"                 // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
-    config          = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
+    environment         = System.getProperty("env", "dev") // 获取 gradle 参数中 env 的值，选择环境
+    war.archiveFileName = "training-${environment}.zip"    // 打包的文件名，不用 war 包自动解压的话，用 .zip 会更好一些
+    config              = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
 
     println "\n::--o 加载配置用于环境: ${environment}\n"
 }

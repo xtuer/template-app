@@ -57,7 +57,7 @@ environments {
      |                                 开发环境配置                                 |
      |----------------------------------------------------------------------------*/
     // 本机开发环境配置
-    development {
+    dev {
         thymeleafCacheable = false // 开发环境下 thymeleaf 不缓存页面
     }
 
