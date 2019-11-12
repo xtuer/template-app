@@ -164,7 +164,7 @@ public class OrganizationService extends BaseService {
     }
 
     /**
-     * 清楚机构的缓存
+     * 删除机构的缓存
      *
      * @param host 机构 host
      */
