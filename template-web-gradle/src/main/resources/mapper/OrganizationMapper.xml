@@ -32,6 +32,7 @@
                 name like CONCAT('%', #{name}, '%')
             </if>
         </where>
+        LIMIT ${page.offset}, ${page.size}
     </select>
 
     <!-- 判断指定 ID 的机构是否可使用此域名 -->

@@ -1,6 +1,7 @@
 package com.edu.training.mapper;
 
 import com.edu.training.bean.Organization;
+import com.edu.training.bean.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public interface OrganizationMapper {
      * @param name 机构名 (部分)
      * @return 机构数组
      */
-    List<Organization> findOrganizationsLikeName(@Param("name") String name);
+    List<Organization> findOrganizationsLikeName(@Param("name") String name, @Param("page") Page page);
 
     /**
      * 判断指定 ID 的机构是否可使用此域名

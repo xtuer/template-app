@@ -1,9 +1,7 @@
 import com.edu.training.bean.Role;
 import com.edu.training.bean.User;
-import com.edu.training.mapper.OrganizationMapper;
 import com.edu.training.mapper.UserMapper;
-import com.edu.training.service.FileService;
-import com.edu.training.service.OrganizationService;
+import com.edu.training.service.RepoFileService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.Utils;
 import org.junit.Test;
@@ -19,7 +17,7 @@ public class DBTest {
     private UserMapper userMapper;
 
     @Autowired
-    private FileService fileService;
+    private RepoFileService fileService;
 
     @Autowired
     private UserService userService;
@@ -35,12 +33,12 @@ public class DBTest {
 
     @Test
     public void testMoveTempFileToRepo() {
-        fileService.moveFileToRepo("/file/repo/332524228286873600.jpg");
+        fileService.moveTempFileToRepo("/file/repo/332524228286873600.jpg");
     }
 
     @Test
     public void handleHtml() {
-        System.out.println(fileService.moveFileToRepoInHtml("<a href=\"/file/temp/332804396779831296.png\">Go</a>"));
+        System.out.println(fileService.moveTempFileToRepoInHtml("<a href=\"/file/temp/332804396779831296.png\">Go</a>"));
     }
 
     // 测试插入用户

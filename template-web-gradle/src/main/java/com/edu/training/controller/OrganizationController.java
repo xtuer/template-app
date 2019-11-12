@@ -1,6 +1,7 @@
 package com.edu.training.controller;
 
 import com.edu.training.bean.Organization;
+import com.edu.training.bean.Page;
 import com.edu.training.bean.Result;
 import com.edu.training.mapper.OrganizationMapper;
 import com.edu.training.service.OrganizationService;
@@ -47,13 +48,20 @@ public class OrganizationController extends BaseController {
      * 使用机构名称模糊查询查询机构
      *
      * 网址: http://localhost:8080/api/orgs?name=测试机构
-     * 参数: name，例如 name=测试机构，没有 name 参数时查询所有机构
+     * 参数:
+     *      name       [可选]: 机构名，可模糊查询，没有时查询所有机构
+     *      pageNumber [可选]: 页码
+     *      pageSize   [可选]: 数量
      *
      * @param name 机构名 (部分)
+     * @param pageNumber 页码
+     * @param pageSize   数量
      */
     @GetMapping(Urls.API_ORGS)
-    public Result<List<Organization>> findOrganizations(String name) {
-        return Result.ok(orgMapper.findOrganizationsLikeName(name));
+    public Result<List<Organization>> findOrganizations(@RequestParam(required = false) String name,
+                                                        @RequestParam(required = false, defaultValue = "1") int pageNumber,
+                                                        @RequestParam(required = false, defaultValue = "20") int pageSize) {
+        return Result.ok(orgMapper.findOrganizationsLikeName(name, Page.of(pageNumber, pageSize)));
     }
 
     /**
