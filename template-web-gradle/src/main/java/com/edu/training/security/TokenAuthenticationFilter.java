@@ -1,8 +1,8 @@
 package com.edu.training.security;
 
-import com.edu.training.controller.Urls;
 import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
+import com.edu.training.controller.Urls;
 import com.edu.training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,10 +45,7 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (user == null) {
             return null;
         } else {
-            user.setPassword("[protected]"); // 密码不能为 null，但是也没有用，所以随便设置一个吧
-            user = user.cloneForSecurity();  // 生成 Spring Security 可使用的用户对象
-
-            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
         }
     }
 

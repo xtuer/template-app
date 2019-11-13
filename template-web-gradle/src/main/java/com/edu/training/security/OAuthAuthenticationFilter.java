@@ -1,8 +1,8 @@
 package com.edu.training.security;
 
 import com.alibaba.fastjson.JSON;
-import com.mzlion.easyokhttp.HttpClient;
 import com.edu.training.bean.User;
+import com.mzlion.easyokhttp.HttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,7 +71,7 @@ public class OAuthAuthenticationFilter extends AbstractAuthenticationProcessingF
 
             if (user != null) {
                 // [5] 用户存在，登陆成功，跳转到登陆前的页面
-                Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+                Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
                 super.successfulAuthentication(request, response, chain, auth); // 跳转到登陆前页面
             } else {
                 // [6] 用户不存在，跳转到 "创建|绑定已有用户" 页面，

@@ -1,6 +1,5 @@
 package com.edu.training.security;
 
-import com.edu.training.bean.Role;
 import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
 import com.edu.training.service.OrganizationService;
@@ -55,8 +54,7 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
 
         // [4] 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 接下来的鉴权使用
-        user = user.cloneForSecurity();
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         // [5] 登录成功后根据用户的角色跳转到对应的页面
