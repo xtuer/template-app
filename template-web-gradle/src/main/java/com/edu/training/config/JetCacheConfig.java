@@ -1,9 +1,5 @@
 package com.edu.training.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import com.alicp.jetcache.CacheBuilder;
 import com.alicp.jetcache.anno.CacheConsts;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
@@ -14,8 +10,8 @@ import com.alicp.jetcache.embedded.EmbeddedCacheBuilder;
 import com.alicp.jetcache.embedded.LinkedHashMapCacheBuilder;
 import com.alicp.jetcache.redis.RedisCacheBuilder;
 import com.alicp.jetcache.support.FastjsonKeyConvertor;
-import com.alicp.jetcache.support.JavaValueDecoder;
-import com.alicp.jetcache.support.JavaValueEncoder;
+import com.alicp.jetcache.support.KryoValueDecoder;
+import com.alicp.jetcache.support.KryoValueEncoder;
 import com.mzlion.core.lang.StringUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +20,10 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.util.Pool;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * JetCache 的配置
@@ -71,8 +71,8 @@ public class JetCacheConfig {
         Map<String, CacheBuilder> remoteBuilders = new HashMap<>();
         RedisCacheBuilder remoteCacheBuilder = RedisCacheBuilder.createRedisCacheBuilder()
                 .keyConvertor(FastjsonKeyConvertor.INSTANCE)
-                .valueEncoder(JavaValueEncoder.INSTANCE)
-                .valueDecoder(JavaValueDecoder.INSTANCE)
+                .valueEncoder(KryoValueEncoder.INSTANCE)
+                .valueDecoder(KryoValueDecoder.INSTANCE)
                 .expireAfterWrite(3600, TimeUnit.SECONDS) // 全局 expire，@Cached 能够指定自己的 expire
                 .jedisPool(pool);
         remoteBuilders.put(CacheConsts.DEFAULT_AREA, remoteCacheBuilder);

@@ -16,7 +16,12 @@ gretty {
     recompileOnSourceChange = true
 
     // 升级 gretty 自带的 springloaded
-    jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
+    // jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
+
+    // 使用 JRebel
+    // Mac    : jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib", '-Djava.awt.headless=true']
+    // Linux  : jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.so", '-Djava.awt.headless=true']
+    // Windows: jvmArgs = ["-agentpath:C:/jrebel/lib/libjrebel64.dll", '-Djava.awt.headless=true']
 }
 
 ////////////////////////////////////////////////////////////////////////////////
