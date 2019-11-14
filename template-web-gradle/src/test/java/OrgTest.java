@@ -1,4 +1,5 @@
 import com.edu.training.bean.Organization;
+import com.edu.training.bean.Page;
 import com.edu.training.bean.Result;
 import com.edu.training.bean.User;
 import com.edu.training.mapper.OrganizationMapper;
@@ -26,7 +27,7 @@ public class OrgTest {
      */
     @Test
     public void testFindOrganizationsLikeName() {
-        Utils.dump(orgMapper.findOrganizationsLikeName("大"));
+        Utils.dump(orgMapper.findOrganizationsLikeName("大", Page.of(0, 10)));
     }
 
     /**

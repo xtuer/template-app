@@ -5,7 +5,6 @@ import com.edu.training.config.AppConfig;
 import com.edu.training.service.OrganizationService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.SecurityUtils;
-import com.edu.training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -50,11 +49,8 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         User   user     = userService.findUser(username, password, orgId);
 
         // [2] 创建用户的登录记录
-        userService.createLoginRecord(user.getId(), user.getUsername());
-
         // [3] 生成用户的 token 保存到 cookie
-        String token = tokenService.generateToken(user);
-        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+        String token = userService.loginToken(user, response);
 
         // [4] 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 接下来的鉴权使用
         Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();

@@ -3,7 +3,6 @@ package com.edu.training.controller;
 import com.edu.training.bean.Result;
 import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
-import com.edu.training.security.SecurityConstant;
 import com.edu.training.security.TokenService;
 import com.edu.training.service.UserService;
 import com.edu.training.util.WebUtils;
@@ -131,9 +130,7 @@ public class AuthenticationController extends BaseController {
         }
 
         // 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)
-        userService.createLoginRecord(user.getId(), user.getUsername()); // 创建用户的登录记录
-        String token = tokenService.generateToken(user);
-        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+        String token = userService.loginToken(user, response);
 
         return Result.ok(token);
     }

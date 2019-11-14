@@ -7,7 +7,10 @@ import com.edu.training.bean.Result;
 import com.edu.training.bean.Role;
 import com.edu.training.bean.User;
 import com.edu.training.mapper.UserMapper;
+import com.edu.training.security.SecurityConstant;
+import com.edu.training.security.TokenService;
 import com.edu.training.util.Utils;
+import com.edu.training.util.WebUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,9 @@ import java.io.IOException;
 public class UserService extends BaseService {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private TokenService tokenService;
 
     /**
      * 查找机构 orgId 下指定账号的用户
@@ -117,13 +123,21 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 创建用户的登录记录
+     * 用户登录后，创建 token
      *
-     * @param userId   用户 ID
-     * @param username 用户账号
+     * @param user     用户对象
+     * @param response 响应对象
+     * @return 返回 token
      */
-    public void createLoginRecord(long userId, String username) {
-        userMapper.insertUserLoginRecord(userId, username);
+    public String loginToken(User user, HttpServletResponse response) {
+        // 1. 创建用户的登录记录
+        userMapper.insertUserLoginRecord(user.getId(), user.getUsername());
+
+        // 2. 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)
+        String token = tokenService.generateToken(user);
+        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+
+        return token;
     }
 
     /**

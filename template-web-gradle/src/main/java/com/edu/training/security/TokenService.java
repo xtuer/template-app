@@ -3,34 +3,33 @@ package com.edu.training.security;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.edu.training.bean.User;
+import com.edu.training.config.AppConfig;
 import com.edu.training.util.Jwt;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Map;
 import java.util.Set;
 
 /**
  * 生成 token 的 service.
+ *
+ * 用法:
+ * 使用用户生成 Token: TokenService.generateToken(user)
+ * 从 Token 提取用户: TokenService.extractUser(token)
  */
 @Getter
 @Setter
 public class TokenService {
-    @Value("${authTokenDuration}")
-    private int authTokenDuration; // 身份认证 token 的有效期，单位为秒
-
-    @Value("${appId}")
-    private String appId; // 应用的 ID
-
-    @Value("${appKey}")
-    private String appKey; // 应用的秘钥，可以定期更换
+    @Autowired
+    protected AppConfig config;
 
     // 生成 token
     public String generateToken(User user) {
         // Token 中保存 id, username, nickname, roles
-        long expiredAt = System.currentTimeMillis() + authTokenDuration * 1000L;
-        return Jwt.create(appId, appKey).expiredAt(expiredAt)
+        long expiredAt = System.currentTimeMillis() + config.getAuthTokenDuration() * 1000L;
+        return Jwt.create(config.getAppId(), config.getAppKey()).expiredAt(expiredAt)
                 .param("id",       user.getId() + "")
                 .param("username", user.getUsername())
                 .param("nickname", user.getNickname())
@@ -40,7 +39,7 @@ public class TokenService {
 
     // 检测 token 的有效性
     public boolean checkToken(String token) {
-        return Jwt.checkToken(token, appKey);
+        return Jwt.checkToken(token, config.getAppKey());
     }
 
     // 从 token 中提取用户
@@ -63,28 +62,5 @@ public class TokenService {
         } catch (Exception ex) {
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        TokenService service = new TokenService();
-        service.setAppId("Default-App-ID");
-        service.setAppKey("Default-App-Key");
-        service.setAuthTokenDuration(60);
-
-        // 创建用户对象
-        User user = new User(1234L, "Biao", "---", "ROLE_ADMIN");
-        user.setEmail("biao.mac@icloud.com");
-        user.setNickname("二狗");
-
-        // 使用 user 生成 token
-        String token = service.generateToken(user);
-        System.out.println(token);
-
-        // 检测 token 是否有效
-        System.out.println(service.checkToken(token));
-
-        // 从 token 中提取用户
-        user = service.extractUser(token);
-        System.out.println(JSON.toJSONString(user));
     }
 }
