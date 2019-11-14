@@ -2,12 +2,11 @@ package com.edu.training.bean;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONType;
+import com.edu.training.util.SecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -36,7 +35,7 @@ public class User {
     private String  avatar;   // 头像
     private long    orgId;    // 所属机构的 ID
     private int     gender;   // 性别: 0 (未设置), 1 (男), 2 (女)
-    private boolean enabled;  // 状态: 0 (禁用), 1 (启用)
+    private boolean enabled = true;  // 状态: false (禁用), true (启用)
 
     private Set<String> roles = new HashSet<>(); // 角色，需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
 
@@ -54,17 +53,6 @@ public class User {
         for (String role : roles) {
             this.addRole(role);
         }
-    }
-
-    /**
-     * 使用当前用户创建 UserDetails 给 SpringSecurity 使用
-     *
-     * @return 返回用户对应的 UserDetails
-     */
-    public UserDetails toUserDetails() {
-        return new org.springframework.security.core.userdetails.User(
-                username, password, enabled, true, true, true, AuthorityUtils.createAuthorityList(roles.toArray(new String[]{}))
-        );
     }
 
     /**
@@ -107,6 +95,6 @@ public class User {
 
         User user3 = new User();
         user3.setUsername("Bob").setPassword("pass").addRole("ADMIN");
-        System.out.println(JSON.toJSONString(user3.toUserDetails()));
+        System.out.println(JSON.toJSONString(SecurityUtils.buildUserDetails(user3)));
     }
 }

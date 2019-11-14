@@ -3,12 +3,14 @@ package com.edu.training.security;
 import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
 import com.edu.training.controller.Urls;
+import com.edu.training.util.SecurityUtils;
 import com.edu.training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
@@ -19,6 +21,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * 使用 token 进行身份验证的过滤器。
@@ -45,7 +48,8 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
         if (user == null) {
             return null;
         } else {
-            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
+            Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();
+            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
         }
     }
 

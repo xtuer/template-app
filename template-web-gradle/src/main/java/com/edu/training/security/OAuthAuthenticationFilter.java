@@ -2,12 +2,14 @@ package com.edu.training.security;
 
 import com.alibaba.fastjson.JSON;
 import com.edu.training.bean.User;
+import com.edu.training.util.SecurityUtils;
 import com.mzlion.easyokhttp.HttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
@@ -18,6 +20,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 public class OAuthAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private String qqClientId = "101292272";
@@ -71,7 +74,8 @@ public class OAuthAuthenticationFilter extends AbstractAuthenticationProcessingF
 
             if (user != null) {
                 // [5] 用户存在，登陆成功，跳转到登陆前的页面
-                Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
+                Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();
+                Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
                 super.successfulAuthentication(request, response, chain, auth); // 跳转到登陆前页面
             } else {
                 // [6] 用户不存在，跳转到 "创建|绑定已有用户" 页面，

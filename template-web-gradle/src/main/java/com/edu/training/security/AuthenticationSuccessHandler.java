@@ -4,16 +4,19 @@ import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
 import com.edu.training.service.OrganizationService;
 import com.edu.training.service.UserService;
+import com.edu.training.util.SecurityUtils;
 import com.edu.training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * 登陆成功处理器，主要作用为创建 token 保存到 cookie，然后跳转到角色对应的页面
@@ -54,7 +57,8 @@ public class AuthenticationSuccessHandler implements org.springframework.securit
         WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
 
         // [4] 生成 Spring Security 可使用的用户对象，保存到 SecurityContext 供 Spring Security 接下来的鉴权使用
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.toUserDetails().getAuthorities());
+        Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();
+        Authentication auth = new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         // [5] 登录成功后根据用户的角色跳转到对应的页面

@@ -2,7 +2,9 @@ package com.edu.training.util;
 
 import com.edu.training.bean.User;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 public final class SecurityUtils {
     /**
@@ -36,5 +38,18 @@ public final class SecurityUtils {
 
         Object p = auth.getPrincipal();
         return (p instanceof User) ? (User) p : null;
+    }
+
+    /**
+     * 使用用户创建 UserDetails 给 SpringSecurity 使用
+     *
+     * @param user 用户对象
+     * @return 返回用户对应的 UserDetails
+     */
+    public static UserDetails buildUserDetails(User user) {
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
+                AuthorityUtils.createAuthorityList(user.getRoles().toArray(new String[]{}))
+        );
     }
 }

@@ -3,6 +3,7 @@ package com.edu.training.security;
 import com.edu.training.bean.User;
 import com.edu.training.service.OrganizationService;
 import com.edu.training.service.UserService;
+import com.edu.training.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -30,6 +31,6 @@ public class UserDetailsService implements org.springframework.security.core.use
             throw new UsernameNotFoundException(username + " not found!");
         }
 
-        return user.toUserDetails(); // 构建 Spring Security 需要的用户信息
+        return SecurityUtils.buildUserDetails(user); // 构建 Spring Security 需要的用户信息 UserDetails
     }
 }
