@@ -37,6 +37,7 @@
     <!-- 2. SQL session factory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:config/mybatis-config.xml"/>
         <property name="mapperLocations" value="classpath:mapper/**/*.xml"/> <!-- Mapper xml -->
         <property name="typeAliasesPackage" value="com.edu.training.bean"/> <!-- Mapper 文件中类型可以不使用包名了 -->
     </bean>

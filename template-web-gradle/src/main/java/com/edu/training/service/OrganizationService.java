@@ -71,7 +71,7 @@ public class OrganizationService extends BaseService {
      * @param host 机构的域名
      * @return 返回域名所属机构
      */
-    @Cached(name = CacheConst.CACHE, key = CacheConst.KEY_ORG)
+    @Cached(name = CacheConst.CACHE, key = CacheConst.KEY_ORG_HOST)
     public Organization findOrganizationByHost(String host) {
         return orgMapper.findOrganizationByHost(host);
     }
@@ -168,7 +168,7 @@ public class OrganizationService extends BaseService {
      *
      * @param host 机构 host
      */
-    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_ORG)
+    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_ORG_HOST)
     public void invalidateOrganizationCache(String host) {
 
     }

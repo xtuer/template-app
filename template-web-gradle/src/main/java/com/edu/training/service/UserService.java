@@ -70,7 +70,7 @@ public class UserService extends BaseService {
      * @param userId 用户 ID
      * @return 返回查找到的用户，查找不到则返回 null
      */
-    @Cached(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
+    @Cached(name = CacheConst.CACHE, key = CacheConst.KEY_USER_ID)
     public User findUser(long userId) {
         return userMapper.findUserById(userId);
     }
@@ -148,7 +148,7 @@ public class UserService extends BaseService {
      * @param userId 用户的 ID
      * @param mobile 用户的手机号
      */
-    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
+    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER_ID)
     public Result<String> updateUserMobile(long userId, String mobile) {
         mobile = StringUtils.trim(mobile);
 
@@ -222,7 +222,7 @@ public class UserService extends BaseService {
      * @param userId   用户的 ID
      * @param nickname 用户的昵称
      */
-    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
+    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER_ID)
     public void updateUserNickname(long userId, String nickname) {
         userMapper.updateUserNickname(userId, nickname);
     }
@@ -233,7 +233,7 @@ public class UserService extends BaseService {
      * @param userId 用户 ID
      * @param avatar 用户头像
      */
-    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
+    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER_ID)
     public String updateUserAvatar(long userId, String avatar) {
         // 1. 移动 avatar 的图片到 repo 并得到 avatar 的最新 URL
         // 2. 更新数据库中用户的 avatar
@@ -255,7 +255,7 @@ public class UserService extends BaseService {
      * @param userId 用户的 ID
      * @param gender 用户的性别
      */
-    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER)
+    @CacheInvalidate(name = CacheConst.CACHE, key = CacheConst.KEY_USER_ID)
     public void updateUserGender(long userId, int gender) {
         userMapper.updateUserGender(userId, gender);
     }
