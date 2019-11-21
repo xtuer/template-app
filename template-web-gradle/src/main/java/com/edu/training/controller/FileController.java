@@ -121,7 +121,7 @@ public class FileController extends BaseController {
     @PostMapping(Urls.FORM_UPLOAD_TEMP_FILE)
     @ResponseBody
     public Result<UploadedFile> uploadFileToTemp(@RequestParam("file") MultipartFile file) throws IOException {
-        long userId = super.getLoginUserId();
+        long userId = super.getCurrentUserId();
         UploadedFile result = tempFileService.uploadFileToTemp(file, userId);
         return Result.ok(result);
     }
@@ -137,7 +137,7 @@ public class FileController extends BaseController {
     @PostMapping(Urls.FORM_UPLOAD_TEMP_FILES)
     @ResponseBody
     public Result<List<UploadedFile>> uploadFilesToTemp(@RequestParam("files") List<MultipartFile> files) throws IOException {
-        long userId = super.getLoginUserId();
+        long userId = super.getCurrentUserId();
         List<UploadedFile> upFiles = new LinkedList<>();
 
         for (MultipartFile file : files) {

@@ -100,8 +100,8 @@ public class AuthenticationController extends BaseController {
      */
     @GetMapping(Urls.API_LOGIN_USERS_CURRENT)
     @ResponseBody
-    public Result<User> getCurrentUser() {
-        User user = super.getLoginUser();
+    public Result<User> getCurrentLoginUser() {
+        User user = super.getCurrentUser();
 
         if (user != null) {
             user = userService.findUser(user.getId()); // 从数据库里查询用户信息
@@ -143,7 +143,7 @@ public class AuthenticationController extends BaseController {
      */
     @GetMapping(Urls.PAGE_USER_BACKEND)
     public void toUserBackendPage(HttpServletResponse response) throws IOException {
-        userService.redirectToUserBackendPage(super.getLoginUser(), response);
+        userService.redirectToUserBackendPage(super.getCurrentUser(), response);
     }
 
     /**
