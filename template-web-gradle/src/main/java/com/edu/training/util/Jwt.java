@@ -91,7 +91,7 @@ public class Jwt {
     private static String sign(Map<String, String> params, String appKey) {
         // 初始化计算签名的字符串 signedText 为 appKey，
         // 然后按照 params 中 key 的字母序遍历 params，value 挨个的加在到 toSignedText 后面
-        // 对
+        // 对 signedText 求 MD5
         Map<String, String> sortedMap = new TreeMap<>(params);
         StringBuilder signedText = new StringBuilder(appKey);
 
