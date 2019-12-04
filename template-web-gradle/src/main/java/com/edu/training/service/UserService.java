@@ -102,7 +102,7 @@ public class UserService extends BaseService {
 
         long userId = user.getId();
 
-        if (Utils.isIdInvalid(userId)) {
+        if (Utils.isInvalidId(userId)) {
             userId = nextId();
             user.setId(userId);
         }
