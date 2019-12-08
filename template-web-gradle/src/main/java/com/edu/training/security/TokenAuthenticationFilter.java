@@ -40,43 +40,27 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
     }
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
-        // 从 token 中提取 user，如果 user 不为 null，则用其创建一个 Authentication 对象
-        User user = tokenService.extractUser(WebUtils.getAuthToken(request));
-
-        if (user == null) {
-            return null;
-        } else {
-            Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();
-            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
-        }
-    }
-
-    @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletRequest  request  = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+
+        // 如果已经通过认证，则执行下一个 filter
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         // 如果 header 或者 cookie 里有 auth-token 时，则使用 token 查询用户数据进行登陆验证
         if (WebUtils.getAuthToken(request) != null) {
             // 1. 尝试进行身份认证
-            // 2. 如果用户无效
-            //    2.1. AJAX 请求返回 401，方便拦截统一处理
-            //    2.2. 普通请求则删除 token，重定向到登录页
-            // 3. 如果用户有效，则保存到 SecurityContext 中，供本次访问后续使用
+            // 2. 如果用户有效，则保存到 SecurityContext 中，供本次访问后续使用
+            // 3. 如果用户无效:
+            //    3.1. AJAX 请求返回 401，方便拦截统一处理
+            //    3.2. 普通请求则删除 token，重定向到登录页
             Authentication auth = attemptAuthentication(request, response);
 
-            if (auth == null) {
-                if (WebUtils.useAjax(request)) {
-                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token 无效");
-                } else {
-                    WebUtils.deleteCookie(response, SecurityConstant.AUTH_TOKEN_KEY);
-                    response.sendRedirect(Urls.PAGE_LOGIN);
-                }
-
-                return;
-            } else  {
+            if (auth != null) {
+                // 认证成功的用户信息放入安全上下文中
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
                 // 如果 header 里有 save-auth-token: true，则保存 token 到 cookie
@@ -86,11 +70,34 @@ public class TokenAuthenticationFilter extends AbstractAuthenticationProcessingF
                     String token = WebUtils.getAuthToken(request);
                     WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
                 }
+            } else {
+                if (WebUtils.useAjax(request)) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token 无效");
+                } else {
+                    WebUtils.deleteCookie(response, SecurityConstant.AUTH_TOKEN_KEY);
+                    response.sendRedirect(Urls.PAGE_LOGIN);
+                }
+
+                // 返回，不继续执行下一个 filter
+                return;
             }
         }
 
         // 继续调用下一个 filter: UsernamePasswordAuthenticationToken
         chain.doFilter(request, response);
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+        // 从 token 中提取 user，如果 user 不为 null，则用其创建一个 Authentication 对象
+        User user = tokenService.extractUser(WebUtils.getAuthToken(request));
+
+        if (user == null) {
+            return null;
+        } else {
+            Collection<? extends GrantedAuthority> authorities = SecurityUtils.buildUserDetails(user).getAuthorities();
+            return new UsernamePasswordAuthenticationToken(user, user.getPassword(), authorities);
+        }
     }
 
     @Override
