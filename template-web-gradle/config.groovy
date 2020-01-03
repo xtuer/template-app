@@ -70,9 +70,9 @@ environments {
 
     mac {
         thymeleafCacheable = false
-        repoDirectory = '/tmp/training/repo' // 文件仓库目录
-        tempDirectory = '/tmp/training/temp' // 临时文件目录
-        logsDirectory = '/tmp/training/logs' // 日志目录
+        repoDirectory = '/usr/local/temp/training/repo' // 文件仓库目录
+        tempDirectory = '/usr/local/temp/training/temp' // 临时文件目录
+        logsDirectory = '/usr/local/temp/training/logs' // 日志目录
     }
 
     /*-----------------------------------------------------------------------------|
