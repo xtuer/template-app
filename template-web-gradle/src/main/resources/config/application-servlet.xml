@@ -115,19 +115,22 @@
 
     <!-- 静态资源的访问，如 js, css, jpg, png -->
     <!-- 如 HTML 里访问 /static/js/jquery.js, 则实际访问的是 /WEB-INF/page-pc/static/js/jquery.js -->
-    <mvc:resources mapping="/static/js/**"      location="/WEB-INF/page-pc/static/js/"    cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/css/**"     location="/WEB-INF/page-pc/static/css/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/img/**"     location="/WEB-INF/page-pc/static/img/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/fonts/**"   location="/WEB-INF/page-pc/static/fonts/" cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static/lib/**"     location="/WEB-INF/page-pc/static/lib/"   cache-period="${cachePeriod}"/>
+    <!-- <mvc:resources mapping="/static/js/**"      location="/WEB-INF/page-pc/static/js/"    cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static/css/**"     location="/WEB-INF/page-pc/static/css/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static/img/**"     location="/WEB-INF/page-pc/static/img/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static/fonts/**"   location="/WEB-INF/page-pc/static/fonts/" cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static/lib/**"     location="/WEB-INF/page-pc/static/lib/"   cache-period="${cachePeriod}"/>-->
 
-    <mvc:resources mapping="/static-x/books/**" location="/WEB-INF/static-x/books/" cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/kps/**"   location="/WEB-INF/static-x/kps/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/js/**"    location="/WEB-INF/static-x/js/"    cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/css/**"   location="/WEB-INF/static-x/css/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/img/**"   location="/WEB-INF/static-x/img/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/lib/**"   location="/WEB-INF/static-x/lib/"   cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/html/**"  location="/WEB-INF/static-x/html/"  cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/static-x/impex/**" location="/WEB-INF/static-x/impex/" cache-period="${cachePeriod}"/>
-    <mvc:resources mapping="/favicon.ico"       location="/WEB-INF/static-x/img/favicon.ico" cache-period="${cachePeriod}"/>
+    <!-- <mvc:resources mapping="/static-x/books/**" location="/WEB-INF/static-x/books/" cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/kps/**"   location="/WEB-INF/static-x/kps/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/js/**"    location="/WEB-INF/static-x/js/"    cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/css/**"   location="/WEB-INF/static-x/css/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/img/**"   location="/WEB-INF/static-x/img/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/lib/**"   location="/WEB-INF/static-x/lib/"   cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/html/**"  location="/WEB-INF/static-x/html/"  cache-period="${cachePeriod}"/>-->
+    <!-- <mvc:resources mapping="/static-x/impex/**" location="/WEB-INF/static-x/impex/" cache-period="${cachePeriod}"/>-->
+
+    <mvc:resources mapping="/static/**"   location="/WEB-INF/page-pc/static/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/static-x/**" location="/WEB-INF/static-x/" cache-period="${cachePeriod}"/>
+    <mvc:resources mapping="/favicon.ico" location="/WEB-INF/static-x/img/favicon.ico" cache-period="${cachePeriod}"/>
 </beans>
