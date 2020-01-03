@@ -35,7 +35,7 @@
             timeout  = 2000
             minIdle  = 2
             maxIdle  = 10
-            maxTotal = 10
+            maxTotal = 100
         }
 
         // 应用的 ID 和 key，用于生成身份认证的 token
