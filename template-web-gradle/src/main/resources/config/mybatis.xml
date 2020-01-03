@@ -14,7 +14,7 @@
         <!-- 配置初始化大小、最小、最大 -->
         <property name="initialSize" value="0"/>
         <property name="minIdle"     value="1"/>
-        <property name="maxActive"   value="600"/>
+        <property name="maxActive"   value="300"/>
 
         <!-- 配置获取连接等待超时的时间: 一分钟 -->
         <property name="maxWait" value="60000"/>
