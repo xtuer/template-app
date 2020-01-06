@@ -1,0 +1,70 @@
+// SCSS 的全局变量定义，使用方法:
+//     1. 样式使用 SCSS: <style lang="scss">
+//     2. 引入全局变量: @import '~@css/variables.scss';
+//     3. 使用全局变量: border: 1px dashed $borderColor;
+
+// 颜色定义
+//    使用 iView 的颜色 https://www.iviewui.com/components/color
+$borderColor      : #dcdee2; // 边框
+$separatorColor   : #e8eaec; // 分割线
+$backgroundColor  : #f8f8f9; // 背景色
+$disabledColor    : #c5c8ce; // 失效
+$iconColor        : #808695; // 图标
+$textColor        : #515a6e; // 正文
+$titleColor       : #17233d; // 标题
+$primaryColor     : #2d8cf0; // Primary
+$lightPrimaryColor: #5cadff; // Light Primary
+$darkPrimaryColor : #2b85e4; // Dark Primary
+$infoColor        : #2db7f5; // 信息
+$successColor     : #19be6b; // 成功
+$warningColor     : #ff9900; // 警告
+$errorColor       : #ed4014; // 错误
+
+$boardColor       : #1e2a3a; // 黑板颜色
+$boardTransColor  : #283342;
+
+$interactionColor : #475362; // 工具栏颜色
+$interactionColor2: #38424f;
+
+$gap         : 12px; // 间隔
+$borderRadius: 4px;  // 圆角
+
+// 试卷相关颜色
+$optionBorder      : 1px solid #DDD; // 选项的边框
+$optionCorrectColor: #5cadff; // 正确选项的高亮颜色
+$optionWidth       : 28px;    // 答题卡选择题选项的宽
+$optionHeight      : 28px;    // 答题卡选择题选项的高
+$correctColor      : #5cadff;
+
+// 水平和垂直居中
+@mixin alignCenter {
+    display        : flex;
+    justify-content: center;
+    align-items    : center;
+}
+
+// 水平居中
+@mixin alignHCenter {
+    display    : flex;
+    align-items: center;
+}
+
+// 垂直居中
+@mixin alignVCenter {
+    display        : flex;
+    flex-direction : column;
+    justify-content: center;
+}
+
+// 动画的速度: 默认、慢、快 (参考了 jQuery 的动画时间)
+@mixin defaultAnimation {
+    transition-duration: .4s;
+}
+
+@mixin slowAnimation {
+    transition-duration: .6s;
+}
+
+@mixin fastAnimation {
+    transition-duration: .2s;
+}
