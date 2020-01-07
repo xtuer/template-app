@@ -2,6 +2,7 @@ package com.edu.training.controller;
 
 import com.edu.training.bean.Organization;
 import com.edu.training.bean.Result;
+import com.edu.training.bean.Urls;
 import com.edu.training.bean.User;
 import com.edu.training.mapper.UserMapper;
 import com.edu.training.service.IdWorker;

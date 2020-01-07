@@ -3,6 +3,7 @@ package com.edu.training.controller;
 import com.edu.training.bean.Organization;
 import com.edu.training.bean.Page;
 import com.edu.training.bean.Result;
+import com.edu.training.bean.Urls;
 import com.edu.training.mapper.OrganizationMapper;
 import com.edu.training.service.OrganizationService;
 import com.edu.training.util.Utils;

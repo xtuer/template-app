@@ -2,7 +2,7 @@ package com.edu.training.service;
 
 import com.edu.training.bean.UploadedFile;
 import com.edu.training.config.AppConfig;
-import com.edu.training.controller.Urls;
+import com.edu.training.bean.Urls;
 import com.edu.training.mapper.FileMapper;
 import com.edu.training.util.Utils;
 import lombok.extern.slf4j.Slf4j;

@@ -2,6 +2,7 @@ package com.edu.training.controller;
 
 import com.edu.training.bean.Result;
 import com.edu.training.bean.UploadedFile;
+import com.edu.training.bean.Urls;
 import com.edu.training.util.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

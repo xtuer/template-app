@@ -1,4 +1,4 @@
-package com.edu.training.controller;
+package com.edu.training.bean;
 
 /**
  * 集中管理 URL.

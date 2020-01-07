@@ -1,6 +1,7 @@
 package com.edu.training.controller;
 
 import com.edu.training.bean.Result;
+import com.edu.training.bean.Urls;
 import com.edu.training.bean.User;
 import com.edu.training.service.UserService;
 import org.apache.commons.lang3.StringUtils;

@@ -2,7 +2,7 @@ package com.edu.training.security;
 
 import com.edu.training.bean.User;
 import com.edu.training.config.AppConfig;
-import com.edu.training.controller.Urls;
+import com.edu.training.bean.Urls;
 import com.edu.training.util.SecurityUtils;
 import com.edu.training.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;

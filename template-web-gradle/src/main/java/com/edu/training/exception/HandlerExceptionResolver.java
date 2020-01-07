@@ -2,7 +2,7 @@ package com.edu.training.exception;
 
 import com.alibaba.fastjson.JSON;
 import com.edu.training.bean.Result;
-import com.edu.training.controller.Urls;
+import com.edu.training.bean.Urls;
 import com.edu.training.service.IdWorker;
 import com.edu.training.util.Utils;
 import com.edu.training.util.WebUtils;
