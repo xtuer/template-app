@@ -15,14 +15,19 @@ gretty {
     managedClassReload      = true
     recompileOnSourceChange = true
 
-    // 升级 gretty 自带的 springloaded
-    // jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
-    jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib", '-Djava.awt.headless=true']
-
-    // 使用 JRebel
-    // Mac    : jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib", '-Djava.awt.headless=true']
-    // Linux  : jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.so", '-Djava.awt.headless=true']
-    // Windows: jvmArgs = ["-agentpath:C:/jrebel/lib/libjrebel64.dll", '-Djava.awt.headless=true']
+    // 如果配置了 JRebel 则使用 JRebel，否则使用 Springloaded 进行热加载:
+    //     jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
+    //     jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib", '-Djava.awt.headless=true']
+    //
+    // 配置 JRebel: 在 ~/.gradle/gradle.properties 配置 JRebel 的路径:
+    //     Win  : rebelAgent=-agentpath:C:/jrebel/lib/libjrebel64.dll
+    //     Mac  : rebelAgent=-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib
+    //     Linux: rebelAgent==-agentpath:/usr/local/jrebel/lib/libjrebel64.so
+    if (project.hasProperty('rebelAgent')) {
+        jvmArgs = [rebelAgent, '-Djava.awt.headless=true']
+    } else {
+        jvmArgs = ["-javaagent:${project.projectDir}/springloaded-1.2.8.RELEASE.jar", '-noverify', '-Djava.awt.headless=true']
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
