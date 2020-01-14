@@ -1,15 +1,17 @@
-package com.edu.training.exception;
+package com.xtuer.exception;
 
 import com.alibaba.fastjson.JSON;
-import com.edu.training.bean.Result;
-import com.edu.training.bean.Urls;
-import com.edu.training.service.IdWorker;
-import com.edu.training.util.Utils;
-import com.edu.training.util.WebUtils;
+import com.xtuer.bean.Result;
+import com.xtuer.bean.Urls;
+import com.xtuer.service.IdWorker;
+import com.xtuer.util.Utils;
+import com.xtuer.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +22,9 @@ import javax.servlet.http.HttpServletResponse;
  * 1. 当 AJAX 请求时发生异常，返回 JSON 格式的错误信息，状态码为 500
  * 2. 非 AJAX 请求时发生异常，错误信息显示到 HTML 网页
  */
+@ControllerAdvice
 @Slf4j
-public final class HandlerExceptionResolver implements org.springframework.web.servlet.HandlerExceptionResolver {
+public final class GlobalExceptionHandler {
     // 服务器的 ID
     private int workerId = Utils.getServerId();
 
@@ -29,10 +32,8 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
     @Autowired
     private IdWorker idWorker;
 
-    @Override
-    public ModelAndView resolveException(HttpServletRequest request,
-                                         HttpServletResponse response,
-                                         Object handler, Exception ex) {
+    @ExceptionHandler(value = Exception.class)
+    public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) {
         String error = "服务器: " + workerId + ", 异常 ID: " + idWorker.nextId();
         String stack = String.format("网址: %s%n参数: %s%n堆栈: %s",
                 request.getRequestURL(),
@@ -44,7 +45,7 @@ public final class HandlerExceptionResolver implements org.springframework.web.s
         log.warn(stack);
 
         return WebUtils.useAjax(request) ? handleAjaxException(response, error, stack)
-                                         : handleNonAjaxException(ex, error, stack);
+                : handleNonAjaxException(ex, error, stack);
     }
 
     /**

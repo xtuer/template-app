@@ -1,0 +1,20 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Array	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^};$/;"	class
+Array.insert	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.insert = function(index, elem) {$/;"	method
+Array.remove	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.remove = function(index) {$/;"	method
+Array.replace	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.replace = function(index, elem) {$/;"	method
+String	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^\/**$/;"	class
+String.format	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^String.prototype.format = function(replacements) {$/;"	method
+Util	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^function Util() {$/;"	function
+Util.activateSidebarItem	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^}$/;"	function
+activateSidebarItem	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Util.activateSidebarItem = function(sidebarItemIndex) {$/;"	function
+format	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^String.prototype.format = function(replacements) {$/;"	function
+formatString	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^var formatString = function (str, replacements) {$/;"	function
+insert	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.insert = function(index, elem) {$/;"	function
+remove	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.remove = function(index) {$/;"	function
+replace	/Users/Biao/Documents/workspace/Java/template-web-gradle/src/main/webapp/WEB-INF/static/js/util.js	/^Array.prototype.replace = function(index, elem) {$/;"	function

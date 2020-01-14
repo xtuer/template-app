@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title th:text="|${school?.name} · 登录|"></title>
+
+<!--    <link href="/static/css/global.css" rel="stylesheet" type="text/css"/>-->
+    <link href="/static/css/login.less" rel="stylesheet/less" type="text/css"/>
+</head>
+
+<body>
+    <!-- 动画背景 -->
+    <!-- <div id="particles-js"></div> -->
+    <canvas id="canvas"></canvas>
+
+    <div class="main">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="title">
+                <div class="logo"></div>
+                <div th:text="${school?.name}" class="title-text"></div>
+            </div>
+            <div class="download"><a href="/page/download"><img src="/static/img/download/download.png"><span>App 下载</span></a></div>
+        </div>
+
+        <div class="content">
+            <!-- 网站主题图 -->
+            <div class="theme-image"></div>
+            <!-- <div th:if="${school?.imageUrl}" th:style="|background-image: url(${school.imageUrl})|" class="theme-image"></div>
+            <div th:unless="${school?.imageUrl}" style="background-image: url(/static/img/theme-default.png)" class="theme-image"></div> -->
+
+            <!-- 登录框 -->
+            <div class="login-container">
+                <div id="status" th:text="${status}"></div>
+
+                <!-- 头像 -->
+                <div th:if="${avatar}" class="avatar" th:style="|background-image: url(${avatar})|"></div>
+                <div th:unless="${avatar}" class="avatar" style="background-image: url(/static/img/avatar-default.png)"></div>
+
+                <!-- 用户名密码和登录按钮 -->
+                <form action="/login" method="POST" class="form-box">
+                    <input name="username" type="text"     placeholder="账号">
+                    <input name="password" type="password" placeholder="密码">
+                    <button id="login" type="submit">登录</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- 版权 -->
+        <div class="footer">
+            <!-- 版权 -->
+            <div class="copy-right">Copyright ©2000-2018 Cloudbag 教育云平台</div>
+        </div>
+    </div>
+
+    <!-- <script src="/static/lib/particles/particles.min.js"></script> -->
+    <!-- <script src="/static/lib/particles/app.js"></script> -->
+    <script src="/static/lib/proton.min.js"></script>
+    <script src="/static/lib/less.min.js"></script>
+    <script src="/static/lib/jquery.min.js"></script>
+    <script src="/static/lib/jquery.browser.min.js"></script>
+    <script>
+        if ($.browser.webkit) {
+            // 正在使用 Chrome, Safari 访问本站
+        } else if ($.browser.mozilla) {
+            alert('您使用的是 Firefox, 推荐使用 Chrome 浏览器获得更好的体验');
+        } else {
+            alert('请使用 Chrome 浏览器进行访问');
+        }
+
+        // Proto 动画
+        var canvas;
+        var context;
+        var proton;
+        var renderer;
+        var emitter, pointZone;
+        var R, num;
+        var pointer;
+
+        main();
+
+        function main() {
+            num = Math.min(parseInt(window.innerWidth / (1000 / 145)), 70);
+            R = 180;
+            pointer = { x: 0, y: 0, r: 0 };
+
+            initCanvas();
+            createProton(num);
+            // setTimeout(addMouseEvent, 200);
+            addRenderer();
+            tick();
+        }
+
+        function initCanvas() {
+            canvas = document.getElementById("canvas");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            context = canvas.getContext('2d');
+        }
+
+        function createProton(num) {
+            proton = new Proton;
+
+            emitter = new Proton.Emitter();
+            emitter.rate = new Proton.Rate(new Proton.Span(num), new Proton.Span(.05, .2));
+
+            emitter.addInitialize(new Proton.Mass(1));
+            emitter.addInitialize(new Proton.Radius(1, 4));
+            emitter.addInitialize(new Proton.Life(Infinity));
+
+            pointZone = new Proton.Position(new Proton.RectZone(0, 0, canvas.width, canvas.height));
+            emitter.addInitialize(pointZone);
+            emitter.addInitialize(new Proton.Velocity(new Proton.Span(.3, .6), new Proton.Span(0, 360), 'polar'));
+
+            emitter.addBehaviour(new Proton.Alpha(Proton.getSpan(0.2, .9)));
+            emitter.addBehaviour(new Proton.Color('#cccccc'));
+            emitter.addBehaviour(new Proton.CrossZone(new Proton.RectZone(0, 0, canvas.width, canvas.height), 'cross'));
+
+            emitter.emit('once');
+            emitter.damping = 0;
+            proton.addEmitter(emitter);
+        }
+
+        function addRenderer() {
+            renderer = new Proton.CanvasRenderer(canvas);
+            renderer.onProtonUpdateAfter = function () {
+                var particles = emitter.particles;
+
+                for (var i = 0; i < particles.length; i++) {
+                    for (var j = i + 1; j < particles.length; j++) {
+                        var pA = particles[i];
+                        var pB = particles[j];
+                        var dis = pA.p.distanceTo(pB.p);
+
+                        if (dis < R) {
+                            var alpha = (1 - dis / R) * .5;
+                            context.strokeStyle = 'rgba(255,255,255,' + alpha + ')';
+                            context.beginPath();
+                            context.moveTo(pA.p.x, pA.p.y);
+                            context.lineTo(pB.p.x, pB.p.y);
+                            context.closePath();
+                            context.stroke();
+                        }
+                    }
+                }
+            }
+
+            proton.addRenderer(renderer);
+        }
+
+        function tick() {
+            requestAnimationFrame(tick);
+            proton.update();
+        }
+    </script>
+</body>
+
+</html>

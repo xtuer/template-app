@@ -1,0 +1,202 @@
+html, body {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Helvetica, "Microsoft YaHei", Arial, sans-serif;
+    overflow: hidden;
+}
+
+// 占满整个窗口
+.main, #particles-js, #canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+// 动画的容器
+#particles-js, #canvas {
+    background: linear-gradient(105deg, #1d7dff 0%, #4364f7 100%);
+    // background-size: cover;
+    // background-position: 50% 50%;
+    // background-repeat: no-repeat;
+    background-image: url(/static/img/login-background.png);
+}
+
+// 主要内容区
+.main .content {
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    margin-top: -70px;
+
+    // 主题图
+    .theme-image {
+        width: 700px;
+        height: 80%;
+        margin-right: 60px;
+
+        background-image: url("/static/img/theme-default.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain; /* 背景图片包含在 element 的矩形范围内，cover 的话是不会缩放的覆盖 */
+    }
+
+    // 登录窗口
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 20px;
+        padding-bottom: 0;
+        margin-top: -50px;
+        margin-right: 120px;
+        margin-left: 50px;
+
+        // 状态显示
+        #status {
+            color: #EE0000;
+            margin-bottom: 20px;
+        }
+
+        // 用户头像
+        .avatar {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 38px;
+            border-radius: 50%;
+            border: 6px solid #EEE;
+            background-image: url(/static/img/avatar-default.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover; /* 背景图片包含在 element 的矩形范围内，cover 的话是不会缩放的覆盖 */
+        }
+
+        // 用户名密码和登录按钮
+        .form-box {
+            display: flex;
+            flex-direction: column;
+            background: white;
+
+            input, button {
+                width: 250px;
+                height: 40px;
+                color: #666;
+                font-size: 16px;
+                border-radius: 4px;
+                margin-bottom: 20px;
+                box-sizing: border-box;
+
+                &:focus {
+                    outline: none;
+                }
+            }
+
+            input {
+                border: 1px solid #ECECEC;
+                padding-left: 10px;
+                background: white !important;
+
+                &:-webkit-autofill {
+                    background-color: white !important;
+                    box-shadow: 0 0 0px 1000px white inset;
+                }
+
+                &:focus {
+                    border-color: #2d8cf0;
+                }
+            }
+
+            button {
+                color: white;
+                background-color: #2d8cf0;
+                border-width: 0;
+
+                &:hover {
+                    cursor: pointer;
+                    background-color: #5cadff;
+                    transition-duration: .4s;
+                }
+            }
+        }
+    }
+}
+
+// 头部
+.main .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 90px;
+    padding: 0 70px;
+    z-index: 30000;
+
+    // 标题
+    .title {
+        display: flex;
+        align-items: center;
+
+        .logo {
+            width: 60px;
+            height: 26px;
+            margin-right: 6px;
+            border-image: url(/static/img/logo.png) 0 fill;
+            margin-top: 4px;
+        }
+
+        .title-text {
+            color: #FFF;
+            font-size: 26px;
+            font-weight: 550;
+            line-height: 26px;
+            text-shadow: 0px 0px 8px #666;
+        }
+    }
+
+    // 下载链接
+    .download a {
+        display: flex;
+        justify-content: center;
+        color: #FFF;
+        text-decoration: none;
+        font-size: 16px;
+
+        img {
+            width: 24px;
+            height: 24px;
+            margin-right: 6px;
+            margin-top: -1px;
+        }
+
+        span {
+            height: 20px;
+            line-height: 20px;
+        }
+
+        &:hover {
+            color: #EEE;
+        }
+    }
+}
+
+// 尾部
+.main .footer {
+    // 版权
+    .copy-right {
+        color: #DDD;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+    }
+}

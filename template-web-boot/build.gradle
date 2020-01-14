@@ -1,0 +1,72 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+}
+
+group = 'com.xtuer'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext.versions = [
+        lombok: '1.18.10',
+        commonsIO: '2.6',
+        commonsLang   : '3.8',
+        commonsText   : '1.7',
+        fastjson: '1.2.62',
+        mybatis: '2.1.1',
+        mysql: '5.1.46',
+        jetcache: '2.5.14',
+        redis: '2.9.0',
+        jsoup         : '1.12.1',
+]
+
+dependencies {
+    implementation (
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-thymeleaf',
+            'org.springframework.boot:spring-boot-starter-security',
+            "commons-io:commons-io:${versions.commonsIO}",
+            "org.apache.commons:commons-lang3:${versions.commonsLang}",
+            "org.apache.commons:commons-text:${versions.commonsText}",
+            "com.alibaba:fastjson:${versions.fastjson}",
+            "org.mybatis.spring.boot:mybatis-spring-boot-starter:${versions.mybatis}",
+            "com.alicp.jetcache:jetcache-starter-redis:${versions.jetcache}",
+            "redis.clients:jedis:${versions.redis}",
+            "org.jsoup:jsoup:${versions.jsoup}",
+    )
+
+    runtime("mysql:mysql-connector-java:${versions.mysql}")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${versions.lombok}"
+    annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// 如果设置了 JRebel，则使用 JRebel 进行热更新
+if (project.hasProperty('rebelAgent')) {
+    bootRun.jvmArgs += rebelAgent
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                    JVM                                     //
+////////////////////////////////////////////////////////////////////////////////
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation' << '-parameters'
+    options.forkOptions.jvmArgs << '-parameters'
+}

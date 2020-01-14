@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace 非常重要：必须是 Mapper 类的全路径 -->
+<mapper namespace="com.xtuer.mapper.UserMapper">
+    <!-- 用户查询结果的列 -->
+    <sql id="user_columns">
+        user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id AS orgId, is_enabled AS enabled
+    </sql>
+
+    <!-- 使用 ID 查找用户 -->
+    <select id="findUserById" parameterType="_long" resultMap="userWithRoles">
+        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
+        FROM user
+            LEFT JOIN user_role ON user.id = user_role.user_id
+        WHERE user.id = #{userId}
+    </select>
+
+    <!-- 查找机构下指定用户名的用户 -->
+    <select id="findUserByUsernameAndOrgId" resultMap="userWithRoles">
+        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
+        FROM user
+            LEFT JOIN user_role ON user.id = user_role.user_id
+        WHERE org_id = #{orgId} AND username = #{username}
+    </select>
+
+    <!-- 查找机构的用户 -->
+    <select id="findUsersByOrgId" resultType="User">
+        SELECT <include refid="user_columns"/>
+        FROM user
+        WHERE org_id = #{orgId}
+        LIMIT ${offset}, ${count}
+    </select>
+
+    <!-- 插入或更新用户: 如果 ID 存在或者 org_id + username 的组合存在则进行更新 -->
+    <insert id="upsertUser">
+        INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
+        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
+
+        ON DUPLICATE KEY
+        UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
+    </insert>
+
+    <!-- 创建用户的登录记录 -->
+    <update id="insertUserLoginRecord">
+        INSERT INTO user_login (user_id, username) VALUES (#{userId}, #{username})
+    </update>
+
+    <!-- 更新用户的昵称 -->
+    <update id="updateUserNickname">
+        UPDATE user SET nickname = #{nickname} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的头像 -->
+    <update id="updateUserAvatar">
+        UPDATE user SET avatar = #{avatar} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的性别 -->
+    <update id="updateUserGender">
+        UPDATE user SET gender = #{gender} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的手机号 -->
+    <update id="updateUserMobile">
+        UPDATE user SET mobile = #{mobile} WHERE id = #{userId}
+    </update>
+
+    <!-- 更新用户的密码 -->
+    <update id="updateUserPassword">
+        UPDATE user SET password = #{password} WHERE id = #{userId}
+    </update>
+
+    <!-- 插入用户的角色 -->
+    <insert id="insertUserRole">
+        INSERT IGNORE INTO user_role(user_id, role) VALUES (#{userId}, #{role})
+    </insert>
+
+    <!-- 用户，包含角色信息 -->
+    <resultMap id="userWithRoles" type="User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="nickname" column="nickname"/>
+        <result property="email"    column="email"/>
+        <result property="mobile"   column="mobile"/>
+        <result property="phone"    column="phone"/>
+        <result property="avatar"   column="avatar"/>
+        <result property="orgId"    column="orgId"/>
+        <result property="gender"   column="gender"/>
+        <result property="enabled"  column="enabled"/>
+
+        <collection property="roles" ofType="string" javaType="java.util.HashSet">
+            <result column="role"/>
+        </collection>
+    </resultMap>
+</mapper>
