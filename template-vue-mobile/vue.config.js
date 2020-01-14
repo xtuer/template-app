@@ -10,8 +10,8 @@ module.exports = {
     },
 
     // yarn build 的输出目录
-    outputDir: '../template-web-app/src/main/webapp/WEB-INF/page-mobile',
-    assetsDir: 'static',
+    outputDir: '../template-web-boot/src/main/resources/page-m',
+    assetsDir: 'static-m',
 
     productionSourceMap: false, // 不生成 map 文件
     configureWebpack: config => {
