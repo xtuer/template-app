@@ -1,7 +1,7 @@
 <template>
     <div class="view-404">
         <div class="content-wrapper">
-            <img src="/static/img/cry.jpg">
+            <img src="/static-p/img/cry.jpg">
             <div class="block-content">
                 <h1 style="text-align: center; color: black">AWWW...Don’t Cry.</h1>
                 <p style="text-align: center;">

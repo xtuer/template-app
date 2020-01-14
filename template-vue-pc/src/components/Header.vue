@@ -6,7 +6,7 @@
         <!-- 用户头像和菜单 -->
         <Dropdown>
             <a href="javascript:void(0)" class="user-info">
-                <Avatar :src="user.avatar || '/static/img/avatar.jpg'" :size="30" :bordered="false"/>
+                <Avatar :src="user.avatar || '/static-p/img/avatar.jpg'" :size="30" :bordered="false"/>
                 <span class="user-name">{{ user.nickname }}</span>
                 <Icon type="ios-arrow-down" style="margin-left: 8px"/>
             </a>
@@ -45,7 +45,7 @@ export default {
     background-repeat  : no-repeat;
     background-position: center;
     background-size    : 100% 100%;
-    background-image   : url("/static/img/admin-org-header/bg.png");
+    background-image   : url("/static-p/img/admin-org-header/bg.png");
 
     .menu-user {
         .ivu-dropdown-item {

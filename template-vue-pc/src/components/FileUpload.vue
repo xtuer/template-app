@@ -11,7 +11,7 @@
     multiple: 默认为 false, 为 false 表示只允许上传一个文件，为 true 允许上传多个文件
 
 参数配置:
-    主要是配置上传文件大小的限制，在 /static/js/config.js 中配置，目前有 defaultMaxSize，imageMaxSize，fileMaxSize
+    主要是配置上传文件大小的限制，在 /static-p/js/config.js 中配置，目前有 defaultMaxSize，imageMaxSize，fileMaxSize
     export default {
         // 上传的文件大小单位为 MB
         defaultMaxSize: 100,
@@ -99,7 +99,7 @@ Slot:
 </template>
 
 <script>
-import Config from '@/../public/static/js/config';
+import Config from '@/../public/static-p/js/config';
 
 export default {
     props: {

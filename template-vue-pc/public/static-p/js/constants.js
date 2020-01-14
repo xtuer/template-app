@@ -27,8 +27,8 @@ window.QUESTION_TYPES = [
 window.PROJECT_STATUS = [
     { value: 0, color: '#aaa',    label: '未提交', img: '' },
     { value: 1, color: 'warning', label: '待审批', img: '' },
-    { value: 2, color: 'error',   label: '未通过', img: '/static/img/project-unpass.png' },
-    { value: 3, color: 'success', label: '已通过', img: '/static/img/project-pass.png' },
+    { value: 2, color: 'error',   label: '未通过', img: '/static-p/img/project-unpass.png' },
+    { value: 3, color: 'success', label: '已通过', img: '/static-p/img/project-pass.png' },
 ];
 
 // 项目的状态值

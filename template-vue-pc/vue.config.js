@@ -14,15 +14,15 @@ module.exports = {
         loaderOptions: {
             sass: {
                 prependData: `
-                    @import '@/../public/static/css/variables.scss';
+                    @import '@/../public/static-p/css/variables.scss';
                 `
             },
         }
     },
 
     // yarn build 的输出目录
-    outputDir: '../template-web-gradle/src/main/webapp/WEB-INF/page-pc',
-    assetsDir: 'static',
+    outputDir: '../template-web-boot/src/main/resources/page-p',
+    assetsDir: 'static-p',
     productionSourceMap: false, // 不生成 map 文件
     configureWebpack: (config) => {
         if (process.env.NODE_ENV === 'production') {

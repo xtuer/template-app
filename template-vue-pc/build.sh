@@ -1,3 +1,4 @@
 #!/bin/bash
-rm -rf ../training-web-app/src/main/webapp/WEB-INF/page-vue
+rm -rf ../template-web-boot/src/main/resources/page-p
+
 yarn build

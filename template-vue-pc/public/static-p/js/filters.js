@@ -2,7 +2,7 @@
  * 在此定义 Vue 全局的过滤器
  *
  * 1. 在 main.js 中安装全局过滤器
- *    import filters from '@/../public/static/js/filters';
+ *    import filters from '@/../public/static-p/js/filters';
  *
  *    Object.keys(filters).forEach(key => {
  *        Vue.filter(key, filters[key]);

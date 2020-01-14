@@ -3,14 +3,14 @@ import { LoadingBar, Message, Notice } from 'view-design';
 import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
 
-import '@/../public/static/js/urls';
-import '@/../public/static/js/utils';
-import '@/../public/static/js/constants';
-import '@/../public/static/lib/axios.rest';
+import '@/../public/static-p/js/urls';
+import '@/../public/static-p/js/utils';
+import '@/../public/static-p/js/constants';
+import '@/../public/static-p/lib/axios.rest';
 
-import filters from '@/../public/static/js/filters';
-import methods from '@/../public/static/js/methods';
-import UserDao from '@/../public/static/js/dao/UserDao';
+import filters from '@/../public/static-p/js/filters';
+import methods from '@/../public/static-p/js/methods';
+import UserDao from '@/../public/static-p/js/dao/UserDao';
 
 // [1] 注册 Vue 的原型函数
 Object.keys(methods).forEach((key) => {
