@@ -1,15 +1,14 @@
 package com.xtuer.controller;
 
+import com.xtuer.bean.Organization;
 import com.xtuer.bean.Result;
 import com.xtuer.bean.Urls;
 import com.xtuer.bean.User;
 import com.xtuer.config.AppConfig;
-import com.xtuer.security.TokenService;
+import com.xtuer.security.JwtService;
 import com.xtuer.service.UserService;
 import com.xtuer.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,11 +26,14 @@ public class AuthenticationController extends BaseController {
     private UserService userService;
 
     @Autowired
-    private TokenService tokenService;
+    private JwtService jwtService;
 
     @Autowired
     private AppConfig config;
 
+    /**
+     * 访问首页，可以根据用户的角色、浏览器类型跳转到不同的页面
+     */
     @GetMapping("/")
     public String index() {
         return Urls.FORWARD + Urls.PAGE_LOGIN;
@@ -39,11 +41,12 @@ public class AuthenticationController extends BaseController {
 
     /**
      * 登录页面，登录错误，注销页面，对应的 URL 为:
-     *     登录页面: /page/login
-     *     登录错误: /page/login?error=1
-     *     注销成功: /page/login?logout=1
+     *     登录页面: /login
+     *     登录错误: /login?error=1
+     *     注销成功: /login?logout=1
      *
-     * 网址: http://localhost:8080/page/login
+     * 网址: http://localhost:8080/login
+     * 参数: error, logout
      *
      * @param error   不为 null 表示登陆出错
      * @param logout  不为 null 表示注销成功
@@ -58,13 +61,13 @@ public class AuthenticationController extends BaseController {
         // 判断当前登录的状态
         String status = "";
         status = (error  != null) ? "账号或密码无效" : status; // 登录错误
-        status = (logout != null) ? "" : status; // 注销成功
+        status = (logout != null) ? "" : status;             // 注销成功
         model.put("status", status);
 
         // 请求当前登录用户的头像。
         // 因为 login 页面不需要权限访问，所以被 spring security 拦截，在 SecurityContextHolder 中没有用户的登录信息，
         // 所以从用户的 cookie 中获取用户 ID，然后从数据库中查询用户信息
-        User user = tokenService.extractUser(WebUtils.getAuthToken(request));
+        User user = jwtService.extractUser(WebUtils.getAuthToken(request));
 
         // 得到登录的用户信息后，使用用户的 ID 从数据库查询用户的完整信息
         if (user != null) {
@@ -75,27 +78,18 @@ public class AuthenticationController extends BaseController {
             }
         }
 
+        // 当前机构
+        Organization org = super.orgService.getCurrentOrganization();
+        model.put("org", org);
+
         return Urls.FILE_LOGIN;
     }
 
     /**
-     * 权限不够时访问 Spring Security forward request 到此方法.
-     */
-    @GetMapping(Urls.PAGE_DENY)
-    @ResponseBody
-    public String toDenyPage(HttpServletRequest request) {
-        // Ajax 访问时权限不够抛异常，我们提供的异常处理器会转换为 JSON 格式返回.
-        if (WebUtils.useAjax(request)) {
-            throw new RuntimeException("无权访问");
-        }
-
-        // 普通访问返回错误信息或者相关页面
-        return "无权访问";
-    }
-
-    /**
      * 请求当前登录用户
+     *
      * 网址: http://localhost:8080/api/login/users/current
+     * 参数: 无
      *
      * @return payload 为登录用户，如没有登录则 payload 为 null，success 为 false
      */
@@ -115,6 +109,7 @@ public class AuthenticationController extends BaseController {
 
     /**
      * 使用用户名和密码请求 token.
+     *
      * 网址: http://localhost:8080/api/login/tokens
      * 参数: username and password
      *
@@ -139,27 +134,11 @@ public class AuthenticationController extends BaseController {
     /**
      * 访问当前登录用户的后台页面地址
      *
-     * 网址: http://localhost:8080/page/userBackend
+     * 网址: http://localhost:8080/userBackend
      * 参数: 无
      */
     @GetMapping(Urls.PAGE_USER_BACKEND)
     public void toUserBackendPage(HttpServletResponse response) throws IOException {
         userService.redirectToUserBackendPage(super.getCurrentUser(), response);
-    }
-
-    /**
-     * 绑定用户
-     */
-    @GetMapping("/page/bindUser")
-    @ResponseBody
-    public String bindUser(HttpServletRequest request, HttpServletResponse response) {
-        // 1. 绑定用户，用户不存在则先创建
-        // TODO
-
-        // 2. 绑定用户成功后使用 savedRequest 重定向到登陆前的页面，这里只是为了展示怎么取到登陆前页面的 URL
-        SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response);
-        String redirectUrl = (savedRequest != null) ? savedRequest.getRedirectUrl() : "/";
-
-        return redirectUrl;
     }
 }

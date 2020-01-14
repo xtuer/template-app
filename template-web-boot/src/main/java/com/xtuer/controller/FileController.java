@@ -32,10 +32,10 @@ import java.util.List;
 public class FileController extends BaseController {
     /**
      * 访问文件仓库中的文件
-     * 网址: http://localhost:8080/file/repo/2018-06-19/293591971581788160.docx
      *
-     * @param request  HttpServletRequest 对象
-     * @param response HttpServletResponse 对象
+     * 网址: http://localhost:8080/file/repo/2018-06-19/293591971581788160.docx
+     * 参数: 无
+     *
      * @throws IOException 读取文件出错时抛出异常
      */
     @GetMapping(Urls.URL_REPO_FILE)
@@ -49,10 +49,10 @@ public class FileController extends BaseController {
 
     /**
      * 下载文件仓库中的文件
-     * 网址: http://localhost:8080/file/download/2018-06-19/293591971581788160.docx
      *
-     * @param request  HttpServletRequest 对象
-     * @param response HttpServletResponse 对象
+     * 网址: http://localhost:8080/file/download/2018-06-19/293591971581788160.docx
+     * 参数: 无
+     *
      * @throws IOException 读取文件出错时抛出异常
      */
     @GetMapping(Urls.URL_REPO_FILE_DOWNLOAD)
@@ -65,7 +65,7 @@ public class FileController extends BaseController {
         // [1] 从下载的 url 中得到文件的仓库路径
         // [2] 获取仓库文件对象
         String uri      = WebUtils.getUri(request);
-        String repoPath = uri.substring(15);
+        String repoPath = uri.substring(15); // "/file/download/" 后面的部分
         File   repoFile = repoFileService.getRepoFile(repoPath);
 
         // [3] 查询上传时的文件信息，获取文件的原始名字
@@ -83,10 +83,10 @@ public class FileController extends BaseController {
 
     /**
      * 访问临时目录中的文件
-     * 网址: http://localhost:8080/file/temp/165694488704974848.docx
      *
-     * @param request  HttpServletRequest 对象
-     * @param response HttpServletResponse 对象
+     * 网址: http://localhost:8080/file/temp/165694488704974848.docx
+     * 参数: 无
+     *
      * @throws IOException 读取文件出错时抛出异常
      */
     @GetMapping(Urls.URL_TEMP_FILE)
@@ -99,7 +99,9 @@ public class FileController extends BaseController {
 
     /**
      * 删除仓库中的文件
+     *
      * 网址: http://localhost:8080/file/repo/2018-06-19/293591971581788160.docx
+     * 参数: 无
      */
     @DeleteMapping(Urls.URL_REPO_FILE)
     public void deleteRepoFile(HttpServletRequest request, HttpServletResponse response) {
@@ -113,7 +115,9 @@ public class FileController extends BaseController {
 
     /**
      * 上传单个文件到临时文件夹
+     *
      * 网址: http://localhost:8080/form/upload/temp/file
+     * 参数: name: 上传表单里的 name 为 file: 如 <input name="file">
      *
      * @param file 上传的文件
      * @return 上传成功时 payload 为 UploadedFile，里面有上传的文件名和 URL，success 为 true，上传出错时抛异常
@@ -129,7 +133,9 @@ public class FileController extends BaseController {
 
     /**
      * 上传多个文件到临时文件夹
+     *
      * 网址: http://localhost:8080/form/upload/temp/files
+     * 参数: name: 上传表单里的 name 为 files: 如 <input name="files">
      *
      * @param files 上传的文件
      * @return 上传成功时 payload 为 List<UploadedFile>，里面有上传的文件名和 URL，success 为 true，上传出错时抛异常

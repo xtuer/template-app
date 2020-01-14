@@ -7,8 +7,8 @@ import com.xtuer.bean.Result;
 import com.xtuer.bean.Role;
 import com.xtuer.bean.User;
 import com.xtuer.mapper.UserMapper;
-import com.xtuer.security.SecurityConstant;
-import com.xtuer.security.TokenService;
+import com.xtuer.bean.SecurityConst;
+import com.xtuer.security.JwtService;
 import com.xtuer.util.Utils;
 import com.xtuer.util.WebUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +30,7 @@ public class UserService extends BaseService {
     private UserMapper userMapper;
 
     @Autowired
-    private TokenService tokenService;
+    private JwtService jwtService;
 
     /**
      * 查找机构 orgId 下指定账号的用户
@@ -134,8 +134,8 @@ public class UserService extends BaseService {
         userMapper.insertUserLoginRecord(user.getId(), user.getUsername());
 
         // 2. 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)
-        String token = tokenService.generateToken(user);
-        WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+        String token = jwtService.generateToken(user);
+        WebUtils.writeCookie(response, SecurityConst.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
 
         return token;
     }

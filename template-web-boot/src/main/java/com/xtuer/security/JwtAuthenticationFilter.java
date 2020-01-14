@@ -1,5 +1,6 @@
 package com.xtuer.security;
 
+import com.xtuer.bean.SecurityConst;
 import com.xtuer.bean.Urls;
 import com.xtuer.bean.User;
 import com.xtuer.config.AppConfig;
@@ -29,7 +30,7 @@ import java.util.Collection;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private TokenService tokenService;
+    private JwtService jwtService;
 
     @Autowired
     private AppConfig config;
@@ -58,15 +59,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 // 如果 header 里有 save-auth-token: true，则保存 token 到 cookie
                 // 移动端使用 web view 打开页面时通过 header 设置 auth-token，通过这样的方式把 auth-token 持久化到 cookie 里，
                 // 以后页面中的访问都能带上用户登录信息了
-                if ("true".equals(request.getHeader(SecurityConstant.SAVE_AUTH_TOKEN_KEY))) {
+                if ("true".equals(request.getHeader(SecurityConst.SAVE_AUTH_TOKEN_KEY))) {
                     String token = WebUtils.getAuthToken(request);
-                    WebUtils.writeCookie(response, SecurityConstant.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
+                    WebUtils.writeCookie(response, SecurityConst.AUTH_TOKEN_KEY, token, config.getAuthTokenDuration());
                 }
             } else {
                 if (WebUtils.useAjax(request)) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token 无效");
                 } else {
-                    WebUtils.deleteCookie(response, SecurityConstant.AUTH_TOKEN_KEY);
+                    WebUtils.deleteCookie(response, SecurityConst.AUTH_TOKEN_KEY);
                     response.sendRedirect(Urls.PAGE_LOGIN);
                 }
 
@@ -81,7 +82,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         // 从 token 中提取 user，如果 user 不为 null，则用其创建一个 Authentication 对象
-        User user = tokenService.extractUser(WebUtils.getAuthToken(request));
+        User user = jwtService.extractUser(WebUtils.getAuthToken(request));
 
         if (user == null) {
             return null;

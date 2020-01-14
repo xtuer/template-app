@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
 /**
  * 机构
@@ -13,9 +12,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Organization implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class Organization {
     private long id;         // 机构 ID
 
     @NotBlank(message="机构名称 不能为空!")

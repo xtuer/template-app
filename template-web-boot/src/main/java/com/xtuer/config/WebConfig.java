@@ -35,7 +35,7 @@ public class WebConfig {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 registry.addViewController("/").setViewName("index.html"); // index 和 index.html 都可以
-                registry.addViewController("/user").setViewName("user.html");
+                registry.addViewController("/door").setViewName("door.html");
             }
 
             // 允许跨域访问

@@ -1,5 +1,6 @@
 package com.xtuer.config;
 
+import com.xtuer.bean.Role;
 import com.xtuer.bean.Urls;
 import com.xtuer.security.JwtAuthenticationFilter;
 import com.xtuer.security.LoginSuccessHandler;
@@ -25,9 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 权限控制
         http.authorizeRequests()
-                .antMatchers("/", "/home", "/api/**").permitAll() // 不需要登录
-                .antMatchers("/hello").hasRole("USER") // 需要登录，且角色为 USER
-                .anyRequest().authenticated();         // 需要登录，什么角色都可以
+                .antMatchers("/", "/api/**").permitAll() // 不需要登录
+                .antMatchers("/door").hasRole("ADMIN_SYSTEM") // 需要登录，且角色为 ADMIN_SYSTEM (不能加前缀 ROLE_)
+                .anyRequest().authenticated(); // 需要登录，什么角色都可以
 
         // 登录页面的 URL: /login, GET 请求
         // 登录表单的 URL: /login, POST 请求
@@ -38,7 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 注销的 URL: /logout，POST 请求
         http.logout().permitAll();
-
 
         // 使用 Jwt 时可禁用 Session: 需要同时设置 STATELESS 和禁用 CSRF 才能使得 Spring Security 不创建 Session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

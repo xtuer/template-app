@@ -1,0 +1,28 @@
+### 帮助文档 https://segmentfault.com/a/1190000016300254
+### 变量
+@host = http://localhost:8080
+@json = Content-Type: application/json
+@form = application/x-www-form-urlencoded
+
+### 机构
+GET {{host}}/api/orgs
+
+### 登录
+POST {{host}}/api/login/tokens
+Content-Type: application/x-www-form-urlencoded
+
+username=admin&password=admin
+
+### 当前用户
+GET {{host}}/api/login/users/current
+auth-token: eyJhcHBJZCI6IkRlZmF1bHRfSUQiLCJleHBpcmVkQXQiOiIxNTgxNTgyNTI2NjIwIiwiaWQiOiIyIiwibmlja25hbWUiOiLmma7pgJrnlKjmiLciLCJyb2xlcyI6IltcIlJPTEVfVVNFUlwiXSIsInNpZ25lZEF0IjoiMTU3ODk5MDUyNjYyMCIsInVzZXJuYW1lIjoidXNlciJ9.0e98cedb3147abb67bb914d36ece4acd
+
+### Patch 更新用户信息
+POST {{host}}/api/users/1
+Content-Type: application/x-www-form-urlencoded
+
+gender=1&_method=PATCH
+
+### 页面异常
+GET {{host}}/api/demo/exception
+X-Requested-With: XMLHttpRequest

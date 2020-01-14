@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title th:text="|${school?.name} · 登录|"></title>
+    <title th:text="|${org?.name} · 登录|"></title>
 
 <!--    <link href="/static/css/global.css" rel="stylesheet" type="text/css"/>-->
     <link href="/static/css/login.less" rel="stylesheet/less" type="text/css"/>
@@ -19,7 +19,7 @@
         <div class="header">
             <div class="title">
                 <div class="logo"></div>
-                <div th:text="${school?.name}" class="title-text"></div>
+                <div th:text="${org?.name}" class="title-text"></div>
             </div>
             <div class="download"><a href="/page/download"><img src="/static/img/download/download.png"><span>App 下载</span></a></div>
         </div>

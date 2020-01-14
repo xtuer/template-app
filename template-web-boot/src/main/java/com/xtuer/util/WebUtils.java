@@ -3,7 +3,7 @@ package com.xtuer.util;
 import com.alibaba.fastjson.JSON;
 import com.xtuer.bean.Mime;
 import com.xtuer.bean.Result;
-import com.xtuer.security.SecurityConstant;
+import com.xtuer.bean.SecurityConst;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RegExUtils;
@@ -164,10 +164,10 @@ public final class WebUtils {
      * @return 返回登录生成的 token
      */
     public static String getAuthToken(HttpServletRequest request) {
-        String token = request.getHeader(SecurityConstant.AUTH_TOKEN_KEY);
+        String token = request.getHeader(SecurityConst.AUTH_TOKEN_KEY);
 
         if (token == null) {
-            token = WebUtils.getCookie(request, SecurityConstant.AUTH_TOKEN_KEY);
+            token = WebUtils.getCookie(request, SecurityConst.AUTH_TOKEN_KEY);
         }
 
         return token;

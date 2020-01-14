@@ -23,7 +23,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Service
-public class TokenService {
+public class JwtService {
     @Autowired
     protected AppConfig config;
 
