@@ -12,16 +12,16 @@ repositories {
 }
 
 ext.versions = [
-        lombok: '1.18.10',
-        commonsIO: '2.6',
-        commonsLang   : '3.8',
-        commonsText   : '1.7',
-        fastjson: '1.2.62',
-        mybatis: '2.1.1',
-        mysql: '5.1.46',
-        jetcache: '2.5.14',
-        redis: '2.9.0',
-        jsoup         : '1.12.1',
+        lombok     : '1.18.10',
+        commonsIO  : '2.6',
+        commonsLang: '3.8',
+        commonsText: '1.7',
+        fastjson   : '1.2.62',
+        mybatis    : '2.1.1',
+        mysql      : '5.1.46',
+        jetcache   : '2.5.14',
+        redis      : '2.9.0',
+        jsoup      : '1.12.1',
 ]
 
 dependencies {
