@@ -15,36 +15,36 @@ import java.util.Properties;
  * 文件信息类, 用于判断文件是否图片, 视频, 音频等, 是否可转换为 PDF 或者 MP4, 获取文件对应的 HTTP content type.
  */
 @Slf4j
-public class Mime {
+final public class Mime {
     // 图片的后缀
-    public static final String[] IMAGE_FILE_EXTENSIONS = {
+    private static final String[] IMAGE_FILE_EXTENSIONS = {
             "png", "svg", "ico", "tif", "bmp", "jpg", "jpeg", "gif"
     };
 
     // 视频的后缀
-    public static final String[] VIDEOS_FILE_EXTENSIONS = {
+    private static final String[] VIDEOS_FILE_EXTENSIONS = {
             "mp4", "avi", "flv", "swf", "wmv", "mov", "3gp", "mpg", "rmvb", "mkv"
     };
 
     // 音频的后缀
-    public static final String[] AUDIOS_FILE_EXTENSIONS = {
+    private static final String[] AUDIOS_FILE_EXTENSIONS = {
             "mp3"
     };
 
     // 普通文本文件的后缀
-    public static final String[] PLAIN_TEXT_FILE_EXTENSIONS = {
+    private static final String[] PLAIN_TEXT_FILE_EXTENSIONS = {
             "txt", "c", "h", "cpp", "java", "py", "sh", "bat", "html", "js", "css", "md", "json", "xml"
     };
 
     // 浏览器中内嵌显示，不进行下载的文件名后缀
-    public static final String[] INLINE_FILE_EXTENSIONS = {
+    private static final String[] INLINE_FILE_EXTENSIONS = {
             "pdf",
             "png", "svg", "ico", "tif", "bmp", "jpg", "jpeg",
             "txt", "c", "h", "cpp", "java", "py", "sh", "bat", "html", "js", "css", "md", "json", "xml"
     };
 
     // 可转换为 PDF 文件的后缀名
-    public static final String[] CAN_TO_PDF_FILE_EXTENSIONS = {
+    private static final String[] CAN_TO_PDF_FILE_EXTENSIONS = {
             "pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx"
     };
 
