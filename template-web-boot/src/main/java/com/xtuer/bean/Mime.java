@@ -1,8 +1,11 @@
 package com.xtuer.bean;
 
 import com.xtuer.util.Utils;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +14,7 @@ import java.util.Properties;
 /**
  * 文件信息类, 用于判断文件是否图片, 视频, 音频等, 是否可转换为 PDF 或者 MP4, 获取文件对应的 HTTP content type.
  */
+@Slf4j
 public class Mime {
     // 图片的后缀
     public static final String[] IMAGE_FILE_EXTENSIONS = {
@@ -51,9 +55,7 @@ public class Mime {
         // 从文件 meta/content-type.properties 中加载 content type
         try (InputStream in = Utils.getStreamRelativeToClassesDirectory("meta/content-type.properties")) {
             CONTENT_TYPE_PROPS.load(in);
-            System.out.println("-----------------------------------------");
-            System.out.println(CONTENT_TYPE_PROPS);
-            System.out.println("-----------------------------------------");
+            log.info("成功加载 meta/content-type.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
