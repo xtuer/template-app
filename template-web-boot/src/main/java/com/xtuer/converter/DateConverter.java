@@ -12,7 +12,7 @@ import java.util.Date;
  * 把日期字符串转换为 Date 对象。
  */
 @Slf4j
-public class DateConverter implements Converter<String, Date> {
+public final class DateConverter implements Converter<String, Date> {
     // 使用 ThreadLocal 解决 SimpleDateFormat 高并发问题
     private static final ThreadLocal<SimpleDateFormat> FORMAT_1 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
     private static final ThreadLocal<SimpleDateFormat> FORMAT_2 = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));

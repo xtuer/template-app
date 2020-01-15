@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -23,7 +24,7 @@ import java.util.Collection;
  * 登陆成功处理器，主要作用为创建 token 保存到 cookie，然后跳转到角色对应的页面
  */
 @Component
-public class LoginSuccessHandler implements org.springframework.security.web.authentication.AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private AppConfig config;
 

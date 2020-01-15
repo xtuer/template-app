@@ -25,7 +25,7 @@ import java.util.List;
  * 网址: https://stackoverflow.com/questions/28427339/how-to-implement-http-byte-range-requests-in-spring-mvc
  */
 @Slf4j
-public class ResponseUtils {
+public final class ResponseUtils {
     private static final int DEFAULT_BUFFER_SIZE   = 2097152; // bytes = 2MB
     private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
 

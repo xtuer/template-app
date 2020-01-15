@@ -28,7 +28,7 @@ import java.util.TreeMap;
  * 校验 token: Jwt.checkToken(token, appKey)
  * 提取 token 中的用户数据: Jwt.params(token)
  */
-public class Jwt {
+public final class Jwt {
     /**
      * 检查 token 是否有效: 使用 payload 计算的签名结果和 token 中的签名一样，如果还存在有效期 expiredAt 并且未过期，则签名有效.
      *
