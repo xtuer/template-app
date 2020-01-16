@@ -83,17 +83,18 @@ ssh.settings {
 task deploy(dependsOn: bootJar) {
     def jar  = bootJar.archiveFileName.get()
     def dir  = config.getProperty('deploy.dir')
+    def path = "${dir}/${jar}"
     def port = config.getProperty('deploy.port')
 
     doLast {
         ssh.run {
             session(remotes.server) {
-                put from: "${buildDir}/libs/${jar}", into: "${dir}/${jar}.bak"
+                put from: "${buildDir}/libs/${jar}", into: "${path}.bak"
                 execute """
                     source /root/.bash_profile;
                     kill `ps aux | grep -i ${jar} | grep -v grep | awk '{print \\\$2}'`;
-                    mv -f ${dir}/${jar}.bak ${dir}/${jar};
-                    nohup java -jar ${dir}/${jar} --server.port=${port} > /dev/null 2>&1 &
+                    mv -f ${path}.bak ${path};
+                    nohup java -jar ${path} --server.port=${port} > /dev/null 2>&1 &
                 """
             }
         }
