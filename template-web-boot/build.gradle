@@ -54,9 +54,8 @@ test {
     useJUnitPlatform()
 }
 
-// 如果设置了 JRebel，则使用 JRebel 进行热更新
-if (project.hasProperty('rebelAgent')) {
-    bootRun.jvmArgs += rebelAgent
+bootJar {
+    archiveFileName = 'xtuer.jar'
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -69,4 +68,9 @@ targetCompatibility = JavaVersion.VERSION_1_8
 compileJava {
     options.compilerArgs << '-Xlint:unchecked' << '-Xlint:deprecation' << '-parameters'
     options.forkOptions.jvmArgs << '-parameters'
+}
+
+// 如果设置了 JRebel，则使用 JRebel 进行热更新
+if (project.hasProperty('rebelAgent')) {
+    bootRun.jvmArgs += rebelAgent
 }
