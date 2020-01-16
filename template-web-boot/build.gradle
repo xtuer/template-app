@@ -1,7 +1,8 @@
 plugins {
+    id 'java'
     id 'org.springframework.boot' version '2.2.2.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-    id 'java'
+    id 'org.hidetake.ssh' version '2.9.0'
 }
 
 group = 'com.xtuer'
@@ -56,6 +57,47 @@ test {
 
 bootJar {
     archiveFileName = 'xtuer.jar'
+}
+
+ext {
+    // 部署: gradle clean deploy -Denv=production
+    environment = System.getProperty("env", "dev") // 获取 gradle 参数中 env 的值，选择环境
+    config      = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()
+}
+
+////////////////////////////////////////////////////////////////////////////////
+//                                   项目部署                                  //
+////////////////////////////////////////////////////////////////////////////////
+remotes {
+    server {
+        host     = config.getProperty('deploy.host')
+        user     = config.getProperty('deploy.username')
+        password = config.getProperty('deploy.password')
+    }
+}
+
+ssh.settings {
+    knownHosts = allowAnyHosts
+}
+
+task deploy(dependsOn: bootJar) {
+    def jar  = bootJar.archiveFileName.get()
+    def dir  = config.getProperty('deploy.dir')
+    def port = config.getProperty('deploy.port')
+
+    doLast {
+        ssh.run {
+            session(remotes.server) {
+                put from: "${buildDir}/libs/${jar}", into: "${dir}/${jar}.bak"
+                execute """
+                    source /root/.bash_profile;
+                    kill `ps aux | grep -i ${jar} | grep -v grep | awk '{print \\\$2}'`;
+                    mv -f ${dir}/${jar}.bak ${dir}/${jar};
+                    nohup java -jar ${dir}/${jar} --server.port=${port} > /dev/null 2>&1 &
+                """
+            }
+        }
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
