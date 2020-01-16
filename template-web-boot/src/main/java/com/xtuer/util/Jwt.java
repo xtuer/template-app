@@ -54,7 +54,7 @@ public final class Jwt {
 
             try {
                 // 检查签名是否过期
-                Long expiredAt = Long.parseLong(params.get("expiredAt"));
+                long expiredAt = Long.parseLong(params.get("expiredAt"));
                 if (expiredAt < System.currentTimeMillis()) {
                     return false;
                 }

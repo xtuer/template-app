@@ -7,6 +7,7 @@ import com.xtuer.config.AppConfig;
 import com.xtuer.util.Jwt;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Service
+@Slf4j
 public class JwtService {
     @Autowired
     protected AppConfig config;

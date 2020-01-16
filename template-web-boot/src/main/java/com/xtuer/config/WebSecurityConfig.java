@@ -1,6 +1,5 @@
 package com.xtuer.config;
 
-import com.xtuer.bean.Role;
 import com.xtuer.bean.Urls;
 import com.xtuer.security.JwtAuthenticationFilter;
 import com.xtuer.security.LoginSuccessHandler;
@@ -26,7 +25,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 权限控制
         http.authorizeRequests()
-                .antMatchers("/", "/api/**").permitAll() // 不需要登录
+                .antMatchers("/",
+                        "/api/orgs",
+                        "/api/login/users/current",
+                        "/api/**").permitAll() // 不需要登录
                 .antMatchers("/door").hasRole("ADMIN_SYSTEM") // 需要登录，且角色为 ADMIN_SYSTEM (不能加前缀 ROLE_)
                 .anyRequest().authenticated(); // 需要登录，什么角色都可以
 
