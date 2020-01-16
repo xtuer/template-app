@@ -79,11 +79,10 @@ public final class Jwt {
             return Collections.emptyMap();
         }
 
-        String payload = Utils.unbase64UrlSafe(jwtToken.substring(0, dotIndex));
-
         try {
+            String payload = Utils.unbase64UrlSafe(jwtToken.substring(0, dotIndex));
             return JSON.parseObject(payload, new TypeReference<TreeMap<String, String>>() {});
-        } catch (NumberFormatException ex) {
+        } catch (Exception ex) {
             return Collections.emptyMap();
         }
     }
