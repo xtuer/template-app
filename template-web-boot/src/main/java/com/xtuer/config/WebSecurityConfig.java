@@ -25,14 +25,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 权限控制
         http.authorizeRequests()
+                // 不需要登录的 URL
                 .antMatchers(
                         "/",
                         "/api/orgs",
                         "/api/login/users/current",
                         "/api/**"
-                ).permitAll() // 不需要登录
-                .antMatchers("/door").hasRole("ADMIN_SYSTEM") // 需要登录，且角色为 ADMIN_SYSTEM (不能加前缀 ROLE_)
-                .anyRequest().authenticated(); // 需要登录，什么角色都可以
+                ).permitAll()
+                // 需要对应角色的 URL (此处不能加前缀 ROLE_，但是数据库里需要加 ROLE_)
+                .antMatchers("/door").hasRole("ADMIN_SYSTEM")
+                // 需要登录，但不限角色
+                .anyRequest().authenticated();
 
         // 登录页面的 URL: /login, GET 请求
         // 登录表单的 URL: /login, POST 请求
