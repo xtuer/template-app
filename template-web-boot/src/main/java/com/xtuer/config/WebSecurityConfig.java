@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    // Security 忽略的路径不经过 Security 相关的 Filter 处理，不需要登录，并且访问效率高
+    // 配置 Spring Security 忽略的路径，一般为静态资源
     @Override
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/static/**", "/static-p/**", "/static-m/**");

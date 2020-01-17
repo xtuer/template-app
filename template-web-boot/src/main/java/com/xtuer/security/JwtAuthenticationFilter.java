@@ -38,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        log.debug(request.getRequestURL().toString());
         // 1. 如果已经通过认证，则执行下一个 filter
         // 2. 从 Header 或者 Cookie 里获取 token
         //    2.1 如果 token 为 null，则执行下一个 filter
