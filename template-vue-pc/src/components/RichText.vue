@@ -150,7 +150,7 @@ export default {
                 // [2.1] 上传图片插入文本框
                 const width  = file.imageWidth;
                 const height = file.imageHeight;
-                this.editor.insertContent(`<img src="${url}" title="${filename}" align="top" width="${width}" height="${height}">`);
+                this.editor.insertContent(`<img src="${url}" title="${filename}" align="top" style="max-width: 100%" data-width="${width}" data-height="${height}">`);
             } else if (this.uploadProps.audio && Utils.isMp3(url)) {
                 // [2.2] 上传 MP3
                 this.editor.insertContent(`&nbsp;<audio controls><source src="${url}"></audio>&nbsp;`);
@@ -159,7 +159,7 @@ export default {
                 this.editor.insertContent(`<div><video controls style="max-width: 100%;"><source src="${url}"></video></div> `);
             } else if (this.uploadProps.file) {
                 // [2.4] 上传文件
-                this.editor.insertContent(`&nbsp;<a href="${url}">${filename}</a>&nbsp;`);
+                this.editor.insertContent(`&nbsp;<a href="${url}" class="file">${filename}</a>&nbsp;`);
             }
         },
         // 上传粘贴的图片
