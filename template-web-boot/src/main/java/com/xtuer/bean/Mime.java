@@ -4,8 +4,6 @@ import com.xtuer.util.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -52,10 +50,10 @@ final public class Mime {
     private static final Properties CONTENT_TYPE_PROPS = new Properties();
 
     static {
-        // 从文件 meta/content-type.properties 中加载 content type
-        try (InputStream in = Utils.getStreamRelativeToClassesDirectory("meta/content-type.properties")) {
+        // 从文件 static/meta/content-type.properties 中加载 content type
+        try (InputStream in = Utils.getStreamRelativeToClassesDirectory("static/meta/content-type.properties")) {
             CONTENT_TYPE_PROPS.load(in);
-            log.info("成功加载 meta/content-type.properties");
+            log.info("成功加载 static/meta/content-type.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
