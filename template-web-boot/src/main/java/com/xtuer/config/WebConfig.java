@@ -10,42 +10,12 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.math.BigInteger;
 import java.util.Date;
 
 @Configuration
 public class WebConfig {
-    @Bean
-    public WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-            // 简单路径的模板映射
-            @Override
-            public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/").setViewName("index.html"); // index 和 index.html 都可以
-                registry.addViewController("/door").setViewName("door.html");
-            }
-
-            // 静态资源的路径映射
-            @Override
-            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-                registry.addResourceHandler("/static-p/**").addResourceLocations("classpath:/page-m/static-p/");
-                registry.addResourceHandler("/static-m/**").addResourceLocations("classpath:/page-m/static-m/");
-            }
-
-            // 允许跨域访问
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedMethods("*");
-            }
-        };
-    }
-
     // FastJson
     @Bean
     public HttpMessageConverters fastJsonHttpMessageConverters() {
