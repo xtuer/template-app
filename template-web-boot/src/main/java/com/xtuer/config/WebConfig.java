@@ -9,10 +9,8 @@ import com.xtuer.converter.DateConverter;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 
 import java.math.BigInteger;
-import java.util.Date;
 
 @Configuration
 public class WebConfig {
@@ -46,7 +44,7 @@ public class WebConfig {
 
     // 字符串转日期 converter
     @Bean
-    public Converter<String, Date> dateConverter() {
+    public DateConverter dateConverter() {
         return new DateConverter();
     }
 }
