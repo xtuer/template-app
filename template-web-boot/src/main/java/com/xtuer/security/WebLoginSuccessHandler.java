@@ -21,10 +21,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 /**
- * 登陆成功处理器，主要作用为创建 token 保存到 cookie，然后跳转到角色对应的页面
+ * 网页 Form 表单登陆成功处理器，主要作用为创建 token 保存到 cookie，然后跳转到角色对应的页面
  */
 @Component
-public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class WebLoginSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     private AppConfig config;
 
