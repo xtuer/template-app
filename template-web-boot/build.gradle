@@ -92,7 +92,7 @@ task deploy(dependsOn: bootJar) {
                 put from: "${buildDir}/libs/${jar}", into: "${path}.bak"
                 execute """
                     source /root/.bash_profile;
-                    kill `ps aux | grep -i ${jar} | grep -v grep | awk '{print \\\$2}'`;
+                    kill `ps aux | grep -i ${jar} | grep -v grep | awk '{print \$2}'`;
                     mv -f ${path}.bak ${path};
                     nohup java -jar ${path} --server.port=${port} > /dev/null 2>&1 &
                 """
