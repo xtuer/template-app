@@ -77,6 +77,19 @@ public final class Result<T> {
     }
 
     /**
+     * 返回单个对象时根据对象是否为空返回不同的结果:
+     *     A. data 不为 null 时执行 Result.ok(data)
+     *     B. data 等于 null 时执行 Result.failMessage(error)
+     */
+    public static <T> Result<T> single(Object data) {
+        return Result.single(data, "");
+    }
+
+    public static <T> Result<T> single(Object data, String error) {
+        return (data != null) ? Result.ok(data) : Result.failMessage(error);
+    }
+
+    /**
      * 使用传入的回调函数名字 callback 和参数 params 构造一个 JSONP 响应格式的字符串。
      *
      * @param callback 浏览器端 JSONP 回调函数的名字

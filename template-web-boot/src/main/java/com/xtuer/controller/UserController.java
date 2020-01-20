@@ -29,12 +29,7 @@ public class UserController extends BaseController {
     @GetMapping(Urls.API_USERS_BY_ID)
     public Result<User> findUserById(@PathVariable long userId) {
         User user = userService.findUser(userId);
-
-        if (user != null) {
-            return Result.ok(user);
-        } else {
-            return Result.failMessage("ID 为 " + userId + "的用户不存在");
-        }
+        return Result.single(user, "ID 为 " + userId + "的用户不存在");
     }
 
     /**
