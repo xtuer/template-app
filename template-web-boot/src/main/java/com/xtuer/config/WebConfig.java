@@ -55,8 +55,8 @@ public class WebConfig {
 
     /**
      * 浏览器的 form 不支持 put, delete 等 method, 由该 filter 将 /blog?_method=delete 转换为标准的 http delete 方法。
-     * 另一个好处是可以使用 content-type: application/x-www-form-urlencoded，用 key=value 的形式提交请求，Controller 中
-     * 接收参数简单一些
+     * 另一个好处是 PUT, PATCH 等请求可以使用 content-type: application/x-www-form-urlencoded，用 key=value 的形式提交请求，
+     * Controller 中接收参数简单一些
      *
      * @return 返回 Servlet 的 Filter HiddenHttpMethodFilter
      */
