@@ -68,19 +68,19 @@ public class UserController extends BaseController {
         // 更新昵称
         if (StringUtils.isNotBlank(nickname)) {
             userService.updateUserNickname(userId, nickname.trim());
-            return Result.okMessage("昵称更新成功");
+            return Result.ok(null, "昵称更新成功");
         }
 
         // 更新头像
         if (StringUtils.isNotBlank(avatar)) {
             avatar = userService.updateUserAvatar(userId, avatar.trim());
-            return avatar == null ? Result.fail() : Result.ok(avatar);
+            return Result.single(avatar);
         }
 
         // 更新性别
         if (gender != -1) {
             userService.updateUserGender(userId, gender);
-            return Result.okMessage("性别更新成功");
+            return Result.ok(null, "性别更新成功");
         }
 
         // 更新手机
@@ -95,7 +95,7 @@ public class UserController extends BaseController {
 
         // 什么都没有更新，则认为更新失败
         // 提示: 例如前端更新昵称，输入空的昵称，服务器就什么都没有更新，返回成功，前端就认为更新成功了，页面上就会使用空的昵称
-        return Result.failMessage("用户信息修改失败");
+        return Result.fail("用户信息修改失败");
     }
 
     /**

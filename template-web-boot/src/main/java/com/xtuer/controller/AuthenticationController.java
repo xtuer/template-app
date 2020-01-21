@@ -102,7 +102,7 @@ public class AuthenticationController extends BaseController {
             user = userService.findUser(user.getId()); // 从数据库里查询用户信息
             return Result.ok(user);
         } else {
-            return Result.failMessage("还没有登录");
+            return Result.fail("还没有登录");
         }
     }
 
@@ -122,7 +122,7 @@ public class AuthenticationController extends BaseController {
         User user = userService.findUser(username, password, super.getCurrentOrganizationId());
 
         if (user == null) {
-            return Result.failMessage("用户名或密码不正确");
+            return Result.fail("用户名或密码不正确");
         }
 
         // 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)

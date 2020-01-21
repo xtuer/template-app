@@ -33,3 +33,9 @@ X-Requested-With: XMLHttpRequest
 
 ### Converter
 GET {{host}}/api/demo/string2date?date=2020-01-01
+
+### POST 中文
+POST {{host}}/api/demo/encoding
+Content-Type: application/x-www-form-urlencoded
+
+name=中文字符串

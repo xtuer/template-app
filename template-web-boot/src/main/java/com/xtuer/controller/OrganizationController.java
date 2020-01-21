@@ -73,7 +73,7 @@ public class OrganizationController extends BaseController {
     public Result<String> upsertOrganization(@RequestBody @Valid Organization organization, BindingResult bindingResult) {
         // 如果校验失败，返回失败信息给前端
         if(bindingResult.hasErrors()){
-            return Result.failMessage(Utils.getBindingMessage(bindingResult));
+            return Result.fail(Utils.getBindingMessage(bindingResult));
         }
 
         return orgService.upsertOrganization(organization);

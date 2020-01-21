@@ -155,7 +155,7 @@ public class UserService extends BaseService {
             userMapper.updateUserMobile(userId, mobile);
             return Result.ok("手机更新成功");
         } else {
-            return Result.failMessage("请输入正确的手机号");
+            return Result.fail("请输入正确的手机号");
         }
     }
 
@@ -178,30 +178,30 @@ public class UserService extends BaseService {
 
         // [1] 密码为空则返回
         if (StringUtils.isBlank(newPassword)) {
-            return Result.failMessage("密码不能为空");
+            return Result.fail("密码不能为空");
         }
 
         // [2] newPassword 和 renewPassword 不相同或者为空则返回
         if (StringUtils.isBlank(newPassword) || !newPassword.equals(renewPassword)) {
-            return Result.failMessage("新密码 2 次输入不匹配");
+            return Result.fail("新密码 2 次输入不匹配");
         }
 
         // [3] 查询用户得到用户密码 password
         // [4] 比较 password 和 oldPassword，不相同则返回
         User user = userMapper.findUserById(userId);
         if (!Utils.isPasswordValidByBCrypt(oldPassword, user.getPassword())) {
-            return Result.failMessage("旧密码不正确");
+            return Result.fail("旧密码不正确");
         }
 
         // [5] 密码最小长度为 5，最大长度为 50
         if (newPassword.length() < 5 || newPassword.length() > 50) {
-            return Result.failMessage("密码的长度为 5 到 50 位");
+            return Result.fail("密码的长度为 5 到 50 位");
         }
 
         // [6] 验证都通过了，更新用户密码
         userMapper.updateUserPassword(userId, Utils.passwordByBCrypt(newPassword));
 
-        return Result.okMessage("密码更新成功");
+        return Result.ok(null, "密码更新成功");
     }
 
     /**

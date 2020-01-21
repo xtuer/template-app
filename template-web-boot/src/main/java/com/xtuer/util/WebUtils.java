@@ -52,7 +52,7 @@ public final class WebUtils {
      * @param response HttpServletResponse 对象，用于写入请求的响应
      * @param result   响应的数据
      */
-    public static void ajaxResponse(HttpServletResponse response, Result result) {
+    public static void ajaxResponse(HttpServletResponse response, Result<?> result) {
         ajaxResponse(response, result, 200);
     }
 
@@ -63,7 +63,7 @@ public final class WebUtils {
      * @param result   响应的数据
      * @param statusCode HTTP 状态码
      */
-    public static void ajaxResponse(HttpServletResponse response, Result result, int statusCode) {
+    public static void ajaxResponse(HttpServletResponse response, Result<?> result, int statusCode) {
         ajaxResponse(response, JSON.toJSONString(result), statusCode);
     }
 

@@ -34,6 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/",
                         "/login",
                         "/logout",
+                        "/api/demo/**",
                         Urls.API_ORGS,
                         Urls.API_LOGIN_TOKENS,
                         Urls.API_LOGIN_USERS_CURRENT

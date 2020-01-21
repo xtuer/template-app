@@ -101,7 +101,7 @@ public class OrganizationService extends BaseService {
 
         // [1] 检查机构的域名是否可用 (如果域名被其他机构使用了则不可使用)
         if (!orgMapper.isHostAvailable(org.getId(), org.getHost())) {
-            return Result.failMessage("域名 " + org.getHost() + " 已经被使用");
+            return Result.fail("域名 " + org.getHost() + " 已经被使用");
         }
 
         // [2] 移动机构的 Logo 到文件仓库
