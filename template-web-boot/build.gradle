@@ -40,7 +40,7 @@ dependencies {
             "org.jsoup:jsoup:${versions.jsoup}",
     )
 
-    runtime("mysql:mysql-connector-java:${versions.mysql}")
+    runtimeOnly("mysql:mysql-connector-java:${versions.mysql}")
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
