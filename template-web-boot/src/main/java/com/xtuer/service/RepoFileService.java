@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 
 /**
+ * <pre>
  * 仓库文件服务，用于移动文件到文件仓库，访问仓库文件。
  * 主要接口:
  *     获取仓库文件: getRepoFileByUrl(repoUrl)
@@ -50,6 +51,7 @@ import java.io.File;
  *            b. 每个目录下存放的文件或文件夹不宜过多，不超过 2 万个时性能还是很高的，2 万天有 55 年，所以按天存储文件足够使用
  *            c. 每个上传的文件系统都会为其分配一个不重复的文件名，格式为 {long-number}.[ext]
  *            d. 调用 moveFileToRepoInHtml() 即可
+ * </pre>
  */
 @Slf4j
 @Service

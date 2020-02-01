@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * <pre>
  * 临时文件服务，用于上传文件到临时文件夹，访问临时文件。
  * 临时文件夹 ${uploadDirectory}，用于存储临时文件，里面的文件会定期删除
  *
@@ -34,6 +35,7 @@ import java.io.IOException;
  * 注意:
  *     1. 上传文件名的格式为 {long-number}.[ext]，long-number 是使用 IdWorker 生成的 64 位的 long 类型整数
  *     2. 因为 url 比 uri 更好记，此文件中如果特殊说明，url 则代表 uri，也就是没有 host, port，protocol 等部分
+ * </pre>
  */
 @Slf4j
 @Service
