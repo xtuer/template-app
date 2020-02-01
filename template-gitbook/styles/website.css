@@ -1,5 +1,5 @@
 body {
-    font-family: "微软雅黑", "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;
 }
 
 h2 {
@@ -17,7 +17,22 @@ hr, .markdown-section hr {
 .markdown-section code {
     font-size: 1em;
     padding: 0;
-    padding-top: 0.2em;
+    padding-top: 0em;
+    border-radius: 2px;
+    background: #eee;
+    color: #574c4c;
+}
+
+.markdown-section p {
+    margin-bottom: 0px !important;
+}
+
+/* 第一级 ul, ol 的 padding 大一些，他们下面的 ul 的 padding 小一些 */
+.markdown-section ol, .markdown-section ul {
+    padding-left: 3em;
+}
+.markdown-section ol ul, .markdown-section ul ul {
+    padding-left: 2em;
 }
 
 .page-wrapper .page-inner {
@@ -91,14 +106,16 @@ hr, .markdown-section hr {
     padding: 5px;
 }
 
-/* 滚动条样式，只支持 Webkit 内核浏览器，如 Chrome, Safari */
+/* 滚动条样式 */
 ::-webkit-scrollbar {
     width:  5px;
     height: 5px;
 }
+
 ::-webkit-scrollbar-track {
     background: #ddd;
 }
+
 ::-webkit-scrollbar-thumb {
     background: #888;
 }
