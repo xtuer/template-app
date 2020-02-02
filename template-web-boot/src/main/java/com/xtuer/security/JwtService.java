@@ -21,9 +21,9 @@ import java.util.Set;
  * 使用用户生成 Token: TokenService.generateToken(user)
  * 从 Token 提取用户: TokenService.extractUser(token)
  */
+@Service
 @Getter
 @Setter
-@Service
 @Slf4j
 public class JwtService {
     @Autowired
