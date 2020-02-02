@@ -49,7 +49,7 @@ public final class GlobalExceptionHandler {
     }
 
     /**
-     * 处理 AJAX 请求时的异常: 把异常信息使用 Result 格式化为 JSON 格式，以 AJAX 的方式写入到响应数据中，HTTP 状态码为 500
+     * 处理 AJAX 请求时的异常: 把异常信息使用 Result 格式化为 JSON 格式，以 AJAX 的方式写入到响应数据中，HTTP 状态码为 500，Result.code 也为 500
      *
      * @param response HttpServletResponse 对象
      * @param error    异常的描述信息
@@ -57,7 +57,8 @@ public final class GlobalExceptionHandler {
      * @return 返回 null，这时 SpringMvc 不会去查找 view，会根据 response 中的信息进行响应
      */
     private ModelAndView handleAjaxException(HttpServletResponse response, String error, String stack) {
-        Result<?> result = new Result<>(false, error, stack);
+        Result<?> result = Result.fail(error, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        result.setStack(stack);
         WebUtils.ajaxResponse(response, result, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return null;
     }

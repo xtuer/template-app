@@ -6,15 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * <pre>
  * 规定应用中 Api 接口都返回统一格式的 Json 数据，方便前端调用，通过类 Result + Json HttpMessageConverter 来实现自动转换。
  * 类 Result 提供了多个变种的方法 ok() 和 fail() 简化创建 Result 对象。
- *
- * 提示:
- * 同一个请求在不同情况下返回的 Result 中的 data 类型可能不同，例如查询用户的方法 public Result<User> findUserByName(String name):
- *     A. 查询到用户时返回 Result 中 data 是 User 对象
- *     B. 查询不到用户时可返回 Result 中 data 是 String 的信息描述
- * 但是函数返回的类型我们使用 Result<User> 而不是 Result<?>，因为我们关注的类型是 User，而 Result 的实现允许 data 为任何类型，这样
- * 的设计既能清楚的表明方法期望得到的数据类型，又能处理异常情况。
  *
  * 成功关注的是数据，失败关注的是错误信息，所以
  *     A. 方法 ok() 的核心是 data (code 无特殊情况都为 0)
@@ -25,18 +19,19 @@ import lombok.Setter;
 public final class Result<T> {
     private boolean success; // 成功时为 true，失败时为 false
     private String  message; // 成功或则失败时的描述信息
-    private Object  data;    // 成功或则失败时的更多详细数据，一般失败时不需要
+    private String  stack;   // 抛出异常时的堆栈信息
+    private T       data;    // 成功或则失败时的更多详细数据，一般失败时不需要
     private int     code;    // 状态码，一般是当 success 为 true 或者 false 不足够表达时才使用，平时忽略即可
 
     public Result(boolean success, String message) {
         this(success, message, null);
     }
 
-    public Result(boolean success, String message, Object data) {
+    public Result(boolean success, String message, T data) {
         this(success, message, data, 0);
     }
 
-    public Result(boolean success, String message, Object data, int code) {
+    public Result(boolean success, String message, T data, int code) {
         this.success = success;
         this.message = message;
         this.data = data;
@@ -47,11 +42,11 @@ public final class Result<T> {
         return Result.ok(null, "success");
     }
 
-    public static <T> Result<T> ok(Object data) {
+    public static <T> Result<T> ok(T data) {
         return Result.ok(data, "success");
     }
 
-    public static <T> Result<T> ok(Object data, String message) {
+    public static <T> Result<T> ok(T data, String message) {
         return new Result<>(true, message, data, 0);
     }
 
@@ -72,11 +67,11 @@ public final class Result<T> {
      *     A. data 不为 null 时执行 Result.ok(data)
      *     B. data 等于 null 时执行 Result.failMessage(error)
      */
-    public static <T> Result<T> single(Object data) {
+    public static <T> Result<T> single(T data) {
         return Result.single(data, "");
     }
 
-    public static <T> Result<T> single(Object data, String error) {
+    public static <T> Result<T> single(T data, String error) {
         return (data != null) ? Result.ok(data) : Result.fail(error);
     }
 
