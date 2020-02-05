@@ -3,12 +3,13 @@
 
 参数说明:
     doc   : 默认为 false, 为 true 允许上传的格式为 'ppt', 'pptx', 'doc', 'docx', 'xls', 'xlsx', 'pdf'
-    file  : 默认为 false, 为 true 允许上传任意格式的文件，默认为 false
+    file  : 默认为 false, 为 true 允许上传任意格式的文件
+    excel : 默认为 false, 为 true 允许上传 Excel 文件
     image : 默认为 false, 为 true 允许上传图片格式为 'jpg', 'jpeg', 'gif', 'png'
     video : 默认为 false, 为 true 允许上传视频格式为 mp4、avi、flv、swf、wmv、mov、3gp、mpg、rmvb、mkv
     audio : 默认为 false, 为 true 允许上传视频格式为 mp3
-    button: 默认为 false, 为 true 显示默认的上传按钮，可以使用 slot 修改按钮的文本
-    multiple: 默认为 false, 为 false 表示只允许上传一个文件，为 true 允许上传多个文件
+    multiple   : 默认为 false, 为 false 表示只允许上传一个文件，为 true 允许上传多个文件
+    button-hide: 默认为 false, 为 false 显示默认的上传按钮，为 true 则隐藏，可以使用默认 slot 修改按钮的文本
 
 参数配置:
     主要是配置上传文件大小的限制，在 /static-p/js/config.js 中配置，目前有 defaultMaxSize，imageMaxSize，fileMaxSize
@@ -34,32 +35,33 @@ Slot:
 
 二、不用默认上传按钮:
     1. 在页面中定义一个 FileUpload，不显示上传按钮
-       <FileUpload ref="fileUpload" :button="false" image @on-success="fileUploaded"/>
+       <FileUpload ref="fileUpload" image button-hide @on-success="fileUploaded"/>
     2. 再放置一个元素如 <div>，点击时显示文件上传窗口，这样做是为了能够自定义点击上传文件的元素，例如可以为按钮，图片等
        <div @click="$refs.fileUpload.show()">上传合同文件</div>
 -->
 <template>
     <div class="file-upload">
         <!-- 上传按钮，默认显示 -->
-        <Button v-if="button" type="primary" icon="ios-cloud-upload-outline" @click="show"><slot>上传文件</slot></Button>
+        <Button v-if="!buttonHide" type="primary" icon="ios-cloud-upload-outline" @click="show">
+            <slot>上传文件</slot>
+        </Button>
 
         <Modal v-model="modalVisible" :mask-closable="false" :styles="{top: '60px', marginBottom: '40px'}"
             ok-text="确定" title="上传文件" class="file-upload-modal" @on-ok="finishUpload">
             <Upload ref="upload"
-                :action="uploadUrl"
-                :before-upload="beforeUpload"
-                :on-success="onSuccess"
-                :on-error="onError"
-                :on-format-error="onFormatError"
-                :on-exceeded-size="onExceededSize"
-                :on-remove="onRemove"
-                :max-size="maxSizeInKB"
-                :multiple="multiple"
-                :accept="accept"
-                :format="format"
-                with-credentials
-                type="drag"
-            >
+                    :action="uploadUrl"
+                    :before-upload="beforeUpload"
+                    :on-success="onSuccess"
+                    :on-error="onError"
+                    :on-format-error="onFormatError"
+                    :on-exceeded-size="onExceededSize"
+                    :on-remove="onRemove"
+                    :max-size="maxSizeInKB"
+                    :multiple="multiple"
+                    :accept="accept"
+                    :format="format"
+                    with-credentials
+                    type="drag">
                 <div style="padding: 60px 0">
                     <Icon type="ios-cloud-upload" size="52" style="color: #3399ff"></Icon>
                     <p>点击或者拖拽文件到此上传</p>
@@ -69,10 +71,10 @@ Slot:
             <!-- 图片预览 -->
             <div v-show="uploadedImages.length" class="preview-images">
                 <div v-for="(image, index) in uploadedImages"
-                    :key="index"
-                    :title="image.filename"
-                    :style="{ backgroundImage: `url(${image.url})` }"
-                    class="preview">
+                        :key="index"
+                        :title="image.filename"
+                        :style="{ backgroundImage: `url(${image.url})` }"
+                        class="preview">
                 </div>
             </div>
 
@@ -105,12 +107,12 @@ export default {
     props: {
         doc   : { type: Boolean, default: false }, // 文档
         file  : { type: Boolean, default: false }, // 文件
+        excel : { type: Boolean, default: false }, // Excel
         image : { type: Boolean, default: false }, // 图片
         video : { type: Boolean, default: false }, // 视频
         audio : { type: Boolean, default: false }, // 音频
-        excel : { type: Boolean, default: false }, // Excel
-        button: { type: Boolean, default: true  }, // 是否显示默认的上传按钮
-        multiple: { type: Boolean, default: false }, // 是否允许上传多个文件
+        multiple  : { type: Boolean, default: false }, // 是否允许上传多个文件
+        buttonHide: { type: Boolean, default: false }, // 是否显示默认的上传按钮
     },
     data() {
         return {
@@ -251,6 +253,10 @@ export default {
 </script>
 
 <style lang="scss">
+.file-upload {
+    display: inline-block;
+}
+
 .file-upload-modal {
     .ivu-modal-body {
         display: grid;

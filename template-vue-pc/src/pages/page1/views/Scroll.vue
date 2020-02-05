@@ -1,7 +1,7 @@
 <!-- 滚动相关例子 -->
 <template>
     <div class="scroll-demo">
-        <Affix :offset-top="20"><FileUpload button/></Affix>
+        <Affix :offset-top="20"><FileUpload/></Affix>
 
         <p>1</p>
         <p>2</p>
