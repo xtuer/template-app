@@ -1,19 +1,19 @@
 <!--
 使用方法:
-1. 不使用数据初始化编辑器: <RichText/>
+1. 不使用数据初始化编辑器: <Richtext/>
 2. 要使用数据初始化编辑器:
-    <RichText v-model="html" :min-height="200" inline/>
+    <Richtext v-model="html" :min-height="200" inline/>
     data() {
         return {
             html: '<p>Hello</p>',
         };
     }
 3. 使用自定义工具栏: 目前提供了 2 中工具栏
-    <RichText :toolbar="0"/>
+    <Richtext :toolbar="0"/>
 4. 获取编辑器的内容: 编辑后传入的 html 会自动同步编辑的内容
 -->
 <template>
-    <div ref="editor" class="rich-text">
+    <div ref="editor" class="richtext">
         <!-- 富文本编辑器 -->
         <div :id="editorId"></div>
 
@@ -216,7 +216,7 @@ export default {
 
                         // 不知道为啥，不放到 nextTick 有些浏览器里替换图片会有问题
                         self.$nextTick(() => {
-                            // 只修改 RichText 里面图片的 src
+                            // 只修改 Richtext 里面图片的 src
                             const image = self.$refs.editor.querySelector(`#${imageId}`)
                                        || self.$refs.editor.querySelector(`#${self.editorId}_ifr`).contentWindow.document.querySelector(`#${imageId}`);
 
@@ -295,7 +295,7 @@ export default {
 </script>
 
 <style lang="scss">
-.rich-text {
+.richtext {
     position: relative;
 
     img {
