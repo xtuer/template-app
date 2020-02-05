@@ -60,6 +60,7 @@ Slot:
                     :multiple="multiple"
                     :accept="accept"
                     :format="format"
+                    :headers="{'X-Requested-With': 'XMLHttpRequest'}"
                     with-credentials
                     type="drag">
                 <div style="padding: 60px 0">

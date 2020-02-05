@@ -271,7 +271,7 @@ export default {
         uploadProps() {
             // 0: 上传图片, 1: 上传 MP3 和 MP4, 2: 上传文件
             return {
-                'button-hide': true,
+                buttonHide: true,
                 image : this.uploadMode === 0, // 上传图片插入文本框
                 audio : this.uploadMode === 1, // 上传音频插入文本框
                 video : this.uploadMode === 1, // 上传视频插入文本框
