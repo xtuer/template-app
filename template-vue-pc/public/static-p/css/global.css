@@ -88,3 +88,36 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+/* Vue 的样式 */
+.ivu-modal-footer button {
+    min-width: 90px;
+}
+
+.ivu-btn-small {
+    font-size: 12px !important;
+}
+
+.ivu-tag {
+    cursor: default;
+}
+
+.ivu-modal-wrap .ivu-modal {
+    margin-bottom: 40px;
+}
+
+/* 布局 */
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.three-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.four-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}

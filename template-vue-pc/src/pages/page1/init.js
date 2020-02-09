@@ -33,3 +33,5 @@ Vue.use(PerfectScrollbar);
 window.LoadingBar = LoadingBar;
 window.Message    = Message;
 window.Notice     = Notice;
+
+Vue.prototype.window = window;
