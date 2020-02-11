@@ -77,16 +77,6 @@ class Rest {
         return Rest.executeRequest(options);
     }
 
-    static upload(url, formData) {
-        return new Promise((resolve, reject) => {
-            axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
-                resolve(response.data);
-            }).catch(error => {
-                reject(error);
-            });
-        });
-    }
-
     /**
      * 执行请求
      */
@@ -146,10 +136,10 @@ class Rest {
         } else if (404 === status) {
             alert('404: URL 不存在');
         } else if (500 === status) {
-            // 发生 500 错误时服务器抛出异常，在控制台打印出异常信息
-            console.error(error);
-
             if (error.data && error.data.message) {
+                // 发生 500 错误时服务器抛出异常，在控制台打印出异常信息
+                console.error(error.data.message);
+                console.error(error.data.stack);
                 alert(`500: 发生异常，${error.data.message}\n\n详细错误信息请查看控制台输出 (Chrome 按下快捷键 F12)`);
             }
         } else if (502 === status) {

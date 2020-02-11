@@ -1,5 +1,6 @@
 package com.xtuer.controller;
 
+import com.xtuer.bean.Page;
 import com.xtuer.bean.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,12 +33,26 @@ public class ZooController {
     /**
      * 测试 POST 请求中有中文 (默认应该使用了 UTF-8)
      *
-     * 网址:
-     *      http://localhost:8080/api/demo/encoding
+     * 网址: http://localhost:8080/api/demo/encoding
      * 参数: name [String]: 中文字符串
      */
     @PostMapping("/api/demo/encoding")
     public Result<String> encoding(@RequestParam String name) {
         return Result.ok(name);
+    }
+
+    /**
+     * 测试 POST 请求中有中文 (默认应该使用了 UTF-8)
+     *
+     * 网址:
+     *      http://localhost:8080/api/demo/page
+     *      http://localhost:8080/api/demo/page?pageNumber=2&pageSize=5
+     * 参数:
+     *      pageNumber [可选]: 页码，默认为 1
+     *      pageSize   [可选]: 数量，默认为 10
+     */
+    @GetMapping("/api/demo/page")
+    public Result<Page> paging(Page page) {
+        return Result.ok(page);
     }
 }

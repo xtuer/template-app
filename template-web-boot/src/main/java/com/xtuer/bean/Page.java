@@ -12,9 +12,23 @@ import com.xtuer.util.PageUtils;
 @Setter
 @Accessors(chain = true)
 public class Page {
-    private int number; // 页码
-    private int offset; // 起始位置
-    private int size;   // 数量
+    private int pageNumber = 1 ; // 页码
+    private int pageSize   = 10; // 每页数量
+    private int offset     = 0 ; // 起始位置
+
+    public Page setPageNumber(int pageNumber) {
+        this.pageNumber = Math.max(1, pageNumber);
+        return this;
+    }
+
+    public Page setPageSize(int pageSize) {
+        this.pageSize = Math.max(1, pageSize);
+        return this;
+    }
+
+    public int getOffset() {
+        return PageUtils.offset(pageNumber, pageSize);
+    }
 
     /**
      * 使用 pageNumber 和 pageSize 创建分页对象
@@ -24,9 +38,9 @@ public class Page {
      * @return 返回分页对象
      */
     public static Page of(int pageNumber, int pageSize) {
-        Page page = new Page();
         int offset = PageUtils.offset(pageNumber, pageSize);
-        page.setOffset(offset).setSize(pageSize);
+        Page page  = new Page();
+        page.setOffset(offset).setPageNumber(pageNumber).setPageSize(pageSize);
 
         return page;
     }
