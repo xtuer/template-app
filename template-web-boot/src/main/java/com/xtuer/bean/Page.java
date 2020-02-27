@@ -16,6 +16,19 @@ public class Page {
     private int pageSize   = 10; // 每页数量
     private int offset     = 0 ; // 起始位置
 
+    public int getOffset() {
+        return PageUtils.offset(pageNumber, pageSize);
+    }
+
+    /**
+     * 作用同 pageSize，在 Mapper xml 中使用 size 比 pageSize 更好看一些
+     *
+     * @return 返回数量
+     */
+    public int getSize() {
+        return this.getPageSize();
+    }
+
     public Page setPageNumber(int pageNumber) {
         this.pageNumber = Math.max(1, pageNumber);
         return this;
@@ -24,10 +37,6 @@ public class Page {
     public Page setPageSize(int pageSize) {
         this.pageSize = Math.max(1, pageSize);
         return this;
-    }
-
-    public int getOffset() {
-        return PageUtils.offset(pageNumber, pageSize);
     }
 
     /**

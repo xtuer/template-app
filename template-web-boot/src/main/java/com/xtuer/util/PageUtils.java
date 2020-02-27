@@ -41,7 +41,7 @@ public final class PageUtils {
         recordCount = Math.max(0, recordCount);
         pageSize    = Math.max(1, pageSize);
 
-        int page = (recordCount-1) / pageSize + 1;
+        int page = (recordCount-1) / pageSize + 1; // (recordCount + pageSize - 1) / pageSize;
         return page;
     }
 }
