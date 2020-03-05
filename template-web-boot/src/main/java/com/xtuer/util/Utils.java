@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.DigestUtils;
@@ -369,6 +370,17 @@ public final class Utils {
         } else {
             throw new RuntimeException("请设置正确的环境变量 SERVER_ID，范围是 [0, 1023]");
         }
+    }
+
+    /**
+     * 获取 resources 目录下的文件，如获取文件 resources/meta/x.pdf，则参数 path 为 meta/x.pdf
+     *
+     * @param path 相对于 resources 目录的路径
+     * @return 返回找到的文件
+     * @throws IOException 文件异常
+     */
+    public static File getResourceFile(String path) throws IOException {
+        return new File(new ClassPathResource(path).getURI());
     }
 
     public static void main(String[] args) {
