@@ -52,7 +52,7 @@ public class ZooController {
      *      pageSize   [可选]: 数量，默认为 10
      */
     @GetMapping("/api/demo/page")
-    public Result<Page> paging(Page page) {
+    public Result<Page> paging(Page page) { // 不要使用 @RequestParam Page page
         return Result.ok(page);
     }
 }

@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-@JSONType(ignores = {"password"})
+@JSONType(ignores = { "password" })
 public class User {
     private long id;
 

@@ -73,10 +73,22 @@ const repoUrlToDownloadUrl = function(repoUrl) {
     return '';
 };
 
+/**
+ * 去掉字符串 str 两边的空白，如果 str 为空白字符串，则返回 defaultValue
+ *
+ * @param {String} str 要 trim 的字符串
+ * @param {String} defaultValue trim 为空白字符串时的默认值
+ */
+const trim = function(str, defaultValue = '') {
+    const text = str && str.trim();
+    return text || defaultValue;
+};
+
 export default {
     formatDate,
     roleName,
     genderName,
     idCardName,
     repoUrlToDownloadUrl,
+    trim,
 };
