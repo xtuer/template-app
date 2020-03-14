@@ -81,7 +81,6 @@ export default {
     }
 
     > .content {
-        display: grid;
         background: #eceef8;
         padding: 24px;
 
@@ -89,6 +88,7 @@ export default {
             padding: 18px;
             background: white;
             border-radius: 4px;
+            min-height: 100%;
         }
     }
 }

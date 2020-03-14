@@ -13,7 +13,7 @@ body, html, #app {
     margin    : 0;
     background: white;
     font-family: Helvetica, "Microsoft YaHei", Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing : antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 </style>
