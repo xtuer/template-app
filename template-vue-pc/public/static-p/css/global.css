@@ -111,6 +111,12 @@
     display: block;
 }
 
+.ivu-icon.clickable:hover {
+    color: #2d8cf0;
+    cursor: pointer;
+    transition: all .6s;
+}
+
 /* 布局 */
 .two-column {
     display: grid;
