@@ -1,4 +1,7 @@
 const Urls = {
+    // JS，CSS URLs
+    TINY_MCE: '/static-p/lib/tinymce/tinymce.min.js', // TinyMCE
+
     // 用户
     API_USERS               : '/api/currentOrg/users',       // 当前机构用户列表
     API_USERS_COUNT         : '/api/currentOrg/users/count', // 当前机构总记录数
