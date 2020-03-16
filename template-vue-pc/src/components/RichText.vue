@@ -53,10 +53,13 @@ export default {
     mounted() {
         // 创建各种场景使用的 toolbar
         const toolbar1 = `${this.baseToolbar} image media file fitb code`; // 普通场景使用
-        const toolbar2 = `${this.baseToolbar} image media fitb code`; // 编辑题目使用
+        const toolbar2 = `${this.baseToolbar} image media fitb code`;      // 编辑题目使用
         this.toolbars  = [toolbar1, toolbar2];
 
-        this.initEditor();
+        // 懒加载 TinyMCE
+        Utils.loadJs('/static-p/lib/tinymce/tinymce.min.js').then(() => {
+            this.initEditor();
+        });
     },
     methods: {
         // 点击关闭按钮发射 close 信号
