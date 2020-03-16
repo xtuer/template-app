@@ -480,9 +480,9 @@ Utils.loadJs = function(url, id) {
             clearInterval(timer);
 
             if (task.status === STATUS_SUCCESS) {
-                resolve('loaded: ' + url);
+                resolve('JS load success: ' + url);
             } else if (task.status === STATUS_ERROR) {
-                reject(Error(url + ' load error!'));
+                reject(Error('JS load error: ' + url));
             }
         }, 100);
 
@@ -532,7 +532,7 @@ Utils.loadCss = function(url, id) {
     return new Promise(function(resolve, reject) {
         // 避免重复加载
         if (document.getElementById(id)) {
-            resolve('loaded: ' + url);
+            resolve('CSS load success: ' + url);
             return;
         }
 
@@ -542,17 +542,17 @@ Utils.loadCss = function(url, id) {
             link.onreadystatechange = function() {
                 if (link.readyState === 'loaded' || link.readyState === 'complete') {
                     link.onreadystatechange = null;
-                    resolve('loaded: ' + url);
+                    resolve('CSS load success: ' + url);
                 }
             };
         } else {  // Other Browsers
             link.onload = function() {
-                resolve('loaded: ' + url);
+                resolve('CSS load success: ' + url);
             };
         }
 
         link.onerror = function() {
-            reject(Error(url + ' load error!'));
+            reject(Error('JS load error: ' + url));
         };
 
         link.rel  = 'stylesheet';
