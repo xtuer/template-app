@@ -57,7 +57,7 @@ export default {
         this.toolbars  = [toolbar1, toolbar2];
 
         // 懒加载 TinyMCE
-        Utils.loadJs('/static-p/lib/tinymce/tinymce.min.js').then(() => {
+        Utils.loadJs(Urls.TINY_MCE).then(() => {
             this.initEditor();
         });
     },
