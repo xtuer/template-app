@@ -50,7 +50,7 @@ TopWindow::TopWindow(QWidget *centralWidget,
     d = new TopWindowPrivate(windowPaddings, borderImageBorders, borderImagePath,
                              borderImageHorizontalStretch, borderImageVerticalStretch);
 
-    // 去掉 padding 和 spacing
+    // 去掉 padding 和 设置 spacing，避免在阴影部分显示子控件
     QGridLayout *l = qobject_cast<QGridLayout*>(layout());
     l->setSpacing(0);
     l->setContentsMargins(d->padding);
