@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket</title>
+</head>
+
+<body>
+    <input type="text" id="message" name="" value="中国人">
+    <button type="button" id="send-button" name="button">发送数据</button>
+    <button type="button" id="group-users-button">小组用户</button>
+    <button type="button" id="clean-button">清空</button>
+    <p id="response"></p>
+
+    <script src="http://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="Message.js"></script>
+    <script>
+    function showInfo(info) {
+        $('#response').append('<span>' + info + '</span><br>');
+    }
+
+    var wss  = [];
+    var n    = 0;
+    var userId    = parseInt(Math.random() * 1000);
+    var username  = 'Alice-' + userId;
+    var groupName = 'Coding';
+
+    // 1. 连接服务器
+    // 2. 连接成功后发送加入小组
+    // 3. 加入小组成功后获取小组成员
+    // 4. 发送消息
+
+    // [0] 创建 WebSocket 连接到 IM Server
+    function createWebSocket() {
+        // WebSocket 有 4 个回调函数: onopen, onclose, onerror, onmessage
+        var ws = new WebSocket(`ws://localhost:3721?userId=${userId}&username=${username}`); // 打开一个 web socket
+
+        // Web Socket 已连接上，使用 send() 方法发送数据: 如发送自己的所有信息群里其他人
+        ws.onopen = function(event) {
+            showInfo('连接成功: ' + new Date());
+            ws.send(Message.createJoinToGroupMessage(userId, groupName).toJson());
+        };
+
+        // 关闭 websocket
+        ws.onclose = function(event) {
+            showInfo('连接关闭: ' + new Date());
+        };
+
+        // 发生错误的回调函数
+        ws.onerror = function(event) {
+            showInfo('发生错误: ' + new Date());
+        };
+
+        // 收到消息
+        ws.onmessage = function(event) {
+            var message = JSON.parse(event.data);
+
+            if (message.type == Message.types.GROUP_JOIN) {
+                // 加入小组成功后获取小组成员
+                showInfo(JSON.stringify(message));
+                if (message.from == userId) {
+                    ws.send(Message.createGetGroupUsersMessage(userId, groupName).toJson());
+                }
+            } else if (message.type == Message.types.GROUP_USERS) {
+                // 获取到小组成员
+                var users = JSON.parse(message.content);
+                showInfo(JSON.stringify(users));
+            } else {
+                showInfo(JSON.stringify(message));
+            }
+        };
+
+        return ws;
+    }
+
+    // [1] 创建 WebSocket
+    for (var i = 0; i < 1; ++i) {
+        wss.push(createWebSocket());
+    }
+
+    // [2] 点击 send-button 发送消息
+    $('#send-button').click(function(event) {
+        for (var i = 0; i < wss.length; ++i) {
+            ++n;
+            var content = $('#message').val() + ' ' + n;
+            wss[i].send(Message.createGroupMessage(userId, groupName, content).toJson()); // 消息为空则断开连接
+        }
+    });
+
+    // [3] 获取小组成员
+    $('#group-users-button').click(function(event) {
+        wss[0].send(Message.createGetGroupUsersMessage(userId, groupName).toJson());
+    });
+
+    // 点击 clean-button 清空信息
+    $('#clean-button').click(function(event) {
+        $('#response').empty();
+    });
+    </script>
+</body>
+
+</html>

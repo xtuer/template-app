@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+    <!-- 加载配置 -->
+    <context:property-placeholder location="classpath:config/application.properties" file-encoding="UTF-8"/>
+
+    <!-- Service, Dao, Config, Redis, elasticsearch 等公用的、与 Servlet 无关的对象在此生成 -->
+    <import resource="classpath:config/mongodb.xml"/>
+
+    <!-- Service 应该是 Servlet 无关的，Controller 是 Servlet 相关的 -->
+    <context:component-scan base-package="handler,service"/>
+
+    <!-- IM 服务器 -->
+    <bean id="imServer" class="ImServer"/>
+</beans>

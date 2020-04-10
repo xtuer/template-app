@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>WebSocket</title>
+    <style media="screen">
+        html, body {
+            font-family: Helvetica, Arial, sans-serif;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: column;
+            width: 650px;
+            height: 650px;
+            border: 1px solid lightgray;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        .top {
+            display: flex;
+            border-bottom: 1px solid lightgray;
+            align-items: center;
+            padding: 0 4px;
+            height: 30px;
+        }
+        .top select {
+            width: 100px;
+            margin: 0 10px 0 4px;
+        }
+        .top button {
+            margin-left: 4px;
+        }
+
+        .content {
+            flex: 1;
+            overflow: auto;
+            font-size: 14px;
+            padding: 10px;
+        }
+        .content .message {
+            padding: 10px 0;
+            border-bottom: 1px dashed lightgray;
+        }
+
+        .bottom {
+            display: flex;
+            border-top: 1px solid lightgray;
+        }
+        .bottom input {
+            flex: 1;
+            height: 20px;
+        }
+        .bottom button {
+            width: 70px;
+        }
+
+        .stretch {
+            flex: 1;
+        }
+        .vertical-line {
+            width: 2px;
+            height: 100%;
+            border-right: 1px solid lightgray;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <!-- 上中下布局 -->
+        <!-- 用户信息选择 -->
+        <div class="top">
+            用户:
+            <select id="user-select">
+                <option value="10001">洪熙官</option>
+                <option value="10002">黄飞鸿</option>
+                <option value="10003">方世玉</option>
+                <option value="10004">柴玉关</option>
+            </select>
+            <button id="connect">连接</button>
+            <div class="vertical-line"></div>
+            小组:
+            <select id="group-select">
+                <option value="修真">修真</option>
+                <option value="武侠">武侠</option>
+                <option value="都市">都市</option>
+            </select>
+
+            <button id="join-group-button">加入小组</button>
+            <button id="group-users-button">小组成员</button>
+            <div class="stretch"></div><div class="vertical-line"></div><div class="stretch"></div>
+            <button id="history-button">历史消息</button>
+            <button id="clean-button">清除消息</button>
+        </div>
+
+        <!-- 消息显示区 -->
+        <div class="content" id="messages"></div>
+
+        <!-- 消息输入发送区 -->
+        <div class="bottom">
+            <input id="message" value="好消息" placeholder="请输入消息">
+            <button id="send-button">发送</button>
+        </div>
+    </div>
+
+    <script src="http://cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="tio-ws.js"></script>
+    <script src="Message.js"></script>
+    <script src="MessageHandler.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 操作步骤:
+            // 1. 选择用户 (连接的时候需要把用户 ID 和用户名传给服务器)
+            // 2. 点击连接按钮连接服务器
+            // 3. 选择小组, 点击加入小组按钮
+            // 4. 发送消息 (只有加入小组后才能给发送小组消息)
+
+            // 连接服务器
+            $('#connect').click(() => {
+                connect(userId(), username());
+            });
+
+            // 加入小组
+            $('#join-group-button').click(() => {
+                window.tiows.send(Message.createJoinToGroupMessage(userId(), groupName()).toJson());
+            });
+
+            // 小组成员
+            $('#group-users-button').click(() => {
+                window.tiows.send(Message.createGetGroupUsersMessage(userId(), groupName()).toJson());
+            });
+
+            // 发送消息
+            $('#send-button').click(() => {
+                window.tiows.send(Message.createGroupMessage(userId(), groupName(), message()).toJson());
+            });
+            // 发送消息 (输入框中按下回车键)
+            $('#message').keydown(function(e) {
+                if (e.keyCode == 13) {
+                    window.tiows.send(Message.createGroupMessage(userId(), groupName(), message()).toJson());
+                }
+            });
+
+            // 历史消息
+            $('#history-button').click(() => {
+                window.tiows.send(Message.createGroupHistoryMessage(userId(), groupName(), 1).toJson());
+            });
+
+            // 清除消息
+            $('#clean-button').click(() => {
+                $('#messages').empty();
+            });
+        });
+
+        /**
+         * 连接服务器
+         *
+         * @param  {String} userId   用户 ID
+         * @param  {String} username 用户名
+         * @return 无返回值
+         */
+        function connect(userId, username) {
+            var ws_protocol       = 'ws';
+            var ip                = '127.0.0.1';
+            var port              = 3721;
+            var queryString       = `userId=${userId}&username=${username}`;
+            var heartbeatTimeout  = 5000; // 心跳超时时间，单位：毫秒
+            var reconnectInterval = 5000; // 重连间隔时间，单位：毫秒
+            var messageHandler    = new MessageHandler((message) => {
+                $('#messages').append($(`<div class="message">${message}</div>`));
+            });
+
+            window.tiows = new tio.ws(ws_protocol, ip, port, queryString, messageHandler, heartbeatTimeout, reconnectInterval);
+            window.tiows.connect();
+        }
+
+        // 获取用户 ID 和名字
+        function userId() {
+            return $('#user-select').val();
+        }
+        function username() {
+            return $('#user-select').find('option:selected').text();
+        }
+        // 获取小组名字
+        function groupName() {
+            return $('#group-select').val();
+        }
+        function message() {
+            return $('#message').val();
+        }
+    </script>
+</body>
+
+</html>
