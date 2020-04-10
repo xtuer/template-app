@@ -1,7 +1,6 @@
 package handler;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.tio.core.ChannelContext;
 import org.tio.core.GroupContext;
@@ -13,15 +12,12 @@ import org.tio.core.stat.IpStat;
  * 记录每一个 IP 的流量, 访问时间, 解码次数等, 具体请参考类 IpStat
  */
 @Component
+@Slf4j
 public class IpStatListener implements org.tio.core.stat.IpStatListener {
-	@SuppressWarnings("unused")
-	private static Logger logger = LoggerFactory.getLogger(IpStatListener.class);
-
 	/**
 	 *
 	 */
-	private IpStatListener() {
-	}
+	private IpStatListener() {}
 
 	@Override
 	public void onExpired(GroupContext groupContext, IpStat ipStat) {

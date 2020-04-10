@@ -1,9 +1,8 @@
 package handler;
 
 import bean.User;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.tio.core.ChannelContext;
@@ -22,10 +21,10 @@ import service.MessageService;
  *     断开连接前会调用 ServerAioListener.onBeforeClose()
  */
 @Component
+@Slf4j
 public class MessageHandler implements IWsMsgHandler {
-	private static Logger logger = LoggerFactory.getLogger(MessageHandler.class);
-
-	@Autowired private MessageService messageService;
+	@Autowired
+	private MessageService messageService;
 
 	/**
 	 * 字符消息 (binaryType = blob) 到达后会调用这个方法
@@ -43,7 +42,7 @@ public class MessageHandler implements IWsMsgHandler {
 		String userId   = StringUtils.trim(request.getParam("userId"));
 		String username = StringUtils.trim(request.getParam("username"));
 
-		logger.info("收到来自 {}({}) 的 WS 握手包: {}\n{}", username, userId, channelContext.getClientNode().toString(), request.toString());
+		log.info("[握手] 收到来自 {}({}) 的 WS 握手包: {}\n{}", username, userId, channelContext.getClientNode().toString(), request.toString());
 		return messageService.login(request, channelContext) ? httpResponse : null;
 	}
 
@@ -53,7 +52,7 @@ public class MessageHandler implements IWsMsgHandler {
 		String ipPort = channelContext.getClientNode().toString();
 		User   user   = messageService.getUser(channelContext);
 
-		logger.info("{} - {}({}) 进来了，共 {} 人在线", ipPort, user.getUsername(), user.getId(), count);
+		log.info("[连接] {} - {}({}) 进来了，共 {} 人在线", ipPort, user.getUsername(), user.getId(), count);
 	}
 
 	/**
@@ -65,7 +64,7 @@ public class MessageHandler implements IWsMsgHandler {
 	}
 
 	/**
-	 * 当客户端发 close flag 时，会走这个方法
+	 * 当客户端发 close flag 时 (空消息)，会走这个方法
 	 */
 	@Override
 	public Object onClose(WsRequest wsRequest, byte[] bytes, ChannelContext channelContext) throws Exception {

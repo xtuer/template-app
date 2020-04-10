@@ -1,5 +1,6 @@
 package service;
 
+import bean.Constants;
 import bean.Message;
 import bean.User;
 import com.alibaba.fastjson.JSON;
@@ -38,9 +39,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class MessageService {
-    private static final String WS_USER     = "ws_user";    // 用户的 key，用于把用户保存到 tio 的 channelContext 上
-    private static final String WS_KICK_OUT = "ws_kickout"; // 踢掉线的 key
-
     @Autowired
     private MessageDao messageDao;
 
@@ -199,8 +197,8 @@ public class MessageService {
     public boolean login(HttpRequest request, ChannelContext channelContext) {
         // 1. 获取用户信息
         // 2. 如果 userId 或者 username 为空则返回 false, 不允许建立连接
-        // 3. 如果 userId 已经绑定过其他的 channelContext, 则踢掉前一个, 一个 userId 只允许登录一台设备
-        // 4. 绑定用户和 channelContext, channelContext 存储用户对象
+        // 3. 如果 userId 已经绑定过其他的 channelContext, 则踢掉前一个, 同一个 userId 不允许重复重复登录
+        // 4. 绑定用户和 channelContext: 在 channelContext 中存储用户对象
 
         // [1] 获取用户信息
         String userId   = StringUtils.trim(request.getParam("userId"));
@@ -213,7 +211,7 @@ public class MessageService {
             return false;
         }
 
-        // [3] 如果 userId 已经绑定过其他的 channelContext (即在其他设备登录), 则踢掉前一个, 一个 userId 只允许登录一台设备
+        // [3] 如果 userId 已经绑定过其他的 channelContext, 则踢掉前一个, 同一个 userId 不允许重复重复登录
         ChannelContext previousChannelContext = Tio.getChannelContextByBsId(channelContext.groupContext, userId);
         if (!channelContext.equals(previousChannelContext) && previousChannelContext != null) {
             user = getUser(previousChannelContext);
@@ -222,7 +220,7 @@ public class MessageService {
             sendToUser(Message.createKickOutMessage(), user.getId(), previousChannelContext, true);
 
             // 踢掉用户
-            previousChannelContext.setAttribute(WS_KICK_OUT, true); // 踢掉的标志
+            previousChannelContext.setAttribute(Constants.KEY_KICK_OUT, true); // 踢掉的标志
             Tio.unbindBsId(previousChannelContext);
             Tio.remove(previousChannelContext, "服务器断开客户端连接");
             log.info("踢掉 {}({}) 已经登录的连接 {}", user.getUsername(), userId, previousChannelContext.getClientNode());
@@ -233,7 +231,8 @@ public class MessageService {
             });
         }
 
-        // [4] 绑定用户 ID 和 channelContext, 以便使用 Tio.sendToBsId(groupContext, userId, response) 给指定 ID 的用户发送信息
+        // [4] 绑定用户和 channelContext: 在 channelContext 中存储用户对象,
+        //     以便使用 Tio.sendToBsId(groupContext, userId, response) 给指定 ID 的用户发送信息
         //     Tio.bindBsId() 内部会调用 channelContext.setBsId(userid), 其他地方可以使用 channelContext.getBsId() 获取用户 ID
         bindUser(user, channelContext);
         Tio.bindBsId(channelContext, userId); // BS ID 和 ChannelContext 是一对一的
@@ -346,7 +345,7 @@ public class MessageService {
      * @param channelContext ChannelContext 对象
      */
     private void bindUser(User user, ChannelContext channelContext) {
-        channelContext.setAttribute(WS_USER, user);
+        channelContext.setAttribute(Constants.KEY_USER, user);
     }
 
     /**
@@ -356,7 +355,7 @@ public class MessageService {
      * @return 返回channelContext 绑定的用户
      */
     public User getUser(ChannelContext channelContext) {
-        return ((User) channelContext.getAttribute(WS_USER));
+        return ((User) channelContext.getAttribute(Constants.KEY_USER));
     }
 
     /**
@@ -366,7 +365,7 @@ public class MessageService {
      * @return 被踢掉线返回 true, 否则返回 false
      */
     public boolean isKickOut(ChannelContext channelContext) {
-        return BooleanUtils.toBoolean((Boolean) channelContext.getAttribute(WS_KICK_OUT));
+        return BooleanUtils.toBoolean((Boolean) channelContext.getAttribute(Constants.KEY_KICK_OUT));
     }
 
     /**
