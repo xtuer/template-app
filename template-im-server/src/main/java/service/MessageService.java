@@ -369,7 +369,7 @@ public class MessageService {
     }
 
     /**
-     * 获取传入的 channelContext 的连接数消息
+     * 创建总共有多少连接数量的消息
      *
      * @param channelContext ChannelContext 对象
      * @return 返回连接数的消息对象
