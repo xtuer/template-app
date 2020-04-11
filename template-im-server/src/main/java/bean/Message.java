@@ -1,10 +1,12 @@
 package bean;
 
+import com.alibaba.fastjson.JSON;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 每种消息都有自己的类型 type，如果此类型不够用，那么需要根据业务场景，使用 JSON 格式的消息内容 content，在 content 中再定义需要的类型。
@@ -96,6 +98,20 @@ public class Message {
     public static Message createKickOutMessage() {
         Message message = new Message();
         message.setType(Type.KICK_OUT);
+
+        return message;
+    }
+
+    /**
+     * 创建历史消息
+     *
+     * @param messages 消息的数组
+     * @return 返回消息对象
+     */
+    public static Message createHistoryMessage(List<Message> messages) {
+        Message message = new Message();
+        message.setType(Type.GROUP_HISTORY);
+        message.setContent(JSON.toJSONString(messages));
 
         return message;
     }

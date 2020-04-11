@@ -42,7 +42,7 @@ public class MessageHandler implements IWsMsgHandler {
 		String userId   = StringUtils.trim(request.getParam("userId"));
 		String username = StringUtils.trim(request.getParam("username"));
 
-		log.info("[握手] 收到来自 {}({}) 的 WS 握手包: {}\n{}", username, userId, channelContext.getClientNode().toString(), request.toString());
+		log.info("[握手消息] 收到来自 {}({}) 的 WS 握手包: {}\n{}", username, userId, channelContext.getClientNode().toString(), request.toString());
 		return messageService.login(request, channelContext) ? httpResponse : null;
 	}
 
@@ -52,7 +52,7 @@ public class MessageHandler implements IWsMsgHandler {
 		String ipPort = channelContext.getClientNode().toString();
 		User   user   = messageService.getUser(channelContext);
 
-		log.info("[连接] {} - {}({}) 进来了，共 {} 人在线", ipPort, user.getUsername(), user.getId(), count);
+		log.info("[建立连接] 用户: {}({}) 建立好连接，共 {} 人在线: {}", user.getUsername(), user.getId(), count, ipPort);
 	}
 
 	/**

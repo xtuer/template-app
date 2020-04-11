@@ -108,7 +108,8 @@ public class MessageService {
                     return null;
                 case GROUP_HISTORY:
                     // [2.6] 获取小组历史信息: to 为 groupName, content 为页码
-                    return JSON.toJSONString(messageDao.findGroupMessages(to, NumberUtils.toInt(message.getContent(), 0), 100));
+                    List<Message> messages = messageDao.findGroupMessages(to, NumberUtils.toInt(message.getContent(), 0), 100);
+                    return JSON.toJSONString(Message.createHistoryMessage(messages));
                 case PRIVATE_HISTORY:
                     // [2.7] 获取私有历史信息: from 和 to 为用户 ID, content 为页码
                     return JSON.toJSONString(messageDao.findUserMessages(userId, to, NumberUtils.toInt(message.getContent(), 0), 100));
@@ -223,7 +224,7 @@ public class MessageService {
             previousChannelContext.setAttribute(Constants.KEY_KICK_OUT, true); // 踢掉的标志
             Tio.unbindBsId(previousChannelContext);
             Tio.remove(previousChannelContext, "服务器断开客户端连接");
-            log.info("踢掉 {}({}) 已经登录的连接 {}", user.getUsername(), userId, previousChannelContext.getClientNode());
+            log.info("[重复登录] 踢掉 {}({}) 已经登录的连接 {}", user.getUsername(), userId, previousChannelContext.getClientNode());
 
             // 绑定此用户前一个连接的小组
             user.getGroups().forEach(groupName -> {

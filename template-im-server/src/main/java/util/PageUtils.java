@@ -82,7 +82,18 @@ public final class PageUtils {
      * @param pageSize   每页上的最多记录数
      * @return 返回 MongoDB 的分页对象
      */
-    public static PageRequest pageRequestByCreatedTimeDesc(int pageNumber, int pageSize) {
+    public static PageRequest pageRequestByCreatedAtAsc(int pageNumber, int pageSize) {
+        return PageUtils.pageRequestOf(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "createdAt"));
+    }
+
+    /**
+     * 使用页码、数量创建按照创建时间 createdTime 倒序的 MongoDB 的分页对象
+     *
+     * @param pageNumber 页码 (从 1 开始)
+     * @param pageSize   每页上的最多记录数
+     * @return 返回 MongoDB 的分页对象
+     */
+    public static PageRequest pageRequestByCreatedAtDesc(int pageNumber, int pageSize) {
         return PageUtils.pageRequestOf(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 }

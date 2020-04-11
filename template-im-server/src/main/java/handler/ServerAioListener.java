@@ -60,7 +60,7 @@ public class ServerAioListener extends WsServerAioListener {
 
             messageService.logout(channelContext);
 
-            log.info("[离开] {} - {}({}) 离开了，共 {} 人在线", ipPort, user.getUsername(), user.getId(), count);
+            log.info("[断开连接] 用户: {}({}) 断开了连接，还有 {} 人在线: {}", user.getUsername(), user.getId(), count, ipPort);
         }
     }
 

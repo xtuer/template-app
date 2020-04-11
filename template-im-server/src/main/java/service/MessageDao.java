@@ -44,7 +44,7 @@ public class MessageDao {
         // 等级 SQL: SELECT * FROM message_im WHERE to=#{groupName} AND type='GROUP_MESSAGE'
         //           ORDER BY createdTime DESC LIMIT #{offset}, #{size}
 
-        PageRequest pageable = PageUtils.pageRequestByCreatedTimeDesc(page, size);
+        PageRequest pageable = PageUtils.pageRequestByCreatedAtAsc(page, size);
         Criteria criteria = Criteria.where("to").is(groupName).and("type").is(Message.Type.GROUP_MESSAGE);
         List<Message> messages = mongoTemplate.find(Query.query(criteria).with(pageable), Message.class, MESSAGE_IM);
 
@@ -65,7 +65,7 @@ public class MessageDao {
         //           ((`from`=#{senderId} AND to=#{receiverId}) OR (`from`=#{receiverId} AND to=#{senderId}))
         //           ORDER BY createdTime DESC LIMIT #{offset}, #{size}
 
-        PageRequest pageable = PageUtils.pageRequestByCreatedTimeDesc(page, size);
+        PageRequest pageable = PageUtils.pageRequestByCreatedAtDesc(page, size);
         Criteria orCriteria = new Criteria().orOperator(
                 Criteria.where("from").is(senderId).and("to").is(receiverId),
                 Criteria.where("from").is(receiverId).and("to").is(senderId)
