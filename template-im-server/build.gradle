@@ -96,7 +96,7 @@ ssh.settings {
 }
 
 task deploy(dependsOn: shadowJar) {
-    def jar  = shadowJar.archiveFileName
+    def jar  = shadowJar.archiveFileName.get()
     def dir  = config.getProperty('deploy.dir')
     def path = "${dir}/${jar}"
 

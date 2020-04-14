@@ -11,18 +11,18 @@
             host     = '127.0.0.1'
             username = 'root'
             password = 'root'
-            dir      = '/www.xtuer.com' // 部署目录
+            dir      = '/www.training.com' // 部署目录
         }
 
         mongodb {
-            host = 'mongodb.ebag'
+            host = 'mongo.training'
             port = 27017
-            database = 'ebag'
-            username = 'ebag'
-            password = 'ebag'
+            database = 'training'
+            username = 'training'
+            password = 'training'
         }
 
-        logDirectory  = '/xtuer/logs/im' // 日志目录
+        logDirectory  = '/training/logs/im' // 日志目录
 //  }
 //}
 
@@ -32,15 +32,21 @@
 environments {
     // Mac 开发环境配置
     mac {
+        mongodb {
+            database = 'ebag'
+            username = 'ebag'
+            password = 'ebag'
+        }
+
         logDirectory  = '/usr/local/temp/xtuer/logs/im' // 日志目录
     }
 
     // 测试环境
     test1 {
         deploy {
-            host     = '192.168.10.173'
+            host     = '47.99.136.29'
             username = 'root'
-            password = 'tiger_sun'
+            password = 'temp_hxdd'
         }
     }
 }
