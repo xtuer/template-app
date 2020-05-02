@@ -78,6 +78,29 @@ class Rest {
     }
 
     /**
+     * 上传文件
+     *
+     * @param {String} url 上传地址
+     * @param {JSON} formData 表单数据
+     */
+    static upload(url, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+                if (response.data.success) {
+                    const uplaodedFile = response.data.data;
+                    resolve(uplaodedFile);
+                } else {
+                    reject(response.data.message);
+                }
+            }).catch(response => {
+                console.error(error);
+                const error = response.response;
+                reject(error);
+            });
+        });
+    }
+
+    /**
      * 执行请求
      */
     static executeRequest({ url, pathVariables, data, json, method, config }) {

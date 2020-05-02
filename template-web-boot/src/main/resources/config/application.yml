@@ -1,0 +1,87 @@
+###############################################################################
+#                                    变量定义                                  #
+###############################################################################
+# Host 定义
+app.mysql: 127.0.0.1
+app.redis: 127.0.0.1
+app.mongo: 127.0.0.1
+
+# 项目保存数据目录
+app.dir.base: /data/com.xtuer
+
+###############################################################################
+#                                App Config                                   #
+###############################################################################
+# 临时上传目录
+app.dir.upload : ${app.dir.base}/temp/upload
+# 预览文件目录
+app.dir.preview: ${app.dir.base}/temp/preview
+# 文件仓库目录
+app.dir.repo   : ${app.dir.base}/repo
+
+# 应用的 ID 和 key，用于生成身份认证的 token
+app.id : xxxx
+app.key: xxxx
+
+# 身份认证 token 的有效期: 30 天，单位秒
+app.authTokenDuration: 2592000
+
+# 日志配置
+logging.path: ${app.dir.base}/logs
+
+###############################################################################
+#                                    Database                                 #
+###############################################################################
+# Datasource
+spring.datasource.username: root
+spring.datasource.password: root
+spring.datasource.url     : jdbc:mysql://${app.mysql}:3306/exam?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
+spring.datasource.driver-class-name: com.mysql.jdbc.Driver
+
+# Connection Pool: Hikari
+spring.datasource.hikari.minimumIdle      : 5
+spring.datasource.hikari.maximumPoolSize  : 50
+spring.datasource.hikari.idleTimeout      : 30000
+spring.datasource.hikari.maxLifetime      : 2000000
+spring.datasource.hikari.connectionTimeout: 30000
+
+# MyBatis
+mybatis.mapper-locations    : classpath:mapper/*.xml
+mybatis.type-aliases-package: com.xtuer.bean
+mybatis.configuration.map-underscore-to-camel-case: true
+
+###############################################################################
+#                             Redis: JetCache                                 #
+###############################################################################
+jetcache.statIntervalMinutes               : 15
+jetcache.areaInCacheName                   : false
+jetcache.local.default.type                : linkedhashmap
+jetcache.local.default.keyConvertor        : fastjson
+jetcache.remote.default.type               : redis
+jetcache.remote.default.keyConvertor       : fastjson
+jetcache.remote.default.valueEncoder       : kryo
+jetcache.remote.default.valueDecoder       : kryo
+jetcache.remote.default.poolConfig.minIdle : 5
+jetcache.remote.default.poolConfig.maxIdle : 20
+jetcache.remote.default.poolConfig.maxTotal: 50
+jetcache.remote.default.host               : ${app.redis}
+jetcache.remote.default.port               : 6379
+jetcache.remote.default.expireAfterWriteInMillis: 3600000
+jetcache.local.default.expireAfterWriteInMillis : 3600000
+
+###############################################################################
+#                                    Thymeleaf                                #
+###############################################################################
+spring.thymeleaf.mode        : HTML
+spring.thymeleaf.cache       : true
+spring.thymeleaf.suffix      : .html
+spring.thymeleaf.encoding    : UTF-8
+spring.thymeleaf.content-type: text/html
+
+###############################################################################
+#                                     Tomcat                                  #
+###############################################################################
+server.tomcat.remote_ip_header: x-forwarded-for
+server.tomcat.protocol_header : x-forwarded-proto
+server.tomcat.port-header     : X-Forwarded-Port
+server.use-forward-headers    : true

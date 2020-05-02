@@ -1,6 +1,6 @@
 # 选择 Windows 开发环境，开启应用的 DEBUG 日志
 # gradle bootRun --args='--spring.profiles.active=win'
 
-app.dir.base = C:/temp/xtuer
-logging.level.com.xtuer = DEBUG
-spring.thymeleaf.cache  = false
+app.dir.base: C:/temp/xtuer
+logging.level.com.xtuer: DEBUG
+spring.thymeleaf.cache : false
