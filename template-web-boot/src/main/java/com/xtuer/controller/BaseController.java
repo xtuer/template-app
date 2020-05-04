@@ -1,7 +1,11 @@
 package com.xtuer.controller;
 
+import com.github.wujun234.uid.impl.CachedUidGenerator;
 import com.xtuer.bean.User;
-import com.xtuer.service.*;
+import com.xtuer.service.OrganizationService;
+import com.xtuer.service.RepoFileService;
+import com.xtuer.service.TempFileService;
+import com.xtuer.service.UserService;
 import com.xtuer.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 于是在基础控制器 BaseController 提供这些操作，其他控制器继承 BaseController，就可以省去不少工作量了。
  */
 public class BaseController {
-    @Autowired
-    protected IdWorker idWorker;
-
     @Autowired
     protected UserService userService;
 
@@ -24,6 +25,9 @@ public class BaseController {
 
     @Autowired
     protected RepoFileService repoFileService;
+
+    @Autowired
+    private CachedUidGenerator uidGenerator;
 
     /**
      * 获取当前登录用户
@@ -61,6 +65,6 @@ public class BaseController {
      * @return 返回唯一 ID
      */
     final protected long nextId() {
-        return idWorker.nextId();
+        return uidGenerator.getUID();
     }
 }

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
  * 最多支持 1024 台机器，每台机器每毫秒能够生成最多 4096 个 ID，整个集群理论上每秒可以生成 1024 * 1000 * 4096 = 42 亿个 ID。
  */
 @Slf4j
-@Service
+// @Service
 public class IdWorker {
     /** 开始时间截(2017-01-01)，单位毫秒 */
     private static final long START_TIMESTAMP = 1483228800000L;

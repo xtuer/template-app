@@ -1,5 +1,6 @@
 package com.xtuer.service;
 
+import com.github.wujun234.uid.impl.CachedUidGenerator;
 import com.xtuer.config.AppConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseService {
     @Autowired
-    protected IdWorker idWorker;
+    private CachedUidGenerator uidGenerator;
 
     @Autowired
     protected UserService userService;
@@ -26,7 +27,7 @@ public class BaseService {
      *
      * @return 返回唯一 ID
      */
-    public long nextId() {
-        return idWorker.nextId();
+    final public long nextId() {
+        return uidGenerator.getUID();
     }
 }

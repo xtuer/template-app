@@ -2,12 +2,8 @@ package com.xtuer.service;
 
 import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.Cached;
-import com.xtuer.bean.CacheConst;
-import com.xtuer.bean.Result;
-import com.xtuer.bean.Role;
-import com.xtuer.bean.User;
+import com.xtuer.bean.*;
 import com.xtuer.mapper.UserMapper;
-import com.xtuer.bean.SecurityConst;
 import com.xtuer.security.JwtService;
 import com.xtuer.util.Utils;
 import com.xtuer.util.WebUtils;
