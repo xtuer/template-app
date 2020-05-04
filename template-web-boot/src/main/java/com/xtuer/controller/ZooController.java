@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
-public class ZooController {
+public class ZooController extends BaseController {
     /**
      * 把字符串自动转为日期
      *
@@ -54,5 +54,18 @@ public class ZooController {
     @GetMapping("/api/demo/page")
     public Result<Page> paging(Page page) { // 不要使用 @RequestParam Page page
         return Result.ok(page);
+    }
+
+    /**
+     * 获取分布式唯一 ID
+     *
+     * 网址: http://localhost:8080/api/uid
+     * 参数: 无
+     * 
+     * @return payload 为 ID
+     */
+    @GetMapping("/api/uid")
+    public Result<Long> uid() {
+        return Result.ok(nextId());
     }
 }
