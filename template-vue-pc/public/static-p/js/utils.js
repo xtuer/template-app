@@ -449,7 +449,7 @@ Date.prototype.toJSON = function() {
  */
 Utils.loadJs = function(url, id) {
     // 1. 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
-    // 2. 定时检查任务状态，加载结束时清楚定时器，执行对应的 promise 函数
+    // 2. 定时检查任务状态，加载结束时清除定时器，执行对应的 promise 函数
     // 3. 如果是第一个加载任务则从服务器加载，否则返回
 
     // 加载状态
@@ -525,7 +525,7 @@ Utils.loadJs = function(url, id) {
  * @return {Promise} 返回 Promise 对象, resolve 的参数为加载成功的信息 (无多大意义), reject 的参数为错误提示
  */
 Utils.loadCss = function(url, id) {
-    id = id || Utils.getFilename(url);
+    id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
 
     // 不会短时间内重复加载同一个 CSS，所以不需要像加载 JS 那样使用任务队列检查加载状态
     return new Promise(function(resolve, reject) {
@@ -556,7 +556,7 @@ Utils.loadCss = function(url, id) {
 
         link.rel  = 'stylesheet';
         link.id   = id;
-        link.href = `${url}?hash=${id}`;
+        link.href = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
         document.getElementsByTagName('head').item(0).appendChild(link);
     });
 };
