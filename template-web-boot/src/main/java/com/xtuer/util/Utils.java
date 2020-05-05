@@ -368,7 +368,8 @@ public final class Utils {
         if (NumberUtils.isDigits(id)) {
             return NumberUtils.toInt(id);
         } else {
-            throw new RuntimeException("请设置正确的环境变量 SERVER_ID，范围是 [0, 1023]");
+            return -1;
+            // throw new RuntimeException("请设置正确的环境变量 SERVER_ID，范围是 [0, 1023]");
         }
     }
 

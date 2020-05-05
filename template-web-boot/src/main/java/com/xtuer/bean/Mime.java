@@ -53,7 +53,7 @@ final public class Mime {
         // 从文件 static/meta/content-type.properties 中加载 content type
         try (InputStream in = Utils.getStreamRelativeToClassesDirectory("static/meta/content-type.properties")) {
             CONTENT_TYPE_PROPS.load(in);
-            log.info("成功加载 static/meta/content-type.properties");
+            log.info("[成功] 加载 mime 文件: static/meta/content-type.properties");
         } catch (IOException e) {
             e.printStackTrace();
         }
