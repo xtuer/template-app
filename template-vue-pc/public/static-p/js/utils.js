@@ -457,7 +457,7 @@ Utils.loadJs = function(url, id) {
     var STATUS_SUCCESS = 2; // 加载成功
     var STATUS_ERROR   = 3; // 加载失败
 
-    id = id || Utils.getFilename(url);
+    id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
 
     // [1] 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
     window.jsLoadingTasks = window.jsLoadingTasks || [];      // 所有加载任务 { id, status: 1|2|3 }
@@ -507,13 +507,12 @@ Utils.loadJs = function(url, id) {
         }
 
         script.onerror = function() {
-            window.dynamicLoading.delete(id);
             task.status = STATUS_ERROR;
         };
 
         script.type = 'text/javascript';
         script.id   = id;
-        script.src  = `${url}?${id}`;
+        script.src  = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
         document.getElementsByTagName('head').item(0).appendChild(script);
     });
 };
