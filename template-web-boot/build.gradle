@@ -62,6 +62,7 @@ bootJar {
 }
 
 ext {
+    // 运行: gradle bootRun --args='--spring.profiles.active=mac'
     // 部署: gradle clean deploy -Denv=production
     environment = System.getProperty("env", "dev") // 获取 gradle 参数中 env 的值，选择环境
     config      = new ConfigSlurper(environment).parse(file('config.groovy').toURI().toURL()).toProperties()

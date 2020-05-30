@@ -78,6 +78,29 @@ class Rest {
     }
 
     /**
+     * 上传文件
+     *
+     * @param {String} url 上传地址
+     * @param {JSON} formData 表单数据
+     */
+    static upload(url, formData) {
+        return new Promise((resolve, reject) => {
+            axios.post(url, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(response => {
+                if (response.data.success) {
+                    const uplaodedFile = response.data.data;
+                    resolve(uplaodedFile);
+                } else {
+                    reject(response.data.message);
+                }
+            }).catch(response => {
+                const error = response.response;
+                console.error(error);
+                reject(error);
+            });
+        });
+    }
+
+    /**
      * 执行请求
      */
     static executeRequest({ url, pathVariables, data, json, method, config }) {
@@ -86,6 +109,15 @@ class Rest {
                 console.error('URL undefined');
                 reject();
                 return;
+            }
+
+            // 如果是 GET，把数组变为字符串: [1, 2, 3] 转换为字符串 '1,2,3'
+            if (method === 'GET') {
+                for (let key in data) {
+                    if (Array.isArray(data[key])) {
+                        data[key] += '';
+                    }
+                }
             }
 
             // json 为 false，构建 POST, PUT, DELETE 请求的参数

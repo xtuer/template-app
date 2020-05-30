@@ -14,6 +14,18 @@ export default {
     },
     mounted() {
         console.log(JSON.stringify(new Date()));
+
+        Utils.loadJs('/static-p/lib/jquery.min.js?t=123').then(() => {
+            console.log('jquery-1');
+            Utils.loadJs('/static-p/lib/jquery.min.js?t=123').then(() => {
+                console.log('jquery-2');
+            });
+        });
+
+        const ids = [1, 2, 3];
+        Rest.get({ url: '/api/demo/array', data: { ids } }).then(result => {
+            console.log(result);
+        });
     },
     methods: {}
 };

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class ZooController extends BaseController {
@@ -25,6 +26,11 @@ public class ZooController extends BaseController {
         return date;
     }
 
+    /**
+     * 查看异常响应
+     *
+     * 网址: http://localhost:8080/api/demo/exception
+     */
     @GetMapping("/api/demo/exception")
     public String exception() {
         throw new RuntimeException();
@@ -67,5 +73,20 @@ public class ZooController extends BaseController {
     @GetMapping("/api/uid")
     public Result<Long> uid() {
         return Result.ok(nextId());
+    }
+
+    /**
+     * 前端传数组到服务器端
+     *
+     * 前端发送请求:
+     * const ids = [1, 2, 3];
+     * Rest.get({ url: '/api/demo/array', data: { ids } })
+     *
+     * 网址: http://localhost:8080/api/demo/array?ids=1&ids=2&ids=3
+     * 参数: ids: 数组
+     */
+    @GetMapping("/api/demo/array")
+    public Result<List<Integer>> array(@RequestParam List<Integer> ids) {
+        return Result.ok(ids);
     }
 }

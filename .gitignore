@@ -16,6 +16,9 @@ _book/
 ### Gradle ###
 build/
 .gradle/
+gradle/
+gradlew
+gradlew.bat
 
 ### LOG ###
 *.log

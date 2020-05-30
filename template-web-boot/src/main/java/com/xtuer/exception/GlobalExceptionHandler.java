@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.github.wujun234.uid.impl.CachedUidGenerator;
 import com.xtuer.bean.Result;
 import com.xtuer.bean.Urls;
-import com.xtuer.util.Utils;
 import com.xtuer.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -25,16 +24,13 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 @Slf4j
 public final class GlobalExceptionHandler {
-    // 服务器的 ID
-    private int workerId = Utils.getServerId();
-
     // ID 生成器
     @Autowired
     private CachedUidGenerator uidGenerator;
 
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) {
-        String error = "服务器: " + workerId + ", 异常 ID: " + uidGenerator.getUID();
+        String error = "异常 ID: " + uidGenerator.getUID();
         String stack = String.format("网址: %s%n参数: %s%n堆栈: %s",
                 request.getRequestURL(),
                 JSON.toJSONString(request.getParameterMap()),

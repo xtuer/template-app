@@ -93,8 +93,8 @@ class Rest {
                     reject(response.data.message);
                 }
             }).catch(response => {
-                console.error(error);
                 const error = response.response;
+                console.error(error);
                 reject(error);
             });
         });
@@ -109,6 +109,15 @@ class Rest {
                 console.error('URL undefined');
                 reject();
                 return;
+            }
+
+            // 如果是 GET，把数组变为字符串: [1, 2, 3] 转换为字符串 '1,2,3'
+            if (method === 'GET') {
+                for (let key in data) {
+                    if (Array.isArray(data[key])) {
+                        data[key] += '';
+                    }
+                }
             }
 
             // json 为 false，构建 POST, PUT, DELETE 请求的参数
