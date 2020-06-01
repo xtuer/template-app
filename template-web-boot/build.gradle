@@ -1,11 +1,11 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.2.4.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'org.springframework.boot' version '2.3.0.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.hidetake.ssh' version '2.9.0'
 }
 
-group = 'com.xtuer'
+group   = 'com.xtuer'
 version = '0.0.1-SNAPSHOT'
 
 repositories {
@@ -29,8 +29,10 @@ ext.versions = [
 dependencies {
     implementation (
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-thymeleaf',
             'org.springframework.boot:spring-boot-starter-security',
+            'org.springframework.boot:spring-boot-starter-thymeleaf',
+            'org.springframework.boot:spring-boot-starter-validation',
+
             "commons-io:commons-io:${versions.commonsIO}",
             "org.apache.commons:commons-lang3:${versions.commonsLang}",
             "org.apache.commons:commons-text:${versions.commonsText}",

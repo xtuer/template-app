@@ -93,7 +93,7 @@ public final class Result<T> {
     public static void main(String[] args) {
         // Result
         Result<User> r1 = Result.ok();
-        Result<User> r2 = Result.ok(new User("Alice", "Passw0rd", "ROLE_ADMIN"));
+        Result<User> r2 = Result.ok(new User("Alice", "Passw0rd", Role.ROLE_ADMIN_SYSTEM));
 
         // JSON
         System.out.println(JSON.toJSONString(r1));

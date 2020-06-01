@@ -1,5 +1,6 @@
 package com.xtuer.mapper;
 
+import com.xtuer.bean.Role;
 import com.xtuer.bean.User;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -98,6 +99,6 @@ public interface UserMapper {
      * @param userId 用户的 ID
      * @param role   用户的角色
      */
-    void insertUserRole(long userId, String role);
+    void insertUserRole(long userId, Role role);
 
 }

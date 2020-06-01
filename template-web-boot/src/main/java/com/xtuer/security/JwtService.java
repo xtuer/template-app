@@ -2,6 +2,7 @@ package com.xtuer.security;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.xtuer.bean.Role;
 import com.xtuer.bean.User;
 import com.xtuer.config.AppConfig;
 import com.xtuer.util.Jwt;
@@ -59,9 +60,11 @@ public class JwtService {
             String username   = params.get("username");
             String nickname   = params.get("nickname");
             Set<String> roles = JSON.parseObject(params.get("roles"), new TypeReference<Set<String>>() {});
+            Role[] rolesX     = Role.fromStrings(roles).toArray(new Role[] {});
 
-            User user = new User(id, username, "[protected]", roles.toArray(new String[] {}));
+            User user = new User(id, username, "[protected]", rolesX);
             user.setNickname(nickname);
+
             return user;
         } catch (Exception ex) {
             return null;

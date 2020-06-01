@@ -6,7 +6,6 @@ import com.xtuer.util.SecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
@@ -37,20 +36,20 @@ public class User {
     private int     gender;   // 性别: 0 (未设置), 1 (男), 2 (女)
     private boolean enabled = true;  // 状态: false (禁用), true (启用)
 
-    private Set<String> roles = new HashSet<>(); // 角色，需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
+    private Set<Role> roles = new HashSet<>(); // 角色，需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
 
     public User() {}
 
-    public User(String username, String password, String... roles) {
+    public User(String username, String password, Role... roles) {
         this(0, username, password, roles);
     }
 
-    public User(long id, String username, String password, String... roles) {
+    public User(long id, String username, String password, Role... roles) {
         this.id = id;
         this.username = username;
         this.password = password;
 
-        for (String role : roles) {
+        for (Role role : roles) {
             this.addRole(role);
         }
     }
@@ -61,12 +60,8 @@ public class User {
      * @param role 角色
      * @return 返回用户对象
      */
-    public User addRole(String role) {
-        role = StringUtils.trim(role);
-
-        if (StringUtils.isNotBlank(role)) {
-            roles.add(role);
-        }
+    public User addRole(Role role) {
+        roles.add(role);
 
         return this;
     }
@@ -77,7 +72,7 @@ public class User {
      * @param role 角色
      * @return 有此角色返回 true，否则返回 false
      */
-    public boolean hasRole(String role) {
+    public boolean hasRole(Role role) {
         return this.roles.contains(role);
     }
 
@@ -86,7 +81,7 @@ public class User {
         System.out.println(JSON.toJSONString(user1));
         System.out.println(user1.getRoles());
 
-        User user2 = new User("Bob", "Passw0rd", "ROLE_USER");
+        User user2 = new User("Bob", "Passw0rd", Role.ROLE_USER);
         System.out.println(JSON.toJSONString(user2));
         System.out.println(user2.getRoles());
 
@@ -94,7 +89,7 @@ public class User {
         System.out.println(JSON.toJSONString(user2));
 
         User user3 = new User();
-        user3.setUsername("Bob").setPassword("pass").addRole("ADMIN");
+        user3.setUsername("Bob").setPassword("pass").addRole(Role.ROLE_ADMIN_ORG);
         System.out.println(JSON.toJSONString(SecurityUtils.buildUserDetails(user3)));
     }
 }

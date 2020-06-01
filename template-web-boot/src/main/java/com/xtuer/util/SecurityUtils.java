@@ -1,5 +1,6 @@
 package com.xtuer.util;
 
+import com.xtuer.bean.Role;
 import com.xtuer.bean.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -47,9 +48,14 @@ public final class SecurityUtils {
      * @return 返回用户对应的 UserDetails
      */
     public static UserDetails buildUserDetails(User user) {
+        String[] roles = Role.toArray(user.getRoles());
+
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true,
-                AuthorityUtils.createAuthorityList(user.getRoles().toArray(new String[]{}))
+                user.getUsername(),
+                user.getPassword(),
+                user.isEnabled(),
+                true, true, true,
+                AuthorityUtils.createAuthorityList(roles)
         );
     }
 }

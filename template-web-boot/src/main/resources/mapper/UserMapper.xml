@@ -90,7 +90,7 @@
         <result property="gender"   column="gender"/>
         <result property="enabled"  column="enabled"/>
 
-        <collection property="roles" ofType="string" javaType="java.util.HashSet">
+        <collection property="roles" ofType="Role" javaType="java.util.HashSet">
             <result column="role"/>
         </collection>
     </resultMap>

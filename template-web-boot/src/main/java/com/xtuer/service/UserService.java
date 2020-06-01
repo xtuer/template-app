@@ -113,7 +113,7 @@ public class UserService extends BaseService {
         user.setId(userId);
 
         // [4] 添加用户的角色 (如果已经存在则会自动忽略)
-        for (String role : user.getRoles()) {
+        for (Role role : user.getRoles()) {
             userMapper.insertUserRole(user.getId(), role);
         }
     }
