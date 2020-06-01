@@ -62,12 +62,7 @@ public class JwtService {
             String username   = params.get("username");
             String nickname   = params.get("nickname");
             Set<String> roles = JSON.parseObject(params.get("roles"), new TypeReference<Set<String>>() {});
-
-            // 字符串角色转为枚举角色
-            Role[] rolesX = roles.stream()
-                    .map(r -> Enum.valueOf(Role.class, r))
-                    .collect(Collectors.toSet())
-                    .toArray(new Role[] {});
+            Role[] rolesX     = roles.stream().map(role -> Enum.valueOf(Role.class, role)).toArray(Role[]::new);
 
             User user = new User(id, username, "[protected]", rolesX);
             user.setNickname(nickname);

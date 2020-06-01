@@ -51,11 +51,7 @@ public final class SecurityUtils {
      */
     public static UserDetails buildUserDetails(User user) {
         // 枚举角色转为字符串角色
-        String[] roles = user.getRoles()
-                .stream()
-                .map(Role::name)
-                .collect(Collectors.toList())
-                .toArray(new String[] {});
+        String[] roles = user.getRoles().stream().map(Role::name).toArray(String[]::new);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
