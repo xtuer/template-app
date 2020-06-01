@@ -28,9 +28,12 @@ public final class GlobalExceptionHandler {
     @Autowired
     private CachedUidGenerator uidGenerator;
 
+    // 局域网 IP
+    private static final String IP = WebUtils.getLocalIp();
+
     @ExceptionHandler(value = Exception.class)
     public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception ex) {
-        String error = "异常 ID: " + uidGenerator.getUID();
+        String error = "异常: 服务器 " + IP + ", ID " + uidGenerator.getUID();
         String stack = String.format("网址: %s%n参数: %s%n堆栈: %s",
                 request.getRequestURL(),
                 JSON.toJSONString(request.getParameterMap()),

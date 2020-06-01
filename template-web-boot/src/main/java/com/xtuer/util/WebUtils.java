@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Enumeration;
 
 /**
  * Web 操作相关的辅助工具，例如:
@@ -209,6 +209,36 @@ public final class WebUtils {
         }
 
         return ip;
+    }
+
+    /**
+     * 获取服务器的本地局域网 IP
+     *
+     * @return 返回 IP
+     */
+    public static String getLocalIp() {
+        try {
+            Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
+
+            while (e.hasMoreElements()) {
+                NetworkInterface n = e.nextElement();
+                Enumeration<InetAddress> addresses = n.getInetAddresses();
+
+                while (addresses.hasMoreElements()) {
+                    InetAddress i = addresses.nextElement();
+                    String currentAddress = i.getHostAddress();
+
+                    // 局域网 IP 以 192 开头
+                    if (currentAddress.startsWith("192.")) {
+                        return currentAddress;
+                    }
+                }
+            }
+        } catch (SocketException socketException) {
+            socketException.printStackTrace();
+        }
+
+        return "";
     }
 
     /**
