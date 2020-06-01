@@ -43,7 +43,8 @@ public final class GlobalExceptionHandler {
         log.warn(error);
         log.warn(stack);
 
-        return WebUtils.useAjax(request) ? handleAjaxException(response, error, stack)
+        return WebUtils.useAjax(request)
+                ? handleAjaxException(response, error, stack)
                 : handleNonAjaxException(ex, error, stack);
     }
 
