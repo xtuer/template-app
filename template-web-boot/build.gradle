@@ -17,7 +17,7 @@ ext.versions = [
         commonsIO  : '2.6',
         commonsLang: '3.8',
         commonsText: '1.7',
-        fastjson   : '1.2.62',
+        fastjson   : '1.2.70',
         mybatis    : '2.1.1',
         mysql      : '5.1.46',
         jetcache   : '2.5.14',
