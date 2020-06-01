@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 生成 token 的 service.
@@ -60,7 +62,12 @@ public class JwtService {
             String username   = params.get("username");
             String nickname   = params.get("nickname");
             Set<String> roles = JSON.parseObject(params.get("roles"), new TypeReference<Set<String>>() {});
-            Role[] rolesX     = Role.fromStrings(roles).toArray(new Role[] {});
+
+            // 字符串角色转为枚举角色
+            Role[] rolesX = roles.stream()
+                    .map(r -> Enum.valueOf(Role.class, r))
+                    .collect(Collectors.toSet())
+                    .toArray(new Role[] {});
 
             User user = new User(id, username, "[protected]", rolesX);
             user.setNickname(nickname);

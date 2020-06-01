@@ -7,6 +7,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.stream.Collectors;
+
 public final class SecurityUtils {
     /**
      * 判断当前用户是否已经登陆
@@ -48,7 +50,12 @@ public final class SecurityUtils {
      * @return 返回用户对应的 UserDetails
      */
     public static UserDetails buildUserDetails(User user) {
-        String[] roles = Role.toArray(user.getRoles());
+        // 枚举角色转为字符串角色
+        String[] roles = user.getRoles()
+                .stream()
+                .map(Role::name)
+                .collect(Collectors.toList())
+                .toArray(new String[] {});
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
