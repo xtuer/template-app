@@ -217,6 +217,8 @@ public final class WebUtils {
      * @return 返回 IP
      */
     public static String getLocalIp() {
+        String returnIp = ""; // 有的服务器没有设置 192 的局域网 IP，例如阿里云的云主机
+
         try {
             Enumeration<NetworkInterface> e = NetworkInterface.getNetworkInterfaces();
 
@@ -228,9 +230,10 @@ public final class WebUtils {
                     InetAddress i = addresses.nextElement();
                     String currentAddress = i.getHostAddress();
 
-                    // 局域网 IP 以 192 开头
                     if (currentAddress.startsWith("192.")) {
-                        return currentAddress;
+                        return currentAddress; // 优先返回 192 开头的局域网 IP
+                    } else if (!i.isLoopbackAddress() && currentAddress.matches("(\\d+\\.){3}(\\d+)")) {
+                        returnIp = currentAddress;
                     }
                 }
             }
@@ -238,7 +241,7 @@ public final class WebUtils {
             socketException.printStackTrace();
         }
 
-        return "";
+        return returnIp;
     }
 
     /**
