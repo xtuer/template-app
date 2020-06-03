@@ -9,7 +9,7 @@ export default class UserDao {
      */
     static findCurrentUser() {
         return new Promise((resolve, reject) => {
-            Rest.get({ url: Urls.API_USERS_CURRENT }).then(({ data: user, success, message }) => {
+            Rest.get(Urls.API_USERS_CURRENT).then(({ data: user, success, message }) => {
                 if (success) {
                     resolve(user);
                 } else {
@@ -28,7 +28,7 @@ export default class UserDao {
      */
     static findUserById(userId) {
         return new Promise((resolve, reject) => {
-            Rest.get({ url: Urls.API_USERS_BY_ID, pathVariables: { userId } }).then(({ data: user, success, message }) => {
+            Rest.get(Urls.API_USERS_BY_ID, { params: { userId } }).then(({ data: user, success, message }) => {
                 if (success) {
                     resolve(user);
                 } else {
@@ -45,10 +45,10 @@ export default class UserDao {
      *
      * 网址: http://localhost:8080/api/users/{userId}
      * 参数:
-     *      nickname [可选]: 昵称
-     *      avatar   [可选]: 头像
-     *      mobile   [可选]: 手机
-     *      gender   [可选]: 性别 (0, 1, 2)
+     *      nickname      [可选]: 昵称
+     *      avatar        [可选]: 头像
+     *      mobile        [可选]: 手机
+     *      gender        [可选]: 性别 (0, 1, 2)
      *      oldPassword   [可选]: 旧密码
      *      newPassword   [可选]: 新密码
      *      renewPassword [可选]: 确认的密码
@@ -62,7 +62,7 @@ export default class UserDao {
      */
     static patchUser(user) {
         return new Promise((resolve, reject) => {
-            Rest.patch({ url: Urls.API_USERS_BY_ID, pathVariables: { userId: user.id }, data: user }).then(({ data, success, message }) => {
+            Rest.patch(Urls.API_USERS_BY_ID, { params: { userId: user.id }, data: user }).then(({ data, success, message }) => {
                 if (success) {
                     Message.success(message);
                     resolve(data);

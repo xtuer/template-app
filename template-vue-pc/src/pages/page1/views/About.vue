@@ -23,7 +23,11 @@ export default {
         });
 
         const ids = [1, 2, 3];
-        Rest.get({ url: '/api/demo/array', data: { ids } }).then(result => {
+        Rest.get('/api/demo/array', { data: { ids } }).then(result => {
+            console.log(result);
+        });
+
+        Rest.create('/api/demo/encoding', { data: { name: '中国' } }).then(result => {
             console.log(result);
         });
     },
