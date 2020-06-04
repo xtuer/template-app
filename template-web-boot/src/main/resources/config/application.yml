@@ -27,7 +27,7 @@ app.key: xxxx
 app.authTokenDuration: 2592000
 
 # 日志配置
-logging.path: ${app.dir.base}/logs
+logging.file.path: ${app.dir.base}/logs
 
 ###############################################################################
 #                                    Database                                 #
