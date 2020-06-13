@@ -5,7 +5,7 @@
 
 import Vue from 'vue';
 import { Button, Toast, Field, CellGroup, Uploader } from 'vant';
-import '@/../public/static-m/lib/axios.rest';
+import dayjs from 'dayjs';
 
 import '@/../public/static-m/js/urls';
 import '@/../public/static-m/js/utils';
@@ -30,3 +30,6 @@ Object.keys(filters).forEach(key => {
 Object.keys(methods).forEach(key => {
     Vue.prototype[key] = methods[key];
 });
+
+// 其他
+window.dayjs = dayjs;

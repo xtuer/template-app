@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { LoadingBar, Message, Notice } from 'view-design';
 import PerfectScrollbar from 'vue2-perfect-scrollbar';
 import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
+import dayjs from 'dayjs';
 
 import '@/../public/static-p/js/urls';
 import '@/../public/static-p/js/utils';
@@ -35,3 +36,6 @@ window.Message    = Message;
 window.Notice     = Notice;
 
 Vue.prototype.window = window;
+
+// 其他
+window.dayjs = dayjs;
