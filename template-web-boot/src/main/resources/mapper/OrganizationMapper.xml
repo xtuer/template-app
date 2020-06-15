@@ -4,9 +4,8 @@
 <!-- namespace 非常重要：必须是 Mapper 类的全路径 -->
 <mapper namespace="com.xtuer.mapper.OrganizationMapper">
     <sql id="organization_columns">
-        id, name, host, port, admin_id AS adminId, parent_id AS parentId,
-        contact_person AS contactPerson, contact_mobile AS contactMobile,
-        portal_name AS portalName, logo, is_enabled AS enabled
+        id, name, host, port, admin_id, parent_id, contact_person, contact_mobile,
+        portal_name, logo, is_enabled AS enabled
     </sql>
 
     <!-- 使用 ID 查询机构 -->
@@ -44,15 +43,15 @@
 
     <!-- 新增或更新机构 -->
     <insert id="upsertOrganization" parameterType="Organization">
-        INSERT INTO organization (id, name, host, port, admin_id, parent_id, contact_person,
-                                  contact_mobile, portal_name, logo)
-            VALUES (#{id}, #{name}, #{host}, #{port}, #{adminId}, #{parentId}, #{contactPerson},
-                  #{contactMobile}, #{portalName}, #{logo})
+        INSERT INTO organization
+            (id, name, host, port, admin_id, parent_id, contact_person, contact_mobile, portal_name, logo)
+        VALUES
+            (#{id}, #{name}, #{host}, #{port}, #{adminId}, #{parentId}, #{contactPerson}, #{contactMobile}, #{portalName}, #{logo})
 
-        ON DUPLICATE KEY
-        UPDATE name = #{name}, host = #{host}, port = #{port}, admin_id = #{adminId},
-                   parent_id = #{parentId}, contact_person = #{contactPerson},
-                   contact_mobile = #{contactMobile}, portal_name = #{portalName}, logo = #{logo}, is_enabled = #{enabled}
+        ON DUPLICATE KEY UPDATE
+            name = #{name}, host = #{host}, port = #{port}, admin_id = #{adminId},
+            parent_id = #{parentId}, contact_person = #{contactPerson},
+            contact_mobile = #{contactMobile}, portal_name = #{portalName}, logo = #{logo}, is_enabled = #{enabled}
     </insert>
 
     <!-- 启用禁用机构 -->

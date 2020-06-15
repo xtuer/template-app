@@ -13,8 +13,8 @@
         INSERT INTO uploaded_file (id, filename, url, type, user_id)
         VALUES (#{id}, #{filename}, #{url}, #{type}, #{userId})
 
-        ON DUPLICATE KEY
-        UPDATE filename = #{filename}, url = #{url}, type = #{type}
+        ON DUPLICATE KEY UPDATE
+            filename = #{filename}, url = #{url}, type = #{type}
     </insert>
 
     <!-- 更新文件的 URL -->

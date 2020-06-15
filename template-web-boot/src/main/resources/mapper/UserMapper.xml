@@ -5,7 +5,7 @@
 <mapper namespace="com.xtuer.mapper.UserMapper">
     <!-- 用户查询结果的列 -->
     <sql id="user_columns">
-        user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id AS orgId, is_enabled AS enabled
+        user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id, is_enabled AS enabled
     </sql>
 
     <!-- 使用 ID 查找用户 -->
@@ -27,7 +27,7 @@
     <!-- 查找机构的用户 -->
     <select id="findUsersByOrgId" resultType="User">
         SELECT <include refid="user_columns"/>
-        FROM user
+        FROM  user
         WHERE org_id = #{orgId}
         LIMIT ${offset}, ${count}
     </select>
@@ -37,8 +37,8 @@
         INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
         VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 
-        ON DUPLICATE KEY
-        UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
+        ON DUPLICATE KEY UPDATE
+            username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
     </insert>
 
     <!-- 创建用户的登录记录 -->

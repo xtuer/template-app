@@ -115,7 +115,7 @@ CREATE TABLE exam_paper (
 ) ENGINE=InnoDB;
 
 #-------------------------------------------
-# 表名：exam
+# 表名：exam_exam
 # 作者：黄彪
 # 日期：2019-06-21
 # 版本：1.0
@@ -123,9 +123,9 @@ CREATE TABLE exam_paper (
 #      包含试卷、班级、以及考试相关的信息组成，例如考试时间、是否允许查看答案、是否打乱题目顺序、是否打乱选项顺序，
 #      考试时间为在 start_time 和 end_time 之间，最多考 duration 分钟，允许考几次等
 #------------------------------------------
-DROP TABLE IF EXISTS exam;
+DROP TABLE IF EXISTS exam_exam;
 
-CREATE TABLE exam (
+CREATE TABLE exam_exam (
     id                          bigint(20)                  COMMENT '考试 ID',
     paper_id                    bigint(20)    DEFAULT 0     COMMENT '试卷 ID',
     clazz_id                    bigint(20)    DEFAULT 0     COMMENT '班级 ID',
