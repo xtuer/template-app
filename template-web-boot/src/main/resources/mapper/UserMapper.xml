@@ -37,8 +37,8 @@
         INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
         VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 
-        ON DUPLICATE KEY UPDATE
-            username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
+        ON DUPLICATE KEY
+        UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
     </insert>
 
     <!-- 创建用户的登录记录 -->
