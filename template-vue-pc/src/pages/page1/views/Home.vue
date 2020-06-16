@@ -51,7 +51,7 @@ export default {
     },
     watch: {
         // 监听路由变化时高亮对应的菜单项
-        '$route'(to, from) {
+        $route(to, from) {
             if (this.menuItems.some(item => item.name === to.name)) {
                 this.activeName = to.name;
             }
