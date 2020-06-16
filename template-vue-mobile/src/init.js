@@ -33,3 +33,4 @@ Object.keys(methods).forEach(key => {
 
 // 其他
 window.dayjs = dayjs;
+Vue.prototype.window = window;

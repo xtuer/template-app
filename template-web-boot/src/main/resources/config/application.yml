@@ -46,7 +46,7 @@ spring.datasource.hikari.maxLifetime      : 2000000
 spring.datasource.hikari.connectionTimeout: 30000
 
 # MyBatis
-mybatis.mapper-locations    : classpath:mapper/*.xml
+mybatis.mapper-locations    : classpath:mapper/**/*.xml
 mybatis.type-aliases-package: com.xtuer.bean
 mybatis.configuration.map-underscore-to-camel-case: true
 

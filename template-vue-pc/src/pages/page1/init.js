@@ -39,3 +39,4 @@ Vue.prototype.window = window;
 
 // 其他
 window.dayjs = dayjs;
+Vue.prototype.window = window;
