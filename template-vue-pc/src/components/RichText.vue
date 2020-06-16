@@ -36,6 +36,7 @@ export default {
         toolbar  : { type: Number,  default: 0, validator(value) { return value >= 0 && value <= 1; } }, // 工具栏的下标: 0 或 1
         closable : { type: Boolean, default: false },     // 是否可关闭
         readOnly : { type: Boolean, default: false },     // 是否只读
+        placeholder: { type: String, default: ' '  },     // 占位内容
     },
     model: {
         prop : 'html',
@@ -86,7 +87,8 @@ export default {
                 statusbar    : false,
                 relative_urls: false, // 不把绝对路径转换为相对路径
                 menu         : {},
-                plugins      : 'paste code',
+                placeholder  : this.placeholder,
+                plugins      : 'paste code placeholder',
                 paste_as_text: true,     // 去掉 Word 的格式: https://www.tiny.cloud/docs/plugins/paste/
                 paste_data_images: true, // Word 里复制的图片保存为 Base64 格式
                 setup: function(editor) {
@@ -342,6 +344,11 @@ export default {
             outline: none;
             border-color: #47a4f5;
             box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        &.plugin-placeholder:before {
+            color: #4545456e;
+            -webkit-margin-before: 0em;
         }
     }
 
