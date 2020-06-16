@@ -35,8 +35,6 @@ window.LoadingBar = LoadingBar;
 window.Message    = Message;
 window.Notice     = Notice;
 
-Vue.prototype.window = window;
-
 // 其他
 window.dayjs = dayjs;
 Vue.prototype.window = window;
