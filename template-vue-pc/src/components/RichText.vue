@@ -110,6 +110,7 @@ export default {
             }).then(editors => {
                 this.editor = editors[0];
                 this.editor.setContent(this.html);
+                this.editor.fire('selectionchange', {}); // 触发更新 placeholder
 
                 // inline 时的最小高度
                 if (self.inline && self.minHeight !== 101) {
@@ -317,6 +318,10 @@ export default {
         &:hover {
             color: $primaryColor;
         }
+    }
+
+    .file-upload {
+        display: none;
     }
 
     // 微调 Full featured 的编辑器阴影, 工具栏阴影
