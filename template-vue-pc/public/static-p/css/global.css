@@ -112,7 +112,7 @@
 }
 
 .ivu-icon.clickable:hover {
-    color: #2d8cf0;
+    color: #2d8cf0 !important;
     cursor: pointer;
     transition: all .6s;
 }
@@ -131,4 +131,23 @@
 .four-column {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+/* 有搜索分页的工具栏 */
+.toolbar-1-top {
+    display: grid;
+    grid-template-columns: 400px max-content;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar-1-bottom {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 表格里按钮列的按钮之间的间隔 */
+.column-buttons button:not(:first-child) {
+    margin-left: 8px;
 }
