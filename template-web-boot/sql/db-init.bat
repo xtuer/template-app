@@ -16,6 +16,7 @@ rem 遍历当前文件夹下的所有 SQL 文件，使用 mysql 命令导入数�
 rem mysql -uroot -proot training < demo.sql
 
 for /f "delims=" %%f in ('dir /b /a-d /s "*.sql"') do (
+    echo %%f
     call mysql -u%username% -p%password% %dababase% < %%f
 )
 

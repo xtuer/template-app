@@ -1,7 +1,7 @@
 package com.xtuer.bean;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.xtuer.util.SecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Accessors(chain = true)
-@JSONType(ignores = { "password" })
+@JsonIgnoreProperties({ "password" })
 public class User {
     private long id;
 
