@@ -134,19 +134,19 @@
 }
 
 /* 有搜索、分页、列表的页面的布局 */
-.layout-list {
+.list-page {
     display: grid;
     grid-gap: 24px;
 }
 
-.layout-list-toolbar-top {
+.list-page-toolbar-top {
     display: grid;
     grid-template-columns: 400px max-content;
     justify-content: space-between;
     align-items: center;
 }
 
-.layout-list-toolbar-bottom {
+.list-page-toolbar-bottom {
     display: grid;
     justify-content: center;
     align-items: center;

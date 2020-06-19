@@ -1,7 +1,10 @@
 package com.xtuer.util;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.xtuer.bean.Mime;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -185,7 +188,33 @@ public final class Utils {
      * @param object 要输出的对象
      */
     public static void dump(Object object) {
-        System.out.println(JSON.toJSONStringWithDateFormat(object, "yyyy-MM-dd HH:mm:ss.SSS", SerializerFeature.PrettyFormat));
+        System.out.println(Utils.toJson(object));
+    }
+
+    /**
+     * 把对象转为 Json 字符串
+     *
+     * @param object 要转为 Json 字符串的对象
+     * @return 返回对象的 Json 字符串表示
+     */
+    public static String toJson(Object object) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // Date format
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS"));
+
+        // Indent
+        // objectMapper.enable(SerializationFeature.INDENT_OUTPUT); // 2 个空格
+        DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+        DefaultPrettyPrinter.Indenter indenter = new DefaultIndenter("    ", DefaultIndenter.SYS_LF);
+        printer.indentObjectsWith(indenter); // Indent JSON objects
+        printer.indentArraysWith(indenter);  // Indent JSON arrays
+
+        try {
+            return objectMapper.writer(printer).writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            return "{}";
+        }
     }
 
     /**
@@ -383,6 +412,35 @@ public final class Utils {
     public static File getResourceFile(String path) throws IOException {
         return new File(new ClassPathResource(path).getURI());
     }
+
+    private static final String[] BASE_CN_NUMBERS = {"零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+
+    /**
+     * 阿拉伯数字转为中文数字，支持 [0, 99]
+     *
+     * @param n 阿拉伯数字
+     * @return 返回 [0, 99] 之间的中文数字字符串，超出范围的返回 ''
+     */
+    public static String toCnNumber(int n) {
+        if (0 <= n && n <= 10) {
+            // 0-10: 零、一、...、十
+            return BASE_CN_NUMBERS[n];
+        } else if (11 <= n && n <= 99) {
+            int ge  = n % 10;
+            int shi = n / 10;
+
+            if (1 == shi) {
+                // 11-19: 十一、十二、...
+                return "十" + (ge==0 ? "" : BASE_CN_NUMBERS[ge]);
+            } else {
+                // 20-99: 二十一、二十二、...
+                return BASE_CN_NUMBERS[shi] + "十" + (ge==0 ? "" : BASE_CN_NUMBERS[ge]);
+            }
+        } else {
+            log.info("数字 {} 越界，只支持 [0, 99] 之间的数字", n);
+            return "";
+        }
+    };
 
     public static void main(String[] args) {
         String text = "如果要编码的字节数不能被3整除，最后会多出1个或2个字节.";
