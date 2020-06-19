@@ -1,8 +1,10 @@
 package com.xtuer.bean;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xtuer.util.SecurityUtils;
+import com.xtuer.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -76,20 +78,24 @@ public class User {
         return this.roles.contains(role);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JsonProcessingException {
         User user1 = new User();
-        System.out.println(JSON.toJSONString(user1));
+        Utils.dump(user1);
         System.out.println(user1.getRoles());
 
         User user2 = new User("Bob", "Passw0rd", Role.ROLE_USER);
-        System.out.println(JSON.toJSONString(user2));
+        Utils.dump(user2);
         System.out.println(user2.getRoles());
 
         user2.setEnabled(false);
-        System.out.println(JSON.toJSONString(user2));
+        Utils.dump(user2);
+
+        user2 = new ObjectMapper().readValue(Utils.toJson(user2), User.class);
+        System.out.println("From JSON");
+        Utils.dump(user2);
 
         User user3 = new User();
         user3.setUsername("Bob").setPassword("pass").addRole(Role.ROLE_ADMIN_ORG);
-        System.out.println(JSON.toJSONString(SecurityUtils.buildUserDetails(user3)));
+        Utils.dump(SecurityUtils.buildUserDetails(user3));
     }
 }
