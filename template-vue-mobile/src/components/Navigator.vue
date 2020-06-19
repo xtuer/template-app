@@ -27,7 +27,7 @@ export default {
         style() {
             return {
                 height: this.custom ? this.height + 'px' : 'auto',
-                backgroundImage : this.custom ? 'url(/static-s/img/nav-bg.png)' : '',
+                backgroundImage : this.custom ? 'url(/static-m/img/nav-bg.png)' : '',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize  : 'cover',
                 backgroundColor : this.custom ? '' : '#469afa',

@@ -13,6 +13,16 @@ module.exports = {
     outputDir: '../template-web-boot/src/main/resources/page-m',
     assetsDir: 'static-m',
 
+    css: {
+        loaderOptions: {
+            sass: {
+                prependData: `
+                    @import '@/../public/static-m/css/variables.scss';
+                `
+            },
+        }
+    },
+
     productionSourceMap: false, // 不生成 map 文件
     configureWebpack: config => {
         if (process.env.NODE_ENV === 'production') {
