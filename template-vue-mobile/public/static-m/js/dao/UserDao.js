@@ -13,7 +13,6 @@ export default class UserDao {
                 if (success) {
                     resolve(user);
                 } else {
-                    Message.error(message);
                     reject(message);
                 }
             });
@@ -32,7 +31,7 @@ export default class UserDao {
                 if (success) {
                     resolve(user);
                 } else {
-                    Message.error(message);
+                    Toast.fail(message);
                     reject(message);
                 }
             });
@@ -64,10 +63,33 @@ export default class UserDao {
         return new Promise((resolve, reject) => {
             Rest.patch(Urls.API_USERS_BY_ID, { params: { userId: user.id }, data: user }).then(({ data, success, message }) => {
                 if (success) {
-                    Message.success(message);
+                    Toast.success(message);
                     resolve(data);
                 } else {
-                    Message.error(message);
+                    Toast.fail(message);
+                    reject(message);
+                }
+            });
+        });
+    }
+
+    /**
+     * 使用用户名和密码请求 token.
+     *
+     * 网址: http://localhost:8080/api/login/tokens
+     * 参数: username and password
+     *
+     * @param {String} username 账号
+     * @param {String} password 密码
+     * @return {Promise} 返回 Promise 对象，resolve 的参数为 token，reject 的参数为错误信息
+     */
+    static loginToken(username, password) {
+        return new Promise((resolve, reject) => {
+            Rest.create(Urls.API_LOGIN_TOKENS, { data: { username, password } }).then(({ data: token, success, message }) => {
+                if (success) {
+                    resolve(token);
+                } else {
+                    Toast.fail(message);
                     reject(message);
                 }
             });
