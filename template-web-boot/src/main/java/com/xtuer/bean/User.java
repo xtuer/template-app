@@ -7,6 +7,7 @@ import com.xtuer.util.SecurityUtils;
 import com.xtuer.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ import java.util.Set;
  */
 @Getter
 @Setter
+@ToString
 @Accessors(chain = true)
 @JsonIgnoreProperties({ "password" })
 public class User {

@@ -1,11 +1,12 @@
 package com.xtuer.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultIndenter;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.xtuer.bean.Mime;
+import com.xtuer.bean.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -214,6 +215,40 @@ public final class Utils {
             return objectMapper.writer(printer).writeValueAsString(object);
         } catch (JsonProcessingException e) {
             return "{}";
+        }
+    }
+
+    /**
+     * 把 JSON 字符串转为对象
+     *
+     * @param json  JSON 字符串
+     * @param clazz 目标类
+     * @return 返回得到的对象，转换失败时返回 null
+     */
+    public static <T> T fromJson(String json, Class<T> clazz) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(json, clazz);
+        } catch (JsonProcessingException e) {
+            return null;
+        }
+    }
+
+    /**
+     * 把 JSON 字符串转为对象
+     *
+     * @param json JSON 字符串
+     * @param ref  类型引用，用于集合类型
+     * @return 返回得到的对象，转换失败时返回 null
+     */
+    public static <T> T fromJson(String json, TypeReference<T> ref) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            return objectMapper.readValue(json, ref);
+        } catch (JsonProcessingException e) {
+            return null;
         }
     }
 
@@ -455,5 +490,19 @@ public final class Utils {
         System.out.println(passwordByBCrypt("admin"));
         System.out.println(isPasswordValidByBCrypt("password", "$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
         System.out.println(isPasswordValidByBCrypt("password", "{bcrypt}$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG"));
+
+        // JSON Test
+        System.out.println("--------------------------------- JSON ---------------------------------");
+        User user = new User().setId(1L).setUsername("Alice");
+        String json = Utils.toJson(user);
+        System.out.println(json);
+        user = Utils.fromJson(json, User.class);
+        System.out.println(user);
+
+        List<Integer> ns = Arrays.asList(1, 2, 3, 4, 5);
+        json = Utils.toJson(ns);
+        System.out.println(json);
+        ns = Utils.fromJson(json, new TypeReference<List<Integer>> () {});
+        System.out.println(ns);
     }
 }
