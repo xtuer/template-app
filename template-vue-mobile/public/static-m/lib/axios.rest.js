@@ -195,7 +195,7 @@ class Rest {
             if (error.data && error.data.message) {
                 // 发生 500 错误时服务器抛出异常，在控制台打印出异常信息
                 console.error(error.data.message);
-                console.error(error.data.stack);
+                console.error(error.data.data);
                 alert(`500: 发生异常，${error.data.message}\n\n详细错误信息请查看控制台输出 (Chrome 按下快捷键 F12)`);
             }
         } else if (502 === status) {
@@ -211,7 +211,7 @@ class Rest {
     /**
      * 替换 URL 路径中的变量，例如 /rest/users/{id}，其中 {id} 替换为 params.id 的值
      *
-     * @param {String} url           URL 例如 /rest/users/{id}，如果没有占位的变量，则原样返回
+     * @param {String} url    URL 例如 /rest/users/{id}，如果没有占位的变量，则原样返回
      * @param {Json}   params Json 对象
      * @return {String} 返回替换变量后的 URL
      */
