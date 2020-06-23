@@ -20,7 +20,7 @@ gretty {
     //     jvmArgs = ["-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib", '-Djava.awt.headless=true']
     //
     // 配置 JRebel: 在 ~/.gradle/gradle.properties 配置 JRebel 的路径:
-    //     Win  : rebelAgent=-agentpath:C:/jrebel/lib/libjrebel64.dll
+    //     Win  : rebelAgent=-agentpath:C:/jrebel/lib/jrebel64.dll
     //     Mac  : rebelAgent=-agentpath:/usr/local/jrebel/lib/libjrebel64.dylib
     //     Linux: rebelAgent==-agentpath:/usr/local/jrebel/lib/libjrebel64.so
     if (project.hasProperty('rebelAgent')) {
