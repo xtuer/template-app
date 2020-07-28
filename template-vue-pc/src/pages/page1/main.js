@@ -13,8 +13,7 @@ router.beforeEach((to, from, next) => {
     } else {
         // 未登录，从服务器获取当前登录用户信息
         LoadingBar.start();
-        UserDao.findCurrentUser().then(user => {
-            store.commit('setUser', user);
+        store.dispatch('loadCurrentUser').then(() => {
             next();
             LoadingBar.finish();
         }).catch(() => {

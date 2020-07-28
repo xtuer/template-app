@@ -11,7 +11,6 @@ import '@/../public/static-p/lib/axios.rest';
 
 import filters from '@/../public/static-p/js/filters';
 import methods from '@/../public/static-p/js/methods';
-import UserDao from '@/../public/static-p/js/dao/UserDao';
 
 // [1] 注册 Vue 的原型函数
 Object.keys(methods).forEach((key) => {
@@ -23,14 +22,11 @@ Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key]);
 });
 
-// [3] 注册 Dao
-window.UserDao = UserDao;
-
-// [4] 注册全局组件
+// [3] 注册全局组件
 Vue.use(PerfectScrollbar);
 // Vue.component('ProjectTable', ProjectTable);
 
-// [5] 定义全局的 Message, Notice，为了能够在 Dao 中使用
+// [4] 定义全局变量: Message, Notice，为了能够在 Dao 中使用
 window.LoadingBar = LoadingBar;
 window.Message    = Message;
 window.Notice     = Notice;
