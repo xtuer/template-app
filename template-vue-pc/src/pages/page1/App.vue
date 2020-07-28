@@ -19,7 +19,7 @@ html, body, #app {
 
 /* 解决垂直滚动条出现时占据空间显示水平滚动条 */
 :root {
-  overflow-y: auto;
-  overflow-x: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 </style>
