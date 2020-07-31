@@ -39,3 +39,17 @@ POST {{host}}/api/demo/encoding
 Content-Type: application/x-www-form-urlencoded
 
 name=中文字符串
+
+############################################### 任务调度
+
+### 创建 Job
+POST http://localhost:8090/api/jobs
+X-Requested-With: XMLHttpRequest
+
+### Job 执行准备
+POST http://localhost:8090/api/jobs/1/prepare
+X-Requested-With: XMLHttpRequest
+
+### 执行 Job
+POST http://localhost:8090/api/jobs/1/executions/1596167137391/execute
+X-Requested-With: XMLHttpRequest

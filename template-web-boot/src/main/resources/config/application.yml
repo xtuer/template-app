@@ -32,7 +32,7 @@ logging.file.path: ${app.dir.base}/logs
 ###############################################################################
 #                                    Database                                 #
 ###############################################################################
-# Datasource
+# DataSource
 spring.datasource.username: root
 spring.datasource.password: root
 spring.datasource.url     : jdbc:mysql://${app.mysql}:3306/exam?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false
@@ -85,3 +85,8 @@ server.tomcat.remote_ip_header: x-forwarded-for
 server.tomcat.protocol_header : x-forwarded-proto
 server.tomcat.port-header     : X-Forwarded-Port
 server.use-forward-headers    : true
+
+###############################################################################
+#                                     Other                                   #
+###############################################################################
+spring.mvc.hiddenmethod.filter.enabled: true
