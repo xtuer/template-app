@@ -1,0 +1,61 @@
+body {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif !important;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width:  2px;
+    height: 2px;
+}
+
+::-webkit-scrollbar-track {
+    background: #aaa;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* 隐藏滚动条，还能滚动: http://caibaojian.com/hide-scrollbar.html */
+.element::-webkit-scrollbar { width: 0 !important }
+::-webkit-scrollbar { width: 0 !important; height: 0 !important }
+.element { -ms-overflow-style: none; }
+.element { overflow: -moz-scrollbars-none; }
+
+main > .sidebar {
+    padding-top: 10px;
+}
+
+main > .content .markdown-section {
+    max-width: 100%;
+    padding-top: 12px;
+}
+
+p.active > a {
+    color: #42b983 !important;
+    font-weight: 600 !important;
+    border-right: 2px solid;
+}
+
+a {
+    text-decoration-color: #5cadff !important;
+}
+
+li > ul {
+    padding-left: 20px !important;
+}
+
+li > p {
+    margin: 0 !important;
+}
+
+.sidebar-nav>ul>li>ul>li>a:before, .sidebar-nav>ul>li>ul>li.active>a:before {
+    /* content: var(--sidebar-nav-link-before-content-l3, var(--sidebar-nav-link-before-content)); */
+    margin: var(--sidebar-nav-link-before-margin-l3, var(--sidebar-nav-link-before-margin));
+    color: var(--sidebar-nav-link-before-color-l3, var(--sidebar-nav-link-before-color));
+    content: '·';
+}
+
+.sidebar-nav>ul>li>ul>li>a {
+    padding-left: 4px !important;
+}
