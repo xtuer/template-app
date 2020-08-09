@@ -1,6 +1,6 @@
 <!-- 页面布局 -->
 <template>
-    <div class="home">
+    <PerfectScrollbar class="home">
         <!-- Header -->
         <Header>Magic 管理系统</Header>
 
@@ -19,7 +19,7 @@
                 </PerfectScrollbar>
             </div>
         </div>
-    </div>
+    </PerfectScrollbar>
 </template>
 
 <script>
@@ -66,7 +66,9 @@ export default {
 .home {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    width : 100vw;
+    height: 100vh;
+    overflow: auto;
 
     > .header {
         box-shadow: 0 0px 15px #ccc;
@@ -88,6 +90,7 @@ export default {
 
         > .content {
             flex: 1;
+            width: calc(100vw - 180px);
             background: #eceef8;
             padding: 24px;
 
@@ -96,6 +99,7 @@ export default {
                 background: white;
                 border-radius: 4px;
                 min-height: 100%;
+                overflow: auto;
             }
         }
     }

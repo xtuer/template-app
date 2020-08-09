@@ -1,7 +1,7 @@
 <template>
-    <PerfectScrollbar id="app">
+    <div id="app">
         <router-view/>
-    </PerfectScrollbar>
+    </div>
 </template>
 
 <style lang="scss">
@@ -15,6 +15,7 @@ html, body, #app {
     font-family: Helvetica, "Microsoft YaHei", Arial, sans-serif;
     -webkit-font-smoothing : antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow: hidden;
 }
 
 /* 解决垂直滚动条出现时占据空间显示水平滚动条 */
