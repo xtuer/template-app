@@ -71,7 +71,8 @@
 .file-type-txt {
     background-image: url(/static-p/img/file-type/txt.png);
 }
-/* 弹簧拉伸占满剩余空间 */
+
+/* 弹簧拉伸占满剩余空间: <div class="stretch"></div> */
 .stretch {
     flex: 1;
 }
@@ -111,6 +112,7 @@
     display: block;
 }
 
+/* 可点击的 Icon */
 .ivu-icon.clickable:hover {
     color: #2d8cf0 !important;
     cursor: pointer;
@@ -155,4 +157,9 @@
 /* 表格里按钮列的按钮之间的间隔 */
 .column-buttons button:not(:first-child) {
     margin-left: 8px;
+}
+
+/* 使用 Table 作为 body 的 Card，去掉 padding 效果好一些: <Card class="card-with-table-body" dis-hover> */
+.card-with-table-body .ivu-card-body {
+    padding: 0;
 }
