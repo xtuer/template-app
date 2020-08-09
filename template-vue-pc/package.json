@@ -1,102 +1,102 @@
 {
-    "name": "vue-template",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "lint": "vue-cli-service lint"
+  "name": "vue-template",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "dayjs": "^1.8.28",
+    "view-design": "^4.0.0",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
+    "vuescroll": "^4.16.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.12.0",
+    "@vue/cli-plugin-eslint": "^3.12.0",
+    "@vue/cli-service": "^3.12.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "babel-eslint": "^10.0.1",
+    "compression-webpack-plugin": "^3.0.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^8.0.0",
+    "vue-cli-plugin-iview": "^2.0.0",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
     },
-    "dependencies": {
-        "core-js": "^2.6.5",
-        "dayjs": "^1.8.28",
-        "view-design": "^4.0.0",
-        "vue": "^2.6.10",
-        "vue-router": "^3.0.3",
-        "vue2-perfect-scrollbar": "^1.2.3",
-        "vuex": "^3.0.1"
+    "extends": [
+      "plugin:vue/essential",
+      "@vue/airbnb"
+    ],
+    "rules": {
+      "vue/no-reserved-keys": "warning",
+      "indent": [
+        "error",
+        4
+      ],
+      "no-multi-spaces": 0,
+      "no-unused-vars": 0,
+      "no-console": 0,
+      "key-spacing": 0,
+      "func-names": 0,
+      "arrow-parens": 0,
+      "no-undef": 0,
+      "max-len": 0,
+      "space-before-function-paren": 0,
+      "arrow-body-style": 0,
+      "no-alert": 0,
+      "no-plusplus": 0,
+      "object-curly-newline": 0,
+      "prefer-promise-reject-errors": 0,
+      "object-property-newline": 0,
+      "prefer-template": 0,
+      "prefer-destructuring": 0,
+      "no-var": 0,
+      "vars-on-top": 0,
+      "no-param-reassign": 0,
+      "space-infix-ops": 0,
+      "comma-dangle": 0,
+      "spaced-comment": 0,
+      "no-extend-native": 0,
+      "prefer-arrow-callback": 0,
+      "guard-for-in": 0,
+      "no-loop-func": 0,
+      "no-restricted-syntax": 0,
+      "prefer-rest-params": 0,
+      "radix": 0,
+      "no-else-return": 0,
+      "object-shorthand": 0,
+      "prefer-const": 0,
+      "no-unused-expressions": 0,
+      "no-continue": 0,
+      "no-irregular-whitespace": 0,
+      "quote-props": 0,
+      "no-lonely-if": 0,
+      "no-constant-condition": 0,
+      "yoda": 0
     },
-    "devDependencies": {
-        "@vue/cli-plugin-babel": "^3.12.0",
-        "@vue/cli-plugin-eslint": "^3.12.0",
-        "@vue/cli-service": "^3.12.0",
-        "@vue/eslint-config-airbnb": "^4.0.0",
-        "babel-eslint": "^10.0.1",
-        "compression-webpack-plugin": "^3.0.0",
-        "eslint": "^5.16.0",
-        "eslint-plugin-vue": "^5.0.0",
-        "node-sass": "^4.12.0",
-        "sass-loader": "^8.0.0",
-        "vue-cli-plugin-iview": "^2.0.0",
-        "vue-template-compiler": "^2.6.10"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "@vue/airbnb"
-        ],
-        "rules": {
-            "vue/no-reserved-keys": "warning",
-            "indent": [
-                "error",
-                4
-            ],
-            "no-multi-spaces": 0,
-            "no-unused-vars": 0,
-            "no-console": 0,
-            "key-spacing": 0,
-            "func-names": 0,
-            "arrow-parens": 0,
-            "no-undef": 0,
-            "max-len": 0,
-            "space-before-function-paren": 0,
-            "arrow-body-style": 0,
-            "no-alert": 0,
-            "no-plusplus": 0,
-            "object-curly-newline": 0,
-            "prefer-promise-reject-errors": 0,
-            "object-property-newline": 0,
-            "prefer-template": 0,
-            "prefer-destructuring": 0,
-            "no-var": 0,
-            "vars-on-top": 0,
-            "no-param-reassign": 0,
-            "space-infix-ops": 0,
-            "comma-dangle": 0,
-            "spaced-comment": 0,
-            "no-extend-native": 0,
-            "prefer-arrow-callback": 0,
-            "guard-for-in": 0,
-            "no-loop-func": 0,
-            "no-restricted-syntax": 0,
-            "prefer-rest-params": 0,
-            "radix": 0,
-            "no-else-return": 0,
-            "object-shorthand": 0,
-            "prefer-const": 0,
-            "no-unused-expressions": 0,
-            "no-continue": 0,
-            "no-irregular-whitespace": 0,
-            "quote-props": 0,
-            "no-lonely-if": 0,
-            "no-constant-condition": 0,
-            "yoda": 0
-        },
-        "parserOptions": {
-            "parser": "babel-eslint"
-        }
-    },
-    "postcss": {
-        "plugins": {
-            "autoprefixer": {}
-        }
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions"
-    ]
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

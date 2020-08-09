@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import { LoadingBar, Message, Notice } from 'view-design';
-import PerfectScrollbar from 'vue2-perfect-scrollbar';
-import 'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css';
+import vuescroll from 'vuescroll';
 import dayjs from 'dayjs';
 
 import '@/../public/static-p/js/urls';
@@ -23,7 +22,16 @@ Object.keys(filters).forEach(key => {
 });
 
 // [3] 注册全局组件
-Vue.use(PerfectScrollbar);
+// 滚动条
+Vue.use(vuescroll, {
+    ops: {
+        bar: {
+            background: '#c1c1c1',
+        }
+    },
+    name: 'VueScroll' // customize component name, default -> vueScroll
+});
+
 // Vue.component('ProjectTable', ProjectTable);
 
 // [4] 定义全局变量: Message, Notice，为了能够在 Dao 中使用

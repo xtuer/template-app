@@ -43,6 +43,7 @@ export default {
         height: 500px;
         margin-top: 20px;
         background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+        // width: 2000px;
     }
 }
 </style>
