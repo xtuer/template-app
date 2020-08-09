@@ -19,7 +19,6 @@
                         <router-view/>
                     </div>
                 </VueScroll>
-
             </div>
         </div>
     </div>
