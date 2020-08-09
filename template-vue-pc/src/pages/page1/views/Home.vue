@@ -2,20 +2,22 @@
 <template>
     <div class="home">
         <!-- Header -->
-        <Header/>
+        <Header>Magic 管理系统</Header>
 
-        <!-- 左侧侧边栏 -->
-        <div class="sidebar">
-            <Menu :active-name="activeName" :open-names="['1']" width="auto" @on-select="navigateTo">
-                <MenuItem v-for="item in menuItems" :key="item.name" :name="item.name">{{ item.label }}</MenuItem>
-            </Menu>
-        </div>
+        <div class="main">
+            <!-- 左侧侧边栏 -->
+            <div class="sidebar">
+                <Menu :active-name="activeName" :open-names="['1']" width="auto" @on-select="navigateTo">
+                    <MenuItem v-for="item in menuItems" :key="item.name" :name="item.name">{{ item.label }}</MenuItem>
+                </Menu>
+            </div>
 
-        <!-- 内容显示区 -->
-        <div class="content">
-            <PerfectScrollbar class="content-wrapper">
-                <router-view/>
-            </PerfectScrollbar>
+            <!-- 内容显示区 -->
+            <div class="content">
+                <PerfectScrollbar class="content-wrapper">
+                    <router-view/>
+                </PerfectScrollbar>
+            </div>
         </div>
     </div>
 </template>
@@ -62,33 +64,39 @@ export default {
 
 <style lang="scss">
 .home {
-    display: grid;
-    grid-template-columns: 180px 1fr;
-    grid-template-rows: max-content 1fr;
-    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     > .header {
-        grid-column: span 2;
         box-shadow: 0 0px 15px #ccc;
         z-index: 1000;
     }
 
-    > .sidebar {
-        // 隐藏 Menu 右边框
-        .ivu-menu-vertical.ivu-menu-light:after {
-            display: none;
+    > .main {
+        display: flex;
+        flex: 1;
+
+        > .sidebar {
+            width: 180px;
+
+            // 隐藏 Menu 右边框
+            .ivu-menu-vertical.ivu-menu-light:after {
+                display: none;
+            }
         }
-    }
 
-    > .content {
-        background: #eceef8;
-        padding: 24px;
+        > .content {
+            flex: 1;
+            background: #eceef8;
+            padding: 24px;
 
-        > .content-wrapper {
-            padding: 18px;
-            background: white;
-            border-radius: 4px;
-            min-height: 100%;
+            > .content-wrapper {
+                padding: 18px;
+                background: white;
+                border-radius: 4px;
+                min-height: 100%;
+            }
         }
     }
 }

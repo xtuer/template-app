@@ -1,7 +1,7 @@
 <!-- Header (根据业务需求进行修改) -->
 <template>
     <div class="header">
-        <div></div>
+        <div class="title"><slot></slot></div>
 
         <!-- 用户头像和菜单 -->
         <Dropdown>
@@ -46,6 +46,16 @@ export default {
     background-position: center;
     background-size    : 100% 100%;
     background-image   : url("/static-p/img/admin-org-header/bg.png");
+
+    .title {
+        color: #eee;
+        font-size: 18px;
+
+    }
+
+    .ivu-avatar {
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
 
     .menu-user {
         .ivu-dropdown-item {
