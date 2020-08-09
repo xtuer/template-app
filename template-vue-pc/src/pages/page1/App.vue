@@ -1,9 +1,9 @@
 <template>
-    <VueScroll>
+    <Scroll>
         <div id="app">
             <router-view/>
         </div>
-    </VueScroll>
+    </Scroll>
 </template>
 
 <style lang="scss">

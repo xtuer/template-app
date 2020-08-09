@@ -29,7 +29,7 @@ Vue.use(vuescroll, {
             background: '#c1c1c1',
         }
     },
-    name: 'VueScroll' // customize component name, default -> vueScroll
+    name: 'Scroll' // customize component name, default -> vueScroll
 });
 
 // Vue.component('ProjectTable', ProjectTable);

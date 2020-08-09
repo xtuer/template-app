@@ -14,11 +14,11 @@
 
             <!-- 内容显示区 -->
             <div class="content">
-                <VueScroll>
+                <Scroll>
                     <div class="content-wrapper">
                         <router-view/>
                     </div>
-                </VueScroll>
+                </Scroll>
             </div>
         </div>
     </div>
