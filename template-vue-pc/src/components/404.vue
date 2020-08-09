@@ -13,28 +13,17 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: {},
-    data() {
-        return {};
-    },
-    mounted() {},
-    methods: {}
-};
-</script>
-
 <style lang="scss">
 .view-404 {
     .content-wrapper {
         display: grid;
-        grid-template-columns: 1fr 790px;
-        width: 1100px;
-        margin: 0 auto;
-        margin-top: 100px;
+        grid-template-columns: max-content 790px;
+        justify-items: center;
+        justify-content: center;
+        padding-top: 100px;
 
         img {
-            width: 100%;
+            width: 300px;
         }
 
         .block-content {
