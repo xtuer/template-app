@@ -5,36 +5,39 @@ export default class UserDao {
     /**
      * 获取当前页面登录的用户
      *
+     * 网址: http://localhost:8080/api/login/users/current
+     * 参数: 无
+     *
      * @return {Promise} 返回 Promise 对象，resolve 的参数为用户对象，reject 的参数为错误信息
      */
     static findCurrentUser() {
-        return new Promise((resolve, reject) => {
-            Rest.get(Urls.API_USERS_CURRENT).then(({ data: user, success, message }) => {
-                if (success) {
-                    resolve(user);
-                } else {
-                    reject(message);
-                }
-            });
+        return Rest.get(Urls.API_USERS_CURRENT).then(({ data: user, success, message }) => {
+            if (success) {
+                return Promise.resolve(user);
+            } else {
+                Message.error(message);
+                return Promise.reject(message);
+            }
         });
     }
 
     /**
      * 查询 ID 为传入的 userId 的用户
      *
+     * 网址: http://localhost:8080/api/users/{userId}
+     * 参数: 无
+     *
      * @param  {String}  userId 用户 ID
      * @return {Promise} 返回 Promise 对象，resolve 的参数为用户对象，reject 的参数为错误消息
      */
     static findUserById(userId) {
-        return new Promise((resolve, reject) => {
-            Rest.get(Urls.API_USERS_BY_ID, { params: { userId } }).then(({ data: user, success, message }) => {
-                if (success) {
-                    resolve(user);
-                } else {
-                    Toast.fail(message);
-                    reject(message);
-                }
-            });
+        return Rest.get(Urls.API_USERS_BY_ID, { params: { userId } }).then(({ data: user, success, message }) => {
+            if (success) {
+                return Promise.resolve(user);
+            } else {
+                Message.error(message);
+                return Promise.reject(message);
+            }
         });
     }
 
@@ -60,16 +63,14 @@ export default class UserDao {
      * @return {Promise} 返回 Promise 对象，resolve 的参数为对于更新操作的结果，reject 的参数为错误信息
      */
     static patchUser(user) {
-        return new Promise((resolve, reject) => {
-            Rest.patch(Urls.API_USERS_BY_ID, { params: { userId: user.id }, data: user }).then(({ data, success, message }) => {
-                if (success) {
-                    Toast.success(message);
-                    resolve(data);
-                } else {
-                    Toast.fail(message);
-                    reject(message);
-                }
-            });
+        return Rest.patch(Urls.API_USERS_BY_ID, { params: { userId: user.id }, data: user }).then(({ data, success, message }) => {
+            if (success) {
+                Message.success(message);
+                return Promise.resolve(data);
+            } else {
+                Message.error(message);
+                return Promise.reject(message);
+            }
         });
     }
 
@@ -84,15 +85,13 @@ export default class UserDao {
      * @return {Promise} 返回 Promise 对象，resolve 的参数为 token，reject 的参数为错误信息
      */
     static loginToken(username, password) {
-        return new Promise((resolve, reject) => {
-            Rest.create(Urls.API_LOGIN_TOKENS, { data: { username, password } }).then(({ data: token, success, message }) => {
-                if (success) {
-                    resolve(token);
-                } else {
-                    Toast.fail(message);
-                    reject(message);
-                }
-            });
+        return Rest.create(Urls.API_LOGIN_TOKENS, { data: { username, password } }).then(({ data: token, success, message }) => {
+            if (success) {
+                return Promise.resolve(token);
+            } else {
+                Toast.fail(message);
+                return Promise.reject(message);
+            }
         });
     }
 }
