@@ -99,7 +99,7 @@ export default {
             background: #eceef8;
             padding: 24px;
 
-            > .__vuescroll > .__panel > .__view > .content-wrapper {
+            > .content-wrapper, > .__vuescroll > .__panel > .__view > .content-wrapper {
                 padding: 18px;
                 background: white;
                 border-radius: 4px;

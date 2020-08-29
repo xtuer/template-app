@@ -1,16 +1,17 @@
 <!-- 滚动相关例子 -->
 <template>
     <div class="scroll-demo">
-        <Affix :offset-top="20"><FileUpload/></Affix>
+        <Affix :offset-top="20">
+            <FileUpload/>
+            <Button style="margin-left: 10px" @click="addParagraph">Add Paragraph</Button>
+        </Affix>
 
         <!-- Leader Lines -->
         <div class="connections">
             <div v-for="item in items" :id="item" :key="item" class="item">{{ item }}</div>
         </div>
 
-        <p>1</p>
-        <p>2</p>
-        <p>3</p>
+        <p v-for="p in ps" :key="p">{{ p }}</p>
     </div>
 </template>
 
@@ -23,6 +24,7 @@ export default {
         return {
             items: ['One', 'Two', 'Three', 'Four', 'Five', 'Six'],
             lines: [],
+            ps: [1, 2, 3],
         };
     },
     mounted() {
@@ -59,6 +61,9 @@ export default {
 
                 this.lines.push(new LeaderLine(startElement, endElement, { color: '#aaa', size: 2 }));
             }
+        },
+        addParagraph() {
+            this.ps.push(Date.now());
         },
     }
 };
