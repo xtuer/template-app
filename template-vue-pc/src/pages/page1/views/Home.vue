@@ -74,6 +74,7 @@ export default {
     > .header {
         box-shadow: 0 0px 15px #ccc;
         z-index: 1000;
+        height: 60px;
     }
 
     > .main {
@@ -84,14 +85,17 @@ export default {
             width: 180px;
 
             // 隐藏 Menu 右边框
-            .ivu-menu-vertical.ivu-menu-light:after {
+            .ivu-menu-vertical.ivu-menu-light::after {
                 display: none;
+            }
+
+            .ivu-menu-light.ivu-menu-vertical .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+                background: #5cadff;
             }
         }
 
         > .content {
             flex: 1;
-            width: calc(100vw - 180px);
             background: #eceef8;
             padding: 24px;
 
@@ -100,7 +104,7 @@ export default {
                 background: white;
                 border-radius: 4px;
                 overflow: auto;
-                min-height: calc(100vh - 60px - 48px);
+                min-height: calc(100vh - 60px - 50px);
             }
         }
     }
