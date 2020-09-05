@@ -56,7 +56,7 @@ public class JwtService {
         try {
             // 获取 token 中保存的 id, username, nickname, roles
             Map<String, String> params = Jwt.params(token);
-            long         id   = Long.parseLong(params.get("id"));
+            long         id   = Long.parseLong(params.get("userId"));
             String username   = params.get("username");
             String nickname   = params.get("nickname");
             Set<String> roles = JSON.parseObject(params.get("roles"), new TypeReference<Set<String>>() {});
