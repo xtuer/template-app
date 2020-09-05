@@ -35,8 +35,7 @@ public class BaseController {
      * @return 返回登录用户，如果没有登录返回 null
      */
     final protected User getCurrentUser() {
-        long userId = this.getCurrentUserId();
-        return userService.findUser(userId);
+        return SecurityUtils.getCurrentUser();
     }
 
     /**
