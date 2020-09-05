@@ -44,7 +44,7 @@ public class OrganizationService extends BaseService {
         // 如果没有找到域名对应的机构，则返回 1，表明是系统管理员的机构
         Organization org = self.getCurrentOrganization();
 
-        return org != null ? org.getId() : 1;
+        return org != null ? org.getOrgId() : 1;
     }
 
     /**
@@ -100,7 +100,7 @@ public class OrganizationService extends BaseService {
         org.getAdmin().setUsername(org.getAdmin().getUsername());
 
         // [1] 检查机构的域名是否可用 (如果域名被其他机构使用了则不可使用)
-        if (!orgMapper.isHostAvailable(org.getId(), org.getHost())) {
+        if (!orgMapper.isHostAvailable(org.getOrgId(), org.getHost())) {
             return Result.fail("域名 " + org.getHost() + " 已经被使用");
         }
 
@@ -109,23 +109,23 @@ public class OrganizationService extends BaseService {
         org.setLogo(logo);
 
         // [3] 如果机构的 ID 为 0，则说明是新建机构，则为其分配 ID，否则为更新机构
-        if (Utils.isInvalidId(org.getId())) {
-            org.setId(nextId());
+        if (Utils.isInvalidId(org.getOrgId())) {
+            org.setOrgId(nextId());
         }
 
         // [4] 如果管理员的 ID 为 0，则新建管理员，如果管理员已经存在，则不进行处理
         User admin = org.getAdmin();
-        if (Utils.isInvalidId(admin.getId())) {
+        if (Utils.isInvalidId(admin.getUserId())) {
             // 提示: 管理员的 username 不需要判断是否可以，因为他是本机构的第一个用户
-            admin.setId(nextId());
+            admin.setUserId(nextId());
             admin.addRole(Role.ROLE_ADMIN_ORG);
             admin.setNickname("机构管理员");
-            admin.setOrgId(org.getId());
+            admin.setOrgId(org.getOrgId());
             userService.createOrUpdateUser(admin); // 创建管理员
         }
 
         // [5] 插入或者更新机构
-        org.setAdminId(admin.getId()); // 设置机构的管理员
+        org.setAdminId(admin.getUserId()); // 设置机构的管理员
         orgMapper.upsertOrganization(org);
 
         // [6] 清楚机构的缓存

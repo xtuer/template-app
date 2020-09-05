@@ -13,8 +13,8 @@ public interface CacheConst {
     String KEY_ORG_HOST = "'org.' + #host";
 
     // 考试
-    String KEY_EXAM     = "'exam.' + #exam.id";
+    String KEY_EXAM     = "'exam.' + #exam.examId";
     String KEY_EXAM_ID  = "'exam.' + #examId";
-    String KEY_PAPER    = "'paper.' + #paper.id";
+    String KEY_PAPER    = "'paper.' + #paper.paperId";
     String KEY_PAPER_ID = "'paper.' + #paperId";
 }

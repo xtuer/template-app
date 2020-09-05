@@ -25,7 +25,7 @@ export default new Vuex.Store({
     getters: {
         // 已登录返回 true，否则返回 false
         logined(state) {
-            return state.user.id;
+            return state.user.userId;
         }
     }
 });

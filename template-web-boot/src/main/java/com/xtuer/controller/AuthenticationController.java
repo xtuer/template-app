@@ -71,7 +71,7 @@ public class AuthenticationController extends BaseController {
 
         // 得到登录的用户信息后，使用用户的 ID 从数据库查询用户的完整信息
         if (user != null) {
-            user = userService.findUser(user.getId());
+            user = userService.findUser(user.getUserId());
 
             if (user != null) {
                 model.put("avatar", user.getAvatar());
@@ -99,7 +99,7 @@ public class AuthenticationController extends BaseController {
         User user = super.getCurrentUser();
 
         if (user != null) {
-            user = userService.findUser(user.getId()); // 从数据库里查询用户信息
+            user = userService.findUser(user.getUserId()); // 从数据库里查询用户信息
             return Result.ok(user);
         } else {
             return Result.fail("还没有登录");

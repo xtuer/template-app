@@ -23,7 +23,7 @@ import java.util.Set;
 @Accessors(chain = true)
 @JsonIgnoreProperties({ "password" })
 public class User {
-    private long id;
+    private long userId; // 用户 ID
 
     @NotBlank(message = "账号不能为空")
     private String username; // 账号
@@ -38,7 +38,7 @@ public class User {
     private String  avatar;   // 头像
     private long    orgId;    // 所属机构的 ID
     private int     gender;   // 性别: 0 (未设置), 1 (男), 2 (女)
-    private boolean enabled = true;  // 状态: false (禁用), true (启用)
+    private boolean enabled = true; // 状态: false (禁用), true (启用)
 
     private Set<Role> roles = new HashSet<>(); // 角色，需要前缀 ROLE_，例如 ROLE_ADMIN_SYSTEM
 
@@ -48,8 +48,8 @@ public class User {
         this(0, username, password, roles);
     }
 
-    public User(long id, String username, String password, Role... roles) {
-        this.id = id;
+    public User(long userId, String username, String password, Role... roles) {
+        this.userId   = userId;
         this.username = username;
         this.password = password;
 

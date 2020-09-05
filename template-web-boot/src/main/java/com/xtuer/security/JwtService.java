@@ -12,10 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * 生成 token 的 service.
@@ -37,7 +35,7 @@ public class JwtService {
         // Token 中保存 id, username, nickname, roles
         long expiredAt = System.currentTimeMillis() + config.getAuthTokenDuration() * 1000L;
         return Jwt.create(config.getAppId(), config.getAppKey()).expiredAt(expiredAt)
-                .param("id",       user.getId() + "")
+                .param("userId",   user.getUserId() + "")
                 .param("username", user.getUsername())
                 .param("nickname", user.getNickname())
                 .param("roles",    JSON.toJSONString(user.getRoles()))

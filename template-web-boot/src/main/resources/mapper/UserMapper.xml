@@ -4,29 +4,32 @@
 <!-- namespace 非常重要：必须是 Mapper 类的全路径 -->
 <mapper namespace="com.xtuer.mapper.UserMapper">
     <!-- 用户查询结果的列 -->
-    <sql id="user_columns">
-        user.id AS id, username, password, nickname, email, mobile, phone, avatar, gender, org_id, is_enabled AS enabled
+    <sql id="userColumns">
+        user.user_id AS user_id, username, password, nickname, email, mobile, phone, avatar, gender, org_id, enabled
+    </sql>
+
+    <!-- 查询用户 (包含权限) -->
+    <sql id="selectUserWithRole">
+        SELECT <include refid="userColumns"/>, user_role.role AS role
+        FROM user
+        LEFT JOIN user_role ON user.user_id = user_role.user_id
     </sql>
 
     <!-- 使用 ID 查找用户 -->
     <select id="findUserById" parameterType="_long" resultMap="userWithRoles">
-        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
-        FROM user
-            LEFT JOIN user_role ON user.id = user_role.user_id
-        WHERE user.id = #{userId}
+        <include refid="selectUserWithRole"/>
+        WHERE user.user_id = #{userId}
     </select>
 
     <!-- 查找机构下指定用户名的用户 -->
     <select id="findUserByUsernameAndOrgId" resultMap="userWithRoles">
-        SELECT <include refid="user_columns"/>, user_role.id, user_role.role AS role
-        FROM user
-            LEFT JOIN user_role ON user.id = user_role.user_id
+        <include refid="selectUserWithRole"/>
         WHERE org_id = #{orgId} AND username = #{username}
     </select>
 
     <!-- 查找机构的用户 -->
     <select id="findUsersByOrgId" resultType="User">
-        SELECT <include refid="user_columns"/>
+        SELECT <include refid="userColumns"/>
         FROM  user
         WHERE org_id = #{orgId}
         LIMIT ${offset}, ${count}
@@ -34,11 +37,11 @@
 
     <!-- 插入或更新用户: 如果 ID 存在或者 org_id + username 的组合存在则进行更新 -->
     <insert id="upsertUser">
-        INSERT INTO user (id, username, password, nickname, email, mobile, phone, gender, org_id)
-        VALUES (#{id}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
+        INSERT INTO user (user_id, username, password, nickname, email, mobile, phone, gender, org_id)
+        VALUES (#{userUd}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 
         ON DUPLICATE KEY
-        UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}, org_id = #{orgId}
+        UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}
     </insert>
 
     <!-- 创建用户的登录记录 -->
@@ -48,27 +51,27 @@
 
     <!-- 更新用户的昵称 -->
     <update id="updateUserNickname">
-        UPDATE user SET nickname = #{nickname} WHERE id = #{userId}
+        UPDATE user SET nickname = #{nickname} WHERE user_id = #{userId}
     </update>
 
     <!-- 更新用户的头像 -->
     <update id="updateUserAvatar">
-        UPDATE user SET avatar = #{avatar} WHERE id = #{userId}
+        UPDATE user SET avatar = #{avatar} WHERE user_id = #{userId}
     </update>
 
     <!-- 更新用户的性别 -->
     <update id="updateUserGender">
-        UPDATE user SET gender = #{gender} WHERE id = #{userId}
+        UPDATE user SET gender = #{gender} WHERE user_id = #{userId}
     </update>
 
     <!-- 更新用户的手机号 -->
     <update id="updateUserMobile">
-        UPDATE user SET mobile = #{mobile} WHERE id = #{userId}
+        UPDATE user SET mobile = #{mobile} WHERE user_id = #{userId}
     </update>
 
     <!-- 更新用户的密码 -->
     <update id="updateUserPassword">
-        UPDATE user SET password = #{password} WHERE id = #{userId}
+        UPDATE user SET password = #{password} WHERE user_id = #{userId}
     </update>
 
     <!-- 插入用户的角色 -->
@@ -78,7 +81,7 @@
 
     <!-- 用户，包含角色信息 -->
     <resultMap id="userWithRoles" type="User">
-        <id property="id" column="id"/>
+        <id     property="userId"   column="user_id"/>
         <result property="username" column="username"/>
         <result property="password" column="password"/>
         <result property="nickname" column="nickname"/>

@@ -493,7 +493,7 @@ public final class Utils {
 
         // JSON Test
         System.out.println("--------------------------------- JSON ---------------------------------");
-        User user = new User().setId(1L).setUsername("Alice");
+        User user = new User().setUserId(1L).setUsername("Alice");
         String json = Utils.toJson(user);
         System.out.println(json);
         user = Utils.fromJson(json, User.class);

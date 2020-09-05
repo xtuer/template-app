@@ -47,7 +47,7 @@ public class BaseController {
     final protected long getCurrentUserId() {
         // 从 Security context 中获取登录的用户，此用户信息是从 token 里解析出来的，只有用户的关键信息
         User user = SecurityUtils.getCurrentUser();
-        return user == null ? 0 : user.getId();
+        return user == null ? 0 : user.getUserId();
     }
 
     /**

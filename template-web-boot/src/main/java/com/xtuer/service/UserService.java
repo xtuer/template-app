@@ -96,11 +96,11 @@ public class UserService extends BaseService {
         //    重复导入用户数据的时候可能会用到
         // 4. 添加用户的角色 (如果已经存在则会自动忽略)
 
-        long userId = user.getId();
+        long userId = user.getUserId();
 
         if (Utils.isInvalidId(userId)) {
             userId = nextId();
-            user.setId(userId);
+            user.setUserId(userId);
         }
 
         user.setPassword(Utils.passwordByBCrypt(user.getPassword())); // 加密密码
@@ -109,12 +109,12 @@ public class UserService extends BaseService {
         userMapper.upsertUser(user);
 
         // [3] 更新用户 ID: 如果 orgId + username 已经存在，则是更新已存在用户，userId 设置为数据库中对应用户的 ID，而不使用前面设置的
-        userId = userMapper.findUserByUsernameAndOrgId(user.getUsername(), user.getOrgId()).getId();
-        user.setId(userId);
+        userId = userMapper.findUserByUsernameAndOrgId(user.getUsername(), user.getOrgId()).getUserId();
+        user.setUserId(userId);
 
         // [4] 添加用户的角色 (如果已经存在则会自动忽略)
         for (Role role : user.getRoles()) {
-            userMapper.insertUserRole(user.getId(), role);
+            userMapper.insertUserRole(user.getUserId(), role);
         }
     }
 
@@ -127,7 +127,7 @@ public class UserService extends BaseService {
      */
     public String loginToken(User user, HttpServletResponse response) {
         // 1. 创建用户的登录记录
-        userMapper.insertUserLoginRecord(user.getId(), user.getUsername());
+        userMapper.insertUserLoginRecord(user.getUserId(), user.getUsername());
 
         // 2. 生成用户的 token，并保存 token 到 cookie (方便浏览器端使用 Ajax 登录)
         String token = jwtService.generateToken(user);

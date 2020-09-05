@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @Accessors(chain = true)
 public class Organization {
-    private long id;         // 机构 ID
+    private long orgId; // 机构 ID
 
     @NotBlank(message="机构名称 不能为空!")
     private String name;     // 机构名字

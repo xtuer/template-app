@@ -15,10 +15,10 @@ public interface OrganizationMapper {
     /**
      * 使用 ID 查询机构
      *
-     * @param id 机构 ID
+     * @param orgId 机构 ID
      * @return 返回查询到的机构，查询不到返回 null
      */
-    Organization findOrganizationById(long id);
+    Organization findOrganizationById(long orgId);
 
     /**
      * 使用域名查询机构，每个机构有独立的域名
@@ -39,11 +39,11 @@ public interface OrganizationMapper {
     /**
      * 判断指定 ID 的机构是否可使用此域名
      *
-     * @param organizationId 机构 ID
-     * @param host           机构域名
+     * @param orgId 机构 ID
+     * @param host  机构域名
      * @return 可使用返回 true，不可使用返回 false
      */
-    boolean isHostAvailable(long organizationId, String host);
+    boolean isHostAvailable(long orgId, String host);
 
     /**
      * 新增或更新机构
@@ -55,15 +55,15 @@ public interface OrganizationMapper {
     /**
      * 启用禁用机构
      *
-     * @param id      机构 ID
+     * @param orgId   机构 ID
      * @param enabled 是否启用
      */
-    void enableOrganization(long id, boolean enabled);
+    void enableOrganization(long orgId, boolean enabled);
 
     /**
      * 使用机构 ID 删除机构
      *
-     * @param id 机构 ID
+     * @param orgId 机构 ID
      */
-    void deleteOrganization(long id);
+    void deleteOrganization(long orgId);
 }

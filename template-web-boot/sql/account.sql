@@ -9,7 +9,7 @@
 DROP TABLE IF EXISTS organization;
 
 CREATE TABLE organization (
-    id        bigint(20)   NOT NULL COMMENT '机构 ID',
+    org_id    bigint(20)   NOT NULL COMMENT '机构 ID',
     name      varchar(128) NOT NULL COMMENT '机构名字',
     host      varchar(128)          COMMENT '机构域名',
     port      int DEFAULT 80        COMMENT '网站端口',
@@ -20,12 +20,12 @@ CREATE TABLE organization (
     contact_mobile varchar(32)  NOT NULL COMMENT '单位对接人电话',
     portal_name    varchar(128) NOT NULL COMMENT '门户平台名称',
     logo           varchar(256)          COMMENT 'Logo',
-    is_enabled     tinyint DEFAULT 1     COMMENT '状态: 0 (禁用), 1 (启用)',
+    enabled        tinyint DEFAULT 1     COMMENT '状态: 0 (禁用), 1 (启用)',
 
     created_at datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 
-    PRIMARY KEY (id) COMMENT '机构 ID 作为主键',
+    PRIMARY KEY (org_id) COMMENT '机构 ID 作为主键',
     UNIQUE  KEY index_host_unique (host) COMMENT '机构域名唯一'
 ) ENGINE=InnoDB;
 
@@ -40,7 +40,7 @@ CREATE TABLE organization (
 DROP TABLE IF EXISTS user;
 
 CREATE TABLE user (
-    id       bigint(20)   NOT NULL COMMENT '用户 ID',
+    user_id  bigint(20)   NOT NULL COMMENT '用户 ID',
     username varchar(128) NOT NULL COMMENT '账号',
     nickname varchar(256) NOT NULL COMMENT '昵称',
     password varchar(128) NOT NULL COMMENT '密码',
@@ -50,12 +50,12 @@ CREATE TABLE user (
     avatar   varchar(512)          COMMENT '头像 URL',
     gender   tinyint DEFAULT 0     COMMENT '性别: 0 (未设置)、1 (男)、2 (女)',
     org_id   bigint(20)  NOT NULL  COMMENT '机构 ID',
-    is_enabled tinyint DEFAULT 1   COMMENT '状态: 0 (禁用), 1 (启用)',
+    enabled  tinyint DEFAULT 1     COMMENT '状态: 0 (禁用), 1 (启用)',
 
     created_at datetime  NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     updated_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 
-    PRIMARY KEY (id) COMMENT '用户的 ID 作为主键',
+    PRIMARY KEY (user_id) COMMENT '用户的 ID 作为主键',
     UNIQUE  KEY index_org_user (org_id, username) COMMENT '同一个机构用户名不能重复'
 ) ENGINE=InnoDB;
 
@@ -70,8 +70,8 @@ CREATE TABLE user (
 DROP TABLE IF EXISTS role;
 
 CREATE TABLE role (
-    name  varchar(256) COMMENT '角色名字',
-    value varchar(256) COMMENT '角色的值',
+    name  varchar(128) COMMENT '角色名字',
+    value varchar(128) COMMENT '角色的值',
 
     PRIMARY KEY (name) COMMENT '角色不能重复'
 ) ENGINE=InnoDB;
@@ -115,7 +115,7 @@ CREATE TABLE user_login (
 # 初始化
 #--------------------------------------------------------------------------------------
 # 1. 创建系统管理员: admin/admin, org_id 为 1 表示系统管理平台
-INSERT INTO user (id, username, nickname, password, org_id)
+INSERT INTO user (user_id, username, nickname, password, org_id)
 VALUES (1, 'admin', '系统管理员', '{bcrypt}$2a$10$KYIBStaQwdYEetYcKlb/Uu0vENXOTxdvaAfnOrZlvsDoVUfmuXIHi', 1);
 
 # 2. admin 的角色为系统管理员
@@ -134,4 +134,4 @@ VALUES ('ROLE_ADMIN_SYSTEM', '系统管理员'),
 # SQL 示例
 #--------------------------------------------------------------------------------------
 # 获取用户和他的角色
-# SELECT * FROM user LEFT JOIN user_role ON user.id = user_role.user_id
+# SELECT * FROM user LEFT JOIN user_role ON user.user_id = user_role.user_id

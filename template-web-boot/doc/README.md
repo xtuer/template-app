@@ -3,10 +3,13 @@
 1. 安装 MySQL:
    * 账号: root
    * 密码: root
-   * 创建数据库 exam
-2. 安装 Redis
-3. 安装 Gradle
-4. 启动项目: 
+2. 初始化数据库
+    1. 创建数据库 exam
+    2. 创建数据库表: 终端进入 sql 目录，执行 `db-init.sh root root exam`
+3. 安装 Redis (
+    * 如果想禁用 Redis，修改 Application.java 中的 `@EnableMethodCache` 的包名为不存在的包名，例如 `@EnableMethodCache(basePackages = "com.xtuer.service2")`
+4. 安装 Gradle 6.6 即以上
+5. 启动项目: 
    * gradle `bootRun`
    * Mac: `gradle bootRun --args='--spring.profiles.active=mac'`
    * Win: `gradle bootRun --args='--spring.profiles.active=win'`
