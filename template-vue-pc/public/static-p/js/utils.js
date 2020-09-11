@@ -618,6 +618,15 @@ Utils.clone = function(item) {
     return result;
 };
 
+/**
+ * 生成唯一 ID，例如 1599699790761-5085301350
+ *
+ * @return{String} 返回唯一 ID
+ */
+Utils.uid = function() {
+    return Date.now() + '-' + Math.floor(Math.random() * 10000000000);
+};
+
 // 定义为全局变量
 window.Utils = Utils;
 window.formatString = formatString;
