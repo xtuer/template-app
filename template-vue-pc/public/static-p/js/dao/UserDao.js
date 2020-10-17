@@ -12,12 +12,7 @@ export default class UserDao {
      */
     static findCurrentUser() {
         return Rest.get(Urls.API_USERS_CURRENT).then(({ data: user, success, message }) => {
-            if (success) {
-                return Promise.resolve(user);
-            } else {
-                Message.error(message);
-                return Promise.reject(message);
-            }
+            return Utils.handleResponse(user, success, message);
         });
     }
 
@@ -32,12 +27,7 @@ export default class UserDao {
      */
     static findUserById(userId) {
         return Rest.get(Urls.API_USERS_BY_ID, { params: { userId } }).then(({ data: user, success, message }) => {
-            if (success) {
-                return Promise.resolve(user);
-            } else {
-                Message.error(message);
-                return Promise.reject(message);
-            }
+            return Utils.handleResponse(user, success, message);
         });
     }
 

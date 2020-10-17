@@ -38,7 +38,7 @@
     <!-- 插入或更新用户: 如果 ID 存在或者 org_id + username 的组合存在则进行更新 -->
     <insert id="upsertUser">
         INSERT INTO user (user_id, username, password, nickname, email, mobile, phone, gender, org_id)
-        VALUES (#{userUd}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
+        VALUES (#{userId}, #{username}, #{password}, #{nickname}, #{email}, #{mobile}, #{phone}, #{gender}, #{orgId})
 
         ON DUPLICATE KEY
         UPDATE username = #{username}, nickname = #{nickname}, email = #{email}, mobile = #{mobile}, phone = #{phone}

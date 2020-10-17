@@ -627,6 +627,23 @@ Utils.uid = function() {
     return Date.now() + '-' + Math.floor(Math.random() * 10000000000);
 };
 
+/**
+ * 处理 Rest 请求的响应
+ *
+ * @param {JSON} data 数据
+ * @param {Bool} success 是否成功
+ * @param {String} message 信息
+ * @return {Promise} 返回处理结果的 Promise 对象
+ */
+Utils.handleResponse = function(data, success, message) {
+    if (success) {
+        return Promise.resolve(data);
+    } else {
+        Message.error(message);
+        return Promise.reject(message);
+    }
+};
+
 // 定义为全局变量
 window.Utils = Utils;
 window.formatString = formatString;
