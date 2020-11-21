@@ -477,6 +477,80 @@ public final class Utils {
         }
     };
 
+    /**
+     * 获取状态 Label
+     *
+     * @param statusLabels 状态的 Label 数组
+     * @param status       状态值
+     * @return 返回状态对应的 Label
+     */
+    public static String getStatusLabel(String[] statusLabels, int status) {
+        if (status >= 0 && status < statusLabels.length) {
+            return statusLabels[status];
+        } else {
+            return "未知";
+        }
+    }
+
+    /**
+     * 花括号的 pattern
+     */
+    private static final Pattern PATTERN_BRACE = Pattern.compile("\\{}");
+
+    /**
+     * 使用数组 args 中的元素按顺序替换 text 中的 {} 占位符，如果 args 的元素个数少于 {} 的个数，则对应位置仍然返回 {}。
+     *
+     * 示例:
+     * text = "用户{}的{}成绩不存在"
+     * RegExpTest.replaceBracePlaceholder(text, "小明") => 用户小明的{}成绩不存在
+     * RegExpTest.replaceBracePlaceholder(text, "小明", "语文") => 用户小明的语文成绩不存在
+     *
+     * @param text 要替换的字符串
+     * @param args 替换 {} 的数组
+     * @return 返回替换后的字符串
+     */
+    public static String replaceBracePlaceholder(String text, String ...args) {
+        if (args.length == 0) {
+            return text;
+        }
+
+        int[] index = new int[1]; // 为了个 Lambda 里传递可变的 int 数据
+
+        return Utils.replace(text, PATTERN_BRACE, matcher -> {
+            int i = index[0]++;
+
+            if (i >= args.length) {
+                return "{}";
+            } else {
+                return args[i];
+            }
+        });
+    }
+
+    /**
+     * 替换字符串 text 中匹配 pattern 的子串，每个匹配的内容使用 converter 方法进行转换.
+     *
+     * @param text      要替换的字符串
+     * @param pattern   正则表达式的 pattern
+     * @param converter 转换函数
+     * @return 返回替换后的字符串
+     */
+    public static String replace(String text, Pattern pattern, Function<Matcher, String> converter) {
+        StringBuilder output = new StringBuilder();
+        int indexAfterMatched = 0;
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            // [indexAfterMatched, matcher.start()) 之间的内容为字符串中不匹配的内容，原样复制到结果串中
+            output.append(text, indexAfterMatched, matcher.start()).append(converter.apply(matcher));
+            indexAfterMatched = matcher.end();
+        }
+
+        output.append(text, indexAfterMatched, text.length());
+
+        return output.toString();
+    }
+
     public static void main(String[] args) {
         String text = "如果要编码的字节数不能被3整除，最后会多出1个或2个字节.";
         String encrypt = base64(text);

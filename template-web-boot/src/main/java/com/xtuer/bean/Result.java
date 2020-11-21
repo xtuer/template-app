@@ -46,7 +46,11 @@ public final class Result<T> {
         return Result.ok(data, "success");
     }
 
-    public static <T> Result<T> ok(T data, String message) {
+    public static <T> Result<T> ok(T data, String message, String ...args) {
+        if (args.length > 0) {
+            message = Utils.replaceBracePlaceholder(message, args);
+        }
+
         return new Result<>(true, message, data, 0);
     }
 
@@ -54,7 +58,11 @@ public final class Result<T> {
         return Result.fail("fail", 0);
     }
 
-    public static <T> Result<T> fail(String message) {
+    public static <T> Result<T> fail(String message, String ...args) {
+        if (args.length > 0) {
+            message = Utils.replaceBracePlaceholder(message, args);
+        }
+
         return Result.fail(message, 0);
     }
 
