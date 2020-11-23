@@ -1,7 +1,7 @@
 package com.xtuer.bean;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONPObject;
+import com.xtuer.util.Utils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,9 +46,9 @@ public final class Result<T> {
         return Result.ok(data, "success");
     }
 
-    public static <T> Result<T> ok(T data, String message, String ...args) {
-        if (args.length > 0) {
-            message = Utils.replaceBracePlaceholder(message, args);
+    public static <T> Result<T> ok(T data, String message, String ...messageArgs) {
+        if (messageArgs.length > 0) {
+            message = Utils.replaceBracePlaceholder(message, messageArgs);
         }
 
         return new Result<>(true, message, data, 0);
@@ -58,9 +58,9 @@ public final class Result<T> {
         return Result.fail("fail", 0);
     }
 
-    public static <T> Result<T> fail(String message, String ...args) {
-        if (args.length > 0) {
-            message = Utils.replaceBracePlaceholder(message, args);
+    public static <T> Result<T> fail(String message, String ...messageArgs) {
+        if (messageArgs.length > 0) {
+            message = Utils.replaceBracePlaceholder(message, messageArgs);
         }
 
         return Result.fail(message, 0);
@@ -95,21 +95,5 @@ public final class Result<T> {
         jp.addParameter(data);
 
         return jp.toString();
-    }
-
-    // 测试
-    public static void main(String[] args) {
-        // Result
-        Result<User> r1 = Result.ok();
-        Result<User> r2 = Result.ok(new User("Alice", "Passw0rd", Role.ROLE_ADMIN_SYSTEM));
-
-        // JSON
-        System.out.println(JSON.toJSONString(r1));
-        System.out.println(JSON.toJSONString(r2));
-
-        System.out.println(JSON.toJSONString(r2.getData(), true));
-
-        // JSONP
-        System.out.println(Result.jsonp("callback", Result.ok("Hello")));
     }
 }
