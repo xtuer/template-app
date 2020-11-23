@@ -29,6 +29,15 @@ public class Page {
         return this.getPageSize();
     }
 
+    /**
+     * 作用同 pageSize，在 Mapper xml 中使用 count 比 pageSize 更好看一些
+     *
+     * @return 返回数量
+     */
+    public int getCount() {
+        return this.getPageSize();
+    }
+
     public Page setPageNumber(int pageNumber) {
         this.pageNumber = Math.max(1, pageNumber);
         return this;
