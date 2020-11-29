@@ -186,6 +186,48 @@ public final class Utils {
     }
 
     /**
+     * 获取 date 这一天的开始时间，例如 2020-11-11 00:00:00
+     *
+     * @param date 日期
+     * @return 返回 date 这一天的开始时间
+     */
+    public static Date startOfDay(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取 date 这一天的最后时间，例如 2020-11-11 23:59:59
+     *
+     * @param date 日期
+     * @return 返回 date 这一天的最后时间
+     */
+    public static Date endOfDay(Date date) {
+        if (date == null) {
+            return null;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
+
+        return calendar.getTime();
+    }
+
+    /**
      * 输出对象到控制台
      *
      * @param object 要输出的对象
@@ -483,12 +525,12 @@ public final class Utils {
      * 获取状态 Label
      *
      * @param statusLabels 状态的 Label 数组
-     * @param status       状态值
+     * @param state        状态值
      * @return 返回状态对应的 Label
      */
-    public static String getStatusLabel(String[] statusLabels, int status) {
-        if (status >= 0 && status < statusLabels.length) {
-            return statusLabels[status];
+    public static String getStateLabel(String[] statusLabels, int state) {
+        if (state >= 0 && state < statusLabels.length) {
+            return statusLabels[state];
         } else {
             return "未知";
         }
