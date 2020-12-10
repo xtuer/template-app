@@ -635,7 +635,7 @@ Utils.uid = function() {
  * @param {String} message 信息
  * @return {Promise} 返回处理结果的 Promise 对象
  */
-Utils.handleResponse = function(data, success, message) {
+Utils.response = function(data, success, message) {
     if (success) {
         return Promise.resolve(data);
     } else {

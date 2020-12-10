@@ -59,3 +59,7 @@ li > p {
 .sidebar-nav>ul>li>ul>li>a {
     padding-left: 4px !important;
 }
+
+.markdown-section tr {
+    border: 1px solid #E3E3E3;
+}
