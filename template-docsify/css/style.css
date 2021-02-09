@@ -63,3 +63,15 @@ li > p {
 .markdown-section tr {
     border: 1px solid #E3E3E3;
 }
+
+video {
+    max-width: 100%;
+}
+
+button.docsify-tabs__tab:hover {
+    color: #333;
+    transition: all .4s;
+}
+button.docsify-tabs__tab:focus {
+    outline: 0;
+}
