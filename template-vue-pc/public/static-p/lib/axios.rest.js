@@ -170,7 +170,14 @@ class Rest {
 
             // 执行请求
             axios(options).then(response => {
-                resolve(response.data);
+                // 如果有异常堆栈信息则打印出来
+                const d = response.data;
+
+                if (d.stack) {
+                    console.error(d.stack);
+                }
+
+                resolve(d);
             }).catch(response => {
                 const error = response.response;
                 Rest.handleError(error);

@@ -43,8 +43,14 @@ public final class GlobalExceptionHandler {
         log.warn(error);
         log.warn(stack);
 
+        // 错误编码
+        int code = 500;
+        if (ex instanceof ApplicationException) {
+            code = ((ApplicationException) ex).getCode();
+        }
+
         return WebUtils.useAjax(request)
-                ? handleAjaxException(response, error, stack)
+                ? handleAjaxException(response, error, stack, code)
                 : handleNonAjaxException(ex, error, stack);
     }
 
@@ -54,11 +60,14 @@ public final class GlobalExceptionHandler {
      * @param response HttpServletResponse 对象
      * @param error    异常的描述信息
      * @param stack    异常的堆栈信息
+     * @param code     错误编码
      * @return 返回 null，这时 SpringMvc 不会去查找 view，会根据 response 中的信息进行响应
      */
-    private ModelAndView handleAjaxException(HttpServletResponse response, String error, String stack) {
-        Result<?> result = new Result<>(false, error, stack, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        WebUtils.ajaxResponse(response, result, HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    private ModelAndView handleAjaxException(HttpServletResponse response, String error, String stack, int code) {
+        Result<?> result = Result.fail(error, code);
+        result.setStack(stack);
+
+        WebUtils.ajaxResponse(response, result, HttpServletResponse.SC_OK);
         return null;
     }
 

@@ -639,7 +639,12 @@ Utils.response = function(data, success, message) {
     if (success) {
         return Promise.resolve(data);
     } else {
-        Message.error(message);
+        Message.error({
+            content : message,
+            duration: 30,
+            closable: true
+        });
+
         return Promise.reject(message);
     }
 };
