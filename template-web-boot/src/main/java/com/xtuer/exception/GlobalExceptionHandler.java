@@ -47,6 +47,7 @@ public final class GlobalExceptionHandler {
         int code = 500;
         if (ex instanceof ApplicationException) {
             code = ((ApplicationException) ex).getCode();
+            code = code == 0 ? 500 : code;
         }
 
         return WebUtils.useAjax(request)
