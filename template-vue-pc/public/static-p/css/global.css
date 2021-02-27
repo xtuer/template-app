@@ -1,13 +1,244 @@
 /* 滚动条样式，只支持 Webkit 内核浏览器，如 Chrome, Safari */
 ::-webkit-scrollbar {
-    width:  5px;
-    height: 5px;
+    width:  7px;
+    height: 7px;
 }
 ::-webkit-scrollbar-track {
     background: #ddd;
 }
 ::-webkit-scrollbar-thumb {
     background: #888;
+}
+
+/* 弹簧拉伸占满剩余空间: <div class="stretch"></div> */
+.stretch { flex: 1; }
+
+.relative { position: relative; }
+
+/* 文本不换行显示 */
+.nobreak {
+    word-break: keep-all;
+    white-space: nowrap;
+}
+
+/* 文本只显示在一行，溢出时显示三个小点: elide 是省略的意思 */
+.elide {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    cursor: default;
+}
+
+/* Vue 的样式 */
+.ivu-modal-footer button {
+    min-width: 90px;
+}
+
+.ivu-btn-small {
+    font-size: 12px !important;
+}
+
+.ivu-tag {
+    cursor: default;
+}
+.ivu-tag-border {
+    line-height: 21px !important; /* 默认为 24px，导致不能垂直居中*/
+}
+
+.ivu-modal-wrap .ivu-modal {
+    margin-bottom: 40px;
+}
+
+/* block 的 Poptip: <Poptip trigger="hover" transfer width="500" class="poptip-block"> */
+.ivu-poptip.poptip-block, .ivu-poptip.poptip-block .ivu-poptip-rel {
+    display: block;
+}
+
+/* 可点击的 Icon */
+.ivu-icon.clickable:hover {
+    color: #2d8cf0 !important;
+    cursor: pointer;
+    transition: all .6s;
+}
+
+/* 布局 */
+.two-column, .column-two, .column-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.three-column, .column-three, .column-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.four-column, .column-four, .column-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+/* 有搜索、分页、列表的页面的布局 */
+.list-page {
+    display: grid;
+    grid-gap: 16px;
+}
+.list-page-toolbar-top {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: space-between;
+    align-items: center;
+}
+.list-page-toolbar-bottom {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.list-page-toolbar-top .filter {
+    display: flex;
+}
+.list-page-toolbar-top .filter input {
+    width: 180px;
+}
+.list-page-toolbar-top .filter > div {
+    margin-right: 10px;
+}
+/* 下拉选择过滤条件的输入框，有 prepend append 的 Input */
+.list-page-toolbar-top .filter .ivu-input-group-prepend .ivu-select,
+.list-page-toolbar-top .filter .ivu-input-group {
+    width: auto;
+}
+
+/* 时间选择器: 需要设置 data-prepend 和增加 class="date-picker"
+<DatePicker v-model="dateRange"
+            format="MM-dd"
+            separator=" 至 "
+            type="daterange"
+            data-prepend="入库时间"
+            class="date-picker"
+            split-panels
+            placeholder="请选择入库时间范围">
+</DatePicker>
+*/
+.ivu-date-picker.date-picker {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    align-items: center;
+}
+.ivu-date-picker.date-picker::before {
+    content: attr(data-prepend);
+    padding: 4px 7px;
+    height: 100%;
+    border: 1px solid rgb(220, 222, 226);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    background-color: #f8f8f9;
+}
+.ivu-date-picker.date-picker input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* 表格里按钮列的按钮之间的间隔 */
+.table-action button:not(:first-child) {
+    margin-left: 8px;
+}
+
+/* 使用 Table 作为 body 的 Card，去掉 padding 效果好一些: <Card class="card-with-table-body" dis-hover> */
+.card-with-table-body .ivu-card-body {
+    padding: 0;
+}
+
+/*
+Box 布局
+<div class="box">
+    <div class="title">部分参数</div>
+    <div class="content">
+        Hallo
+    </div>
+</div>
+*/
+.box {
+    padding-top: 10px;
+    border: 1px solid #e8eaec;
+    border-radius: 4px;
+}
+.box.shadow {
+    padding-top: 15px;
+    box-shadow: 0px 0px 30px 0px rgba(146, 150, 198, 0.38);
+    border-radius: 8px;
+}
+.box > .title {
+    padding: 5px 20px;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+}
+.box > .title::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 4px;
+    background: #5cadff;
+}
+.box > .content {
+    padding: 20px;
+}
+
+/* 字体颜色和对齐 */
+.text-color-gray    { color: #8b8e96; }
+.text-color-warning { color: #ff9900; }
+.text-color-error   { color: #ed4014; }
+.text-align-right   { text-align: right }
+.text-align-center  { text-align: center; }
+
+/* Margin and Padding */
+.margin-top-10    {  margin-top: 10px; }
+.margin-top-20    { margin-top: 20px; }
+.margin-bottom-10 { margin-bottom: 10px; }
+.margin-bottom-20 { margin-bottom: 20px; }
+.margin-right-5   { margin-right: 5px; }
+.margin-right-10  { margin-right: 10px; }
+.margin-right-20  { margin-right: 20px; }
+.margin-left-5    { margin-left: 5px; }
+.margin-left-10   { margin-left: 10px; }
+.margin-left-20   { margin-left: 20px; }
+
+.padding-5  { padding: 5px; }
+.padding-10 { padding: 10px; }
+.padding-2o { padding: 20px; }
+
+/* 背景 */
+.background-gray {
+    background-color: #f8f8f9;
+}
+
+/**
+ * Select 和 DatePicker 增加 Label，如
+ * <Select data-prepend-label="状态" class="prepend-label">
+ * <DatePicker data-prepend-label="时间" class="prepend-label" type="date"></DatePicker>
+ **/
+.prepend-label {
+    display: flex !important;
+    position: relative;
+}
+.prepend-label::before {
+    content: attr(data-prepend-label);
+    padding: 0px 8px;
+    border: 1px solid rgb(220, 222, 226);
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    background-color: #f8f8f9;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding-bottom: 2px;
+}
+.prepend-label .ivu-select-selection, .prepend-label .ivu-date-picker-rel input {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    flex: 1;
 }
 
 /* 文件类型图标样式 */
@@ -70,97 +301,4 @@
 }
 .file-type-txt {
     background-image: url(/static-p/img/file-type/txt.png);
-}
-
-/* 弹簧拉伸占满剩余空间: <div class="stretch"></div> */
-.stretch {
-    flex: 1;
-}
-
-/* 文本不换行显示 */
-.nobreak {
-    word-break: keep-all;
-    white-space: nowrap;
-}
-
-/* 文本只显示在一行，溢出时显示三个小点: elide 是省略的意思 */
-.elide {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    cursor: default;
-}
-
-/* Vue 的样式 */
-.ivu-modal-footer button {
-    min-width: 90px;
-}
-
-.ivu-btn-small {
-    font-size: 12px !important;
-}
-
-.ivu-tag {
-    cursor: default;
-}
-
-.ivu-modal-wrap .ivu-modal {
-    margin-bottom: 40px;
-}
-
-/* block 的 Poptip: <Poptip trigger="hover" transfer width="500" class="poptip-block"> */
-.ivu-poptip.poptip-block, .ivu-poptip.poptip-block .ivu-poptip-rel {
-    display: block;
-}
-
-/* 可点击的 Icon */
-.ivu-icon.clickable:hover {
-    color: #2d8cf0 !important;
-    cursor: pointer;
-    transition: all .6s;
-}
-
-/* 布局 */
-.two-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.three-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-
-.four-column {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-}
-
-/* 有搜索、分页、列表的页面的布局 */
-.list-page {
-    display: grid;
-    grid-gap: 24px;
-}
-
-.list-page-toolbar-top {
-    display: grid;
-    grid-template-columns: 400px max-content;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.list-page-toolbar-bottom {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 表格里按钮列的按钮之间的间隔 */
-.column-buttons button:not(:first-child) {
-    margin-left: 8px;
-}
-
-/* 使用 Table 作为 body 的 Card，去掉 padding 效果好一些: <Card class="card-with-table-body" dis-hover> */
-.card-with-table-body .ivu-card-body {
-    padding: 0;
 }

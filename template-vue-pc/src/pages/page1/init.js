@@ -7,6 +7,7 @@ import '@/../public/static-p/js/urls';
 import '@/../public/static-p/js/utils';
 import '@/../public/static-p/js/constants';
 import '@/../public/static-p/lib/axios.rest';
+import '@/../public/static-p/css/global.css';
 
 import filters from '@/../public/static-p/js/filters';
 import methods from '@/../public/static-p/js/methods';
