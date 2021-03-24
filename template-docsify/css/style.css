@@ -4,8 +4,8 @@ body {
 
 /* 滚动条样式 */
 ::-webkit-scrollbar {
-    width:  2px;
-    height: 2px;
+    width:  7px;
+    height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -16,11 +16,16 @@ body {
     background: #888;
 }
 
+p[data-lang="plantuml"] {
+    overflow: auto !important;
+}
+
 /* 隐藏滚动条，还能滚动: http://caibaojian.com/hide-scrollbar.html */
-.element::-webkit-scrollbar { width: 0 !important }
+/*.element::-webkit-scrollbar { width: 0 !important }
 ::-webkit-scrollbar { width: 0 !important; height: 0 !important }
 .element { -ms-overflow-style: none; }
 .element { overflow: -moz-scrollbars-none; }
+*/
 
 main > .sidebar {
     padding-top: 10px;
