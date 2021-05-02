@@ -1,7 +1,8 @@
-var user  = 'customer';
-var users = 'customers';
-var label = '客户';
-var Users = 'Customers';
+var user  = 'user';
+var users = 'users';
+var label = '用户';
+var dao   = 'UserDao'
+var Users = 'Users';
 
 var str = `
 <!-- eslint-disable vue/no-parsing-error -->
@@ -66,17 +67,13 @@ var str = `
 </template>
 
 <script>
-import UserDao from '@/../public/static-p/js/dao/UserDao';
+import ${dao} from '@/../public/static-p/js/dao/${dao}';
 
 export default {
     data() {
         return {
-            ${users} : [],
-            filter: { // 搜索条件
-                nickname  : '',
-                pageSize  : 2,
-                pageNumber: 1,
-            },
+            ${users}   : [],
+            filter     : this.newFilter(), // 搜索条件
             filterKey  : 'email',  // 搜索的 Key
             filterValue: '',       // 搜索的 Value
             dateRange  : ['', ''], // 搜索的时间范围
@@ -97,10 +94,11 @@ export default {
     methods: {
         // 搜索${label}
         search${Users}() {
-            this.${users}             = [];
-            this.more              = false;
-            this.reloading         = true;
-            this.filter.pageNumber = 1;
+            this.${users}               = [];
+            this.more                   = false;
+            this.reloading              = true;
+            this.filter                 = { ...this.newFilter(), name: this.filter.nickname };
+            this.filter[this.filterKey] = this.filterValue;
 
             // 如果不需要时间范围，则删除
             if (this.dateRange[0] && this.dateRange[1]) {
@@ -117,7 +115,7 @@ export default {
         fetchMore${Users}() {
             this.loading = true;
 
-            UserDao.find${Users}(this.filter).then(${users} => {
+            ${dao}.find${Users}(this.filter).then(${users} => {
                 this.${users}.push(...${users});
 
                 this.more      = ${users}.length >= this.filter.pageSize;
@@ -125,6 +123,16 @@ export default {
                 this.reloading = false;
                 this.filter.pageNumber++;
             });
+        },
+        // 新建搜索条件
+        newFilter() {
+            return { // 搜索条件
+                // customerSn : '',
+                // business: '',
+                nickname  : '',
+                pageSize  : 50,
+                pageNumber: 1,
+            };
         },
     }
 };
