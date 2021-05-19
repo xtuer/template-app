@@ -80,3 +80,14 @@ button.docsify-tabs__tab:hover {
 button.docsify-tabs__tab:focus {
     outline: 0;
 }
+
+.markdown-section code:not([class*="lang-"]):not([class*="language-"]) {
+    background: transparent;
+    box-shadow: 0 0 3px 1px #1f282d inset;
+    color: #aaa;
+    text-shadow: 0px 0px 1px rgb(11, 135, 218);
+}
+
+.sidebar-toggle .sidebar-toggle-button {
+    background: hsl(201deg 18% 17%);
+}

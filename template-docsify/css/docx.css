@@ -1,0 +1,68 @@
+.docx {
+    opacity: 1;
+    position: fixed;
+    top   :  0px;
+    right : 10px;
+    width : 25px;
+    height: 30px;
+    line-height: 30px;
+    /* background: hsl(201deg 18% 15%); */
+    /* text-align: center; */
+    /* border-radius: 0 0 15px 15px; */
+    /* box-shadow: 0 0 8px rgba(0, 0, 0, .2); */
+    cursor: default;
+
+    width: 0px;
+    height: 35px;
+    border-right : 12px solid hsl(201deg 18% 15%);
+    border-left  : 12px solid hsl(201deg 18% 15%);
+    border-bottom: 15px solid transparent;
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, .3));
+}
+.docx ul {
+    display: none;
+    position: absolute;
+    width: 200px;
+    right: 0px;
+    top  : 10px;
+    background: hsl(201deg 18% 15%);
+    margin: 0;
+    border-radius: 3px;
+    padding: 4px 10px 4px 25px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+    text-align: left;
+    box-sizing: border-box;
+}
+.docx:hover {
+    color: #333;
+}
+.docx:hover ul {
+    display: block;
+    animation: docx-show 1s;
+}
+.docx li {
+    color: #eee;
+}
+.docx a {
+    display: block;
+    font-size: 14px;
+    text-shadow: 1px 1px 10px rgba(255, 255, 255, .4);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+    color: #eee;
+}
+.docx a:hover {
+    text-decoration: underline;
+    text-decoration-color: #5cadff !important;
+    text-decoration-thickness: 2px;
+}
+@keyframes docx-show {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
