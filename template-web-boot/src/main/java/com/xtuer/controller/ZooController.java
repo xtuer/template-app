@@ -2,11 +2,13 @@ package com.xtuer.controller;
 
 import com.xtuer.bean.Page;
 import com.xtuer.bean.Result;
+import com.xtuer.bean.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
 
@@ -88,5 +90,18 @@ public class ZooController extends BaseController {
     @GetMapping("/api/demo/array")
     public Result<List<Integer>> array(@RequestParam List<Integer> ids) {
         return Result.ok(ids);
+    }
+
+    /**
+     * 测试 @Valid 校验不通过时抛出异常
+     *
+     * 网址: http://localhost:8080/api/demo/invalid
+     * 参数: 可有可无
+     *
+     * @param user 用户
+     */
+    @GetMapping("/api/demo/invalid")
+    public Result<String> validDemo(@Valid User user) {
+        return Result.ok();
     }
 }
