@@ -13,7 +13,7 @@ public class ApplicationException extends RuntimeException {
     /**
      * 错误代码: 应用内部传递异常使用
      */
-    private int code;
+    private int code = 500;
 
     /**
      * 错误页面的模版文件: 给错误页面使用

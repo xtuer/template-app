@@ -3,8 +3,10 @@ package com.xtuer.exception;
 import com.github.wujun234.uid.impl.CachedUidGenerator;
 import com.xtuer.bean.Result;
 import com.xtuer.bean.Urls;
+import com.xtuer.util.Utils;
 import com.xtuer.util.WebUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 异常处理基类
+ * 异常处理基类:
+ * 1. 当 AJAX 请求时发生异常，返回 JSON 格式的错误信息，HTTP 状态码为 200，Result.code 为传入的 code
+ * 2. 非 AJAX 请求时发生异常，错误信息显示到 HTML 网页
  */
 @Slf4j
 public class BaseExceptionHandler {
@@ -51,11 +55,13 @@ public class BaseExceptionHandler {
     }
 
     /**
-     * 处理 AJAX 请求时的异常: 把异常信息使用 Result 格式化为 JSON 格式，以 AJAX 的方式写入到响应数据中，HTTP 状态码为 500，Result.code 也为 500
+     * 处理 AJAX 请求时的异常: 把异常信息使用 Result 格式化为 JSON 格式，以 AJAX 的方式写入到响应数据中，
+     * HTTP 状态码为 200，Result.code 为传入的 code
      *
      * @param response HttpServletResponse 对象
      * @param error    异常的描述信息
      * @param stack    异常的堆栈信息
+     * @param code     错误代码
      * @return 返回 null，这时 SpringMvc 不会去查找 view，会根据 response 中的信息进行响应
      */
     protected final ModelAndView handleAjaxException(HttpServletResponse response, String error, String stack, int code) {
@@ -92,5 +98,18 @@ public class BaseExceptionHandler {
         model.addAttribute("detail", stack); // 异常堆栈
 
         return new ModelAndView(errorPageFile, model);
+    }
+
+    /**
+     * 获取异常的 stack 信息
+     */
+    protected final String getStack(HttpServletRequest request, Exception ex) {
+        String stack = String.format("网址: %s%n参数: %s%n服务器: %s%n堆栈: %s",
+                request.getRequestURL(),
+                Utils.toJson(request.getParameterMap()),
+                BaseExceptionHandler.IP,
+                ExceptionUtils.getStackTrace(ex));
+
+        return stack;
     }
 }

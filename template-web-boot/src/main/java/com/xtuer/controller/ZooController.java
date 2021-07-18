@@ -104,4 +104,14 @@ public class ZooController extends BaseController {
     public Result<String> validDemo(@Valid User user) {
         return Result.ok();
     }
+
+    /**
+     * 参数无效时抛出 IllegalArgumentException 异常，验证响应的消息
+     *
+     * 网址: http://localhost:8080/api/demo/illegal-argument
+     */
+    @GetMapping("/api/demo/illegal-argument")
+    public Result<String> illegalArgument() {
+        throw new IllegalArgumentException("参数无效");
+    }
 }
