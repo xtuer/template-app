@@ -4,6 +4,7 @@ import com.xtuer.util.Utils;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,15 @@ public final class ArgumentExceptionHandler extends BaseExceptionHandler {
     // @Valid 验证参数失败异常处理
     @ExceptionHandler(value = BindException.class)
     public ModelAndView handleBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
+        String error = Utils.getBindingMessage(ex.getBindingResult()); // 错误消息
+        String stack = super.getStack(request, ex);
+
+        return super.handleException(request, response, ex, error, stack, 501);
+    }
+
+    // @Valid 验证参数失败异常处理
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ModelAndView handleMethodArgumentNotValidException(HttpServletRequest request, HttpServletResponse response, MethodArgumentNotValidException ex) {
         String error = Utils.getBindingMessage(ex.getBindingResult()); // 错误消息
         String stack = super.getStack(request, ex);
 
