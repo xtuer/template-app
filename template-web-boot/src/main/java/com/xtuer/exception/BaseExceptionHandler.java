@@ -104,11 +104,24 @@ public class BaseExceptionHandler {
      * 获取异常的 stack 信息
      */
     protected final String getStack(HttpServletRequest request, Exception ex) {
-        String stack = String.format("网址: %s%n参数: %s%n服务器: %s%n堆栈: %s",
+        // 最多取 10 行异常堆栈中的信息
+        StringBuilder cause = new StringBuilder();
+        int line = 0;
+        for (String str : ExceptionUtils.getRootCauseStackTrace(ex)) {
+            cause.append(str).append("\n");
+
+            ++line;
+            if (line > 10) {
+                break;
+            }
+        }
+
+        String stack = String.format("网址: %s\n参数: %s\n服务: %s\n序号: %d\n堆栈: %s",
                 request.getRequestURL(),
                 Utils.toJson(request.getParameterMap()),
                 BaseExceptionHandler.IP,
-                ExceptionUtils.getStackTrace(ex));
+                uidGenerator.getUID(),
+                cause);
 
         return stack;
     }
