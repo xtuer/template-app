@@ -444,7 +444,7 @@ Date.prototype.toJSON = function() {
 /**
  * 异步动态加载 JS 和 CSS 的任务类，如果同一个 ID 指定的资源已经加载过则不进行重复加载。
  */
- class LoadTask {
+class LoadTask {
     static STATE_INIT    = 0; // 初始化
     static STATE_LOADING = 1; // 加载中
     static STATE_SUCCESS = 2; // 加载成功
