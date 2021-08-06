@@ -84,6 +84,7 @@
       "quote-props": 0,
       "no-lonely-if": 0,
       "no-constant-condition": 0,
+      "lines-between-class-members": 0,
       "yoda": 0
     },
     "parserOptions": {

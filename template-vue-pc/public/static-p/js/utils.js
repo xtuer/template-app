@@ -442,124 +442,168 @@ Date.prototype.toJSON = function() {
 };
 
 /**
- * 使用 Promise 异步加载 JS
- *
- * @param  {String} url JS 的路径
- * @param  {String} id  JS 的 <style> 的 ID，如果已经存在则不再重复加载，默认为 JS 文件名
- * @return {Promise} 返回 Promise 对象, resolve 的参数为加载成功的信息 (无多大意义), reject 的参数为错误提示
+ * 异步动态加载 JS 和 CSS 的任务类，如果同一个 ID 指定的资源已经加载过则不进行重复加载。
  */
-Utils.loadJs = function(url, id) {
-    // 1. 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
-    // 2. 定时检查任务状态，加载结束时清除定时器，执行对应的 promise 函数
-    // 3. 如果是第一个加载任务则从服务器加载，否则返回
+ class LoadTask {
+    static STATE_INIT    = 0; // 初始化
+    static STATE_LOADING = 1; // 加载中
+    static STATE_SUCCESS = 2; // 加载成功
+    static STATE_ERROR   = 3; // 加载失败
 
-    // 加载状态
-    var STATUS_LOADING = 1; // 加载中
-    var STATUS_SUCCESS = 2; // 加载成功
-    var STATUS_ERROR   = 3; // 加载失败
-
-    id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
-
-    // [1] 有可能短时间内多次加载同一个 JS，为同一个 id 的 JS 定义一个任务，放入任务队列里
-    window.jsLoadingTasks = window.jsLoadingTasks || [];      // 所有加载任务 { id, status: 1|2|3 }
-    var task  = window.jsLoadingTasks.find(j => j.id === id); // 查找此 id 的任务
-    var first = !task; // 是否第一次加载
-
-    // 如果是第一次加载，则创建加载任务
-    if (first) {
-        task = { id, status: STATUS_LOADING };
-        window.jsLoadingTasks.push(task);
+    /**
+     * @param {String} url    JS 或者 CSS 的路径
+     * @param {String} taskId 任务的 id
+     */
+    constructor(url, taskId) {
+        this.id    = taskId;
+        this.url   = url;
+        this.state = LoadTask.STATE_INIT;
+        this.queue = [];
     }
 
-    return new Promise(function(resolve, reject) {
-        // [2] 定时检查任务状态，加载结束时清楚定时器，执行对应的 promise 函数
-        var timer = setInterval(() => {
-            if (task.status === STATUS_LOADING) {
-                return;
-            }
+    enqueue(resolve, reject) {
+        this.queue.push({ resolve, reject });
+    }
 
-            clearInterval(timer);
+    // 加载成功的回调函数
+    loadSuccess() {
+        this.state = LoadTask.STATE_SUCCESS;
+        this.queue.forEach(p => p.resolve());
+        this.queue = [];
+    }
 
-            if (task.status === STATUS_SUCCESS) {
-                resolve('JS load success: ' + url);
-            } else if (task.status === STATUS_ERROR) {
-                reject(Error('JS load error: ' + url));
-            }
-        }, 100);
+    // 加载失败的回调函数
+    loadError() {
+        this.state = LoadTask.STATE_ERROR;
+        this.queue.forEach(p => p.reject());
+        this.queue = [];
+    }
 
-        // [3] 如果是第一个加载任务则从服务器加载，否则返回
-        if (!first) {
+    // 任务状态为加载成功返回 true，否则返回 false
+    isSuccess() {
+        return this.state === LoadTask.STATE_SUCCESS;
+    }
+
+    // 任务状态为加载失败返回 true，否则返回 false
+    isError() {
+        return this.state === LoadTask.STATE_ERROR;
+    }
+
+    // 任务状态为初始化返回 true，否则返回 false
+    isInit() {
+        return this.state === LoadTask.STATE_INIT;
+    }
+
+    // 任务状态为加载中返回 true，否则返回 false
+    isLoading() {
+        return this.state === LoadTask.STATE_LOADING;
+    }
+
+    /**
+     * 开始加载
+     *
+     * @param {String} url  JS 或者 CSS 的 URL
+     * @param {String} id   任务的 ID，同一个资源建议使用相同的 ID，避免重复加载
+     * @param {String} type 加载类型，值为 'js' 或者 'css'
+     * @returns 返回 Promise 对象，加载成功时回调它的 reolve 函数，失败时回调它的 reject 函数
+     */
+    static start(url, id, type) {
+        // 1. 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
+        // 2. 如果任务已经加载完成，直接返回
+        // 3. 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
+
+        // [1] 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
+        id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
+        window.loadingTasksMap = window.loadingTasksMap || new Map();
+        const task = window.loadingTasksMap.get(id) || new LoadTask(url, id);
+
+        // [2] 如果任务已经加载完成，直接返回
+        if (task.isSuccess()) {
+            return Promise.resolve();
+        } else if (task.isError()) {
+            return Promise.reject();
+        } else if (task.isInit()) {
+            window.loadingTasksMap.set(id, task);
+        }
+
+        // [3] 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
+        return new Promise((resolve, reject) => {
+            task.enqueue(resolve, reject);
+            task.doLoad(type); // 开始加载
+        });
+    }
+
+    // 执行加载
+    doLoad(type) {
+        // 只有初始化状态时需要进行加载，其他状态直接返回
+        if (!this.isInit()) {
             return;
         }
 
-        var script = document.createElement('script');
+        this.state = LoadTask.STATE_LOADING;
+        const id  = this.id;
+        const url = this.url;
+        const src = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
+        const source = document.createElement(type === 'js' ? 'script' : 'link');
 
-        if (script.readyState) {  // IE
-            script.onreadystatechange = function() {
-                if (script.readyState === 'loaded' || script.readyState === 'complete') {
-                    script.onreadystatechange = null;
-                    task.status = STATUS_SUCCESS;
+        console.log('开始加载: ' + src);
+
+        if (source.readyState) {
+            // IE
+            source.onreadystatechange = () => {
+                if (source.readyState === 'loaded' || source.readyState === 'complete') {
+                    source.onreadystatechange = null;
+                    this.loadSuccess();
+                    console.log('加载完成: ' + src);
                 }
             };
-        } else {  // Other Browsers
-            script.onload = function() {
-                task.status = STATUS_SUCCESS;
+        } else {
+            // Other Browsers
+            source.onload = () => {
+                this.loadSuccess();
+                console.log('加载完成: ' + src);
             };
         }
 
-        script.onerror = function() {
-            task.status = STATUS_ERROR;
+        source.onerror = () => {
+            this.loadError();
+            console.error('加载失败: ' + src);
         };
 
-        script.type = 'text/javascript';
-        script.id   = id;
-        script.src  = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
-        document.getElementsByTagName('head').item(0).appendChild(script);
-    });
+        if (type === 'js') {
+            source.type = 'text/javascript';
+            source.id   = id;
+            source.src  = src;
+            document.getElementsByTagName('head').item(0).appendChild(source);
+        } else {
+            source.rel  = 'stylesheet';
+            source.id   = id;
+            source.href = src;
+            document.getElementsByTagName('head').item(0).appendChild(source);
+        }
+    }
+}
+
+/**
+ * 异步加载 JS
+ *
+ * @param {String} url JS 的 URL
+ * @param {String} id  JS <style> 的 ID，可选值，默认为 url 对应的文件名
+ * @returns 返回 Promise
+ */
+Utils.loadJs = function(url, id) {
+    return LoadTask.start(url, id, 'js');
 };
 
 /**
  * 异步加载 CSS
  *
- * @param  {String} url CSS 路径
- * @param  {String} id  CSS 的 <link> 的 ID，如果已经存在则不再重复加载，默认为 CSS 文件名
- * @return {Promise} 返回 Promise 对象, resolve 的参数为加载成功的信息 (无多大意义), reject 的参数为错误提示
+ * @param {String} url CSS 的 URL
+ * @param {String} id  CSS <link> 的 ID，可选值，默认为 url 对应的文件名
+ * @returns 返回 Promise
  */
 Utils.loadCss = function(url, id) {
-    id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
-
-    // 不会短时间内重复加载同一个 CSS，所以不需要像加载 JS 那样使用任务队列检查加载状态
-    return new Promise(function(resolve, reject) {
-        // 避免重复加载
-        if (document.getElementById(id)) {
-            resolve('CSS load success: ' + url);
-            return;
-        }
-
-        var link = document.createElement('link');
-
-        if (link.readyState) {  // IE
-            link.onreadystatechange = function() {
-                if (link.readyState === 'loaded' || link.readyState === 'complete') {
-                    link.onreadystatechange = null;
-                    resolve('CSS load success: ' + url);
-                }
-            };
-        } else {  // Other Browsers
-            link.onload = function() {
-                resolve('CSS load success: ' + url);
-            };
-        }
-
-        link.onerror = function() {
-            reject(Error('JS load error: ' + url));
-        };
-
-        link.rel  = 'stylesheet';
-        link.id   = id;
-        link.href = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
-        document.getElementsByTagName('head').item(0).appendChild(link);
-    });
+    return LoadTask.start(url, id, 'css');
 };
 
 /**
