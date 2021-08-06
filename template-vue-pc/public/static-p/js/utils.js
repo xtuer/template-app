@@ -548,6 +548,7 @@ Date.prototype.toJSON = function() {
 
         console.log('开始加载: ' + src);
 
+        // 加载成功
         if (source.readyState) {
             // IE
             source.onreadystatechange = () => {
@@ -565,6 +566,7 @@ Date.prototype.toJSON = function() {
             };
         }
 
+        // 加载失败
         source.onerror = () => {
             this.loadError();
             console.error('加载失败: ' + src);
