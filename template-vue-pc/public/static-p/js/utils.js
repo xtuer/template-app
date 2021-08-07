@@ -442,6 +442,28 @@ Date.prototype.toJSON = function() {
 };
 
 /**
+ * 异步加载 JS
+ *
+ * @param {String} url JS 的 URL
+ * @param {String} id  JS <style> 的 ID，可选值，默认为 url 对应的文件名
+ * @returns 返回 Promise
+ */
+Utils.loadJs = function(url, id) {
+    return LoadTask.start(url, id, 'js');
+};
+
+/**
+ * 异步加载 CSS
+ *
+ * @param {String} url CSS 的 URL
+ * @param {String} id  CSS <link> 的 ID，可选值，默认为 url 对应的文件名
+ * @returns 返回 Promise
+ */
+Utils.loadCss = function(url, id) {
+    return LoadTask.start(url, id, 'css');
+};
+
+/**
  * 异步动态加载 JS 和 CSS 的任务类，如果同一个 ID 指定的资源已经加载过则不进行重复加载。
  */
 class LoadTask {
@@ -458,11 +480,12 @@ class LoadTask {
         this.id    = taskId;
         this.url   = url;
         this.state = LoadTask.STATE_INIT;
-        this.queue = [];
+        this.queue = []; // 任务加载请求者队列，实际保存的是 Promise 的回调函数 { resolve, reject }
     }
 
-    enqueue(resolve, reject) {
-        this.queue.push({ resolve, reject });
+    // 请求者入队
+    add(requester) {
+        this.queue.push(requester);
     }
 
     // 加载成功的回调函数
@@ -479,16 +502,6 @@ class LoadTask {
         this.queue = [];
     }
 
-    // 任务状态为加载成功返回 true，否则返回 false
-    isSuccess() {
-        return this.state === LoadTask.STATE_SUCCESS;
-    }
-
-    // 任务状态为加载失败返回 true，否则返回 false
-    isError() {
-        return this.state === LoadTask.STATE_ERROR;
-    }
-
     // 任务状态为初始化返回 true，否则返回 false
     isInit() {
         return this.state === LoadTask.STATE_INIT;
@@ -499,13 +512,23 @@ class LoadTask {
         return this.state === LoadTask.STATE_LOADING;
     }
 
+    // 任务状态为加载成功返回 true，否则返回 false
+    isSuccess() {
+        return this.state === LoadTask.STATE_SUCCESS;
+    }
+
+    // 任务状态为加载失败返回 true，否则返回 false
+    isError() {
+        return this.state === LoadTask.STATE_ERROR;
+    }
+
     /**
      * 开始加载
      *
      * @param {String} url  JS 或者 CSS 的 URL
      * @param {String} id   任务的 ID，同一个资源建议使用相同的 ID，避免重复加载
      * @param {String} type 加载类型，值为 'js' 或者 'css'
-     * @returns 返回 Promise 对象，加载成功时回调它的 reolve 函数，失败时回调它的 reject 函数
+     * @returns 返回 Promise 对象，加载成功时回调它的 resolve 函数，失败时回调它的 reject 函数
      */
     static start(url, id, type) {
         // 1. 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
@@ -513,9 +536,9 @@ class LoadTask {
         // 3. 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
 
         // [1] 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
-        id = (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
         window.loadingTasksMap = window.loadingTasksMap || new Map();
-        const task = window.loadingTasksMap.get(id) || new LoadTask(url, id);
+        const taskId = type + '-' + (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
+        const task   = window.loadingTasksMap.get(taskId) || new LoadTask(url, taskId);
 
         // [2] 如果任务已经加载完成，直接返回
         if (task.isSuccess()) {
@@ -523,27 +546,27 @@ class LoadTask {
         } else if (task.isError()) {
             return Promise.reject();
         } else if (task.isInit()) {
-            window.loadingTasksMap.set(id, task);
+            window.loadingTasksMap.set(taskId, task);
         }
 
         // [3] 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
         return new Promise((resolve, reject) => {
-            task.enqueue(resolve, reject);
+            task.add({ resolve, reject });
             task.doLoad(type); // 开始加载
         });
     }
 
     // 执行加载
     doLoad(type) {
-        // 只有初始化状态时需要进行加载，其他状态直接返回
+        // 只有初始化状态时需要从服务器进行加载，其他状态说明已经加载完成或者正在加载中
         if (!this.isInit()) {
             return;
         }
 
-        this.state = LoadTask.STATE_LOADING;
-        const id  = this.id;
-        const url = this.url;
-        const src = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
+        this.state   = LoadTask.STATE_LOADING;
+        const id     = this.id;
+        const url    = this.url;
+        const src    = url.includes('?') ? `${url}&_t=${id}` : `${url}?_t=${id}`;
         const source = document.createElement(type === 'js' ? 'script' : 'link');
 
         console.log('开始加载: ' + src);
@@ -585,28 +608,6 @@ class LoadTask {
         }
     }
 }
-
-/**
- * 异步加载 JS
- *
- * @param {String} url JS 的 URL
- * @param {String} id  JS <style> 的 ID，可选值，默认为 url 对应的文件名
- * @returns 返回 Promise
- */
-Utils.loadJs = function(url, id) {
-    return LoadTask.start(url, id, 'js');
-};
-
-/**
- * 异步加载 CSS
- *
- * @param {String} url CSS 的 URL
- * @param {String} id  CSS <link> 的 ID，可选值，默认为 url 对应的文件名
- * @returns 返回 Promise
- */
-Utils.loadCss = function(url, id) {
-    return LoadTask.start(url, id, 'css');
-};
 
 /**
  * 深拷贝

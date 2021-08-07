@@ -85,6 +85,7 @@
       "no-lonely-if": 0,
       "no-constant-condition": 0,
       "lines-between-class-members": 0,
+      "no-use-before-define": 0,
       "yoda": 0
     },
     "parserOptions": {
