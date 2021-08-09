@@ -532,37 +532,35 @@ class LoadTask {
      */
     static start(url, id, type) {
         // 1. 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
-        // 2. 如果任务已经加载完成，直接返回
-        // 3. 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
+        // 2. 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
 
         // [1] 从全局的任务队列中获取 id 对应的任务，如果不存在则创建
         window.loadingTasksMap = window.loadingTasksMap || new Map();
         const taskId = type + '-' + (id || Utils.getFilename(url)).replace(/\./g, '-'); // 替换名字中的 . 为 -，如: jquery.js 输出 jquery-js
         const task   = window.loadingTasksMap.get(taskId) || new LoadTask(url, taskId);
+        window.loadingTasksMap.set(taskId, task);
 
-        // [2] 如果任务已经加载完成，直接返回
-        if (task.isSuccess()) {
-            return Promise.resolve();
-        } else if (task.isError()) {
-            return Promise.reject();
-        } else if (task.isInit()) {
-            window.loadingTasksMap.set(taskId, task);
-        }
-
-        // [3] 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
+        // [2] 开始加载，把任务的 Promise 加入任务的 queue，当加载完成后进行回调
         return new Promise((resolve, reject) => {
             task.add({ resolve, reject });
-            task.doLoad(type); // 开始加载
+            task.doLoad(type);
         });
     }
 
     // 执行加载
     doLoad(type) {
-        // 只有初始化状态时需要从服务器进行加载，其他状态说明已经加载完成或者正在加载中
-        if (!this.isInit()) {
+        // 如果已经加载成功或者失败，调用相应的回调行数，加载中直接返回，避免重复加载
+        if (this.isSuccess()) {
+            this.loadSuccess();
+            return;
+        } else if (this.isError()) {
+            this.loadError();
+            return;
+        } else if (this.isLoading()) {
             return;
         }
 
+        // 初始化状态时开始加载
         this.state   = LoadTask.STATE_LOADING;
         const id     = this.id;
         const url    = this.url;

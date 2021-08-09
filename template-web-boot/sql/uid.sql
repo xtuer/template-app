@@ -5,7 +5,7 @@
 # 版本：1.0
 # 描述：百度基于 Snowflake 的 Uid Generator 的表
 #------------------------------------------
-DROP TABLE IF EXISTS exam_question;
+DROP TABLE IF EXISTS WORKER_NODE;
 
 CREATE TABLE WORKER_NODE (
     ID BIGINT NOT NULL AUTO_INCREMENT COMMENT 'auto increment id',
