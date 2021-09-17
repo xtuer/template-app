@@ -2,7 +2,11 @@ package com.xtuer.controller;
 
 import com.xtuer.bean.Page;
 import com.xtuer.bean.Result;
+import com.xtuer.bean.UploadedFile;
 import com.xtuer.bean.User;
+import com.xtuer.mapper.FileMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,5 +117,30 @@ public class ZooController extends BaseController {
     @GetMapping("/api/demo/illegal-argument")
     public Result<String> illegalArgument() {
         throw new IllegalArgumentException("参数无效");
+    }
+
+    @Autowired
+    FileMapper fileMapper;
+
+    /**
+     * 测试事务的回滚
+     *
+     * 网址: http://localhost:8080/api/demo/transactional
+     */
+    @GetMapping("/api/demo/transactional")
+    @Transactional(rollbackFor = Exception.class)
+    public Result<String> transactional() throws Exception {
+        UploadedFile file = new UploadedFile();
+        file.setId(1);
+        file.setFilename("test.png");
+        file.setUrl("test-url");
+        file.setUserId(111);
+        fileMapper.upsertUploadedFile(file);
+
+        if (System.currentTimeMillis() % 2 == 0) {
+            throw new Exception("noop");
+        }
+
+        return Result.ok();
     }
 }
