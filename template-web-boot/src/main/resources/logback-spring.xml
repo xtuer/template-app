@@ -4,7 +4,7 @@
     <property name="logPath" value="${LOG_PATH:-logs}"/>
 
     <!-- 日志格式 -->
-    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- [%10.10t] %-40.40logger{39}| %3L | %msg%n"/>
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p --- [%10.10t] %magenta(%-40.40logger{39})| %3L | %msg%n"/>
 
     <!-- 控制台日志 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">

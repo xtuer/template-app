@@ -26,7 +26,7 @@ export default class UserDao {
      * @return {Promise} 返回 Promise 对象，resolve 的参数为用户对象，reject 的参数为错误消息
      */
     static findUserById(userId) {
-        return Rest.get(Urls.API_USERS_BY_ID, { params: { userId } }).then(({ data: user, success, message }) => {
+        return Rest.url(Urls.API_USERS_BY_ID).params({ userId }).get().then(({ data: user, success, message }) => {
             return Utils.response(user, success, message);
         });
     }
@@ -53,14 +53,15 @@ export default class UserDao {
      * @return {Promise} 返回 Promise 对象，resolve 的参数为对于更新操作的结果，reject 的参数为错误信息
      */
     static patchUser(user) {
-        return Rest.patch(Urls.API_USERS_BY_ID, { params: { userId: user.id }, data: user }).then(({ data, success, message }) => {
-            if (success) {
-                Message.success(message);
-                return Promise.resolve(data);
-            } else {
-                Message.error(message);
-                return Promise.reject(message);
-            }
-        });
+        return Rest.url(Urls.API_USERS_BY_ID).params({ userId: user.id }).data(user).patch()
+            .then(({ data, success, message }) => {
+                if (success) {
+                    Message.success(message);
+                    return Promise.resolve(data);
+                } else {
+                    Message.error(message);
+                    return Promise.reject(message);
+                }
+            });
     }
 }
