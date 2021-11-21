@@ -694,6 +694,72 @@ Utils.response = function(data, success, message) {
     }
 };
 
+/**
+ * 在 duration 秒内每隔 interval 秒执行函数 processFunc 一次，当 repeat 结束时执行函数 finishFunc。
+ *
+ * 使用示例:
+ * const cancelToken = Utils.retry(100, 3, () => { console.log(Date.now()) }, () => { console.log('Finished')});
+ * cancelToken.cancel();
+ *
+ * @param {Integer}  duration    执行时间范围
+ * @param {Integer}  interval    执行间隔
+ * @param {Function} processFunc 重复执行的函数
+ * @param {Function} finishFunc  结束的回调函数
+ * @returns 返回取消操作对象，调用其 cancel() 函数可取消执行
+ */
+Utils.repeat = function(duration, interval, processFunc, finishFunc) {
+    /* 逻辑:
+     1. 定义取消操作的 Token，调用其 cancel() 函数则立即取消后续执行
+     2. 定义递归循环执行的函数 doWork
+     3. 如果已经完成或者取消了执行，doWork 就不在执行
+     4. 执行用户指定的具体操作 processFunc
+     5. 如果仍然在 duration 的时间范围内，使用递归计划下一次执行，否则结束递归
+     */
+
+    const startAt = Date.now();
+    let finished  = false;
+    let canceled  = false;
+    duration     *= 1000;
+    interval     *= 1000;
+
+    // [1] 定义取消操作的 Token，调用其 cancel() 函数则立即取消后续执行
+    const cancelToken = {
+        cancel: function() {
+            if (finished || canceled) {
+                return;
+            }
+
+            canceled = true;
+            finished = true;
+            finishFunc && finishFunc();
+        }
+    };
+
+    // [2] 定义递归循环执行的函数 doWork
+    const doWork = () => {
+        // [3] 如果已经完成或者取消了执行，doWork 就不在执行
+        if (finished || canceled) {
+            return;
+        }
+
+        // [4] 执行用户指定的具体操作 processFunc
+        processFunc && processFunc();
+
+        // [5] 如果仍然在 duration 的时间范围内，使用递归计划下一次执行，否则结束递归
+        if (Date.now() - startAt + interval <= duration) {
+            setTimeout(doWork, interval);
+        } else {
+            finished = true;
+            finishFunc && finishFunc();
+        }
+    };
+
+    // 开始执行
+    doWork();
+
+    return cancelToken;
+};
+
 // 定义为全局变量
 window.Utils = Utils;
 window.formatString = formatString;
