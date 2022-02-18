@@ -13,7 +13,7 @@ repositories {
 }
 
 ext.versions = [
-        lombok     : '1.18.10',
+        lombok     : '1.18.22',
         commonsIO  : '2.6',
         commonsLang: '3.8',
         commonsText: '1.7',
