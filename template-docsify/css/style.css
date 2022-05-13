@@ -3,9 +3,9 @@ body {
 }
 
 /* 滚动条样式 */
-::-webkit-scrollbar {
-    width:  7px;
-    height: 7px;
+/*::-webkit-scrollbar {
+    width:  5px;
+    height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -14,18 +14,38 @@ body {
 
 ::-webkit-scrollbar-thumb {
     background: #888;
-}
-
-p[data-lang="plantuml"] {
-    overflow: auto !important;
-}
+}*/
 
 /* 隐藏滚动条，还能滚动: http://caibaojian.com/hide-scrollbar.html */
-/*.element::-webkit-scrollbar { width: 0 !important }
+/* .element::-webkit-scrollbar { width: 0 !important }
 ::-webkit-scrollbar { width: 0 !important; height: 0 !important }
 .element { -ms-overflow-style: none; }
-.element { overflow: -moz-scrollbars-none; }
-*/
+.element { overflow: -moz-scrollbars-none; } */
+
+body * {
+    scrollbar-color: hsla(var(--mono-hue), var(--mono-saturation), 50%, 0.3) hsla(var(--mono-hue), var(--mono-saturation), 50%, 0.1);
+    scrollbar-width: thin
+}
+
+body *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px
+}
+
+body::-webkit-scrollbar-thumb {
+    background: hsla(var(--mono-hue), var(--mono-saturation), 50%, 0.3)
+}
+
+body::-webkit-scrollbar-track {
+    background: hsla(var(--mono-hue), var(--mono-saturation), 50%, 0.1)
+}
+body::-webkit-scrollbar {
+    width: 5px
+}
+
+body::-webkit-scrollbar-thumb {
+    border-radius: 50vw
+}
 
 main > .sidebar {
     padding-top: 10px;
@@ -65,26 +85,10 @@ li > p {
     padding-left: 4px !important;
 }
 
-.markdown-section tr {
-    border: 1px solid #E3E3E3;
-}
-
-video {
-    max-width: 100%;
-}
-
-button.docsify-tabs__tab:hover {
-    color: #333;
-    transition: all .4s;
-}
-button.docsify-tabs__tab:focus {
-    outline: 0;
-}
-
 .markdown-section code:not([class*="lang-"]):not([class*="language-"]) {
     background: transparent;
     box-shadow: 0 0 3px 1px #1f282d inset;
-    color: #aaa;
+    color: #999;
     text-shadow: 0px 0px 1px rgb(11, 135, 218);
 }
 

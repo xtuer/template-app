@@ -18,8 +18,15 @@ import java.util.List;
  */
 public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConverter {
     public JacksonHttpMessageConverter() {
-        ObjectMapper objectMapper = getObjectMapper();
+        JacksonHttpMessageConverter.setupObjectMapper(getObjectMapper());
+    }
 
+    /**
+     * 设置 objectMapper 的输出格式、属性处理方式等
+     *
+     * @param objectMapper Jackson ObjectMapper
+     */
+    public static void setupObjectMapper(ObjectMapper objectMapper) {
         // Long to String
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
@@ -28,6 +35,9 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
 
         // Data Format
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+        // 忽略未知的属性
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         // Null value
         objectMapper.setSerializerFactory(objectMapper.getSerializerFactory().withSerializerModifier(new NullValueSerializerModifier()));
@@ -88,7 +98,7 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
 
                 // 判断字段的类型，如果是 array，list，set 则注册 nullSerializer
                 if (isArrayType(writer)) {
-                    //给 writer 注册一个自己的 nullSerializer
+                    // 给 writer 注册一个自己的 nullSerializer
                     writer.assignNullSerializer(new NullArrayJsonSerializer());
                 } else if (isNumberType(writer)) {
                     writer.assignNullSerializer(new NullNumberJsonSerializer());
