@@ -95,3 +95,7 @@ li > p {
 .sidebar-toggle .sidebar-toggle-button {
     background: hsl(201deg 18% 17%);
 }
+
+p[data-lang="plantuml"] {
+    overflow: auto !important;
+}
