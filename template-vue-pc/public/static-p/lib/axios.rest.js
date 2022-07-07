@@ -198,6 +198,11 @@ RestBuilder.prototype.remove = function(optUrl) {
     return RestExecutor.executeRequest(config);
 };
 
+RestBuilder.prototype.del = function(optUrl) {
+    const config = this.method('DELETE').url(optUrl).build();
+    return RestExecutor.executeRequest(config);
+};
+
 /**
  * Rest 请求执行类
  */

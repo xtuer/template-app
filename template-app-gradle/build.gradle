@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ ext {
 // [2] 打包: gradle clean shadowJar [-DmainClass=Foo]
 shadowJar {
     mergeServiceFiles('META-INF/spring.*')
-    archiveName = 'app.jar' // 输出的 jar 包名字
+    archiveFileName = 'ssh-wrapper.jar' // 输出的 jar 包名字
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -27,9 +27,9 @@ repositories {
 }
 
 dependencies {
-    testCompile 'junit:junit:4.12'
-    compileOnly 'org.projectlombok:lombok:1.16.18'
-    annotationProcessor 'org.projectlombok:lombok:1.16.18'
+    testImplementation 'junit:junit:4.13.2'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 ////////////////////////////////////////////////////////////////////////////////
