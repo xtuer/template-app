@@ -29,21 +29,22 @@ export default {
              逻辑:
              1. 登录
              2. 登录成功后获取用户信息
-             3. 用户权限保护 ROLE_ADMIN_SYSTEM 则跳转到机构管理页
+             3. 用户权限包含 ROLE_ADMIN_SYSTEM 则跳转到机构管理页
              4. 普通用户跳转到文件管理页
              */
-            UserDao.login(this.username, this.password, this.orgId);
+
+            // [1] 登录
             UserDao.login(this.username, this.password, this.orgId).then(() => {
                 // [2] 登录成功后获取用户信息
-                UserDao.findCurrentUser().then(user => {
-                    if (user.roles.includes('ROLE_ADMIN_SYSTEM')) {
-                        // [3] 用户权限保护 ROLE_ADMIN_SYSTEM 则跳转到机构管理页
-                        window.location.href = '/admin#/orgs';
-                    } else {
-                        // [4] 普通用户跳转到文件管理页
-                        window.location.href = '/admin#/org-files';
-                    }
-                });
+                return UserDao.findCurrentUser();
+            }).then(user => {
+                if (user.roles.includes('ROLE_ADMIN_SYSTEM')) {
+                    // [3] 用户权限包含 ROLE_ADMIN_SYSTEM 则跳转到机构管理页
+                    window.location.href = '/admin#/orgs';
+                } else {
+                    // [4] 普通用户跳转到文件管理页
+                    window.location.href = '/admin#/org-files';
+                }
             });
         }
     }
