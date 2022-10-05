@@ -1,8 +1,8 @@
-var user  = 'user';
-var users = 'users';
-var label = '用户';
-var dao   = 'UserDao'
-var Users = 'Users';
+var user  = 'org';
+var users = 'orgs';
+var label = '机构';
+var dao   = 'OrgDao'
+var Users = 'Orgs';
 
 var str = `
 <!-- eslint-disable vue/no-parsing-error -->

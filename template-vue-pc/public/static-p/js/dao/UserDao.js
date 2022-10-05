@@ -64,4 +64,23 @@ export default class UserDao {
                 }
             });
     }
+
+    /**
+     * 使用用户名和密码请求 token.
+     *
+     * 网址: http://localhost:8080/api/login/tokens
+     * 参数: username and password, orgId
+     *
+     * @param username 账号
+     * @param password 密码
+     * @param orgId    机构 ID
+     */
+    static login(username, password, orgId) {
+        return Rest.url(Urls.API_LOGIN_TOKENS)
+            .data({ username, password, orgId })
+            .create()
+            .then(({ data: token, success, message }) => {
+                return Utils.response(token, success, message);
+            });
+    }
 }

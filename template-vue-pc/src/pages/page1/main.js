@@ -17,7 +17,8 @@ router.beforeEach((to, from, next) => {
             next();
             LoadingBar.finish();
         }).catch(() => {
-            LoadingBar.error();
+            // LoadingBar.error();
+            window.location.href = '/login';
         });
     }
 });

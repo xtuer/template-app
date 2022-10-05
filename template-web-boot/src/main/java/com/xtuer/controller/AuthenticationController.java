@@ -53,37 +53,37 @@ public class AuthenticationController extends BaseController {
      * @param request HttpServletRequest 对象
      * @param model   保存数据到 view 中显示
      */
-    @GetMapping(value= Urls.PAGE_LOGIN)
-    public String loginPage(@RequestParam(value="error",  required=false) String error,
-                            @RequestParam(value="logout", required=false) String logout,
-                            HttpServletRequest request,
-                            ModelMap model) {
-        // 判断当前登录的状态
-        String status = "";
-        status = (error  != null) ? "账号或密码无效" : status; // 登录错误
-        status = (logout != null) ? "" : status;             // 注销成功
-        model.put("status", status);
-
-        // 请求当前登录用户的头像。
-        // 因为 login 页面不需要权限访问，所以被 spring security 拦截，在 SecurityContextHolder 中没有用户的登录信息，
-        // 所以从用户的 cookie 中获取用户 ID，然后从数据库中查询用户信息
-        User user = jwtService.extractUser(WebUtils.getAuthToken(request));
-
-        // 得到登录的用户信息后，使用用户的 ID 从数据库查询用户的完整信息
-        if (user != null) {
-            user = userService.findUser(user.getUserId());
-
-            if (user != null) {
-                model.put("avatar", user.getAvatar());
-            }
-        }
-
-        // 当前机构
-        Organization org = super.orgService.getCurrentOrganization();
-        model.put("org", org);
-
-        return Urls.FILE_LOGIN;
-    }
+    // @GetMapping(value= Urls.PAGE_LOGIN)
+    // public String loginPage(@RequestParam(value="error",  required=false) String error,
+    //                         @RequestParam(value="logout", required=false) String logout,
+    //                         HttpServletRequest request,
+    //                         ModelMap model) {
+    //     // 判断当前登录的状态
+    //     String status = "";
+    //     status = (error  != null) ? "账号或密码无效" : status; // 登录错误
+    //     status = (logout != null) ? "" : status;             // 注销成功
+    //     model.put("status", status);
+    //
+    //     // 请求当前登录用户的头像。
+    //     // 因为 login 页面不需要权限访问，所以被 spring security 拦截，在 SecurityContextHolder 中没有用户的登录信息，
+    //     // 所以从用户的 cookie 中获取用户 ID，然后从数据库中查询用户信息
+    //     User user = jwtService.extractUser(WebUtils.getAuthToken(request));
+    //
+    //     // 得到登录的用户信息后，使用用户的 ID 从数据库查询用户的完整信息
+    //     if (user != null) {
+    //         user = userService.findUser(user.getUserId());
+    //
+    //         if (user != null) {
+    //             model.put("avatar", user.getAvatar());
+    //         }
+    //     }
+    //
+    //     // 当前机构
+    //     Organization org = super.orgService.getCurrentOrganization();
+    //     model.put("org", org);
+    //
+    //     return Urls.FILE_LOGIN;
+    // }
 
     /**
      * 请求当前登录用户
@@ -111,15 +111,16 @@ public class AuthenticationController extends BaseController {
      * 使用用户名和密码请求 token.
      *
      * 网址: http://localhost:8080/api/login/tokens
-     * 参数: username and password
+     * 参数: username and password, orgId
      *
      * @param username 账号
      * @param password 密码
+     * @param orgId    机构 ID
      */
     @PostMapping(Urls.API_LOGIN_TOKENS)
     @ResponseBody
-    public Result<String> loginToken(@RequestParam String username, @RequestParam String password, HttpServletResponse response) {
-        User user = userService.findUser(username, password, super.getCurrentOrganizationId());
+    public Result<String> loginToken(@RequestParam String username, @RequestParam String password, @RequestParam long orgId, HttpServletResponse response) {
+        User user = userService.findUser(username, password, orgId);
 
         if (user == null) {
             return Result.fail("用户名或密码不正确");

@@ -8,6 +8,7 @@ const Urls = {
     API_USERS_BY_ID         : '/api/users/{userId}',         // 指定 ID 的用户
     API_USERS_CURRENT       : '/api/login/users/current',    // 当前登录的用户
     API_USER_PASSWORDS_RESET: '/api/users/{userId}/passwords/reset', // 重置密码
+    API_LOGIN_TOKENS        : '/api/login/tokens',           // 登陆用户的 token
 
     FORM_UPLOAD_TEMPORARY_FILE : '/form/upload/temp/file',  // 上传一个临时文件
     FORM_UPLOAD_TEMPORARY_FILES: '/form/upload/temp/files', // 上传多个临时文件

@@ -9,6 +9,7 @@ module.exports = {
     },
     pages: {
         page1: 'src/pages/page1/main.js',
+        login: 'src/pages/login/main.js',
     },
     css: {
         loaderOptions: {
