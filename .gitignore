@@ -79,3 +79,7 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+### Go ###
+vendor/
+main
