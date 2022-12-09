@@ -1,9 +1,8 @@
 package bean
 
 import (
+	"newdtagent/utils"
 	"time"
-
-	"github.com/google/uuid"
 )
 
 // Job 为执行 CMD 或 Script 时创建的对象，描述了任务和任务的进程的信息。
@@ -30,7 +29,7 @@ type Job struct {
 // NewJob 创建 Job 指针对象，并且自动生成 Job 的 ID。
 func NewJob() *Job {
 	job := &Job{}
-	job.Id = uuid.NewString()
+	job.Id = utils.Uid()
 	job.CreateTime = time.Now()
 
 	return job
