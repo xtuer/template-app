@@ -49,7 +49,7 @@ func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			bean.FailWithMessage(c, err)
+			bean.FailResponseWithMessage(c, err)
 			return
 		}
 
@@ -58,13 +58,13 @@ func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
 
 		// [3] 参数校验: job 的 Cmd 字段不能为空。
 		if err := o.executeService.ValidateCmdJob(job); err != nil {
-			bean.FailWithMessage(c, err)
+			bean.FailResponseWithMessage(c, err)
 			return
 		}
 
 		// [4] 执行 Job 的命令。
 		o.executeService.ExecuteJob(job)
-		bean.OkWithData(c, job)
+		bean.OkResponseWithData(c, job)
 	}
 }
 
@@ -91,7 +91,7 @@ func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			bean.FailWithMessage(c, err)
+			bean.FailResponseWithMessage(c, err)
 			return
 		}
 
@@ -102,13 +102,13 @@ func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
 
 		// [3] 参数校验: job 的 Cmd 字段不能为空。
 		if err := o.executeService.ValidateScriptJob(job); err != nil {
-			bean.FailWithMessage(c, err)
+			bean.FailResponseWithMessage(c, err)
 			return
 		}
 
 		// [4] 执行 Job 的脚本。
 		o.executeService.ExecuteJob(job)
-		bean.OkWithData(c, job)
+		bean.OkResponseWithData(c, job)
 	}
 }
 
@@ -125,9 +125,9 @@ func (o *ExecuteController) FindJobById() gin.HandlerFunc {
 		job := o.executeService.FindJobById(jobId)
 
 		if job == nil {
-			bean.FailWithMessage(c, fmt.Sprintf("Job not found, jobId: %s", jobId))
+			bean.FailResponseWithMessage(c, fmt.Sprintf("Job not found, jobId: %s", jobId))
 		} else {
-			bean.OkWithData(c, job)
+			bean.OkResponseWithData(c, job)
 		}
 	}
 }
