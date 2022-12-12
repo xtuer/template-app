@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"newdtagent/bean"
 	"newdtagent/service"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,8 +39,7 @@ func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
 		 逻辑:
 		 1. 创建 Job 对象。
 		 2. 参数获取: 把请求体中的数据绑定到 job。
-		 3. 参数校验: job 的 Cmd 字段不能为空。
-		 4. 执行 Job 的命令。
+		 3. 执行 Job 的命令。
 		*/
 
 		// [1] 创建 Job 对象。
@@ -52,15 +50,7 @@ func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
 			return FailResultWithMessage(err)
 		}
 
-		// 去掉命令多余的空格。
-		job.Cmd = strings.TrimSpace(job.Cmd)
-
-		// [3] 参数校验: job 的 Cmd 字段不能为空。
-		if err := o.executeService.ValidateCmdJob(job); err != nil {
-			return FailResultWithMessage(err)
-		}
-
-		// [4] 执行 Job 的命令。
+		// [3] 执行 Job 的命令。
 		if err := o.executeService.ExecuteJob(job); err != nil {
 			return FailResultWithMessage(err)
 		}
@@ -83,8 +73,7 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 		 逻辑:
 		 1. 创建 Job 对象。
 		 2. 参数获取: 把请求体中的数据绑定到 job。
-		 3. 参数校验: ScriptName, ScriptContent, ScriptType 字段不能为空。
-		 4. 执行 Job 的命令。
+		 3. 执行 Job 的命令。
 		*/
 
 		// [1] 创建 Job 对象。
@@ -95,17 +84,7 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 			return FailResultWithMessage(err)
 		}
 
-		// 去掉命令多余的空格。
-		job.ScriptName = strings.TrimSpace(job.ScriptName)
-		job.ScriptContent = strings.TrimSpace(job.ScriptContent)
-		job.ScriptType = job.ScriptType.Trim()
-
-		// [3] 参数校验: job 的 Cmd 字段不能为空。
-		if err := o.executeService.ValidateScriptJob(job); err != nil {
-			return FailResultWithMessage(err)
-		}
-
-		// [4] 执行 Job 的脚本。
+		// [3] 执行 Job 的脚本。
 		if err := o.executeService.ExecuteJob(job); err != nil {
 			return FailResultWithMessage(err)
 		}
@@ -120,7 +99,7 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 // 方法: GET
 // 响应: payload 为 Job 对象。
 //
-// 测试: curl -X GET 'http://localhost:8080/api/jobs/2559aa8e-2fe1-4f9a-a061-0c8a754abbc9'
+// 测试: curl 'http://localhost:8080/api/jobs/2559aa8e-2fe1-4f9a-a061-0c8a754abbc9'
 func (o *ExecuteController) FindJobById() RequestHandlerFunc {
 	return func(c *gin.Context) *bean.Result {
 		jobId := c.Param("jobId")

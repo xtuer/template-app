@@ -36,12 +36,17 @@ func NewJob() *Job {
 	return job
 }
 
-// IsShellJob 当 Job 是 shell 脚本类型时返回 true，否则返回 false
+// IsCmdJob 当 Job 的 Cmd 属性非空时返回 true，否则返回 false。
+func (o *Job) IsCmdJob() bool {
+	return o.Cmd != ""
+}
+
+// IsShellJob 当 Job 是 shell 脚本类型时返回 true，否则返回 false。
 func (o *Job) IsShellJob() bool {
 	return o.ScriptType == STShell
 }
 
-// IsShIsPythonJobellJob 当 Job 是 python 脚本类型时返回 true，否则返回 false
+// IsShIsPythonJobellJob 当 Job 是 python 脚本类型时返回 true，否则返回 false。
 func (o *Job) IsPythonJob() bool {
 	return o.ScriptType == STPython
 }

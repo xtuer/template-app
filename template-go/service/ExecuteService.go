@@ -19,41 +19,6 @@ func NewExecuteService() *ExecuteService {
 	}
 }
 
-// ValidateCmdJob 验证 CMD Job 的参数。
-// @return 验证通过返回 nil，验证不通过返回错误对象。
-func (o ExecuteService) ValidateCmdJob(job *bean.Job) error {
-	if job.Cmd == "" {
-		return errors.New("cmd 不能为空")
-	} else {
-		return nil
-	}
-}
-
-// ValidateScriptJob 验证 Script Job 的参数。
-// @return 验证通过返回 nil，验证不通过返回错误对象。
-func (o ExecuteService) ValidateScriptJob(job *bean.Job) error {
-	var errMsg string
-
-	if job.ScriptName == "" {
-		errMsg = "scriptName 不能为空"
-	}
-	if strings.Contains(job.ScriptName, " ") {
-		errMsg = "scriptName 不能包含空格"
-	}
-	if job.ScriptContent == "" {
-		errMsg = "scriptContent 不能为空"
-	}
-	if !job.IsShellJob() && !job.IsPythonJob() {
-		errMsg = "scriptType 的值必须为 shell 或者 python"
-	}
-
-	if errMsg != "" {
-		return errors.New(errMsg)
-	} else {
-		return nil
-	}
-}
-
 // FindJobById 查找 ID 为传入参数 jobId 的任务。
 // @return 返回查询到的任务，查找不到时返回 nil。
 func (o ExecuteService) FindJobById(jobId string) *bean.Job {
@@ -72,10 +37,23 @@ func (o ExecuteService) FindJobById(jobId string) *bean.Job {
 func (o *ExecuteService) ExecuteJob(job *bean.Job) error {
 	/*
 	 执行逻辑:
-	 1. 如果是脚本类型，则把脚本内容保存到文件。
+	 1. 参数处理，去掉多余的空格。
+	 2. 参数校验。
+	 3. 如果是脚本类型，则把脚本内容保存到文件。
 	*/
 
-	// [1] 如果是脚本类型，则把脚本内容保存到文件。
+	// [1] 参数处理，去掉多余的空格。
+	job.Cmd = strings.TrimSpace(job.Cmd)
+	job.ScriptName = strings.TrimSpace(job.ScriptName)
+	job.ScriptContent = strings.TrimSpace(job.ScriptContent)
+	job.ScriptType = job.ScriptType.Trim()
+
+	// [2] 参数校验。
+	if err := o.validateJob(job); err != nil {
+		return err
+	}
+
+	// [3] 如果是脚本类型，则把脚本内容保存到文件。
 	if err := o.saveScriptToFileAsNeeded(job); err != nil {
 		return err
 	}
@@ -101,4 +79,53 @@ func (o *ExecuteService) saveScriptToFileAsNeeded(job *bean.Job) error {
 	job.ScriptPath = path
 	job.ScriptContent = ""
 	return nil
+}
+
+func (o ExecuteService) validateJob(job *bean.Job) error {
+	if job.IsCmdJob() {
+		if err := o.validateCmdJob(job); err != nil {
+			return err
+		}
+	} else {
+		if err := o.validateScriptJob(job); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+// validateCmdJob 验证 CMD Job 的参数。
+// @return 验证通过返回 nil，验证不通过返回错误对象。
+func (o ExecuteService) validateCmdJob(job *bean.Job) error {
+	if job.Cmd == "" {
+		return errors.New("cmd 不能为空")
+	} else {
+		return nil
+	}
+}
+
+// validateScriptJob 验证 Script Job 的参数。
+// @return 验证通过返回 nil，验证不通过返回错误对象。
+func (o ExecuteService) validateScriptJob(job *bean.Job) error {
+	var errMsg string
+
+	if job.ScriptName == "" {
+		errMsg = "scriptName 不能为空"
+	}
+	if strings.Contains(job.ScriptName, " ") {
+		errMsg = "scriptName 不能包含空格"
+	}
+	if job.ScriptContent == "" {
+		errMsg = "scriptContent 不能为空"
+	}
+	if !job.IsShellJob() && !job.IsPythonJob() {
+		errMsg = "scriptType 的值必须为 shell 或者 python"
+	}
+
+	if errMsg != "" {
+		return errors.New(errMsg)
+	} else {
+		return nil
+	}
 }
