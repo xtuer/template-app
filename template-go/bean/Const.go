@@ -11,7 +11,7 @@ const (
 	JSCanceled JobState = "canceled"
 )
 
-// 脚本类型
+// ScriptType 为脚本类型。
 type ScriptType string
 
 const (
@@ -19,7 +19,7 @@ const (
 	STPython ScriptType = "python"
 )
 
-// Trim 掉 ScriptType 的前后空格
+// Trim 掉 ScriptType 的前后空格。
 func (o ScriptType) Trim() ScriptType {
 	return ScriptType(strings.TrimSpace(string(o)))
 }

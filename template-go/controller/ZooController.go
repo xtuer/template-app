@@ -21,7 +21,7 @@ func NewZooController() *ZooController {
 
 // [3] 注册当前控制器的路由。
 func (o *ZooController) RegisterRoutes(router *gin.Engine) {
-	router.GET(bean.API_TEST, o.GetTest())
+	router.GET(bean.API_TEST, R(o.GetTest()))
 }
 
 // [4] 请求响应实现。
@@ -33,13 +33,13 @@ func (o *ZooController) RegisterRoutes(router *gin.Engine) {
 // 响应: payload 为 JSON 对象。
 //
 // 测试: curl -X GET 'http://localhost:8080/api/test'
-func (o *ZooController) GetTest() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (o *ZooController) GetTest() RequestHandlerFunc {
+	return func(c *gin.Context) *bean.Result {
 		log.Log.Info("Hello test!")
 
 		n := rand.Intn(10)
 		if n%3 == 0 {
-			bean.OkResponseWithMessage(c, fmt.Sprintf("Time is %v", time.Now()))
+			return FailResultWithMessage(fmt.Sprintf("Time is %v", time.Now()))
 		} else {
 			panic("Panic occured")
 		}

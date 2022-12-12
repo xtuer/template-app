@@ -13,6 +13,7 @@ type Job struct {
 	ScriptName    string     `json:"scriptName"`    // 要执行的脚本名称
 	ScriptContent string     `json:"scriptContent"` // 脚本内容
 	ScriptType    ScriptType `json:"scriptType"`    // 脚本类型，值为 shell 或者 python
+	ScriptPath    string     `json:"scriptPath"`    // 脚本内容保存到系统上的路径
 	Async         bool       `json:"async"`         // 是否异步执行命令或者脚本，为 true 时异步执行，为 false 时同步执行
 
 	Pid    int      `json:"pid"`    // 任务的进程的 PID
@@ -33,4 +34,14 @@ func NewJob() *Job {
 	job.CreateTime = time.Now()
 
 	return job
+}
+
+// IsShellJob 当 Job 是 shell 脚本类型时返回 true，否则返回 false
+func (o *Job) IsShellJob() bool {
+	return o.ScriptType == STShell
+}
+
+// IsShIsPythonJobellJob 当 Job 是 python 脚本类型时返回 true，否则返回 false
+func (o *Job) IsPythonJob() bool {
+	return o.ScriptType == STPython
 }

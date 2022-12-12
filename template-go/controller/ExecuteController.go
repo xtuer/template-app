@@ -21,9 +21,9 @@ func NewExecuteController(executeService *service.ExecuteService) *ExecuteContro
 
 // RegisterRoutes 注册路由。
 func (o *ExecuteController) RegisterRoutes(router *gin.Engine) {
-	router.POST(bean.API_EXECUTE_CMD, o.ExecuteCmd())
-	router.POST(bean.API_EXECUTE_SCRIPT, o.ExecuteScript())
-	router.GET(bean.API_JOBS_BY_ID, o.FindJobById())
+	router.POST(bean.API_EXECUTE_CMD, R(o.ExecuteCmd()))
+	router.POST(bean.API_EXECUTE_SCRIPT, R(o.ExecuteScript()))
+	router.GET(bean.API_JOBS_BY_ID, R(o.FindJobById()))
 }
 
 // ExecuteCmd 接收执行 CMD 的请求。
@@ -34,8 +34,8 @@ func (o *ExecuteController) RegisterRoutes(router *gin.Engine) {
 // 响应: payload 为 Job 对象。
 //
 // 测试: curl -X POST 'http://localhost:8080/api/execute/cmd' -H 'Content-Type: application/json' -d '{"cmd": "ls /root", "async": true}'
-func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
+	return func(c *gin.Context) *bean.Result {
 		/*
 		 逻辑:
 		 1. 创建 Job 对象。
@@ -49,8 +49,7 @@ func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			bean.FailResponseWithMessage(c, err)
-			return
+			return FailResultWithMessage(err)
 		}
 
 		// 去掉命令多余的空格。
@@ -58,13 +57,15 @@ func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
 
 		// [3] 参数校验: job 的 Cmd 字段不能为空。
 		if err := o.executeService.ValidateCmdJob(job); err != nil {
-			bean.FailResponseWithMessage(c, err)
-			return
+			return FailResultWithMessage(err)
 		}
 
 		// [4] 执行 Job 的命令。
-		o.executeService.ExecuteJob(job)
-		bean.OkResponseWithData(c, job)
+		if err := o.executeService.ExecuteJob(job); err != nil {
+			return FailResultWithMessage(err)
+		}
+
+		return OkResultWithData(job)
 	}
 }
 
@@ -76,8 +77,8 @@ func (o *ExecuteController) ExecuteCmd() gin.HandlerFunc {
 // 响应: payload 为 Job 对象。
 //
 // 测试: curl -X POST 'http://localhost:8080/api/execute/script' -H 'Content-Type: application/json' -d '{"scriptName": "x.sh", "scriptContent": "echo hi", "scriptType": "shell"}'
-func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
+	return func(c *gin.Context) *bean.Result {
 		/*
 		 逻辑:
 		 1. 创建 Job 对象。
@@ -91,8 +92,7 @@ func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			bean.FailResponseWithMessage(c, err)
-			return
+			return FailResultWithMessage(err)
 		}
 
 		// 去掉命令多余的空格。
@@ -102,13 +102,15 @@ func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
 
 		// [3] 参数校验: job 的 Cmd 字段不能为空。
 		if err := o.executeService.ValidateScriptJob(job); err != nil {
-			bean.FailResponseWithMessage(c, err)
-			return
+			return FailResultWithMessage(err)
 		}
 
 		// [4] 执行 Job 的脚本。
-		o.executeService.ExecuteJob(job)
-		bean.OkResponseWithData(c, job)
+		if err := o.executeService.ExecuteJob(job); err != nil {
+			return FailResultWithMessage(err)
+		}
+
+		return OkResultWithData(job)
 	}
 }
 
@@ -119,15 +121,15 @@ func (o *ExecuteController) ExecuteScript() gin.HandlerFunc {
 // 响应: payload 为 Job 对象。
 //
 // 测试: curl -X GET 'http://localhost:8080/api/jobs/2559aa8e-2fe1-4f9a-a061-0c8a754abbc9'
-func (o *ExecuteController) FindJobById() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (o *ExecuteController) FindJobById() RequestHandlerFunc {
+	return func(c *gin.Context) *bean.Result {
 		jobId := c.Param("jobId")
 		job := o.executeService.FindJobById(jobId)
 
 		if job == nil {
-			bean.FailResponseWithMessage(c, fmt.Sprintf("Job not found, jobId: %s", jobId))
+			return FailResultWithMessage(fmt.Sprintf("Job not found, jobId: %s", jobId))
 		} else {
-			bean.OkResponseWithData(c, job)
+			return OkResultWithData(job)
 		}
 	}
 }
