@@ -21,9 +21,9 @@ func NewExecuteController(executeService *service.ExecuteService) *ExecuteContro
 
 // RegisterRoutes 注册路由。
 func (o *ExecuteController) RegisterRoutes(router *gin.Engine) {
-	router.POST(bean.API_EXECUTE_CMD, R(o.ExecuteCmd()))
-	router.POST(bean.API_EXECUTE_SCRIPT, R(o.ExecuteScript()))
-	router.GET(bean.API_JOBS_BY_ID, R(o.FindJobById()))
+	router.POST(API_EXECUTE_CMD, R(o.ExecuteCmd()))
+	router.POST(API_EXECUTE_SCRIPT, R(o.ExecuteScript()))
+	router.GET(API_JOBS_BY_ID, R(o.FindJobById()))
 }
 
 // ExecuteCmd 接收执行 CMD 的请求。

@@ -1,4 +1,4 @@
-package bean
+package controller
 
 // 定义系统中使用到的所有 URLs。
 const (

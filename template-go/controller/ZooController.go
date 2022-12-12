@@ -21,7 +21,7 @@ func NewZooController() *ZooController {
 
 // [3] 注册当前控制器的路由。
 func (o *ZooController) RegisterRoutes(router *gin.Engine) {
-	router.GET(bean.API_TEST, R(o.GetTest()))
+	router.GET(API_TEST, R(o.GetTest()))
 }
 
 // [4] 请求响应实现。
