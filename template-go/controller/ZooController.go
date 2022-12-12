@@ -1,8 +1,11 @@
 package controller
 
 import (
-	"net/http"
+	"fmt"
+	"math/rand"
 	"newdtagent/bean"
+	"newdtagent/log"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -32,8 +35,13 @@ func (o *ZooController) RegisterRoutes(router *gin.Engine) {
 // 测试: curl -X GET 'http://localhost:8080/api/test'
 func (o *ZooController) GetTest() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.IndentedJSON(http.StatusOK, gin.H{
-			"msg": "Hello",
-		})
+		log.Log.Info("Hello test!")
+
+		n := rand.Intn(10)
+		if n%3 == 0 {
+			bean.OkResponseWithMessage(c, fmt.Sprintf("Time is %v", time.Now()))
+		} else {
+			panic("Panic occured")
+		}
 	}
 }
