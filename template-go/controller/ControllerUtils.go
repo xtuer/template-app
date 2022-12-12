@@ -17,6 +17,7 @@ type RequestHandlerFunc = func(c *gin.Context) *bean.Result
 // R 封装 controller 请求处理的返回值 Result 到 gin.Context 里，统一处理错误信息。
 func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		// 执行请求。
 		r := doRequestFn(c)
 
 		// 错误发生的时候，输出错误信息到日志里。
