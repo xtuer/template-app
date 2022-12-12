@@ -23,20 +23,22 @@ import (
  }).Warn("执行脚本")
 */
 
-var Log *logrus.Logger = logrus.New()
+// Logrus 的 Log 对象。
+var Log *logrus.Logger
 
 // init 初始化 Logrus 日志对象。
 func init() {
 	// Create a new logger.
-	// Log := logrus.New()
+	Log = logrus.New()
 	Log.SetReportCaller(true)
 	Log.SetLevel(logrus.DebugLevel)
 
-	// 输出 JSON 格式的日子
+	// 输出 JSON 格式的日志。
 	Log.SetFormatter(&logrus.JSONFormatter{
 		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
 			return fmt.Sprintf("%s():%d", f.Function, f.Line), ""
 		},
+		TimestampFormat: "2006-01-02 15:04:05",
 	})
 
 	// Create a rotating log file with a daily rolling format.
