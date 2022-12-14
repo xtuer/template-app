@@ -39,6 +39,10 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 }
 
 // FailResultWithMessage 设置处理失败的响应数据。
+// 示例:
+// - 参数绑定失败: FailResultWithMessage(err, http.StatusBadRequest)
+// - 查找不到对象: FailResultWithMessage(err, http.StatusNotFound)
+// - 状态码默认值: FailResultWithMessage(err)
 func FailResultWithMessage(reason any, code ...int) *bean.Result {
 	// 错误码默认为 1，如果指定了错误码则使用指定的。
 	var c int = 1

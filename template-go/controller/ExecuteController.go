@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"net/http"
 	"newdtagent/bean"
 	"newdtagent/service"
 
@@ -47,7 +48,7 @@ func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			return FailResultWithMessage(err)
+			return FailResultWithMessage(err, http.StatusBadRequest)
 		}
 
 		// [3] 执行 Job 的命令。
@@ -81,7 +82,7 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			return FailResultWithMessage(err)
+			return FailResultWithMessage(err, http.StatusBadRequest)
 		}
 
 		// [3] 执行 Job 的脚本。
@@ -106,7 +107,7 @@ func (o *ExecuteController) FindJobById() RequestHandlerFunc {
 		job := o.executeService.FindJobById(jobId)
 
 		if job == nil {
-			return FailResultWithMessage(fmt.Sprintf("Job not found, jobId: %s", jobId))
+			return FailResultWithMessage(fmt.Sprintf("Job not found, jobId: %s", jobId), http.StatusNotFound)
 		} else {
 			return OkResultWithData(job)
 		}
