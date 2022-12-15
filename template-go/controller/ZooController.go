@@ -34,12 +34,12 @@ func (o *ZooController) RegisterRoutes(router *gin.Engine) {
 //
 // 测试: curl -X GET 'http://localhost:8080/api/test'
 func (o *ZooController) GetTest() RequestHandlerFunc {
-	return func(c *gin.Context) *bean.Result {
+	return func(c *gin.Context) bean.Result {
 		log.Log.Info("Hello test!")
 
 		n := rand.Intn(10)
 		if n%3 == 0 {
-			return FailResultWithMessage(fmt.Sprintf("Time is %v", time.Now()))
+			return ErrorResultWithMessage(fmt.Sprintf("Time is %v", time.Now()))
 		} else {
 			panic("Panic occured")
 		}

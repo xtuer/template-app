@@ -20,12 +20,12 @@
 
    ```go
    type XxxController struct{}
-   
+
    // 创建 Controller 对象。
    func NewXxxController() *XxxController {
    	return &XxxController{}
    }
-   
+
    // 注册在 gin 中的路由，函数 R 把处理请求返回的函数转换为 gin.HandlerFunc。
    func (o *XxxController) RegisterRoutes(router *gin.Engine) {
    	router.GET(API_XXX, R(o.GetTest()))
@@ -38,7 +38,7 @@
 
    ```go
    func (o *XxxController) GetTest() RequestHandlerFunc {
-   	return func(c *gin.Context) *bean.Result {
+   	return func(c *gin.Context) bean.Result {
        return OkResultWithMessage("hello")
    	}
    }
@@ -46,10 +46,8 @@
 
    > Controller 中只是简单的转发请求，复杂一点的业务逻辑可以创建一个结构体 XxxService 来处理，并把它作为 Controller 的一个属性，然后在 Controller 的方法中就可以调用 Service 的方法了。
 
-4. 在 main 函数中注册 Controller: 
+4. 在 main 函数中注册 Controller:
 
    ```go
    controller.NewXxxController().RegisterRoutes(router)
    ```
-
-   

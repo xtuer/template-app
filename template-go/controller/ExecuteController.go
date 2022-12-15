@@ -35,7 +35,7 @@ func (o *ExecuteController) RegisterRoutes(router *gin.Engine) {
 //
 // 测试: curl -X POST 'http://localhost:8080/api/execute/cmd' -H 'Content-Type: application/json' -d '{"cmd": "ls /root", "async": true}'
 func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
-	return func(c *gin.Context) *bean.Result {
+	return func(c *gin.Context) bean.Result {
 		/*
 		 逻辑:
 		 1. 创建 Job 对象。
@@ -48,12 +48,12 @@ func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			return FailResultWithMessage(err, http.StatusBadRequest)
+			return ErrorResultWithMessage(err, http.StatusBadRequest)
 		}
 
 		// [3] 执行 Job 的命令。
 		if err := o.executeService.ExecuteJob(job); err != nil {
-			return FailResultWithMessage(err)
+			return ErrorResultWithMessage(err)
 		}
 
 		return OkResultWithData(job)
@@ -69,7 +69,7 @@ func (o *ExecuteController) ExecuteCmd() RequestHandlerFunc {
 //
 // 测试: curl -X POST 'http://localhost:8080/api/execute/script' -H 'Content-Type: application/json' -d '{"scriptName": "x.sh", "scriptContent": "echo hi", "scriptType": "shell"}'
 func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
-	return func(c *gin.Context) *bean.Result {
+	return func(c *gin.Context) bean.Result {
 		/*
 		 逻辑:
 		 1. 创建 Job 对象。
@@ -82,12 +82,12 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 
 		// [2] 参数获取: 把请求体中的数据绑定到 job。
 		if err := c.ShouldBindJSON(job); err != nil {
-			return FailResultWithMessage(err, http.StatusBadRequest)
+			return ErrorResultWithMessage(err, http.StatusBadRequest)
 		}
 
 		// [3] 执行 Job 的脚本。
 		if err := o.executeService.ExecuteJob(job); err != nil {
-			return FailResultWithMessage(err)
+			return ErrorResultWithMessage(err)
 		}
 
 		return OkResultWithData(job)
@@ -102,12 +102,12 @@ func (o *ExecuteController) ExecuteScript() RequestHandlerFunc {
 //
 // 测试: curl 'http://localhost:8080/api/jobs/2559aa8e-2fe1-4f9a-a061-0c8a754abbc9'
 func (o *ExecuteController) FindJobById() RequestHandlerFunc {
-	return func(c *gin.Context) *bean.Result {
+	return func(c *gin.Context) bean.Result {
 		jobId := c.Param("jobId")
 		job := o.executeService.FindJobById(jobId)
 
 		if job == nil {
-			return FailResultWithMessage(fmt.Sprintf("Job not found, jobId: %s", jobId), http.StatusNotFound)
+			return ErrorResultWithMessage(fmt.Sprintf("Job not found, jobId: %s", jobId), http.StatusNotFound)
 		} else {
 			return OkResultWithData(job)
 		}

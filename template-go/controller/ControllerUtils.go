@@ -12,7 +12,7 @@ import (
 )
 
 // RequestHandlerFunc 为 controller 处理请求的函数签名。
-type RequestHandlerFunc = func(c *gin.Context) *bean.Result
+type RequestHandlerFunc = func(c *gin.Context) bean.Result
 
 // R 封装 controller 请求处理的返回值 Result 到 gin.Context 里，统一处理错误信息。
 func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
@@ -38,19 +38,19 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 	}
 }
 
-// FailResultWithMessage 设置处理失败的响应数据。
+// ErrorResultWithMessage 设置处理失败的响应数据。
 // 示例:
-// - 参数绑定失败: FailResultWithMessage(err, http.StatusBadRequest)
-// - 查找不到对象: FailResultWithMessage(err, http.StatusNotFound)
-// - 状态码默认值: FailResultWithMessage(err)
-func FailResultWithMessage(reason any, code ...int) *bean.Result {
+// - 参数绑定失败: ErrorResultWithMessage(err, http.StatusBadRequest)
+// - 查找不到对象: ErrorResultWithMessage(err, http.StatusNotFound)
+// - 状态码默认值: ErrorResultWithMessage(err)
+func ErrorResultWithMessage(reason any, code ...int) bean.Result {
 	// 错误码默认为 1，如果指定了错误码则使用指定的。
 	var c int = 1
 	if len(code) == 1 {
 		c = code[0]
 	}
 
-	return &bean.Result{
+	return bean.Result{
 		Id:      utils.Uid(),
 		Code:    c,
 		Success: false,
@@ -59,8 +59,8 @@ func FailResultWithMessage(reason any, code ...int) *bean.Result {
 }
 
 // OkResultWithData 设置处理成功的响应数据。
-func OkResultWithData(data any) *bean.Result {
-	return &bean.Result{
+func OkResultWithData(data any) bean.Result {
+	return bean.Result{
 		Code:    0,
 		Success: true,
 		Data:    data,
@@ -68,8 +68,8 @@ func OkResultWithData(data any) *bean.Result {
 }
 
 // OkResultWithMessage 设置处理成功的响应数据。
-func OkResultWithMessage(msg string) *bean.Result {
-	return &bean.Result{
+func OkResultWithMessage(msg string) bean.Result {
+	return bean.Result{
 		Code:    0,
 		Success: true,
 		Msg:     msg,
@@ -77,8 +77,8 @@ func OkResultWithMessage(msg string) *bean.Result {
 }
 
 // OkResultWithMessageAndData 设置处理成功的消息和数据。
-func OkResultWithMessageAndData(msg string, data any) *bean.Result {
-	return &bean.Result{
+func OkResultWithMessageAndData(msg string, data any) bean.Result {
+	return bean.Result{
 		Code:    0,
 		Success: true,
 		Msg:     msg,
