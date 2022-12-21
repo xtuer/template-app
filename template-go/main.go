@@ -29,7 +29,7 @@ func main() {
 
 	// Recovery middleware recovers from any panics and writes a 500 if there was one.
 	router.Use(gin.CustomRecovery(func(c *gin.Context, recovered interface{}) {
-		c.AbortWithStatusJSON(http.StatusInternalServerError, bean.Result{
+		c.AbortWithStatusJSON(http.StatusInternalServerError, bean.Response{
 			Success: false,
 			Code:    http.StatusInternalServerError,
 			Msg:     fmt.Sprintf("%v", recovered),

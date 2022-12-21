@@ -12,9 +12,9 @@ import (
 )
 
 // RequestHandlerFunc 为 controller 处理请求的函数签名。
-type RequestHandlerFunc = func(c *gin.Context) bean.Result
+type RequestHandlerFunc = func(c *gin.Context) bean.Response
 
-// R 封装 controller 请求处理的返回值 Result 到 gin.Context 里，统一处理错误信息。
+// R 封装 controller 请求处理的返回值 Response 到 gin.Context 里，统一处理错误信息。
 func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 执行请求。
@@ -25,7 +25,6 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 			url := c.Request.RequestURI
 			log.Log.WithFields(logrus.Fields{
 				"url":     url,
-				"errId":   r.Id,
 				"errMsg":  r.Msg,
 				"errCode": r.Code,
 			}).Error("[请求错误]")
@@ -38,47 +37,46 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 	}
 }
 
-// ErrorResultWithMessage 设置处理失败的响应数据。
+// ErrorResponseWithMessage 设置处理失败的响应数据。
 // 示例:
-// - 参数绑定失败: ErrorResultWithMessage(err, http.StatusBadRequest)
-// - 查找不到对象: ErrorResultWithMessage(err, http.StatusNotFound)
-// - 状态码默认值: ErrorResultWithMessage(err)
-func ErrorResultWithMessage(reason any, code ...int) bean.Result {
+// - 参数绑定失败: ErrorResponseWithMessage(err, http.StatusBadRequest)
+// - 查找不到对象: ErrorResponseWithMessage(err, http.StatusNotFound)
+// - 状态码默认值: ErrorResponseWithMessage(err)
+func ErrorResponseWithMessage(reason any, code ...int) bean.Response {
 	// 错误码默认为 1，如果指定了错误码则使用指定的。
 	var c int = 1
 	if len(code) == 1 {
 		c = code[0]
 	}
 
-	return bean.Result{
-		Id:      utils.Uid(),
+	return bean.Response{
 		Code:    c,
 		Success: false,
-		Msg:     fmt.Sprintf("%v", reason),
+		Msg:     fmt.Sprintf("ErrId: %s, Error: %v", utils.Uid(), reason),
 	}
 }
 
-// OkResultWithData 设置处理成功的响应数据。
-func OkResultWithData(data any) bean.Result {
-	return bean.Result{
+// OkResponseWithData 设置处理成功的响应数据。
+func OkResponseWithData(data any) bean.Response {
+	return bean.Response{
 		Code:    0,
 		Success: true,
 		Data:    data,
 	}
 }
 
-// OkResultWithMessage 设置处理成功的响应数据。
-func OkResultWithMessage(msg string) bean.Result {
-	return bean.Result{
+// OkResponseWithMessage 设置处理成功的响应数据。
+func OkResponseWithMessage(msg string) bean.Response {
+	return bean.Response{
 		Code:    0,
 		Success: true,
 		Msg:     msg,
 	}
 }
 
-// OkResultWithMessageAndData 设置处理成功的消息和数据。
-func OkResultWithMessageAndData(msg string, data any) bean.Result {
-	return bean.Result{
+// OkResponseWithMessageAndData 设置处理成功的消息和数据。
+func OkResponseWithMessageAndData(msg string, data any) bean.Response {
+	return bean.Response{
 		Code:    0,
 		Success: true,
 		Msg:     msg,

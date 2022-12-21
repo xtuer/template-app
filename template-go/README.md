@@ -10,7 +10,7 @@
 * 实用工具:
   * 生成 uid
   * 生成 MD5
-* 统一的 HTTP 请求格式，使用结构体 bean.Result
+* 统一的 HTTP 请求格式，使用结构体 bean.Response
 
 **处理请求的步骤:**
 
@@ -38,8 +38,8 @@
 
    ```go
    func (o *XxxController) GetTest() RequestHandlerFunc {
-   	return func(c *gin.Context) bean.Result {
-       return OkResultWithMessage("hello")
+   	return func(c *gin.Context) bean.Response {
+       return OkResponseWithMessage("hello")
    	}
    }
    ```
