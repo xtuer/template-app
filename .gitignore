@@ -84,3 +84,4 @@ yarn-error.log*
 vendor/
 main
 pid
+template-go/bin/
