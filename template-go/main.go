@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
-	"newdtagent/bean"
-	"newdtagent/config"
-	"newdtagent/controller"
-	"newdtagent/utils"
 	"os"
 	"time"
+	"xtuer/bean"
+	"xtuer/config"
+	"xtuer/controller"
+	"xtuer/utils"
 
 	"github.com/gin-gonic/gin"
 )

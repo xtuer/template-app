@@ -3,9 +3,9 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"newdtagent/bean"
-	"newdtagent/log"
-	"newdtagent/utils"
+	"xtuer/bean"
+	"xtuer/log"
+	"xtuer/utils"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

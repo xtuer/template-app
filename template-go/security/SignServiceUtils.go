@@ -2,9 +2,9 @@ package security
 
 import (
 	"fmt"
-	"newdtagent/config"
-	"newdtagent/utils"
 	"time"
+	"xtuer/config"
+	"xtuer/utils"
 )
 
 // Sign 计算签名。

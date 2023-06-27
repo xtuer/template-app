@@ -2,7 +2,7 @@ package service
 
 import (
 	"fmt"
-	"newdtagent/action"
+	"xtuer/action"
 )
 
 // FileTransferService 文件传输服务。

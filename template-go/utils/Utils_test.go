@@ -62,7 +62,7 @@ func TestGetAgentMd5(t *testing.T) {
 }
 
 func TestCountFileLines(t *testing.T) {
-	stdout, _, _ := ExecuteCommand("wc -l /Users/biao/Documents/workspace/newdt/newdtagent/logs/*")
+	stdout, _, _ := ExecuteCommand("wc -l /Users/biao/Documents/workspace/newdt/xtuer/logs/*")
 	lines := strings.Split(stdout, "\n")
 
 	re := regexp.MustCompile(`\s*(\d+).+/(.+\.log)$`)

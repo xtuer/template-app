@@ -4,8 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"newdtagent/bean"
-	"newdtagent/utils"
+	"xtuer/bean"
+	"xtuer/utils"
 
 	"sigs.k8s.io/yaml"
 )
@@ -79,7 +79,7 @@ func readConfig() {
 	// 工作目录。
 	var workDir string
 
-	// 解析命令行参数: go run main.go -wd /Users/biao/Documents/workspace/newdt/newdtagent
+	// 解析命令行参数: go run main.go -wd /Users/biao/Documents/workspace/newdt/xtuer
 	flag.StringVar(&workDir, "wd", "", "工作目录")
 	flag.Parse()
 

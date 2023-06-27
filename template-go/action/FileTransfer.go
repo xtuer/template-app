@@ -1,10 +1,10 @@
 package action
 
 import (
-	"newdtagent/bean"
-	"newdtagent/log"
-	"newdtagent/utils"
 	"strings"
+	"xtuer/bean"
+	"xtuer/log"
+	"xtuer/utils"
 
 	"github.com/sirupsen/logrus"
 )

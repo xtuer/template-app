@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"newdtagent/bean"
+	"xtuer/bean"
 )
 
 // UploadRepo 为上传数据管理的类。

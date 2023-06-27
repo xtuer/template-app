@@ -2,9 +2,9 @@ package security
 
 import (
 	"net/http"
-	"newdtagent/bean"
 	"strconv"
 	"time"
+	"xtuer/bean"
 
 	"github.com/gin-gonic/gin"
 )

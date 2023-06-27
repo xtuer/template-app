@@ -3,10 +3,10 @@ package controller
 import (
 	"fmt"
 	"math/rand"
-	"newdtagent/bean"
-	"newdtagent/log"
 	"runtime"
 	"time"
+	"xtuer/bean"
+	"xtuer/log"
 
 	"github.com/dustin/go-humanize"
 	"github.com/gin-gonic/gin"

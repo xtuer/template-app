@@ -1,4 +1,4 @@
-module newdtagent
+module xtuer
 
 go 1.19
 

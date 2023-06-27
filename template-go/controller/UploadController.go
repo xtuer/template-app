@@ -2,8 +2,8 @@ package controller
 
 import (
 	"net/http"
-	"newdtagent/bean"
-	"newdtagent/service"
+	"xtuer/bean"
+	"xtuer/service"
 
 	"github.com/gin-gonic/gin"
 )

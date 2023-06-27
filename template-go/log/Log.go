@@ -3,10 +3,10 @@ package log
 import (
 	"fmt"
 	"io"
-	"newdtagent/config"
 	"os"
 	"runtime"
 	"time"
+	"xtuer/config"
 
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/sirupsen/logrus"
