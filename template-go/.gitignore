@@ -1,0 +1,14 @@
+logs/
+vendor/
+main
+Agent
+Watchdog
+watchdog-agent
+newdt-agent
+newdt-agent.exe
+upload-tmp/
+upload-temp/
+bin/
+
+agent_pid
+pid

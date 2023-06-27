@@ -5,14 +5,26 @@ import (
 	"math/rand"
 	"net/http"
 	"newdtagent/bean"
+	"newdtagent/config"
 	"newdtagent/controller"
-	"newdtagent/service"
+	"newdtagent/utils"
+	"os"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	// 如果端口已经被使用，则不允许启动。
+	port := config.GetAppConfig().Port
+	if utils.IsPortUsed(port) {
+		fmt.Printf("端口 [%d] 已被占用，启动失败\n", port)
+		os.Exit(100)
+	}
+
+	// 保存 PID。
+	utils.SavePid(config.GetAppConfig().PidPath)
+
 	// 系统随机数种子。
 	rand.Seed(time.Now().UnixNano())
 
@@ -36,9 +48,13 @@ func main() {
 		})
 	}))
 
+	// 验证签名。
+	// router.Use(security.AuthenticateUsingSign)
+
 	// 路由注册。
 	controller.NewZooController().RegisterRoutes(router)
-	controller.NewExecuteController(service.NewExecuteService()).RegisterRoutes(router)
 
-	router.Run(":8080")
+	// 启动服务。
+	addr := fmt.Sprintf(":%d", config.GetAppConfig().Port)
+	router.Run(addr)
 }

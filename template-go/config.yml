@@ -1,0 +1,8 @@
+# 程序端口
+port: 12301
+
+# 本机 IP，如果不配置则自动获取，在多个 IP 的情况下有可能上报的 IP 自动化服务访问不了
+hostIp:
+
+# 脚本执行结束后删除脚本
+removeScriptWhenFinish: false

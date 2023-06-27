@@ -3,6 +3,7 @@ package log
 import (
 	"fmt"
 	"io"
+	"newdtagent/config"
 	"os"
 	"runtime"
 	"time"
@@ -42,10 +43,14 @@ func init() {
 	})
 
 	// Create a rotating log file with a daily rolling format.
+	conf := config.GetAppConfig()
+	historyLogPattern := fmt.Sprintf("%s/%s-%%Y%%m%%d.log", conf.LogDir, conf.LogName) // conf.LogDir+"/agent-%Y%m%d.log"
+	currentLogPath := fmt.Sprintf("%s/%s.log", conf.LogDir, conf.LogName)              // conf.LogDir+"/agent.log"
+
 	logWriter, err := rotatelogs.New(
-		"logs/app-%Y%m%d.log",
-		rotatelogs.WithLinkName("logs/app.log"),
-		rotatelogs.WithMaxAge(time.Duration(24)*time.Hour),
+		historyLogPattern,
+		rotatelogs.WithLinkName(currentLogPath),
+		rotatelogs.WithMaxAge(time.Duration(24*30)*time.Hour), // 日志保留 30 天
 	)
 	if err != nil {
 		Log.SetOutput(os.Stdout)

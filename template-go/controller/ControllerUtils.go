@@ -20,8 +20,8 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 		// 执行请求。
 		r := doRequestFn(c)
 
-		// 错误发生的时候，输出错误信息到日志里。
 		if !r.Success {
+			// 错误发生的时候，输出错误信息到日志里。
 			url := c.Request.RequestURI
 			log.Log.WithFields(logrus.Fields{
 				"url":     url,
@@ -42,7 +42,7 @@ func R(doRequestFn RequestHandlerFunc) gin.HandlerFunc {
 // - 参数绑定失败: ErrorResponseWithMessage(err, http.StatusBadRequest)
 // - 查找不到对象: ErrorResponseWithMessage(err, http.StatusNotFound)
 // - 状态码默认值: ErrorResponseWithMessage(err)
-func ErrorResponseWithMessage(reason any, code ...int) bean.Response {
+func ErrorResponseWithMessage(reason interface{}, code ...int) bean.Response {
 	// 错误码默认为 1，如果指定了错误码则使用指定的。
 	var c int = 1
 	if len(code) == 1 {
@@ -52,12 +52,28 @@ func ErrorResponseWithMessage(reason any, code ...int) bean.Response {
 	return bean.Response{
 		Code:    c,
 		Success: false,
-		Msg:     fmt.Sprintf("ErrId: %s, Error: %v", utils.Uid(), reason),
+		Msg:     fmt.Sprintf("ErrId: %s, %v", utils.Uid(), reason), // 错误发生的时候生成一个唯一的 ID 方便查找问题
+	}
+}
+
+// ErrorResponseWithMessageAndData 设置处理失败的消息和数据。
+func ErrorResponseWithMessageAndData(reason interface{}, data interface{}, code ...int) bean.Response {
+	// 错误码默认为 1，如果指定了错误码则使用指定的。
+	var c int = 1
+	if len(code) == 1 {
+		c = code[0]
+	}
+
+	return bean.Response{
+		Code:    c,
+		Success: false,
+		Msg:     fmt.Sprintf("ErrId: %s, %v", utils.Uid(), reason), // 错误发生的时候生成一个唯一的 ID 方便查找问题
+		Data:    data,
 	}
 }
 
 // OkResponseWithData 设置处理成功的响应数据。
-func OkResponseWithData(data any) bean.Response {
+func OkResponseWithData(data interface{}) bean.Response {
 	return bean.Response{
 		Code:    0,
 		Success: true,
@@ -75,7 +91,7 @@ func OkResponseWithMessage(msg string) bean.Response {
 }
 
 // OkResponseWithMessageAndData 设置处理成功的消息和数据。
-func OkResponseWithMessageAndData(msg string, data any) bean.Response {
+func OkResponseWithMessageAndData(msg string, data interface{}) bean.Response {
 	return bean.Response{
 		Code:    0,
 		Success: true,

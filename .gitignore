@@ -83,3 +83,4 @@ yarn-error.log*
 ### Go ###
 vendor/
 main
+pid
