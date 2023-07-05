@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"math"
 	"net"
 	"os"
@@ -356,7 +355,7 @@ func IsFileWritable(filepath string) bool {
 
 // ListFileNamesInDir 获取传入的目录 dir 中的文件名。
 func ListFileNamesInDir(dir string) (fileNames []string, err error) {
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		return fileNames, err
 	}
