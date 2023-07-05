@@ -36,6 +36,7 @@ func init() {
 
 	// 输出 JSON 格式的日志。
 	Log.SetFormatter(&logrus.JSONFormatter{
+		DisableHTMLEscape: true,
 		CallerPrettyfier: func(f *runtime.Frame) (string, string) {
 			return fmt.Sprintf("%s():%d", f.Function, f.Line), ""
 		},

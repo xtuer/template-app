@@ -1,11 +1,11 @@
 package bean
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 )
 
+// 使用: t1 := CTime(time.Now())
 type CTime time.Time
 
 func (o CTime) MarshalJSON() ([]byte, error) {
@@ -22,18 +22,4 @@ func (o *CTime) UnmarshalJSON(b []byte) error {
 
 	*o = CTime(t)
 	return nil
-}
-
-func main() {
-	t1 := CTime(time.Now())
-	fmt.Println(t1)
-
-	j, _ := json.Marshal(t1)
-	fmt.Println(string(j))
-
-	var t2 CTime
-	json.Unmarshal(j, &t2)
-
-	// 时间戳差 8 个小时
-	fmt.Println(time.Time(t2))
 }

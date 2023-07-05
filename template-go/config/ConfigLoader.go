@@ -3,7 +3,7 @@ package config
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"xtuer/bean"
 	"xtuer/utils"
 
@@ -93,7 +93,7 @@ func readConfig() {
 	}
 
 	// 读取配置文件内容。
-	configContent, err := ioutil.ReadFile(workDir + "/config.yml")
+	configContent, err := os.ReadFile(workDir + "/config.yml")
 	if err != nil {
 		panic(err)
 	}
