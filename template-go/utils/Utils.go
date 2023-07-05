@@ -94,7 +94,7 @@ func ExecuteCommand(command string) (stdoutString string, stderrString string, e
 // SaveScriptToTempFile 把脚本内容保存到临时文件，返回脚本的路径。
 func SaveScriptToTempFile(scriptContent string, suffix string) (path string, err error) {
 	// [1] 创建临时文件。
-	tempFile, err := ioutil.TempFile("", "newdt-auto-*-"+suffix)
+	tempFile, err := os.CreateTemp("", "newdt-auto-*-"+suffix)
 	if err != nil {
 		return "", err
 	}
@@ -244,7 +244,7 @@ func SavePid(path string) {
 	pid := os.Getpid()
 	content := fmt.Sprintf("%d", pid)
 
-	ioutil.WriteFile(path, []byte(content), 0644)
+	os.WriteFile(path, []byte(content), 0644)
 }
 
 // CompareVersion 比较版本，版本的格式为 ^v\d+(\.\d+)*$，以 v 开头，数字间以英文句号分隔。
