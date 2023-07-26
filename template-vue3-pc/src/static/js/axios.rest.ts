@@ -50,8 +50,12 @@
  * }
  * 注: jQuery 的 Ajax 支持同步请求，但是新版本中也不推荐使用了，浏览器中会有警告。
  *
- * [5] Rest.normalize 对根据 success 对响应统一的进行业务逻辑处理，success 为 true 表示成功过，为 false 表示失败。代码中逻辑更关注成功部分。
- * [A] Api 接口文件中处理请求。
+ * [5] 请求成功表示与服务器通信成功，不代码业务处理成功。
+ *     使用 Rest.normalize() 根据 success 对响应统一的进行业务逻辑判断，success 为 true 表示业务处理成功，为 false 表示失败。
+ *     代码中逻辑更关注成功业务处理，大多数时候都可以使用 Rest.normalize() 简化开发，除非 success 的值不足以判断，
+ *     需要使用响应的 code 进行更多情况处理。
+ *
+ * [5.1] Api 接口文件中处理请求。
  * async function findTime(): Promise<number> {
  *     return Rest.get<number>(url).then(({ data: time, success, message }) => {
  *         // 提示: 参数里进行了一次解构是为了让调用者知道 data 的业务名称，方便代码的维护。
@@ -59,7 +63,7 @@
  *     });
  * }
  *
- * [B] Vue 文件中调用请求直接获取结果，忽略请求的细节，而且即使切换了 Api 的实现不需要修改 vue 中的代码 (如把 Axios 换为 fetch 实现)。
+ * [5.2] Vue 文件中调用请求直接获取结果，忽略请求的细节，而且即使切换了 Api 的实现不需要修改 vue 中的代码 (如把 Axios 换为 fetch 实现)。
  * findTime().then((time: number) => {
  *     console.log(time);
  * })
