@@ -1,6 +1,7 @@
 .tags
 .gitkeep
 dump.rdb
+.history
 
 ### iView ###
 template-web-gradle/src/main/webapp/WEB-INF/page
