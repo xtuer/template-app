@@ -123,3 +123,8 @@ compileJava {
 if (project.hasProperty('rebelAgent')) {
     bootRun.jvmArgs += rebelAgent
 }
+
+bootRun {
+    // Debug 启动
+    jvmArgs += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+}

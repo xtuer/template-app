@@ -1,22 +1,23 @@
 import { fileURLToPath, URL } from 'node:url'
 
-import { defineConfig, PluginOption } from 'vite'
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
-import { visualizer } from "rollup-plugin-visualizer";
+import svgLoader from 'vite-svg-loader';
+import { prismjsPlugin } from 'vite-plugin-prismjs';
 
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
         vue(),
         vueJsx(),
-        visualizer({
-            template: "sunburst", // or sunburst | treemap
-            open: false,
-            gzipSize: true,
-            brotliSize: true,
-            filename: "report.html", // will be saved in project's root
-        }) as PluginOption,
+        svgLoader(),
+        prismjsPlugin({
+            languages: ['sql', 'json', "js"],
+            plugins: ['line-numbers', 'inline-color', 'copy-to-clipboard'],
+            theme: 'okaidia', // tomorrow, okaidia
+            css: true,
+        }),
     ],
     resolve: {
         alias: {
