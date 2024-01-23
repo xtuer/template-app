@@ -416,10 +416,11 @@ class RestExecutor {
      * 序列化 data 为 key value 的字符串 key1=value1&key2=value2
      *
      * @param data 请求参数对象。
-     * @return 返回 key value 的字符串。
+     * @return 返回使用 encodeURIComponent() 编码后的 key1=value1&key2=value2 的字符
      */
     static serializeData(data: any): string {
         return [...Object.keys(data)]
+            .filter(key => data[key] !== undefined)
             .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
             .join('&');
     }
